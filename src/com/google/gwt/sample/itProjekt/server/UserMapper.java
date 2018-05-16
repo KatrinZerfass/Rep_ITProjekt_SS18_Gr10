@@ -28,19 +28,43 @@ public class UserMapper {
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("select u_id, firstName, lastName, username from T_User where u_id ="+ uid + " order by U_ID");
+			ResultSet rs = stmt.executeQuery("select u_id, firstname, lastname, username from T_User where u_id ="+ uid + " order by U_ID");
 			
 			if (rs.next()){
 				User u = new User();
 				u.setId(rs.getInt("u_id"));
-				u.setFirstname(rs.getString("firstName"));
-				u.setLastname(rs.getString("lastName"));
+				u.setFirstname(rs.getString("firstname"));
+				u.setLastname(rs.getString("lastname"));
 				u.setUsername("username");
 				
 				return u;	
 			}
 		}
 		
+		catch (SQLException e){
+			e.printStackTrace();
+			return null;
+		}
+		
+		return null;
+	}
+	
+	public User findByUserName(String username){
+		Connection con = DBConnection.connection();
+		
+		try{
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("select u_id, username, firstname, lastname from T_User where username ="+ username + " order by U_ID");
+			if (rs.next()){
+				User u = new User();
+				u.setId(rs.getInt("u_id"));
+				u.setFirstname(rs.getString("firstname"));
+				u.setLastname(rs.getString("lastname"));
+				u.setUsername(rs.getString("username"));
+	
+				return u;	
+			}
+		}
 		catch (SQLException e){
 			e.printStackTrace();
 			return null;
