@@ -5,7 +5,7 @@ public class User extends BusinessObject {
 	private String firstname;
 	private String lastname;
 	private String username;
-
+// wenn nötig e-Mail und Password, falls diese nicht von Google gestelt werden
 	public String getFirstname() {
 		return firstname;
 	}
