@@ -1,14 +1,10 @@
 package com.google.gwt.sample.itProjekt.shared.bo;
 
-public class Nutzer extends BusinessObject {
+public class User extends BusinessObject {
 	
 	private String firstname;
 	private String lastname;
 	private String username;
-	
-	public Nutzer() {
-		super();
-	}
 
 	public String getFirstname() {
 		return firstname;
@@ -33,5 +29,4 @@ public class Nutzer extends BusinessObject {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-
 }
