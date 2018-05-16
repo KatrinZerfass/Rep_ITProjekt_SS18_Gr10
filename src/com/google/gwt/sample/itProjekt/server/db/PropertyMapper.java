@@ -1,9 +1,10 @@
-package com.google.gwt.sample.itProjekt.server;
+package com.google.gwt.sample.itProjekt.server.db;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 import com.google.gwt.sample.itProjekt.shared.bo.Property;
 
 public class PropertyMapper {

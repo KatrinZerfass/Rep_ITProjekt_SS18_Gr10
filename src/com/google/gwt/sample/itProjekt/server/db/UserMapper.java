@@ -1,21 +1,18 @@
-package com.google.gwt.sample.itProjekt.server;
+package com.google.gwt.sample.itProjekt.server.db;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
-import java.sql.Timestamp;
 
-import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
 
 public class UserMapper {
 	
 	private static UserMapper usermapper = null;
 	
-	protected UserMapper UserMapper() {
+	protected UserMapper userMapper() {
 		if (usermapper == null){
 			usermapper = new UserMapper();
 		}
@@ -35,7 +32,7 @@ public class UserMapper {
 				u.setId(rs.getInt("u_id"));
 				u.setFirstname(rs.getString("firstname"));
 				u.setLastname(rs.getString("lastname"));
-				u.setUsername("username");
+				u.setUsername(rs.getString("username"));
 				
 				return u;	
 			}
