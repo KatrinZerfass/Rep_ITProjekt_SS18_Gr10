@@ -4,10 +4,15 @@ import java.util.Vector;
 
 import com.google.gwt.sample.itProjekt.shared.*;
 import com.google.gwt.sample.itProjekt.shared.bo.*;
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.google.gwt.sample.itProjekt.server.db.*;
 
 public class EditorAdministrationImpl extends RemoteServiceServlet implements EditorAdministration{
 	
+	/**
+	 * 
+	 */
+
 	private ContactListMapper clMapper;
 	private ContactMapper cMapper;
 	private PropertyMapper pMapper;
