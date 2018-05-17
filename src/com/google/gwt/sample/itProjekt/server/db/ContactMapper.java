@@ -14,7 +14,7 @@ public class ContactMapper {
 	//static weil Singleton. Einzige Instanz dieser Klasse
 	private static ContactMapper contactmapper = null;
 	
-	public ContactMapper contactMapper() {
+	public static ContactMapper contactMapper() {
 		if (contactmapper == null){
 			contactmapper = new ContactMapper();
 		}

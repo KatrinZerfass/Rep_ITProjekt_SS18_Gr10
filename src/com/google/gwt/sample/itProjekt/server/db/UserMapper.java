@@ -12,7 +12,7 @@ public class UserMapper {
 	
 	private static UserMapper usermapper = null;
 	
-	public UserMapper userMapper() {
+	public static UserMapper userMapper() {
 		if (usermapper == null){
 			usermapper = new UserMapper();
 		}

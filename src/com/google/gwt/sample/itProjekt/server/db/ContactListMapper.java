@@ -4,7 +4,7 @@ public class ContactListMapper {
 	
 private static ContactListMapper contactlistmapper = null;
 	
-	public ContactListMapper contactListMapper() {
+	public static ContactListMapper contactListMapper() {
 		if (contactlistmapper == null){
 			contactlistmapper = new ContactListMapper();
 		}
