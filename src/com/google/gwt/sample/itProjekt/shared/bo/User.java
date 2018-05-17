@@ -2,6 +2,8 @@ package com.google.gwt.sample.itProjekt.shared.bo;
 
 public class User extends BusinessObject {
 	
+	// TODO Überarbeiten nachdem klar ist wie der Login über Google UserService funktioniert.
+	
 	private String firstname;
 	private String lastname;
 	private String username;
