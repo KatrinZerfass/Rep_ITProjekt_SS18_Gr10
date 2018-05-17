@@ -17,6 +17,12 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	@Override
 	public void init() throws IllegalArgumentException {
 		// TODO Auto-generated method stub
+		
+		this.clMapper = ContactListMapper.contactListMapper();
+		this.cMapper = ContactMapper.contactMapper();
+		this.pMapper = PropertyMapper.propertyMapper();
+		this.uMapper = UserMapper.userMapper();
+		
 	}
 
 	@Override
