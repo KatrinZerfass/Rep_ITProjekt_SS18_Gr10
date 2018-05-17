@@ -1,12 +1,12 @@
 package com.google.gwt.sample.itProjekt.server.db;
 
-public class ContactlistMapper {
+public class ContactListMapper {
 	
-private static ContactlistMapper contactlistmapper = null;
+private static ContactListMapper contactlistmapper = null;
 	
-	protected ContactlistMapper contactlistMapper() {
+	public ContactListMapper contactListMapper() {
 		if (contactlistmapper == null){
-			contactlistmapper = new ContactlistMapper();
+			contactlistmapper = new ContactListMapper();
 		}
 		return contactlistmapper;
 		}

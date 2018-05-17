@@ -10,7 +10,7 @@ import com.google.gwt.sample.itProjekt.shared.bo.Property;
 public class PropertyMapper {
 private static PropertyMapper propertymapper = null;
 	
-	protected PropertyMapper propertyMapper() {
+	public PropertyMapper propertyMapper() {
 		if (propertymapper == null){
 			propertymapper = new PropertyMapper();
 		}
