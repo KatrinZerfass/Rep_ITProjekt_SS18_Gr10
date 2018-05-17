@@ -53,6 +53,9 @@ public class CompositeParagraph extends Paragraph implements Serializable {
 		return this.subParagraph.size();
 	}
 	
+	public SimpleParagraph getParagraphAt(int i) {
+		return this.subParagraph.elementAt(i);
+	}
 
 @Override
 	public String toString() {
