@@ -1,5 +1,16 @@
 package com.google.gwt.sample.itProjekt.server.db;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.Vector;
+
+import com.google.gwt.sample.itProjekt.shared.bo.Contact;
+import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
+import com.google.gwt.sample.itProjekt.shared.bo.User;
+
 public class ContactListMapper {
 	
 private static ContactListMapper contactlistmapper = null;
@@ -11,12 +22,150 @@ private static ContactListMapper contactlistmapper = null;
 		return contactlistmapper;
 		}
 	
+	public ContactList findByID(int clid){
+		Connection con = DBConnection.connection();
+		
+		try{
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT cl_id, listname, U_ID From T_ContactList where cl_id ="+ clid + " order by CL_ID");
+			if (rs.next()){
+				ContactList c = new ContactList();
+				c.setId(rs.getInt("cl_id"));
+				c.setName((rs.getString("listname")));
+				
+				// Besitzer soll als User Objekt weitergegeben werden? warum nicht einfach als ID int?
+				//c.setParticipant(rs.getInt("U_ID"));
+				return c;	
+			}
+		}
+		catch (SQLException e2){
+			e2.printStackTrace();
+			return null;
+		}
+		return null;
+	}
+	public Vector<ContactList> findAll(){
+		Connection con = DBConnection.connection();
+		Vector<ContactList> result = new Vector<ContactList>();
+				
+				try{
+					Statement stmt = con.createStatement();
+					ResultSet rs = stmt.executeQuery("SELECT cl_id, listname, U_ID From T_ContactList order by CL_ID");
+					
+					while (rs.next()){
+						ContactList c = new ContactList();
+						c.setId(rs.getInt("cl_id"));
+						c.setName(rs.getString("listname"));
+						// Besitzer soll als User Objekt weitergegeben werden? warum nicht einfach als ID int?
+						//c.setParticipant(rs.getInt("U_ID"));
+						result.addElement(c);
+					}		
+				}catch(SQLException e2){
+					e2.printStackTrace();
+				}
+				return result;
+			}
+	public Vector <ContactList> findByName(String name){
+		Connection con = DBConnection.connection();
+		Vector<ContactList> result = new Vector<ContactList>();
+		
+		try{
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT cl_id, listname, U_ID From T_Contactlist where listname ="+ name+ " order by Cl_ID");
+			while (rs.next()){
+				ContactList c = new ContactList();
+				c.setId(rs.getInt("cl_id"));
+				c.setName(rs.getString("listname"));
+				// Besitzer soll als User Objekt weitergegeben werden? warum nicht einfach als ID int?
+				//c.setParticipant(rs.getInt("U_ID"));
+				result.addElement(c);	
+			}
+		}
+		catch (SQLException e2){
+			e2.printStackTrace();
+			return result;
+		}
+		return result;
+	}
+	public Vector <ContactList> findAllByUID(User u){
+		Connection con = DBConnection.connection();
+		Vector<ContactList> result = new Vector<ContactList>();
+		
+		try{
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT cl_id, listname, U_ID From T_Contactlist where u_id ="+ u.getId()+ " order by Cl_ID");
+			while (rs.next()){
+				ContactList c = new ContactList();
+				c.setId(rs.getInt("cl_id"));
+				c.setName(rs.getString("listname"));
+				// Besitzer soll als User Objekt weitergegeben werden? warum nicht einfach als ID int?
+				//c.setParticipant(rs.getInt("U_ID"));
+				result.addElement(c);	
+			}
+		}
+		catch (SQLException e2){
+			e2.printStackTrace();
+			return result;
+		}
+		return result;
+	}
+	public ContactList insert(ContactList c){
+		Connection con = DBConnection.connection();
+		
+		try{
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT MAX(cl_id) AS maxclid From T_Contactlist");
+			if (rs.next()){
+				
+				c.setId(rs.getInt("maxclid")+1);
+				Statement stmt2 = con.createStatement();
+				stmt2.executeUpdate("INSERT INTO T_ContactList (cl_id, listname, u_id)"
+				+ " VALUES ('"
+				+ c.getId() 
+				+ "', '" 
+				+ c.getName() 
+				//+ "', '" 
+				//+ c.getPermission() 
+				// Oder User mit übergeben?
+				+ ")") ;
+						
+				return c;	
+				
+			}
+		}
+		catch (SQLException e2){
+			e2.printStackTrace();
+			return c;
+		}
+		return c;}
 	
-	
-	
-	
-	
-	
-	
-
+		public ContactList update(ContactList c){
+			Connection con = DBConnection.connection();
+			
+			try{
+				Statement stmt = con.createStatement();
+				stmt.executeUpdate("UPDATE T_CONTACTList SET listname ='"+c.getName()+", u_id=" + 123+ " Where cl_id =" + c.getId());
+			}
+		
+		catch (SQLException e2){
+			e2.printStackTrace();
+			return c;
+		}
+		return c;}
+		
+		public void delete (ContactList c){
+Connection con = DBConnection.connection();
+			
+			try{
+				
+				Statement stmt = con.createStatement();
+				stmt.executeUpdate("DELETE FROM T_CONTACTLIST WHERE CL_ID =" +c.getId());
+			}
+		
+		catch (SQLException e2){
+			e2.printStackTrace();
+			
+		}}
+		// TODO: ADDCONTACTS, REMOVECONTACTS, getAllContacts
+		
 }

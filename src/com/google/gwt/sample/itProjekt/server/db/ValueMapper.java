@@ -141,4 +141,9 @@ Connection con = DBConnection.connection();
 			e2.printStackTrace();
 			
 		}
-}}
+}
+		
+//TODO: getAllContactsByPID?
+//TODO: getAllByCID?
+//TODO: getAllByPID?
+}
