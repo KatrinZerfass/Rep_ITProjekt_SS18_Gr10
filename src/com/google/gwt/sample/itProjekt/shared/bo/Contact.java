@@ -17,6 +17,25 @@ public class Contact extends BusinessObject {
 	private String sex;
 	
 	/**
+	 * TODO vielleicht Konstruktor(en)?
+
+	
+	public Contact() {}
+	public Contact(String newfirstname, String newlastname, String newsex) {
+		this.setFirstname(newfirstname);
+		this.setLastname(newlastname);
+		this.setSex(newsex);
+	}
+	public Contact(int newid, String newfirstname, String newlastname, String newsex) {
+		super(newid);
+		this.setFirstname(newfirstname);
+		this.setLastname(newlastname);
+		this.setSex(newsex);
+	}
+	
+	 */
+	
+	/**
 	 * Getter für den Vornamen.
 	 *
 	 * @return der Vorname

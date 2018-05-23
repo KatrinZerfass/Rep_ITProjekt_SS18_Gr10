@@ -68,13 +68,14 @@ Vector<Contact> result = new Vector<Contact>();
 		return result;
 	}
 	
-	public Contact findByName(String firstname, String lastname){
+	public Vector<Contact> findByName(String firstname, String lastname){
 		Connection con = DBConnection.connection();
+		Vector<Contact> result = new Vector<Contact>();
 		
 		try{
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT c_id, firstName, lastName, gender, U_ID From T_Contact where firstName ="+ firstname+ "AND lastname=" + lastname + " order by C_ID");
-			if (rs.next()){
+			while (rs.next()){
 				Contact c = new Contact();
 				c.setId(rs.getInt("c_id"));
 				c.setFirstname(rs.getString("firstName"));
@@ -82,14 +83,14 @@ Vector<Contact> result = new Vector<Contact>();
 				c.setSex(rs.getString("gender"));
 				// Besitzer soll als User Objekt weitergegeben werden? warum nicht einfach als ID int?
 				//c.setParticipant(rs.getInt("U_ID"));
-				return c;	
+				result.addElement(c);	
 			}
 		}
 		catch (SQLException e2){
 			e2.printStackTrace();
-			return null;
+			return result;
 		}
-		return null;
+		return result;
 	}
 	public Vector<Contact> findAllByUID(int uid){
 		Connection con = DBConnection.connection();
