@@ -50,6 +50,11 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public Contact showContact(int id) {
+		return cMapper.findByID(id);
+	}
 
 	@Override
 	public Contact createContact(String firstname, String lastname, String sex) throws IllegalArgumentException {
@@ -155,7 +160,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	}
 
 	@Override
-	public Contact editValue(Contact contact, Property property, Value value, String content)
+	public Contact editValue(Contact contact, Property property, Value value, String content, boolean isshared)
 			throws IllegalArgumentException {
 		// TODO Auto-generated method stub
 		return null;

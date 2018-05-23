@@ -14,6 +14,8 @@ public interface EditorAdministration extends RemoteService{
 	
 	public Vector<Contact> showAllContactsOf(ContactList contactlist) throws IllegalArgumentException;
 	
+	public Contact showContact(int id) throws IllegalArgumentException;
+	
 	public Contact createContact(String firstname, String lastname, String sex) throws IllegalArgumentException;
 	
 	public Contact editContact(int id, String firstname, String lastname, String sex) throws IllegalArgumentException;
@@ -36,7 +38,7 @@ public interface EditorAdministration extends RemoteService{
 	
 	public Contact createValue(Contact contact, Property property, String content) throws IllegalArgumentException;
 	
-	public Contact editValue(Contact contact, Property property, Value value, String content) throws IllegalArgumentException;
+	public Contact editValue(Contact contact, Property property, Value value, String content, boolean isshared) throws IllegalArgumentException;
 	
 	public void deleteValue(Value value) throws IllegalArgumentException;
 }
