@@ -18,6 +18,25 @@ public abstract class BusinessObject implements Serializable {
 	private int id;
 	
 	/**
+	 * TODO vielleicht Konstruktor(en)? 
+	 *
+	 * Instanziert neues Business Objekt.
+	 
+	
+	public BusinessObject() {}
+	
+
+	 * Instanziert neues Business Objekt.
+	 *
+	 * @param newid die neue ID des Business Objekts
+	 
+	
+	public BusinessObject(int newid) {
+		this.setId(newid);
+	}
+	*/
+	
+	/**
 	 * Setter für die ID.
 	 *
 	 * @param new_id die neue ID des BO
