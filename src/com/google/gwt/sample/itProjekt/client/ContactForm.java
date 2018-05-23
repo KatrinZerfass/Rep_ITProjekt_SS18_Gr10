@@ -5,6 +5,8 @@ import java.util.Vector;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Image;
@@ -60,6 +62,7 @@ public class ContactForm extends VerticalPanel {
 		
 	}
 	
+	
 	public void onLoad(){
 		
 		super.onLoad();
@@ -72,11 +75,11 @@ public class ContactForm extends VerticalPanel {
 		
 		//ab hier immer zum Testen kopieren
 		//Nullte Zeile
-	
+		contactTable.getFlexCellFormatter().setColSpan(0, 0, 4);
 		contactTable.setText(0, 0, "  ");
 		
 		//Erste Zeile
-		contactTable.getFlexCellFormatter().setColSpan(1, 1, 4);
+		contactTable.getFlexCellFormatter().setColSpan(1, 0, 4);
 		Label contactInfoLabel = new Label("Kontaktinformationen");
 		contactTable.setWidget(1, 0, contactInfoLabel);
 		
@@ -93,7 +96,7 @@ public class ContactForm extends VerticalPanel {
 		
 		//Dritte Zeile
 		Label birthdateLabel = new Label("Geburtsdatum: ");
-		Label birthdayLabel = new Label();
+		Label birthdayLabel = new Label("01.01.2000");
 		Label sexLabel = new Label("Geschlecht: ");
 		ListBox sexListBox = new ListBox();
 		sexListBox.addItem("männlich");
@@ -148,6 +151,7 @@ public class ContactForm extends VerticalPanel {
 		
 		contactTable.setWidget(5, 1, phoneNumbersTable);
 		
+		
 		Label mobileNrLabel = new Label("Mobil: ");
 		Label privateNrLabel = new Label("Privat: ");
 		Label businessNrLabel = new Label("Geschäftlich: ");
@@ -165,6 +169,11 @@ public class ContactForm extends VerticalPanel {
 		phoneNumbersTable.setWidget(0, 2, new LockButton());
 		phoneNumbersTable.setWidget(1, 2, new LockButton());
 		phoneNumbersTable.setWidget(2, 2, new LockButton());
+		
+		Button addPhoneNumberButton = new Button("Hinzufügen");
+		phoneNumbersTable.getFlexCellFormatter().setRowSpan(0, 3, 3);
+		phoneNumbersTable.setWidget(0, 3, addPhoneNumberButton);
+
 
 //		//nur zum innere Rahmenlinien anzeigen lassen, zu Debug-Zwecken
 //		for (int i= 0; i<phoneNumbersTable.getRowCount(); i++) {
@@ -174,15 +183,58 @@ public class ContactForm extends VerticalPanel {
 //		}
 		
 		
-		//Fünfte Zeile: eMail-Adresse
+		//Sechste Zeile: eMail-Adresse
+		contactTable.getFlexCellFormatter().setColSpan(6, 1, 3);
+		Label eMailsLabel = new Label("e-Mail-Adressen: ");
+		contactTable.setWidget(6, 0, eMailsLabel);
 		
-		//Sechste Zeile: Arbeitsstelle
+		FlexTable eMailsTable = new FlexTable();
+//		phoneNumbersTable.getFlexCellFormatter().setColSpan(0,1,2);
+//		phoneNumbersTable.getFlexCellFormatter().setColSpan(1,1,2);
+//		phoneNumbersTable.getFlexCellFormatter().setColSpan(2,1,2);
 		
-		//Siebte Zeile: Buttons
+		contactTable.setWidget(6, 1, eMailsTable);
 		
-		//todo: Hinzufügen buttons + Clickhandler
+		Label privateEmailLabel = new Label("Privat: ");
+		Label businessEmailLabel = new Label("Geschäftlich: ");
+		eMailsTable.setWidget(0, 0, privateEmailLabel);
+		eMailsTable.setWidget(1, 0, businessEmailLabel);
+
+		TextBox privateEmailTextBox = new TextBox();
+		TextBox businessEmailTextBox = new TextBox();
+		eMailsTable.setWidget(0, 1, privateEmailTextBox);
+		eMailsTable.setWidget(1, 1, businessEmailTextBox);
+		
+		eMailsTable.setWidget(0, 2, new LockButton());
+		eMailsTable.setWidget(1, 2, new LockButton());
+		
+		Button addEmailButton = new Button("Hinzufügen");
+		eMailsTable.getFlexCellFormatter().setRowSpan(0, 3, 2);
+		eMailsTable.setWidget(0, 3, addEmailButton);
 		
 		
+		//Siebte Zeile: Arbeitsstelle
+		contactTable.getFlexCellFormatter().setColSpan(7, 1, 3);
+		Label jobLabel = new Label("Arbeitsstelle: ");
+		contactTable.setWidget(7, 0, jobLabel);
+		
+		FlexTable jobTable = new FlexTable();
+		contactTable.setWidget(7, 1, jobTable);
+		TextBox jobTextBox = new TextBox();
+		jobTable.setWidget(0,0, jobTextBox);
+		jobTable.setWidget(0, 2, new LockButton());
+		
+		//Achte Zeile: Buttons
+		
+		Button shareButton = new Button("Teilen");
+		Button deleteButton = new Button("Löschen");
+		Button saveChangesButton = new Button("Änderungen speichern");
+		
+		contactTable.setWidget(8, 1, shareButton);
+		contactTable.setWidget(8, 2, deleteButton);
+		contactTable.setWidget(8, 3, saveChangesButton);
+		
+				
 		//Innere Rahmenlinien markieren zu Debug-Zwecken
 		for (int i= 0; i<contactTable.getRowCount(); i++) {
 			for (int a=0; a<contactTable.getCellCount(i); a++) {
@@ -191,13 +243,64 @@ public class ContactForm extends VerticalPanel {
 		}
 		
 		
+		//ClickHandler
+		addPhoneNumberButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event) {
+				newPhoneNumberPopUp();
+			}	
+		});
 		
+		addEmailButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event) {
+				newEmailPopUp();
+			}	
+		});
 		
+		shareButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event) {
+				shareContactPopUp();
+			}
+		});
+		
+		deleteButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event) {
+				deletePopUp();
+			}
+		});
+		
+		saveChangesButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event) {
+				//tdb: wie Änderungen übernehmen, wenn mehreres geändert wurde?! + zuerst check, ob es der Eigentümer ist
+			}
+		});
+	
+	} //ende der Methode onLoad();
+		
+	
+	
+	public void newPhoneNumberPopUp() {
+		//check, ob es der Eigentümer ist --> if not: Fehlermeldung-Popup
+		Window.alert("Here you can add a new phone Number");
 		
 		
 	}
+	
+	public void newEmailPopUp() {
+		//check, ob es der Eigentümer ist --> if not: Fehlermeldung-Popup
+		Window.alert("Here you can add a new e-Mail adress");
 		
-	
-	
+	}
 
+	public void shareContactPopUp() {
+		Window.alert("Here you can select another user to share the contact with");
+		
+	}
+	
+	public void deletePopUp() {
+		//check, ob es der Eigentümer ist --> if not: nur Teilhaberschaft löschen
+		Window.alert("Here is going to appear a Window where you can select which values you want to delelte");
+		
+	}
+	
+	
 }
