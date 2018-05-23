@@ -16,15 +16,15 @@ public interface EditorAdministration extends RemoteService{
 	
 	public Contact createContact(String firstname, String lastname, String sex) throws IllegalArgumentException;
 	
-	public Contact editContact(String firstname, String lastname, String sex) throws IllegalArgumentException;
+	public Contact editContact(int id, String firstname, String lastname, String sex) throws IllegalArgumentException;
 	
 	public Permission shareContact(Contact contact, User user) throws IllegalArgumentException;
 	
-	public void deleteContact(Contact contact) throws IllegalArgumentException;
+	public void deleteContact(int id) throws IllegalArgumentException;
 	
 	public ContactList createContactList(String name) throws IllegalArgumentException;
 	
-	public ContactList editContactList(String name) throws IllegalArgumentException;
+	public ContactList editContactList(int id, String name) throws IllegalArgumentException;
 	
 	public ContactList addContactToContactList(ContactList contactlist, Contact contact) throws IllegalArgumentException;
 	
