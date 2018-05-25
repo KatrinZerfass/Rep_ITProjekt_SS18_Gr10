@@ -302,5 +302,9 @@ public class ContactForm extends VerticalPanel {
 		
 	}
 	
-	
+	//todo: "Neuer Kontakt anlegen" - Button unten links
+	//todo: Methode "setSelected"
+	public void setSelected(Contact c) {
+		
+	}
 }
