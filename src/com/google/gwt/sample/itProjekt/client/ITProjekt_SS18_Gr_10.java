@@ -1,6 +1,6 @@
 package com.google.gwt.sample.itProjekt.client;
 
-import com.google.gwt.sample.itProjekt.shared.FieldVerifier;
+import com.google.gwt.sample.itProjekt.shared.CommonSettings;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -108,7 +108,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 				// First, we validate the input.
 				errorLabel.setText("");
 				String textToServer = nameField.getText();
-				if (!FieldVerifier.isValidName(textToServer)) {
+				if (!CommonSettings.isValidName(textToServer)) {
 					errorLabel.setText("Please enter at least four characters");
 					return;
 				}
