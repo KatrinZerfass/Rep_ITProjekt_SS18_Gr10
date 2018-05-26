@@ -7,6 +7,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Image;
@@ -16,14 +17,14 @@ import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class ContactForm extends VerticalPanel {
+public class ContactForm extends Composite {
 	
 	//tdb: contactverwaltung
 	Contact contactToDisplay = null;
 	//tbd: treeviewmodel
 	
 	
-	//innere Klasse für LockButtons
+	//innere Klasse fï¿½r LockButtons
 	public class LockButton extends PushButton{
 		
 		public LockButton() {
@@ -62,16 +63,16 @@ public class ContactForm extends VerticalPanel {
 		
 	}
 	
+	FlexTable contactTable = new FlexTable();
 	
-	public void onLoad(){
-		
-		super.onLoad();
-		//einstellungen für den Schloss-Button
 	
+	public ContactForm() {
 		
-		//allumfassende Tabelle für die Darstellung von Kontakten
-		FlexTable contactTable = new FlexTable();
-		this.add(contactTable);
+		initWidget(this.contactTable);
+		
+		//allumfassende Tabelle fï¿½r die Darstellung von Kontakten
+		
+		
 		
 		//ab hier immer zum Testen kopieren
 		//Nullte Zeile
@@ -99,7 +100,7 @@ public class ContactForm extends VerticalPanel {
 		Label birthdayLabel = new Label("01.01.2000");
 		Label sexLabel = new Label("Geschlecht: ");
 		ListBox sexListBox = new ListBox();
-		sexListBox.addItem("männlich");
+		sexListBox.addItem("mï¿½nnlich");
 		sexListBox.addItem("weiblich");
 		
 		contactTable.setWidget(3, 0, birthdateLabel);
@@ -139,7 +140,7 @@ public class ContactForm extends VerticalPanel {
 //			}
 //		}
 		
-		//Fünfte Zeile
+		//Fï¿½nfte Zeile
 		contactTable.getFlexCellFormatter().setColSpan(5, 1, 3);
 		Label phoneNumbersLabel = new Label("Telefonnummer: ");
 		contactTable.setWidget(5, 0, phoneNumbersLabel);
@@ -154,7 +155,7 @@ public class ContactForm extends VerticalPanel {
 		
 		Label mobileNrLabel = new Label("Mobil: ");
 		Label privateNrLabel = new Label("Privat: ");
-		Label businessNrLabel = new Label("Geschäftlich: ");
+		Label businessNrLabel = new Label("Geschï¿½ftlich: ");
 		phoneNumbersTable.setWidget(0, 0, mobileNrLabel);
 		phoneNumbersTable.setWidget(1, 0, privateNrLabel);
 		phoneNumbersTable.setWidget(2, 0, businessNrLabel);
@@ -170,7 +171,7 @@ public class ContactForm extends VerticalPanel {
 		phoneNumbersTable.setWidget(1, 2, new LockButton());
 		phoneNumbersTable.setWidget(2, 2, new LockButton());
 		
-		Button addPhoneNumberButton = new Button("Hinzufügen");
+		Button addPhoneNumberButton = new Button("Hinzufï¿½gen");
 		phoneNumbersTable.getFlexCellFormatter().setRowSpan(0, 3, 3);
 		phoneNumbersTable.setWidget(0, 3, addPhoneNumberButton);
 
@@ -196,7 +197,7 @@ public class ContactForm extends VerticalPanel {
 		contactTable.setWidget(6, 1, eMailsTable);
 		
 		Label privateEmailLabel = new Label("Privat: ");
-		Label businessEmailLabel = new Label("Geschäftlich: ");
+		Label businessEmailLabel = new Label("Geschï¿½ftlich: ");
 		eMailsTable.setWidget(0, 0, privateEmailLabel);
 		eMailsTable.setWidget(1, 0, businessEmailLabel);
 
@@ -208,7 +209,7 @@ public class ContactForm extends VerticalPanel {
 		eMailsTable.setWidget(0, 2, new LockButton());
 		eMailsTable.setWidget(1, 2, new LockButton());
 		
-		Button addEmailButton = new Button("Hinzufügen");
+		Button addEmailButton = new Button("Hinzufï¿½gen");
 		eMailsTable.getFlexCellFormatter().setRowSpan(0, 3, 2);
 		eMailsTable.setWidget(0, 3, addEmailButton);
 		
@@ -227,8 +228,8 @@ public class ContactForm extends VerticalPanel {
 		//Achte Zeile: Buttons
 		
 		Button shareButton = new Button("Teilen");
-		Button deleteButton = new Button("Löschen");
-		Button saveChangesButton = new Button("Änderungen speichern");
+		Button deleteButton = new Button("Lï¿½schen");
+		Button saveChangesButton = new Button("ï¿½nderungen speichern");
 		
 		contactTable.setWidget(8, 1, shareButton);
 		contactTable.setWidget(8, 2, deleteButton);
@@ -270,7 +271,7 @@ public class ContactForm extends VerticalPanel {
 		
 		saveChangesButton.addClickHandler(new ClickHandler(){
 			public void onClick(ClickEvent event) {
-				//tdb: wie Änderungen übernehmen, wenn mehreres geändert wurde?! + zuerst check, ob es der Eigentümer ist
+				//tdb: wie ï¿½nderungen ï¿½bernehmen, wenn mehreres geï¿½ndert wurde?! + zuerst check, ob es der Eigentï¿½mer ist
 			}
 		});
 	
@@ -279,14 +280,14 @@ public class ContactForm extends VerticalPanel {
 	
 	
 	public void newPhoneNumberPopUp() {
-		//check, ob es der Eigentümer ist --> if not: Fehlermeldung-Popup
+		//check, ob es der Eigentï¿½mer ist --> if not: Fehlermeldung-Popup
 		Window.alert("Here you can add a new phone Number");
 		
 		
 	}
 	
 	public void newEmailPopUp() {
-		//check, ob es der Eigentümer ist --> if not: Fehlermeldung-Popup
+		//check, ob es der Eigentï¿½mer ist --> if not: Fehlermeldung-Popup
 		Window.alert("Here you can add a new e-Mail adress");
 		
 	}
@@ -297,7 +298,7 @@ public class ContactForm extends VerticalPanel {
 	}
 	
 	public void deletePopUp() {
-		//check, ob es der Eigentümer ist --> if not: nur Teilhaberschaft löschen
+		//check, ob es der Eigentï¿½mer ist --> if not: nur Teilhaberschaft lï¿½schen
 		Window.alert("Here is going to appear a Window where you can select which values you want to delelte");
 		
 	}
