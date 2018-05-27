@@ -28,8 +28,8 @@ public class ContactForm extends Composite {
 	public class LockButton extends PushButton{
 		
 		public LockButton() {
-			lockUnlocked.setPixelSize(50, 50);
-			lockLocked.setPixelSize(50, 50);
+			lockUnlocked.setPixelSize(20, 20);
+			lockLocked.setPixelSize(20, 20);
 			
 			this.getUpFace().setImage(lockUnlocked);
 			
@@ -63,6 +63,7 @@ public class ContactForm extends Composite {
 		
 	}
 	
+	//allumfassende Tabelle für die Darstellung von Kontakten
 	FlexTable contactTable = new FlexTable();
 	
 	
@@ -70,11 +71,6 @@ public class ContactForm extends Composite {
 		
 		initWidget(this.contactTable);
 		
-		//allumfassende Tabelle fï¿½r die Darstellung von Kontakten
-		
-		
-		
-		//ab hier immer zum Testen kopieren
 		//Nullte Zeile
 		contactTable.getFlexCellFormatter().setColSpan(0, 0, 4);
 		contactTable.setText(0, 0, "  ");
