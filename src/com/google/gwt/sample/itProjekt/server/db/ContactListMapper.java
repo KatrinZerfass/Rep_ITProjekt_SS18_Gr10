@@ -22,19 +22,18 @@ private static ContactListMapper contactlistmapper = null;
 		return contactlistmapper;
 		}
 	
-	public ContactList findByID(int clid){
+	public ContactList findByID(ContactList cl){
 		Connection con = DBConnection.connection();
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT cl_id, listname, U_ID From T_ContactList where cl_id ="+ clid + " order by CL_ID");
+			ResultSet rs = stmt.executeQuery("SELECT cl_id, listname, U_ID From T_ContactList where cl_id ="+ cl.getId() + " order by CL_ID");
 			if (rs.next()){
 				ContactList c = new ContactList();
 				c.setId(rs.getInt("cl_id"));
 				c.setName((rs.getString("listname")));
 				
-				// Besitzer soll als User Objekt weitergegeben werden? warum nicht einfach als ID int?
-				//c.setParticipant(rs.getInt("U_ID"));
+				
 				return c;	
 			}
 		}
@@ -44,6 +43,29 @@ private static ContactListMapper contactlistmapper = null;
 		}
 		return null;
 	}
+	
+	public ContactList findByID(int cl){
+		Connection con = DBConnection.connection();
+		
+		try{
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT cl_id, listname, U_ID From T_ContactList where cl_id ="+ cl + " order by CL_ID");
+			if (rs.next()){
+				ContactList c = new ContactList();
+				c.setId(rs.getInt("cl_id"));
+				c.setName((rs.getString("listname")));
+				
+				
+				return c;	
+			}
+		}
+		catch (SQLException e2){
+			e2.printStackTrace();
+			return null;
+		}
+		return null;
+	}
+	
 	public Vector<ContactList> findAll(){
 		Connection con = DBConnection.connection();
 		Vector<ContactList> result = new Vector<ContactList>();
@@ -65,19 +87,18 @@ private static ContactListMapper contactlistmapper = null;
 				}
 				return result;
 			}
-	public Vector <ContactList> findByName(String name){
+	public Vector <ContactList> findByName(ContactList cl){
 		Connection con = DBConnection.connection();
 		Vector<ContactList> result = new Vector<ContactList>();
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT cl_id, listname, U_ID From T_Contactlist where listname ="+ name+ " order by Cl_ID");
+			ResultSet rs = stmt.executeQuery("SELECT cl_id, listname, U_ID From T_Contactlist where listname ="+ cl.getName()+ " order by Cl_ID");
 			while (rs.next()){
 				ContactList c = new ContactList();
 				c.setId(rs.getInt("cl_id"));
 				c.setName(rs.getString("listname"));
-				// Besitzer soll als User Objekt weitergegeben werden? warum nicht einfach als ID int?
-				//c.setParticipant(rs.getInt("U_ID"));
+				
 				result.addElement(c);	
 			}
 		}
@@ -109,7 +130,7 @@ private static ContactListMapper contactlistmapper = null;
 		}
 		return result;
 	}
-	public ContactList insert(ContactList c){
+	public ContactList insert(ContactList c, User u){
 		Connection con = DBConnection.connection();
 		
 		try{
@@ -124,9 +145,8 @@ private static ContactListMapper contactlistmapper = null;
 				+ c.getId() 
 				+ "', '" 
 				+ c.getName() 
-				//+ "', '" 
-				//+ c.getPermission() 
-				// Oder User mit übergeben?
+				+ "', '" 
+				+ u.getId() 
 				+ ")") ;
 						
 				return c;	

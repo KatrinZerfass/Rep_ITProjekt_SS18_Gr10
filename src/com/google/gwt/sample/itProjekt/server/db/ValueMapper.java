@@ -41,7 +41,7 @@ private static ValueMapper valuemapper = null;
 				}
 				return result;
 			}
-	public Vector<Contact> findAllContacsByValue(String value){
+	public Vector<Contact> findAllContactsByValue(String value){
 		Connection con = DBConnection.connection();
 		Vector<Contact> result = new Vector<Contact>();
 				
