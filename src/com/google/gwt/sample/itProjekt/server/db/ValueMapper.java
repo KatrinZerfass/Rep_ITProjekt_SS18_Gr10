@@ -143,6 +143,26 @@ Connection con = DBConnection.connection();
 			
 		}
 }
+		public Vector<Contact> findAllContactsByPID(Property property){
+			Connection con = DBConnection.connection();
+			Vector<Contact> result = new Vector<Contact>();
+					
+					try{
+						Statement stmt = con.createStatement();
+						ResultSet rs = stmt.executeQuery("SELECT DISTINCT c_id From T_Value where p_id=" + property.getId()+ " order by C_ID");
+						
+						while (rs.next()){
+							Contact c = new Contact();
+							c.setId(rs.getInt("c_id"));
+											
+							result.addElement(ContactMapper.contactMapper().findByID(c.getId()));
+						}		
+					}catch(SQLException e2){
+						e2.printStackTrace();
+					}
+					return result;
+				}
+		
 		public Vector <Value> getAllByPID (Property property){
 			Connection con = DBConnection.connection();
 			Vector <Value> result=new Vector <Value>();
@@ -154,9 +174,7 @@ Connection con = DBConnection.connection();
 				while (rs.next()){
 					Value v = new Value();
 					v.setId(rs.getInt("v_id"));
-					v.setId(rs.getInt("p_id"));
 					v.setContent(rs.getString("value"));
-					v.setId(rs.getInt("c_id"));
 	
 					result.addElement(v);
 				}
@@ -168,6 +186,34 @@ Connection con = DBConnection.connection();
 			}
 			return result;
 		}	
+		
+		
+		
+		
+		public Vector <Value> getAllByCID (Contact contact){
+			Connection con = DBConnection.connection();
+			Vector <Value> result = new Vector <Value>();
+			
+			try{
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT v_id, p_id, value, c_id From T_Value where c_id ="+ contact.getId()+ " order by V_ID");
+
+				while (rs.next()){
+					Value v = new Value();
+					v.setId(rs.getInt("v_id"));
+					v.setContent(rs.getString("value"));
+	
+					result.addElement(v);
+				}
+				
+			}
+			catch (SQLException e2){
+				e2.printStackTrace();
+				return result;
+			}
+			return result;
+			
+}
 		
 		
 //TODO: getAllContactsByPID?
