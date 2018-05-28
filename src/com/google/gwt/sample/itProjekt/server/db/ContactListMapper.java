@@ -187,5 +187,37 @@ Connection con = DBConnection.connection();
 			
 		}}
 		// TODO: ADDCONTACTS, REMOVECONTACTS, getAllContacts
+		public Vector <Contact> getAllContacts(ContactList cl){
+			Connection con = DBConnection.connection();
+			
+			Vector<Contact> result = new Vector<Contact>();
+			
+			try{
+				Statement stmt = con.createStatement();
+				Statement stmt2 = con.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT c_id From T_Contact_Contactlist where cl_id ="+ cl.getId() + " order by C_ID");
+
+				
+				
+				while (rs.next()){
+										
+					ResultSet rs2 = stmt2.executeQuery("SELECT c_id, firstname, lastname, gender, U_ID From T_Contact where c_id ="+rs.getInt("c_id") + " order by C_ID");
+					Contact c = new Contact();
+					c.setId(rs2.getInt("c_id"));
+					c.setFirstname(rs2.getString("firstName"));
+					c.setLastname(rs2.getString("lastName"));
+					c.setSex(rs2.getString("gender"));
+					//c.setParticipant(rs2.getInt("U_ID"));
+					result.addElement(c);
+				}
+				
+				
+			}
+			catch (SQLException e2){
+				e2.printStackTrace();
+				return result;
+			}
+			return result;
+		}	
 		
 }
