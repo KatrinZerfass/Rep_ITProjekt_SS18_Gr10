@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 import java.util.Vector;
 
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
+import com.google.gwt.sample.itProjekt.shared.bo.User;
 
 public class ContactMapper {
 	
@@ -20,19 +21,18 @@ public class ContactMapper {
 		}
 		return contactmapper;
 		}
-	public Contact findByID(int cid){
+	public Contact findByID(Contact contact){
 		Connection con = DBConnection.connection();
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT c_id, firstName, lastName, gender, U_ID From T_Contact where c_id ="+ cid + " order by C_ID");
+			ResultSet rs = stmt.executeQuery("SELECT c_id, firstName, lastName, gender, U_ID From T_Contact where c_id ="+ contact.getId() + " order by C_ID");
 			if (rs.next()){
 				Contact c = new Contact();
 				c.setId(rs.getInt("c_id"));
 				c.setFirstname(rs.getString("firstName"));
 				c.setLastname(rs.getString("lastName"));
 				c.setSex(rs.getString("gender"));
-				// Besitzer soll als User Objekt weitergegeben werden? warum nicht einfach als ID int?
 				//c.setParticipant(rs.getInt("U_ID"));
 				return c;	
 			}
@@ -58,7 +58,6 @@ Vector<Contact> result = new Vector<Contact>();
 				c.setFirstname(rs.getString("firstName"));
 				c.setLastname(rs.getString("lastName"));
 				c.setSex(rs.getString("gender"));
-				// Besitzer soll als User Objekt weitergegeben werden? warum nicht einfach als ID int?
 				//c.setParticipant(rs.getInt("U_ID"));
 				result.addElement(c);
 			}		
@@ -68,20 +67,19 @@ Vector<Contact> result = new Vector<Contact>();
 		return result;
 	}
 	
-	public Vector<Contact> findByName(String firstname, String lastname){
+	public Vector<Contact> findByName(Contact contact){
 		Connection con = DBConnection.connection();
 		Vector<Contact> result = new Vector<Contact>();
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT c_id, firstName, lastName, gender, U_ID From T_Contact where firstName ="+ firstname+ "AND lastname=" + lastname + " order by C_ID");
+			ResultSet rs = stmt.executeQuery("SELECT c_id, firstName, lastName, gender, U_ID From T_Contact where firstName ="+ contact.getFirstname()+ "AND lastname=" + contact.getLastname() + " order by C_ID");
 			while (rs.next()){
 				Contact c = new Contact();
 				c.setId(rs.getInt("c_id"));
 				c.setFirstname(rs.getString("firstName"));
 				c.setLastname(rs.getString("lastName"));
 				c.setSex(rs.getString("gender"));
-				// Besitzer soll als User Objekt weitergegeben werden? warum nicht einfach als ID int?
 				//c.setParticipant(rs.getInt("U_ID"));
 				result.addElement(c);	
 			}
@@ -92,13 +90,13 @@ Vector<Contact> result = new Vector<Contact>();
 		}
 		return result;
 	}
-	public Vector<Contact> findAllByUID(int uid){
+	public Vector<Contact> findAllByUID(User user){
 		Connection con = DBConnection.connection();
 		Vector<Contact> result = new Vector<Contact>();
 				
 				try{
 					Statement stmt = con.createStatement();
-					ResultSet rs = stmt.executeQuery("SELECT c_id, firstName, lastName, gender, U_ID From T_Contact where u_id=" + uid+ " order by C_ID");
+					ResultSet rs = stmt.executeQuery("SELECT c_id, firstName, lastName, gender, U_ID From T_Contact where u_id=" + user.getId()+ " order by C_ID");
 					
 					while (rs.next()){
 						Contact c = new Contact();
@@ -106,7 +104,6 @@ Vector<Contact> result = new Vector<Contact>();
 						c.setFirstname(rs.getString("firstName"));
 						c.setLastname(rs.getString("lastName"));
 						c.setSex(rs.getString("gender"));
-						// Besitzer soll als User Objekt weitergegeben werden? warum nicht einfach als ID int?
 						//c.setParticipant(rs.getInt("U_ID"));
 						result.addElement(c);
 					}		
@@ -116,7 +113,7 @@ Vector<Contact> result = new Vector<Contact>();
 				return result;
 			}
 	
-	public Contact insert(Contact c){
+	public Contact insert(Contact c, User u){
 		Connection con = DBConnection.connection();
 		
 		try{
@@ -127,19 +124,20 @@ Vector<Contact> result = new Vector<Contact>();
 				c.setId(rs.getInt("maxcid")+1);
 				Statement stmt2 = con.createStatement();
 				stmt2.executeUpdate("INSERT INTO T_Contact (c_id, firstname, lastname, gender, create_date, mod_date, u_id)"
-				+ " VALUES ('"
+				+ " VALUES ("
 				+ c.getId() 
-				+ "', '" 
+				+ ", '" 
 				+ c.getFirstname() 
 				+ "', '" 
 				+ c.getLastname() 
-				+ "', '" + c.getSex() 
 				+ "', '" 
+				+ c.getSex() 
+				+ "', " 
 				+ new Timestamp(System.currentTimeMillis())  
 				+ ", "
 				+ new Timestamp(System.currentTimeMillis()) 
 				+ ", " 
-				+ 123 
+				+ u.getId()
 				+ ")") ;
 						
 				return c;	
@@ -182,23 +180,7 @@ Connection con = DBConnection.connection();
 			
 		}
 		}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		
 	
 	
 	}
