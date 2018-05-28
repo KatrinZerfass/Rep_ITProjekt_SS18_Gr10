@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 import java.util.Vector;
 
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
+import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
 import com.google.gwt.sample.itProjekt.shared.bo.Value;
 import com.google.gwt.sample.itProjekt.shared.bo.Property;
 
@@ -20,13 +21,13 @@ private static ValueMapper valuemapper = null;
 		}
 		return valuemapper;
 		}
-	public Vector<Value> findAllByValue(String value){
+	public Vector<Value> findAllByValue(Value value){
 		Connection con = DBConnection.connection();
 		Vector<Value> result = new Vector<Value>();
 				
 				try{
 					Statement stmt = con.createStatement();
-					ResultSet rs = stmt.executeQuery("SELECT v_id, value From T_Value where value=" + value+ " order by V_ID");
+					ResultSet rs = stmt.executeQuery("SELECT v_id, value From T_Value where value=" + value.getContent()+ " order by V_ID");
 					
 					while (rs.next()){
 						Value v = new Value();
@@ -41,13 +42,13 @@ private static ValueMapper valuemapper = null;
 				}
 				return result;
 			}
-	public Vector<Contact> findAllContactsByValue(String value){
+	public Vector<Contact> findAllContactsByValue(Value value){
 		Connection con = DBConnection.connection();
 		Vector<Contact> result = new Vector<Contact>();
 				
 				try{
 					Statement stmt = con.createStatement();
-					ResultSet rs = stmt.executeQuery("SELECT DISTINCT c_id From T_Value where value=" + value+ " order by C_ID");
+					ResultSet rs = stmt.executeQuery("SELECT DISTINCT c_id From T_Value where value=" + value.getContent()+ " order by C_ID");
 					
 					while (rs.next()){
 						Contact c = new Contact();
@@ -142,6 +143,32 @@ Connection con = DBConnection.connection();
 			
 		}
 }
+		public Vector <Value> getAllByPID (Property property){
+			Connection con = DBConnection.connection();
+			Vector <Value> result=new Vector <Value>();
+			
+			try{
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT v_id, p_id, value, c_id From T_Value where p_id ="+ property.getId()+ " order by V_ID");
+
+				while (rs.next()){
+					Value v = new Value();
+					v.setId(rs.getInt("v_id"));
+					v.setId(rs.getInt("p_id"));
+					v.setContent(rs.getString("value"));
+					v.setId(rs.getInt("c_id"));
+	
+					result.addElement(v);
+				}
+				
+			}
+			catch (SQLException e2){
+				e2.printStackTrace();
+				return result;
+			}
+			return result;
+		}	
+		
 		
 //TODO: getAllContactsByPID?
 //TODO: getAllByCID?
