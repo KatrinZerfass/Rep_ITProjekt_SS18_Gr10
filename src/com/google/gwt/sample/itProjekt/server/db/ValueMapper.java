@@ -113,6 +113,38 @@ private static ValueMapper valuemapper = null;
 			return v;
 		}
 		return v;}
+	public Value insert(Value v, Contact c, Property p, boolean isShared){
+		Connection con = DBConnection.connection();
+		
+		try{
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT MAX(v_id) AS maxvid From T_Value");
+			if (rs.next()){
+				
+				v.setId(rs.getInt("maxvid")+1);
+				Statement stmt2 = con.createStatement();
+				stmt2.executeUpdate("INSERT INTO T_Value (v_id, p_id, value, c_id, isShared)"
+				+ " VALUES ('"
+				+ v.getId() 
+				+ "', '" 
+				+ p.getId() 
+				+ "', '" 
+				+ v.getContent() 
+				+ "', '" 
+				+ c.getId() 
+				+ "', '" 
+				+ isShared
+				+ "')") ;
+						
+				return v;	
+				
+			}
+		}
+		catch (SQLException e2){
+			e2.printStackTrace();
+			return v;
+		}
+		return v;}
 	
 		public Value update(Value v, Contact c, Property p, boolean s){
 			Connection con = DBConnection.connection();
