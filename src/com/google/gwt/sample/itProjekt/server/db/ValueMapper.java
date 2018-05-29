@@ -175,7 +175,7 @@ Connection con = DBConnection.connection();
 			
 		}
 }
-		public Vector<Contact> findAllContactsByPID(Property property){
+		public Vector<Contact> getAllContactsByPID(Property property){
 			Connection con = DBConnection.connection();
 			Vector<Contact> result = new Vector<Contact>();
 					
@@ -195,20 +195,22 @@ Connection con = DBConnection.connection();
 					return result;
 				}
 		
-		public Vector <Value> getAllByPID (Property property){
+		public Vector <Property> getAllPropertiesByCID (Contact contact){
 			Connection con = DBConnection.connection();
-			Vector <Value> result=new Vector <Value>();
+			Vector <Property> result=new Vector <Property>();
 			
 			try{
 				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT v_id, p_id, value, c_id From T_Value where p_id ="+ property.getId()+ " order by V_ID");
+				Statement stmt2 = con.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT p_id FROM T_Value WHERE c_id ="+ contact.getId()+ " ORDER BY C_ID");
 
 				while (rs.next()){
-					Value v = new Value();
-					v.setId(rs.getInt("v_id"));
-					v.setContent(rs.getString("value"));
+					ResultSet rs2 = stmt2.executeQuery ("SELECT p_id, type FROM T_Property WHERE p_id =" + rs.getInt("P_ID")+ " ORDER BY C_ID");
+					Property p = new Property();
+					p.setId(rs2.getInt("v_id"));
+					p.setType(rs2.getString("Type"));
 	
-					result.addElement(v);
+					result.addElement(p);
 				}
 				
 			}
@@ -222,13 +224,13 @@ Connection con = DBConnection.connection();
 		
 		
 		
-		public Vector <Value> getAllByCID (Contact contact){
+		public Vector <Value> getAllValueByCID (Contact contact){
 			Connection con = DBConnection.connection();
 			Vector <Value> result = new Vector <Value>();
 			
 			try{
 				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT v_id, p_id, value, c_id From T_Value where c_id ="+ contact.getId()+ " order by V_ID");
+				ResultSet rs = stmt.executeQuery("SELECT v_id, value, c_id FROM T_Value WHERE c_id ="+ contact.getId()+ " ORDER BY V_ID");
 
 				while (rs.next()){
 					Value v = new Value();
