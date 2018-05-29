@@ -24,7 +24,7 @@ public class ContactForm extends Composite {
 	//tbd: treeviewmodel
 	
 	
-	//innere Klasse fï¿½r LockButtons
+	//innere Klasse für LockButtons
 	public class LockButton extends PushButton{
 		
 		public LockButton() {
@@ -96,7 +96,7 @@ public class ContactForm extends Composite {
 		Label birthdayLabel = new Label("01.01.2000");
 		Label sexLabel = new Label("Geschlecht: ");
 		ListBox sexListBox = new ListBox();
-		sexListBox.addItem("mï¿½nnlich");
+		sexListBox.addItem("männlich");
 		sexListBox.addItem("weiblich");
 		
 		contactTable.setWidget(3, 0, birthdateLabel);
