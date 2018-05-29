@@ -44,6 +44,7 @@ public class ContactMapper {
 		return null;
 	}
 	
+	
 	public Vector<Contact> findAll(){
 Connection con = DBConnection.connection();
 Vector<Contact> result = new Vector<Contact>();
@@ -73,7 +74,7 @@ Vector<Contact> result = new Vector<Contact>();
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT c_id, firstName, lastName, gender, U_ID From T_Contact where firstName ="+ contact.getFirstname()+ "AND lastname=" + contact.getLastname() + " order by C_ID");
+			ResultSet rs = stmt.executeQuery("SELECT c_id, firstName, lastName, gender, U_ID From T_Contact where firstName ='"+ contact.getFirstname()+ "' AND lastname='" + contact.getLastname() + "' order by C_ID");
 			while (rs.next()){
 				Contact c = new Contact();
 				c.setId(rs.getInt("c_id"));

@@ -54,7 +54,7 @@ private static ValueMapper valuemapper = null;
 						Contact c = new Contact();
 						c.setId(rs.getInt("c_id"));
 										
-						result.addElement(ContactMapper.contactMapper().findByID(c.getId()));
+						result.addElement(ContactMapper.contactMapper().findByID(c));
 					}		
 				}catch(SQLException e2){
 					e2.printStackTrace();
@@ -155,7 +155,7 @@ Connection con = DBConnection.connection();
 							Contact c = new Contact();
 							c.setId(rs.getInt("c_id"));
 											
-							result.addElement(ContactMapper.contactMapper().findByID(c.getId()));
+							result.addElement(ContactMapper.contactMapper().findByID(c));
 						}		
 					}catch(SQLException e2){
 						e2.printStackTrace();
@@ -215,8 +215,5 @@ Connection con = DBConnection.connection();
 			
 }
 		
-		
-//TODO: getAllContactsByPID?
-//TODO: getAllByCID?
-//TODO: getAllByPID?
+	
 }
