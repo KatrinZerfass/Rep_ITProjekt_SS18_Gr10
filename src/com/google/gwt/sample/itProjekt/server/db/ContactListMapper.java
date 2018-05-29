@@ -199,5 +199,45 @@ Connection con = DBConnection.connection();
 			}
 			return result;
 		}	
+		public ContactList addContact(ContactList cl, Contact c){
+			Connection con = DBConnection.connection();
+			
+			try{
+				Statement stmt = con.createStatement();
+				stmt.executeUpdate("INSERT INTO T_Contact_ContactList (cl_id, c_id)"
+				+ " VALUES ('"
+				+ cl.getId() 
+				+ "', '" 
+				+ c.getId() 
+				+ ")") ;
+						
+				return cl;	
+				
+			}
+			catch (SQLException e2){
+				e2.printStackTrace();
+				return cl;
+			}
+			}
+		public ContactList removeContact(ContactList cl, Contact c){
+			Connection con = DBConnection.connection();
+			
+			try{
+				Statement stmt = con.createStatement();
+				stmt.executeUpdate("DELETE FROM T_Contact_ContactList WHERE"
+				+ " cl_id='"
+				+ cl.getId() 
+				+ "'AND c_id='" 
+				+ c.getId() 
+				+ "'") ;
+						
+				return cl;	
+				
+			}
+			catch (SQLException e2){
+				e2.printStackTrace();
+				return cl;
+			}
+			}
 		
 }

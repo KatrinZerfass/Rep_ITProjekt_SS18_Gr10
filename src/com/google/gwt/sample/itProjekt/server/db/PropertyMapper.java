@@ -18,12 +18,12 @@ private static PropertyMapper propertymapper = null;
 		}
 
 
-public Property findByID(int pid){
+public Property findByID(Property pr){
 	Connection con = DBConnection.connection();
 	
 	try{
 		Statement stmt = con.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT p_id, type From T_Property where p_id ="+ pid + " order by P_ID");
+		ResultSet rs = stmt.executeQuery("SELECT p_id, type From T_Property where p_id ="+ pr.getId() + " order by P_ID");
 		if (rs.next()){
 			Property p = new Property();
 			p.setId(rs.getInt("p_id"));
