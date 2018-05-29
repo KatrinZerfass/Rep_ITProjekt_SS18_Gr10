@@ -1,13 +1,16 @@
 package com.google.gwt.sample.itProjekt.client;
 
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
 /*
  * Das Ergebnis des Login-Dienstes ist eine Instanz der Klasse "LoginInfo" mit
  * verschiedenen Informationen über den angemeldeten Nutzer.
  */
 
-public class LoginInfo implements Serializable {
+public class LoginInfo implements IsSerializable{
+	
+	public LoginInfo() {}
+	
 	
 	private boolean loggedIn = false;
 	private String loginUrl;
