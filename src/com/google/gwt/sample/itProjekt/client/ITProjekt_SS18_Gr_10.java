@@ -75,7 +75,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		signOutLink.setHref(loginInfo.getLogoutUrl());
 		
 		ContactForm cf = new ContactForm();
-		RootPanel.get().add(cf);
+		RootPanel.get("contactForm").add(cf);
 		    
 		  
 	  }

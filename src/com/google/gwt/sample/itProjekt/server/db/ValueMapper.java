@@ -15,7 +15,7 @@ import com.google.gwt.sample.itProjekt.shared.bo.Property;
 public class ValueMapper {
 private static ValueMapper valuemapper = null;
 	
-	public static ValueMapper valueMapper() {
+	public static ValueMapper  valueMapper() {
 		if (valuemapper == null){
 			valuemapper = new ValueMapper();
 		}
@@ -27,11 +27,11 @@ private static ValueMapper valuemapper = null;
 				
 				try{
 					Statement stmt = con.createStatement();
-					ResultSet rs = stmt.executeQuery("SELECT v_id, value From T_Value where value=" + value.getContent()+ " order by V_ID");
+					ResultSet rs = stmt.executeQuery("SELECT V_ID, value From T_Value where value=" + value.getContent()+ " order by V_ID");
 					
 					while (rs.next()){
 						Value v = new Value();
-						v.setId(rs.getInt("v_id"));
+						v.setId(rs.getInt("V_ID"));
 						v.setContent(rs.getString("value"));
 						
 						
@@ -48,13 +48,13 @@ private static ValueMapper valuemapper = null;
 				
 				try{
 					Statement stmt = con.createStatement();
-					ResultSet rs = stmt.executeQuery("SELECT DISTINCT c_id From T_Value where value=" + value.getContent()+ " order by C_ID");
+					ResultSet rs = stmt.executeQuery("SELECT DISTINCT C_ID From T_Value where value=" + value.getContent()+ " order by C_ID");
 					
 					while (rs.next()){
 						Contact c = new Contact();
-						c.setId(rs.getInt("c_id"));
+						c.setId(rs.getInt("C_ID"));
 										
-						result.addElement(ContactMapper.contactMapper().findByID(c.getId()));
+						result.addElement(ContactMapper.contactMapper().findByID(c));
 					}		
 				}catch(SQLException e2){
 					e2.printStackTrace();
@@ -67,11 +67,11 @@ private static ValueMapper valuemapper = null;
 				
 				try{
 					Statement stmt = con.createStatement();
-					ResultSet rs = stmt.executeQuery("SELECT v_id, value From T_Value order by v_ID");
+					ResultSet rs = stmt.executeQuery("SELECT V_ID, value From T_Value order by V_ID");
 					
 					while (rs.next()){
 						Value v = new Value();
-						v.setId(rs.getInt("v_id"));
+						v.setId(rs.getInt("V_ID"));
 						v.setContent(rs.getString("value"));
 						
 						result.addElement(v);
@@ -86,12 +86,12 @@ private static ValueMapper valuemapper = null;
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT MAX(v_id) AS maxvid From T_Value");
+			ResultSet rs = stmt.executeQuery("SELECT MAX(V_ID) AS maxvid From T_Value");
 			if (rs.next()){
 				
 				v.setId(rs.getInt("maxvid")+1);
 				Statement stmt2 = con.createStatement();
-				stmt2.executeUpdate("INSERT INTO T_Value (v_id, p_id, value, c_id, isShared)"
+				stmt2.executeUpdate("INSERT INTO T_Value (V_ID, P_ID, value, C_ID, isShared)"
 				+ " VALUES ('"
 				+ v.getId() 
 				+ "', '" 
@@ -105,7 +105,39 @@ private static ValueMapper valuemapper = null;
 				+ ")") ;
 						
 				return v;	
-				// isShared auch übergeben
+				
+			}
+		}
+		catch (SQLException e2){
+			e2.printStackTrace();
+			return v;
+		}
+		return v;}
+	public Value insert(Value v, Contact c, Property p, boolean isShared){
+		Connection con = DBConnection.connection();
+		
+		try{
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT MAX(V_ID) AS maxvid From T_Value");
+			if (rs.next()){
+				
+				v.setId(rs.getInt("maxvid")+1);
+				Statement stmt2 = con.createStatement();
+				stmt2.executeUpdate("INSERT INTO T_Value (V_ID, P_ID, value, C_ID, isShared)"
+				+ " VALUES ('"
+				+ v.getId() 
+				+ "', '" 
+				+ p.getId() 
+				+ "', '" 
+				+ v.getContent() 
+				+ "', '" 
+				+ c.getId() 
+				+ "', '" 
+				+ isShared
+				+ "')") ;
+						
+				return v;	
+				
 			}
 		}
 		catch (SQLException e2){
@@ -119,7 +151,7 @@ private static ValueMapper valuemapper = null;
 			
 			try{
 				Statement stmt = con.createStatement();
-				stmt.executeUpdate("UPDATE T_Value SET p_id ='"+p.getId()+"', value ='" + v.getContent()+ "', c_id=" + c.getId() +"', isShared="
+				stmt.executeUpdate("UPDATE T_Value SET P_ID ='"+p.getId()+"', value ='" + v.getContent()+ "', C_ID=" + c.getId() +"', isShared="
 						+ s);
 			}
 		
@@ -135,7 +167,7 @@ Connection con = DBConnection.connection();
 			try{
 				
 				Statement stmt = con.createStatement();
-				stmt.executeUpdate("DELETE FROM T_VALUE WHERE V_ID =" +v.getId());
+				stmt.executeUpdate("DELETE FROM T_Value WHERE V_ID =" +v.getId());
 			}
 		
 		catch (SQLException e2){
@@ -143,19 +175,19 @@ Connection con = DBConnection.connection();
 			
 		}
 }
-		public Vector<Contact> findAllContactsByPID(Property property){
+		public Vector<Contact> getAllContactsByPID(Property property){
 			Connection con = DBConnection.connection();
 			Vector<Contact> result = new Vector<Contact>();
 					
 					try{
 						Statement stmt = con.createStatement();
-						ResultSet rs = stmt.executeQuery("SELECT DISTINCT c_id From T_Value where p_id=" + property.getId()+ " order by C_ID");
+						ResultSet rs = stmt.executeQuery("SELECT DISTINCT C_ID From T_Value where P_ID=" + property.getId()+ " order by C_ID");
 						
 						while (rs.next()){
 							Contact c = new Contact();
-							c.setId(rs.getInt("c_id"));
+							c.setId(rs.getInt("C_ID"));
 											
-							result.addElement(ContactMapper.contactMapper().findByID(c.getId()));
+							result.addElement(ContactMapper.contactMapper().findByID(c));
 						}		
 					}catch(SQLException e2){
 						e2.printStackTrace();
@@ -163,20 +195,22 @@ Connection con = DBConnection.connection();
 					return result;
 				}
 		
-		public Vector <Value> getAllByPID (Property property){
+		public Vector <Property> getAllPropertiesByCID (Contact contact){
 			Connection con = DBConnection.connection();
-			Vector <Value> result=new Vector <Value>();
+			Vector <Property> result=new Vector <Property>();
 			
 			try{
 				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT v_id, p_id, value, c_id From T_Value where p_id ="+ property.getId()+ " order by V_ID");
+				Statement stmt2 = con.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT P_ID FROM T_Value WHERE C_ID ="+ contact.getId()+ " ORDER BY C_ID");
 
 				while (rs.next()){
-					Value v = new Value();
-					v.setId(rs.getInt("v_id"));
-					v.setContent(rs.getString("value"));
+					ResultSet rs2 = stmt2.executeQuery ("SELECT P_ID, type FROM T_Property WHERE P_ID =" + rs.getInt("P_ID")+ " ORDER BY C_ID");
+					Property p = new Property();
+					p.setId(rs2.getInt("V_ID"));
+					p.setType(rs2.getString("type"));
 	
-					result.addElement(v);
+					result.addElement(p);
 				}
 				
 			}
@@ -190,17 +224,17 @@ Connection con = DBConnection.connection();
 		
 		
 		
-		public Vector <Value> getAllByCID (Contact contact){
+		public Vector <Value> getAllValueByCID (Contact contact){
 			Connection con = DBConnection.connection();
 			Vector <Value> result = new Vector <Value>();
 			
 			try{
 				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT v_id, p_id, value, c_id From T_Value where c_id ="+ contact.getId()+ " order by V_ID");
+				ResultSet rs = stmt.executeQuery("SELECT V_ID, value, C_ID FROM T_Value WHERE C_ID ="+ contact.getId()+ " ORDER BY V_ID");
 
 				while (rs.next()){
 					Value v = new Value();
-					v.setId(rs.getInt("v_id"));
+					v.setId(rs.getInt("V_ID"));
 					v.setContent(rs.getString("value"));
 	
 					result.addElement(v);
@@ -215,8 +249,5 @@ Connection con = DBConnection.connection();
 			
 }
 		
-		
-//TODO: getAllContactsByPID?
-//TODO: getAllByCID?
-//TODO: getAllByPID?
+	
 }
