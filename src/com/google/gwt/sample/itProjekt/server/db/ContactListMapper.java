@@ -44,7 +44,27 @@ private static ContactListMapper contactlistmapper = null;
 		return null;
 	}
 	
-	
+	public ContactList findByID(int cl){
+		Connection con = DBConnection.connection();
+		
+		try{
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT cl_id, listname, U_ID From T_ContactList where cl_id ="+ cl + " order by CL_ID");
+			if (rs.next()){
+				ContactList c = new ContactList();
+				c.setId(rs.getInt("cl_id"));
+				c.setName((rs.getString("listname")));
+				
+				
+				return c;	
+			}
+		}
+		catch (SQLException e2){
+			e2.printStackTrace();
+			return null;
+		}
+		return null;
+	}
 	
 	public Vector<ContactList> findAll(){
 		Connection con = DBConnection.connection();

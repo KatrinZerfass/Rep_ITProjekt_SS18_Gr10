@@ -96,6 +96,7 @@ public class ContactForm extends Composite {
 		Label birthdayLabel = new Label("01.01.2000");
 		Label sexLabel = new Label("Geschlecht: ");
 		ListBox sexListBox = new ListBox();
+
 		sexListBox.addItem("männlich");
 		sexListBox.addItem("weiblich");
 		
