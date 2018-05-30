@@ -8,7 +8,7 @@ import java.sql.Statement;
 import com.google.gwt.sample.itProjekt.shared.bo.Property;
 
 public class PropertyMapper {
-private static PropertyMapper propertymapper = null;
+private static PropertyMapper  propertymapper = null;
 	
 	public static PropertyMapper propertyMapper() {
 		if (propertymapper == null){
@@ -18,12 +18,12 @@ private static PropertyMapper propertymapper = null;
 		}
 
 
-public Property findByID(int pid){
+public Property findByID(Property pr){
 	Connection con = DBConnection.connection();
 	
 	try{
 		Statement stmt = con.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT p_id, type From T_Property where p_id ="+ pid + " order by P_ID");
+		ResultSet rs = stmt.executeQuery("SELECT p_id, type From T_Property where p_id ="+ pr.getId() + " order by P_ID");
 		if (rs.next()){
 			Property p = new Property();
 			p.setId(rs.getInt("p_id"));
@@ -36,4 +36,6 @@ public Property findByID(int pid){
 		return null;
 	}
 	return null;
-}}
+}
+
+}
