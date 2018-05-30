@@ -42,4 +42,5 @@ public class ReportGenerator extends RemoteServiceServlet{
 	public AllContactsWithValueReport showAllshowAllContactsWith(Value v) {
 		
 	}
+
 }
