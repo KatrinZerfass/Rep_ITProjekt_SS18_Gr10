@@ -16,6 +16,9 @@ public class Contact extends BusinessObject {
 	/** Das Geschlecht des Kontakts. */
 	private String sex;
 	
+	/** Der Besitzer des Kontakts. */
+	private String owner;
+	
 	/**
 	 * TODO vielleicht Konstruktor(en)?
 
