@@ -27,10 +27,10 @@ private static ContactListMapper  contactlistmapper = null;
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT cl_id, listname, U_ID From T_ContactList where cl_id ="+ cl.getId() + " order by CL_ID");
+			ResultSet rs = stmt.executeQuery("SELECT CL_ID, listname, U_ID From T_ContactList where CL_ID ="+ cl.getId() + " order by CL_ID");
 			if (rs.next()){
 				ContactList c = new ContactList();
-				c.setId(rs.getInt("cl_id"));
+				c.setId(rs.getInt("CL_ID"));
 				c.setName((rs.getString("listname")));
 				
 				
@@ -52,11 +52,11 @@ private static ContactListMapper  contactlistmapper = null;
 				
 				try{
 					Statement stmt = con.createStatement();
-					ResultSet rs = stmt.executeQuery("SELECT cl_id, listname, U_ID From T_ContactList order by CL_ID");
+					ResultSet rs = stmt.executeQuery("SELECT CL_ID, listname, U_ID From T_ContactList order by CL_ID");
 					
 					while (rs.next()){
 						ContactList c = new ContactList();
-						c.setId(rs.getInt("cl_id"));
+						c.setId(rs.getInt("CL_ID"));
 						c.setName(rs.getString("listname"));
 						// Besitzer soll als User Objekt weitergegeben werden? warum nicht einfach als ID int?
 						//c.setParticipant(rs.getInt("U_ID"));
@@ -73,10 +73,10 @@ private static ContactListMapper  contactlistmapper = null;
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT cl_id, listname, U_ID From T_Contactlist where listname ="+ cl.getName()+ " order by Cl_ID");
+			ResultSet rs = stmt.executeQuery("SELECT CL_ID, listname, U_ID From T_ContactList where listname ="+ cl.getName()+ " order by CL_ID");
 			while (rs.next()){
 				ContactList c = new ContactList();
-				c.setId(rs.getInt("cl_id"));
+				c.setId(rs.getInt("CL_ID"));
 				c.setName(rs.getString("listname"));
 				
 				result.addElement(c);	
@@ -94,10 +94,10 @@ private static ContactListMapper  contactlistmapper = null;
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT cl_id, listname, U_ID From T_Contactlist where u_id ="+ u.getId()+ " order by Cl_ID");
+			ResultSet rs = stmt.executeQuery("SELECT CL_ID, listname, U_ID From T_ContactList where U_ID="+ u.getId()+ " order by CL_ID");
 			while (rs.next()){
 				ContactList c = new ContactList();
-				c.setId(rs.getInt("cl_id"));
+				c.setId(rs.getInt("CL_ID"));
 				c.setName(rs.getString("listname"));
 				// Besitzer soll als User Objekt weitergegeben werden? warum nicht einfach als ID int?
 				//c.setParticipant(rs.getInt("U_ID"));
@@ -115,12 +115,12 @@ private static ContactListMapper  contactlistmapper = null;
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT MAX(cl_id) AS maxclid From T_Contactlist");
+			ResultSet rs = stmt.executeQuery("SELECT MAX(CL_ID) AS maxclid From T_ContactList");
 			if (rs.next()){
 				
 				c.setId(rs.getInt("maxclid")+1);
 				Statement stmt2 = con.createStatement();
-				stmt2.executeUpdate("INSERT INTO T_ContactList (cl_id, listname, u_id)"
+				stmt2.executeUpdate("INSERT INTO T_ContactList (CL_ID, listname, U_ID)"
 				+ " VALUES ('"
 				+ c.getId() 
 				+ "', '" 
@@ -144,7 +144,7 @@ private static ContactListMapper  contactlistmapper = null;
 			
 			try{
 				Statement stmt = con.createStatement();
-				stmt.executeUpdate("UPDATE T_CONTACTList SET listname ='"+c.getName()+", u_id=" + 123+ " Where cl_id =" + c.getId());
+				stmt.executeUpdate("UPDATE T_ContactList SET listname ='"+c.getName()+ " Where CL_ID =" + c.getId());
 			}
 		
 		catch (SQLException e2){
@@ -159,14 +159,14 @@ Connection con = DBConnection.connection();
 			try{
 				
 				Statement stmt = con.createStatement();
-				stmt.executeUpdate("DELETE FROM T_CONTACTLIST WHERE CL_ID =" +c.getId());
+				stmt.executeUpdate("DELETE FROM T_ContactsList WHERE CL_ID =" +c.getId());
 			}
 		
 		catch (SQLException e2){
 			e2.printStackTrace();
 			
 		}}
-		// TODO: ADDCONTACTS, REMOVECONTACTS, getAllContacts
+		
 		public Vector <Contact> getAllContacts(ContactList cl){
 			Connection con = DBConnection.connection();
 			
@@ -175,15 +175,15 @@ Connection con = DBConnection.connection();
 			try{
 				Statement stmt = con.createStatement();
 				Statement stmt2 = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT c_id From T_Contact_Contactlist where cl_id ="+ cl.getId() + " order by C_ID");
+				ResultSet rs = stmt.executeQuery("SELECT C_ID From T_Contact_Contactlist where CL_ID ="+ cl.getId() + " order by C_ID");
 
 				
 				
 				while (rs.next()){
 										
-					ResultSet rs2 = stmt2.executeQuery("SELECT c_id, firstname, lastname, gender, U_ID From T_Contact where c_id ="+rs.getInt("c_id") + " order by C_ID");
+					ResultSet rs2 = stmt2.executeQuery("SELECT C_ID, firstname, lastname, gender, U_ID From T_Contact where C_ID ="+rs.getInt("C_ID") + " order by C_ID");
 					Contact c = new Contact();
-					c.setId(rs2.getInt("c_id"));
+					c.setId(rs2.getInt("C_ID"));
 					c.setFirstname(rs2.getString("firstName"));
 					c.setLastname(rs2.getString("lastName"));
 					c.setSex(rs2.getString("gender"));
@@ -204,7 +204,7 @@ Connection con = DBConnection.connection();
 			
 			try{
 				Statement stmt = con.createStatement();
-				stmt.executeUpdate("INSERT INTO T_Contact_ContactList (cl_id, c_id)"
+				stmt.executeUpdate("INSERT INTO T_Contact_ContactList (CL_ID, C_ID)"
 				+ " VALUES ('"
 				+ cl.getId() 
 				+ "', '" 
@@ -225,9 +225,9 @@ Connection con = DBConnection.connection();
 			try{
 				Statement stmt = con.createStatement();
 				stmt.executeUpdate("DELETE FROM T_Contact_ContactList WHERE"
-				+ " cl_id='"
+				+ " CL_ID='"
 				+ cl.getId() 
-				+ "'AND c_id='" 
+				+ "'AND C_ID='" 
 				+ c.getId() 
 				+ "'") ;
 						
