@@ -9,6 +9,7 @@ import java.util.Vector;
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
 import com.google.gwt.sample.itProjekt.shared.bo.Permission;
+import com.google.gwt.sample.itProjekt.shared.bo.Value;
 
 public class PermissionMapper {
 private static PermissionMapper  permissionmapper = null;
@@ -25,14 +26,14 @@ private static PermissionMapper  permissionmapper = null;
 				
 				try{
 					Statement stmt = con.createStatement();
-					ResultSet rs = stmt.executeQuery("SELECT u_id, c_ID From T_Permission_Contact order by u_ID");
+					ResultSet rs = stmt.executeQuery("SELECT U_ID, C_ID FROM T_Permission_Contact ORDER BY U_ID");
 					
 					while (rs.next()){
 						Permission p = new Permission();
-						p.setId(rs.getInt("u_id")+rs.getInt("c_id"));
-						p.setParticipant(UserMapper.userMapper().findByID(rs.getInt("u_id")));
+						p.setId(rs.getInt("U_ID")+rs.getInt("C_ID"));
+						p.setParticipant(UserMapper.userMapper().findByID(rs.getInt("U_ID")));
 						Contact c = new Contact();
-						c.setId(rs.getInt("c_id"));
+						c.setId(rs.getInt("C_ID"));
 						p.setShareableobject(ContactMapper.contactMapper().findByID(c));
 						//TODO: isShared if einf�gen
 						result.addElement(p);
@@ -42,12 +43,12 @@ private static PermissionMapper  permissionmapper = null;
 				}
 				try{
 					Statement stmt = con.createStatement();
-					ResultSet rs = stmt.executeQuery("SELECT u_id, cl_ID From T_Permission_Contactlist order by u_ID");
+					ResultSet rs = stmt.executeQuery("SELECT U_ID, CL_ID FROM T_Permission_Contactlist ORDER BY U_ID");
 					
 					while (rs.next()){
 						Permission p = new Permission();
-						p.setId(rs.getInt("u_id")+rs.getInt("cl_id"));
-						p.setParticipant(UserMapper.userMapper().findByID(rs.getInt("u_id")));
+						p.setId(rs.getInt("U_ID")+rs.getInt("CL_ID"));
+						p.setParticipant(UserMapper.userMapper().findByID(rs.getInt("U_ID")));
 						ContactList cl = new ContactList();
 						cl.setId(rs.getInt("cl_id"));
 						p.setShareableobject(ContactListMapper.contactListMapper().findByID(cl));
@@ -61,8 +62,48 @@ private static PermissionMapper  permissionmapper = null;
 				return result;
 			}
 	
+	public Permission update(Permission permission){
+		
+		Connection con = DBConnection.connection();
+		
+		if(permission.getShareableobject().getId()> 30000000) {
+		
+		try{
+			Statement stmt1 = con.createStatement();
+			stmt1.executeUpdate("UPDATE T_Permission_Contact SET C_ID=" + permission.getShareableobject().getId()+ " WHERE U_ID =" + permission.getParticipant().getId());
+						}
+		
+		catch (SQLException e2){
+			e2.printStackTrace();
+			return permission;
+				}
+		
+		return permission;
+			}
+		
+		if(permission.getShareableobject().getId()<= 30000000) {
+			
+			try{
+			Statement stmt2 = con.createStatement();
+			stmt2.executeUpdate("UPDATE T_Permission_ContactList SET CL_ID=" + permission.getShareableobject().getId()+ " WHERE U_ID =" + permission.getParticipant().getId());
+					}
+	
+			catch (SQLException e2){
+				e2.printStackTrace();
+				return permission;
+				}
+			return permission;
+			}
+		return permission;
+	}
 	
 	
 	
 	
+	
+	
+	
+	
+		
 }
+
