@@ -1,46 +1,20 @@
 package com.google.gwt.sample.itProjekt.shared;
 
-import java.util.Vector;
-
-import com.google.gwt.sample.itProjekt.server.db.ContactListMapper;
-import com.google.gwt.sample.itProjekt.server.db.ContactMapper;
-import com.google.gwt.sample.itProjekt.server.db.PropertyMapper;
-import com.google.gwt.sample.itProjekt.server.db.UserMapper;
-import com.google.gwt.sample.itProjekt.server.db.ValueMapper;
-
+import com.google.gwt.sample.itProjekt.shared.bo.User;
+import com.google.gwt.sample.itProjekt.shared.bo.Value;
+import com.google.gwt.sample.itProjekt.shared.report.AllContactsOfUserReport;
 import com.google.gwt.sample.itProjekt.shared.report.AllContactsReport;
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.google.gwt.sample.itProjekt.shared.report.AllContactsWithValueReport;
+import com.google.gwt.sample.itProjekt.shared.report.AllSharedContactsOfUserReport;
+import com.google.gwt.user.client.rpc.RemoteService;
 
-public class ReportGenerator extends RemoteServiceServlet{
+public interface ReportGenerator extends RemoteService{
+	public void init() throws IllegalArgumentException;
 	
-	private UserMapper uMapper;
-	private ContactMapper cMapper;
-	private PropertyMapper pMapper;
-	private ValueMapper vMapper;
-	
-	public void init() throws IllegalArgumentException{
-		this.uMapper = UserMapper.userMapper();
-		this.cMapper = ContactMapper.contactMapper();
-		this.pMapper = PropertyMapper.propertyMapper();
-		this.vMapper = ValueMapper.valueMapper();
-		
-	}
-	
-	public AllContactsReport showAllContacts() throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	public AllContactsOfUserReport showAllContactsOf(User u) {
-		AllContactsOfUserReport result=new AllContactsOfUserReport();
-	}
-	
-	public AllSharedContactsOfUserReport showAllSharedContactsWith(User u) {
-		
-	}
-	
-	public AllContactsWithValueReport showAllshowAllContactsWith(Value v) {
-		
-	}
+	public abstract AllContactsReport generateAllContactsReport() throws IllegalArgumentException;
+	public abstract AllContactsOfUserReport generateAllSharedContactsOfUserReport(User u) throws IllegalArgumentException;
+	public abstract AllSharedContactsOfUserReport generateAllContactsOfUserReport(User u) throws IllegalArgumentException;
+	public abstract AllContactsWithValueReport generateAllContactsWithValueReport(Value v) throws IllegalArgumentException;
+
 
 }
