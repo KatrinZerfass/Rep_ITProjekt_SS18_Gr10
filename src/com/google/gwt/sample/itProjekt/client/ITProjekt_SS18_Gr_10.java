@@ -38,9 +38,9 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	private Anchor signInLink = new Anchor("Sign In");
 	private Anchor signOutLink = new Anchor("Sign Out");
 
+
 	  
 	  public void onModuleLoad() {
-		    
 		  
 		  
 		 /* 
