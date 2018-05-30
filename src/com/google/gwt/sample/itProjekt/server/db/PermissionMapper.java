@@ -58,11 +58,11 @@ private static PermissionMapper permissionmapper = null;
 					e2.printStackTrace();
 				
 				}
-				return result;}
+				return result;
+			}
 	
-
-
-
-
-
+	
+	
+	
+	
 }
