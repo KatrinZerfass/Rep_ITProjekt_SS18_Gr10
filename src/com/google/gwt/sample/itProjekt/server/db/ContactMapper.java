@@ -26,10 +26,10 @@ public class ContactMapper {
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT c_id, firstName, lastName, gender, U_ID From T_Contact where c_id ="+ contact.getId() + " order by C_ID");
+			ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID From T_Contact where C_ID ="+ contact.getId() + " order by C_ID");
 			if (rs.next()){
 				Contact c = new Contact();
-				c.setId(rs.getInt("c_id"));
+				c.setId(rs.getInt("C_ID"));
 				c.setFirstname(rs.getString("firstName"));
 				c.setLastname(rs.getString("lastName"));
 				c.setSex(rs.getString("gender"));
@@ -51,11 +51,11 @@ Vector<Contact> result = new Vector<Contact>();
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT c_id, firstName, lastName, gender, U_ID From T_Contact order by C_ID");
+			ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID From T_Contact order by C_ID");
 			
 			while (rs.next()){
 				Contact c = new Contact();
-				c.setId(rs.getInt("c_id"));
+				c.setId(rs.getInt("C_ID"));
 				c.setFirstname(rs.getString("firstName"));
 				c.setLastname(rs.getString("lastName"));
 				c.setSex(rs.getString("gender"));
@@ -74,10 +74,10 @@ Vector<Contact> result = new Vector<Contact>();
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT c_id, firstName, lastName, gender, U_ID From T_Contact where firstName ='"+ contact.getFirstname()+ "' AND lastname='" + contact.getLastname() + "' order by C_ID");
+			ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID From T_Contact where firstName ='"+ contact.getFirstname()+ "' AND lastName='" + contact.getLastname() + "' order by C_ID");
 			while (rs.next()){
 				Contact c = new Contact();
-				c.setId(rs.getInt("c_id"));
+				c.setId(rs.getInt("C_ID"));
 				c.setFirstname(rs.getString("firstName"));
 				c.setLastname(rs.getString("lastName"));
 				c.setSex(rs.getString("gender"));
@@ -97,11 +97,11 @@ Vector<Contact> result = new Vector<Contact>();
 				
 				try{
 					Statement stmt = con.createStatement();
-					ResultSet rs = stmt.executeQuery("SELECT c_id, firstName, lastName, gender, U_ID From T_Contact where u_id=" + user.getId()+ " order by C_ID");
+					ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID From T_Contact where U_ID=" + user.getId()+ " order by C_ID");
 					
 					while (rs.next()){
 						Contact c = new Contact();
-						c.setId(rs.getInt("c_id"));
+						c.setId(rs.getInt("C_ID"));
 						c.setFirstname(rs.getString("firstName"));
 						c.setLastname(rs.getString("lastName"));
 						c.setSex(rs.getString("gender"));
@@ -119,12 +119,12 @@ Vector<Contact> result = new Vector<Contact>();
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT MAX(c_id) AS maxcid From T_Contact");
+			ResultSet rs = stmt.executeQuery("SELECT MAX(C_ID) AS maxcid From T_Contact");
 			if (rs.next()){
 				
 				c.setId(rs.getInt("maxcid")+1);
 				Statement stmt2 = con.createStatement();
-				stmt2.executeUpdate("INSERT INTO T_Contact (c_id, firstname, lastname, gender, create_date, mod_date, u_id)"
+				stmt2.executeUpdate("INSERT INTO T_Contact (C_ID, firstName, lastName, gender, create_date, mod_date, U_ID)"
 				+ " VALUES ("
 				+ c.getId() 
 				+ ", '" 
@@ -157,8 +157,8 @@ Vector<Contact> result = new Vector<Contact>();
 			
 			try{
 				Statement stmt = con.createStatement();
-				stmt.executeUpdate("UPDATE T_CONTACT SET firstname ='"+c.getFirstname()+"', lastname ='" + c.getLastname()+ "', gender=" + c.getSex() +"', mod_date="
-						+ new java.sql.Timestamp(System.currentTimeMillis()) + ", u_id=" + 123 + " Where c_id =" + c.getId());
+				stmt.executeUpdate("UPDATE T_Contact SET firstName ='"+c.getFirstname()+"', lastName ='" + c.getLastname()+ "', gender=" + c.getSex() +"', mod_date="
+						+ new java.sql.Timestamp(System.currentTimeMillis()) + ", U_ID=" + 123 + " Where C_ID =" + c.getId());
 			}
 		
 		catch (SQLException e2){
@@ -173,7 +173,7 @@ Connection con = DBConnection.connection();
 			try{
 				
 				Statement stmt = con.createStatement();
-				stmt.executeUpdate("DELETE FROM T_CONTACT WHERE C_ID =" +c.getId());
+				stmt.executeUpdate("DELETE FROM T_Contact WHERE C_ID =" +c.getId());
 			}
 		
 		catch (SQLException e2){

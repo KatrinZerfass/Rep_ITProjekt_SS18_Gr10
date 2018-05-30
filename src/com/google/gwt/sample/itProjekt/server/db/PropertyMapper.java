@@ -23,10 +23,10 @@ public Property findByID(Property pr){
 	
 	try{
 		Statement stmt = con.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT p_id, type From T_Property where p_id ="+ pr.getId() + " order by P_ID");
+		ResultSet rs = stmt.executeQuery("SELECT P_ID, type From T_Property where P_ID ="+ pr.getId() + " order by P_ID");
 		if (rs.next()){
 			Property p = new Property();
-			p.setId(rs.getInt("p_id"));
+			p.setId(rs.getInt("P_ID"));
 			p.setType(rs.getString("type"));
 			return p;	
 		}

@@ -27,11 +27,11 @@ private static ValueMapper valuemapper = null;
 				
 				try{
 					Statement stmt = con.createStatement();
-					ResultSet rs = stmt.executeQuery("SELECT v_id, value From T_Value where value=" + value.getContent()+ " order by V_ID");
+					ResultSet rs = stmt.executeQuery("SELECT V_ID, value From T_Value where value=" + value.getContent()+ " order by V_ID");
 					
 					while (rs.next()){
 						Value v = new Value();
-						v.setId(rs.getInt("v_id"));
+						v.setId(rs.getInt("V_ID"));
 						v.setContent(rs.getString("value"));
 						
 						
@@ -48,11 +48,11 @@ private static ValueMapper valuemapper = null;
 				
 				try{
 					Statement stmt = con.createStatement();
-					ResultSet rs = stmt.executeQuery("SELECT DISTINCT c_id From T_Value where value=" + value.getContent()+ " order by C_ID");
+					ResultSet rs = stmt.executeQuery("SELECT DISTINCT C_ID From T_Value where value=" + value.getContent()+ " order by C_ID");
 					
 					while (rs.next()){
 						Contact c = new Contact();
-						c.setId(rs.getInt("c_id"));
+						c.setId(rs.getInt("C_ID"));
 										
 						result.addElement(ContactMapper.contactMapper().findByID(c));
 					}		
@@ -67,11 +67,11 @@ private static ValueMapper valuemapper = null;
 				
 				try{
 					Statement stmt = con.createStatement();
-					ResultSet rs = stmt.executeQuery("SELECT v_id, value From T_Value order by v_ID");
+					ResultSet rs = stmt.executeQuery("SELECT V_ID, value From T_Value order by V_ID");
 					
 					while (rs.next()){
 						Value v = new Value();
-						v.setId(rs.getInt("v_id"));
+						v.setId(rs.getInt("V_ID"));
 						v.setContent(rs.getString("value"));
 						
 						result.addElement(v);
@@ -86,12 +86,12 @@ private static ValueMapper valuemapper = null;
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT MAX(v_id) AS maxvid From T_Value");
+			ResultSet rs = stmt.executeQuery("SELECT MAX(V_ID) AS maxvid From T_Value");
 			if (rs.next()){
 				
 				v.setId(rs.getInt("maxvid")+1);
 				Statement stmt2 = con.createStatement();
-				stmt2.executeUpdate("INSERT INTO T_Value (v_id, p_id, value, c_id, isShared)"
+				stmt2.executeUpdate("INSERT INTO T_Value (V_ID, P_ID, value, C_ID, isShared)"
 				+ " VALUES ('"
 				+ v.getId() 
 				+ "', '" 
@@ -105,7 +105,7 @@ private static ValueMapper valuemapper = null;
 				+ ")") ;
 						
 				return v;	
-				// isShared auch �bergeben
+				
 			}
 		}
 		catch (SQLException e2){
@@ -118,12 +118,12 @@ private static ValueMapper valuemapper = null;
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT MAX(v_id) AS maxvid From T_Value");
+			ResultSet rs = stmt.executeQuery("SELECT MAX(V_ID) AS maxvid From T_Value");
 			if (rs.next()){
 				
 				v.setId(rs.getInt("maxvid")+1);
 				Statement stmt2 = con.createStatement();
-				stmt2.executeUpdate("INSERT INTO T_Value (v_id, p_id, value, c_id, isShared)"
+				stmt2.executeUpdate("INSERT INTO T_Value (V_ID, P_ID, value, C_ID, isShared)"
 				+ " VALUES ('"
 				+ v.getId() 
 				+ "', '" 
@@ -151,7 +151,7 @@ private static ValueMapper valuemapper = null;
 			
 			try{
 				Statement stmt = con.createStatement();
-				stmt.executeUpdate("UPDATE T_Value SET p_id ='"+p.getId()+"', value ='" + v.getContent()+ "', c_id=" + c.getId() +"', isShared="
+				stmt.executeUpdate("UPDATE T_Value SET P_ID ='"+p.getId()+"', value ='" + v.getContent()+ "', C_ID=" + c.getId() +"', isShared="
 						+ s);
 			}
 		
@@ -167,7 +167,7 @@ Connection con = DBConnection.connection();
 			try{
 				
 				Statement stmt = con.createStatement();
-				stmt.executeUpdate("DELETE FROM T_VALUE WHERE V_ID =" +v.getId());
+				stmt.executeUpdate("DELETE FROM T_Value WHERE V_ID =" +v.getId());
 			}
 		
 		catch (SQLException e2){
@@ -181,11 +181,11 @@ Connection con = DBConnection.connection();
 					
 					try{
 						Statement stmt = con.createStatement();
-						ResultSet rs = stmt.executeQuery("SELECT DISTINCT c_id From T_Value where p_id=" + property.getId()+ " order by C_ID");
+						ResultSet rs = stmt.executeQuery("SELECT DISTINCT C_ID From T_Value where P_ID=" + property.getId()+ " order by C_ID");
 						
 						while (rs.next()){
 							Contact c = new Contact();
-							c.setId(rs.getInt("c_id"));
+							c.setId(rs.getInt("C_ID"));
 											
 							result.addElement(ContactMapper.contactMapper().findByID(c));
 						}		
@@ -202,13 +202,13 @@ Connection con = DBConnection.connection();
 			try{
 				Statement stmt = con.createStatement();
 				Statement stmt2 = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT p_id FROM T_Value WHERE c_id ="+ contact.getId()+ " ORDER BY C_ID");
+				ResultSet rs = stmt.executeQuery("SELECT P_ID FROM T_Value WHERE C_ID ="+ contact.getId()+ " ORDER BY C_ID");
 
 				while (rs.next()){
-					ResultSet rs2 = stmt2.executeQuery ("SELECT p_id, type FROM T_Property WHERE p_id =" + rs.getInt("P_ID")+ " ORDER BY C_ID");
+					ResultSet rs2 = stmt2.executeQuery ("SELECT P_ID, type FROM T_Property WHERE P_ID =" + rs.getInt("P_ID")+ " ORDER BY C_ID");
 					Property p = new Property();
-					p.setId(rs2.getInt("v_id"));
-					p.setType(rs2.getString("Type"));
+					p.setId(rs2.getInt("V_ID"));
+					p.setType(rs2.getString("type"));
 	
 					result.addElement(p);
 				}
@@ -230,11 +230,11 @@ Connection con = DBConnection.connection();
 			
 			try{
 				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT v_id, value, c_id FROM T_Value WHERE c_id ="+ contact.getId()+ " ORDER BY V_ID");
+				ResultSet rs = stmt.executeQuery("SELECT V_ID, value, C_ID FROM T_Value WHERE C_ID ="+ contact.getId()+ " ORDER BY V_ID");
 
 				while (rs.next()){
 					Value v = new Value();
-					v.setId(rs.getInt("v_id"));
+					v.setId(rs.getInt("V_ID"));
 					v.setContent(rs.getString("value"));
 	
 					result.addElement(v);
