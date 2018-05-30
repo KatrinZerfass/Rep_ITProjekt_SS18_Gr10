@@ -7,7 +7,6 @@ import java.sql.Statement;
 import java.util.Vector;
 
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
-import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
 import com.google.gwt.sample.itProjekt.shared.bo.Permission;
 
 public class PermissionMapper {
@@ -31,9 +30,7 @@ private static PermissionMapper permissionmapper = null;
 						Permission p = new Permission();
 						p.setId(rs.getInt("u_id")+rs.getInt("c_id"));
 						p.setParticipant(UserMapper.userMapper().findByID(rs.getInt("u_id")));
-						Contact c = new Contact();
-						c.setId(rs.getInt("c_id"));
-						p.setShareableobject(ContactMapper.contactMapper().findByID(c));
+						p.setShareableobject(ContactMapper.contactMapper().findByID(rs.getInt("c_id")));
 						//TODO: isShared if einfügen
 						result.addElement(p);
 					}		
@@ -48,9 +45,7 @@ private static PermissionMapper permissionmapper = null;
 						Permission p = new Permission();
 						p.setId(rs.getInt("u_id")+rs.getInt("cl_id"));
 						p.setParticipant(UserMapper.userMapper().findByID(rs.getInt("u_id")));
-						ContactList cl = new ContactList();
-						cl.setId(rs.getInt("cl_id"));
-						p.setShareableobject(ContactListMapper.contactListMapper().findByID(cl));
+						p.setShareableobject(ContactListMapper.contactListMapper().findByID(rs.getInt("cl_id")));
 						//TODO: isShared if einfügen
 						result.addElement(p);
 					}		

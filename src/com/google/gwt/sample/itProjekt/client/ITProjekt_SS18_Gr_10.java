@@ -43,38 +43,24 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	  public void onModuleLoad() {
 		  
 		  
-	   
-		  
-		  ContactForm cf = new ContactForm();
-		  RootPanel.get("contactForm").add(cf);
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
 		 /* 
 		  * Login Status des Benutzers wird geprüft. (Wird erst zu einem späteren Zeitpunkt implementiert) 
 		  */
 	    
-		//LoginServiceAsync loginService = GWT.create(LoginService.class);
-	    //loginService.login(GWT.getHostPageBaseURL(), new AsyncCallback<LoginInfo>() {
-	    //public void onFailure(Throwable error) {
-	    // }
+		LoginServiceAsync loginService = GWT.create(LoginService.class);
+	    loginService.login(GWT.getHostPageBaseURL(), new AsyncCallback<LoginInfo>() {
+	    public void onFailure(Throwable error) {
+	     }
 
-	    // public void onSuccess(LoginInfo result) {
-	      //  loginInfo = result;
-	       //if(loginInfo.isLoggedIn()) {
-	         //loadApplication();
-	      //} else {
-	         // loadLogin();
-	   // }
-	   // }
-	   // });
+	     public void onSuccess(LoginInfo result) {
+	        loginInfo = result;
+	       if(loginInfo.isLoggedIn()) {
+	         loadApplication();
+	      } else {
+	          loadLogin();
+	    }
+	    }
+	    });
 	  }
 	  
 	  
@@ -87,7 +73,10 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	  public void loadApplication() {
 		  
 		signOutLink.setHref(loginInfo.getLogoutUrl());
-		  
+		
+		ContactForm cf = new ContactForm();
+		RootPanel.get().add(cf);
+		    
 		  
 	  }
 	  
@@ -100,6 +89,6 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	    signInLink.setHref(loginInfo.getLoginUrl());
 	    loginPanel.add(loginLabel);
 	    loginPanel.add(signInLink);
-	    RootPanel.get("stockList").add(loginPanel);
+	    RootPanel.get("login").add(loginPanel);
 	  }
 }
