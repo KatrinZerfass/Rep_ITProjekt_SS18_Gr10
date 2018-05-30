@@ -10,7 +10,7 @@ import com.google.gwt.sample.itProjekt.shared.bo.User;
 
 public class UserMapper {
 	
-	private static UserMapper usermapper = null;
+	private static UserMapper  usermapper = null;
 	
 	public static UserMapper userMapper() {
 		if (usermapper == null){
@@ -69,9 +69,6 @@ public class UserMapper {
 		
 		return null;
 	}
-	
-	
-	
 	
 
 }
