@@ -24,7 +24,7 @@ public class ContactForm extends Composite {
 	//tbd: treeviewmodel
 	
 	
-	//innere Klasse f�r LockButtons
+	//innere Klasse f�r LockButtons
 	public class LockButton extends PushButton{
 		
 		public LockButton() {
@@ -63,7 +63,7 @@ public class ContactForm extends Composite {
 		
 	}
 	
-	//allumfassende Tabelle f�r die Darstellung von Kontakten
+	//allumfassende Tabelle f�r die Darstellung von Kontakten
 	FlexTable contactTable = new FlexTable();
 	
 	
@@ -96,7 +96,7 @@ public class ContactForm extends Composite {
 		Label birthdayLabel = new Label("01.01.2000");
 		Label sexLabel = new Label("Geschlecht: ");
 		ListBox sexListBox = new ListBox();
-		sexListBox.addItem("m�nnlich");
+		sexListBox.addItem("männlich");
 		sexListBox.addItem("weiblich");
 		
 		contactTable.setWidget(3, 0, birthdateLabel);
@@ -151,7 +151,7 @@ public class ContactForm extends Composite {
 		
 		Label mobileNrLabel = new Label("Mobil: ");
 		Label privateNrLabel = new Label("Privat: ");
-		Label businessNrLabel = new Label("Gesch�ftlich: ");
+		Label businessNrLabel = new Label("Geschäftlich: ");
 		phoneNumbersTable.setWidget(0, 0, mobileNrLabel);
 		phoneNumbersTable.setWidget(1, 0, privateNrLabel);
 		phoneNumbersTable.setWidget(2, 0, businessNrLabel);
@@ -167,7 +167,7 @@ public class ContactForm extends Composite {
 		phoneNumbersTable.setWidget(1, 2, new LockButton());
 		phoneNumbersTable.setWidget(2, 2, new LockButton());
 		
-		Button addPhoneNumberButton = new Button("Hinzuf�gen");
+		Button addPhoneNumberButton = new Button("Hinzufügen");
 		phoneNumbersTable.getFlexCellFormatter().setRowSpan(0, 3, 3);
 		phoneNumbersTable.setWidget(0, 3, addPhoneNumberButton);
 
@@ -193,7 +193,7 @@ public class ContactForm extends Composite {
 		contactTable.setWidget(6, 1, eMailsTable);
 		
 		Label privateEmailLabel = new Label("Privat: ");
-		Label businessEmailLabel = new Label("Gesch�ftlich: ");
+		Label businessEmailLabel = new Label("Geschäftlich: ");
 		eMailsTable.setWidget(0, 0, privateEmailLabel);
 		eMailsTable.setWidget(1, 0, businessEmailLabel);
 
@@ -205,7 +205,7 @@ public class ContactForm extends Composite {
 		eMailsTable.setWidget(0, 2, new LockButton());
 		eMailsTable.setWidget(1, 2, new LockButton());
 		
-		Button addEmailButton = new Button("Hinzuf�gen");
+		Button addEmailButton = new Button("Hinzufügen");
 		eMailsTable.getFlexCellFormatter().setRowSpan(0, 3, 2);
 		eMailsTable.setWidget(0, 3, addEmailButton);
 		
@@ -224,8 +224,8 @@ public class ContactForm extends Composite {
 		//Achte Zeile: Buttons
 		
 		Button shareButton = new Button("Teilen");
-		Button deleteButton = new Button("L�schen");
-		Button saveChangesButton = new Button("�nderungen speichern");
+		Button deleteButton = new Button("Löschen");
+		Button saveChangesButton = new Button("Änderungen speichern");
 		
 		contactTable.setWidget(8, 1, shareButton);
 		contactTable.setWidget(8, 2, deleteButton);
