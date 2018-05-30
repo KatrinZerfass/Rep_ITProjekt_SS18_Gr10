@@ -89,6 +89,6 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	    signInLink.setHref(loginInfo.getLoginUrl());
 	    loginPanel.add(loginLabel);
 	    loginPanel.add(signInLink);
-	    RootPanel.get("stockList").add(loginPanel);
+	    RootPanel.get("login").add(loginPanel);
 	  }
 }
