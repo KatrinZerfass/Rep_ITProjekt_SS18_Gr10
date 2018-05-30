@@ -41,6 +41,8 @@ proguard/
 # gwt caches and compiled units #
 war/gwt_bree/
 gwt-unitCache/
+war/itprojekt_ss18_gr_10
+war/itprojekt_ss18_gr_10_report
 
 # boilerplate generated classes #
 .apt_generated/
@@ -55,3 +57,7 @@ war/WEB-INF/classes/
 
 
 /build/
+
+# macOS specific files #
+.DS_Store
+war/.DS_Store

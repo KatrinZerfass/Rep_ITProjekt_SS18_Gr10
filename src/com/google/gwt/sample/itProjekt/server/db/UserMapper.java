@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
 
+import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
 
 public class UserMapper {
@@ -25,14 +26,15 @@ public class UserMapper {
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("select u_id, firstname, lastname, username from T_User where u_id ="+ uid + " order by U_ID");
+			ResultSet rs = stmt.executeQuery("select U_ID, e-Mail,  firstname, lastname, gender from T_User where U_ID ="+ uid + " order by U_ID");
 			
 			if (rs.next()){
 				User u = new User();
-				u.setId(rs.getInt("u_id"));
+				u.setId(rs.getInt("U_ID"));
 				u.setFirstname(rs.getString("firstname"));
 				u.setLastname(rs.getString("lastname"));
-				u.setUsername(rs.getString("username"));
+				u.setSex(rs.getString("gender"));
+				u.setEmail(rs.getString("e-Mail"));
 				
 				return u;	
 			}
@@ -46,18 +48,19 @@ public class UserMapper {
 		return null;
 	}
 	
-	public User findByUserName(String username){
+	public User findByEMail(String email){
 		Connection con = DBConnection.connection();
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("select u_id, username, firstname, lastname from T_User where username ="+ username + " order by U_ID");
+			ResultSet rs = stmt.executeQuery("select U_ID, e-Mail, firstname, lastname, gender from T_User where e-Mail ="+ email +" order by U_ID");
 			if (rs.next()){
 				User u = new User();
 				u.setId(rs.getInt("u_id"));
 				u.setFirstname(rs.getString("firstname"));
 				u.setLastname(rs.getString("lastname"));
-				u.setUsername(rs.getString("username"));
+				u.setSex(rs.getString("gender"));
+				u.setEmail(rs.getString("e-Mail"));
 	
 				return u;	
 			}
@@ -69,7 +72,95 @@ public class UserMapper {
 		
 		return null;
 	}
+	public Vector<User> findAll(){
+		Connection con = DBConnection.connection();
+		Vector<User> result = new Vector<User>();
+				
+				try{
+					Statement stmt = con.createStatement();
+					ResultSet rs = stmt.executeQuery("select U_ID, e-Mail, firstname, lastname, gender from T_User order by U_ID");
+					
+					while (rs.next()){
+						User u = new User();
+						u.setId(rs.getInt("u_id"));
+						u.setFirstname(rs.getString("firstname"));
+						u.setLastname(rs.getString("lastname"));
+						u.setSex(rs.getString("gender"));
+						u.setEmail(rs.getString("e-Mail"));
+						result.addElement(u);
+					}		
+				}catch(SQLException e2){
+					e2.printStackTrace();
+				}
+				return result;
+			}	
+	public User insert(User u){
+		Connection con = DBConnection.connection();
+		
+		try{
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT MAX(U_ID) AS maxuid From T_User");
+			if (rs.next()){
+				
+				u.setId(rs.getInt("maxuid")+1);
+				Statement stmt2 = con.createStatement();
+				stmt2.executeUpdate("INSERT INTO T_User (U_ID, e-Mail, firstname, lastname, gender)"
+				+ " VALUES ('"
+				+ u.getId() 
+				+ "', '" 
+				+ u.getEmail() 
+				+ "', '" 
+				+ u.getFirstname() 
+				+ "', '" 
+				+ u.getLastname() 
+				+ "', '"
+				+ u.getSex()
+				+ ")") ;
+						
+				return u;	
+				
+			}
+		}
+		catch (SQLException e2){
+			e2.printStackTrace();
+			return u;
+		}
+		return u;}
 	
+	public User update(User u){
+		Connection con = DBConnection.connection();
+		
+		try{
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("UPDATE T_User SET e-Mail ='"
+			+u.getEmail()
+			+", firstname=" 
+			+ u.getFirstname()
+			+", lastname=" 
+			+ u.getLastname()
+			+", gender=" 
+			+ u.getSex()
+			+ " Where U_ID =" + u.getId());
+		}
+	
+	catch (SQLException e2){
+		e2.printStackTrace();
+		return u;
+	}
+	return u;}
+	public void delete (User u){
+		Connection con = DBConnection.connection();
+					
+					try{
+						
+						Statement stmt = con.createStatement();
+						stmt.executeUpdate("DELETE FROM T_User WHERE U_ID =" +u.getId());
+					}
+				
+				catch (SQLException e2){
+					e2.printStackTrace();
+					
+				}}
 
 }
 
