@@ -6,7 +6,8 @@ public class User extends BusinessObject {
 	
 	private String firstname;
 	private String lastname;
-	private String username;
+	private String email;
+	private String sex;
 // wenn nötig e-Mail und Password, falls diese nicht von Google gestelt werden
 	public String getFirstname() {
 		return firstname;
@@ -24,11 +25,19 @@ public class User extends BusinessObject {
 		this.lastname = lastname;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
 	}
 }

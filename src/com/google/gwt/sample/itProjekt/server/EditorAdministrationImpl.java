@@ -31,40 +31,62 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	}
 
 	@Override
-	public Vector<ContactList> showAllContactListsOf(User user) throws IllegalArgumentException {
+	public User createUser(String firstname, String lastname, String sex, String email)
+			throws IllegalArgumentException {
 		// TODO Auto-generated method stub
-		
 		return null;
 	}
 
 	@Override
-	public Vector<Contact> showAllContactsOf(User user) throws IllegalArgumentException {
+	public Vector<ContactList> getAllContactListsOf(User user) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Vector<Contact> getAllOwnedContactsOf(User user) throws IllegalArgumentException {
 		// TODO Auto-generated method stub
 		Vector<Contact> resultcontacts = new Vector<Contact>();
-		resultcontacts = cMapper.findAllByUID(user.getId());
+		resultcontacts = cMapper.findAllByUID(user);
 		return resultcontacts;
 	}
 
 	@Override
-	public Vector<Contact> showAllContactsOf(ContactList contactlist) throws IllegalArgumentException {
+	public Vector<Contact> getAllSharedContactsWith(User user) throws IllegalArgumentException {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	@Override
-	public Contact showContact(int id) {
-		return cMapper.findByID(id);
+	public Vector<Contact> getAllContactsOf(ContactList contactlist) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
-	public Contact createContact(String firstname, String lastname, String sex) throws IllegalArgumentException {
+	public Vector<Contact> getAllContactsWith(Value value) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Contact getContact(int id) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		Contact contact = new Contact();
+		contact.setId(id);
+		return cMapper.findByID(contact);
+	}
+
+
+	@Override
+	public Contact createContact(User user, String firstname, String lastname, String sex) throws IllegalArgumentException {
 		// TODO Auto-generated method stub
 		Contact newcontact = new Contact();
 		newcontact.setFirstname(firstname);
 		newcontact.setLastname(lastname);
 		newcontact.setSex(sex);
 		
-		return cMapper.insert(newcontact);
+		return cMapper.insert(newcontact, user);
 	}
 
 	@Override
@@ -171,5 +193,4 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		// TODO Auto-generated method stub
 		
 	}
-
 }
