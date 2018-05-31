@@ -66,7 +66,7 @@ private static PermissionMapper  permissionmapper = null;
 		
 		Connection con = DBConnection.connection();
 		
-		if(permission.getShareableobject().getId()> 30000000) {
+		if(permission.getShareableobject().getId()<= 50000000) {
 		
 		try{
 			Statement stmt1 = con.createStatement();
@@ -81,11 +81,11 @@ private static PermissionMapper  permissionmapper = null;
 		return permission;
 			}
 		
-		if(permission.getShareableobject().getId()<= 30000000) {
+		if(permission.getShareableobject().getId()> 40000000) {
 			
 			try{
 			Statement stmt2 = con.createStatement();
-			stmt2.executeUpdate("UPDATE T_Permission_ContactList SET CL_ID=" + permission.getShareableobject().getId()+ " WHERE U_ID =" + permission.getParticipant().getId());
+			stmt2.executeUpdate("UPDATE T_Permission_Contactlist SET CL_ID=" + permission.getShareableobject().getId()+ " WHERE U_ID =" + permission.getParticipant().getId());
 					}
 	
 			catch (SQLException e2){
@@ -97,9 +97,47 @@ private static PermissionMapper  permissionmapper = null;
 		return permission;
 	}
 	
+	public void delete (Permission permission){
+		
+		Connection con = DBConnection.connection();
+					
+		if(permission.getShareableobject().getId()<= 50000000)
+			
+					try{
+						Statement stmt1 = con.createStatement();
+						stmt1.executeUpdate("DELETE FROM T_Permission_Contact" + " WHERE C_ID = " + permission.getShareableobject().getId()+ "AND U_ID= " + permission.getParticipant().getId());
+					}
+				
+				catch (SQLException e2){
+					e2.printStackTrace();
+				}
+		
+		if(permission.getShareableobject().getId()> 40000000) {
+			
+					try{
+					Statement stmt2 = con.createStatement();
+					stmt2.executeUpdate("DELETE FROM T_Permission_Contactlist" + " WHERE CL_ID = " + permission.getShareableobject().getId()+ "AND U_ID = "+ permission.getParticipant().getId());
+				}
+			
+				catch (SQLException e2){
+					e2.printStackTrace();
+			}
+		}
+	}
 	
+	public void deleteAllByCLID (ContactList contactlist){
+		
+		Connection con = DBConnection.connection();
+		
+		try{
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("DELETE FROM T_Contact_Contactlist WHERE CL_ID =" +contactlist.getId());
+		}
 	
-	
+	catch (SQLException e2){
+		e2.printStackTrace();
+	}
+}
 	
 	
 	
