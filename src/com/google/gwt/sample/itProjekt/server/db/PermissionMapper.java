@@ -64,7 +64,7 @@ private static PermissionMapper  permissionmapper = null;
 				return result;
 			}
 	
-	public Permission update(Permission permission){
+public Permission update(Permission permission){
 		
 		Connection con = DBConnection.connection();
 		
