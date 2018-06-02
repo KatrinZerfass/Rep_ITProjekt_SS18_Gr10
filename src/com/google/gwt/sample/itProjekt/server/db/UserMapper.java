@@ -26,7 +26,7 @@ public class UserMapper {
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("select U_ID, e-Mail,  firstname, lastname, gender from T_User where U_ID ="+ uid + " order by U_ID");
+			ResultSet rs = stmt.executeQuery("SELECT U_ID, e-Mail,  firstname, lastname, gender" + "FROM T_User" + "WHERE U_ID ="+ uid + "ORDER BY U_ID");
 			
 			if (rs.next()){
 				User u = new User();
@@ -53,7 +53,7 @@ public class UserMapper {
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("select U_ID, e-Mail, firstname, lastname, gender from T_User where e-Mail ="+ email +" order by U_ID");
+			ResultSet rs = stmt.executeQuery("SELECT U_ID, e-Mail, firstname, lastname, gender" + "FROM T_User" + "WHERE e-Mail ="+ email + "ORDER BY U_ID");
 			if (rs.next()){
 				User u = new User();
 				u.setId(rs.getInt("u_id"));
@@ -78,7 +78,7 @@ public class UserMapper {
 				
 				try{
 					Statement stmt = con.createStatement();
-					ResultSet rs = stmt.executeQuery("select U_ID, e-Mail, firstname, lastname, gender from T_User order by U_ID");
+					ResultSet rs = stmt.executeQuery("SELECT U_ID, e-Mail, firstname, lastname, gender" + "FROM T_User" + "ORDER BY U_ID");
 					
 					while (rs.next()){
 						User u = new User();
@@ -99,23 +99,23 @@ public class UserMapper {
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT MAX(U_ID) AS maxuid From T_User");
+			ResultSet rs = stmt.executeQuery("SELECT MAX(U_ID) AS maxuid" + "FROM T_User");
 			if (rs.next()){
 				
 				u.setId(rs.getInt("maxuid")+1);
 				Statement stmt2 = con.createStatement();
 				stmt2.executeUpdate("INSERT INTO T_User (U_ID, e-Mail, firstname, lastname, gender)"
-				+ " VALUES ('"
+				+ " VALUES ("
 				+ u.getId() 
-				+ "', '" 
+				+ ",'" 
 				+ u.getEmail() 
-				+ "', '" 
+				+ "','" 
 				+ u.getFirstname() 
-				+ "', '" 
+				+ "','" 
 				+ u.getLastname() 
-				+ "', '"
+				+ "','"
 				+ u.getSex()
-				+ ")") ;
+				+ "')") ;
 						
 				return u;	
 				
@@ -132,15 +132,15 @@ public class UserMapper {
 		
 		try{
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("UPDATE T_User SET e-Mail ='"
-			+u.getEmail()
-			+", firstname=" 
+			stmt.executeUpdate("UPDATE T_User" + "SET e-Mail =\""
+			+ u.getEmail()
+			+ "\"," + "firstname=\"" 
 			+ u.getFirstname()
-			+", lastname=" 
+			+ "\"," + "lastname=\"" 
 			+ u.getLastname()
-			+", gender=" 
-			+ u.getSex()
-			+ " Where U_ID =" + u.getId());
+			+ "\"," + "gender=\"" 
+			+ u.getSex() + "\" "
+			+ "WHERE U_ID =" + u.getId());
 		}
 	
 	catch (SQLException e2){
@@ -154,14 +154,15 @@ public class UserMapper {
 					try{
 						
 						Statement stmt = con.createStatement();
-						stmt.executeUpdate("DELETE FROM T_User WHERE U_ID =" +u.getId());
+						stmt.executeUpdate("DELETE FROM T_User" + "WHERE U_ID =" + u.getId());
 					}
 				
 				catch (SQLException e2){
 					e2.printStackTrace();
-					
-				}}
+					}
+				}
 
+	
 }
 
 
