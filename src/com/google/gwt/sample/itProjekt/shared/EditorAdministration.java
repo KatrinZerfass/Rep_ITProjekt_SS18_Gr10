@@ -8,6 +8,10 @@ public interface EditorAdministration extends RemoteService{
 	
 	public void init() throws IllegalArgumentException;
 	
+	public User getUser() throws IllegalArgumentException;
+	
+	public void setUser(User u) throws IllegalArgumentException;
+	
 	public User createUser(String firstname, String lastname, String sex, String email) throws IllegalArgumentException;
 	
 	public Vector<ContactList> getAllContactListsOf(User user) throws IllegalArgumentException;

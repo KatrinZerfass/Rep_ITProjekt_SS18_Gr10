@@ -11,6 +11,10 @@ import com.google.gwt.sample.itProjekt.shared.bo.Value;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface EditorAdministrationAsync {
+	
+	void getUser(AsyncCallback<User> callback);
+
+	void setUser(User u, AsyncCallback<Void> callback);
 
 	void addContactToContactList(ContactList contactlist, Contact contact, AsyncCallback<ContactList> callback);
 
@@ -54,5 +58,4 @@ public interface EditorAdministrationAsync {
 	void shareContact(Contact contact, User user, AsyncCallback<Permission> callback);
 
 	void shareContactList(ContactList contactlist, User user, AsyncCallback<Permission> callback);
-
 }

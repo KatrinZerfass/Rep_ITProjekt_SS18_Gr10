@@ -13,6 +13,8 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	 * 
 	 */
 
+	private User user = null;
+	
 	private ContactListMapper clMapper;
 	private ContactMapper cMapper;
 	private PropertyMapper pMapper;
@@ -31,6 +33,18 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		this.uMapper = UserMapper.userMapper();
 		this.vMapper = ValueMapper.valueMapper();
 		
+	}
+	
+	@Override
+	public User getUser() throws IllegalArgumentException {
+
+		return this.user;
+	}
+
+	@Override
+	public void setUser(User u) throws IllegalArgumentException {
+		
+		this.user = u;
 	}
 
 	@Override
