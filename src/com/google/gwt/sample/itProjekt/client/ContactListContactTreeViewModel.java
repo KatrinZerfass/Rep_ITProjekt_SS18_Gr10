@@ -3,9 +3,11 @@ package com.google.gwt.sample.itProjekt.client;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.gwt.sample.itProjekt.shared.EditorAdministrationAsync;
 import com.google.gwt.sample.itProjekt.shared.bo.BusinessObject;
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
+import com.google.gwt.sample.itProjekt.shared.bo.User;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
@@ -29,14 +31,17 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	private ContactList selectedContactList;
 	private Contact selectedContact;
 	
-//	private EditorAdministrationAsync editorAdministration = null;
+	private EditorAdministrationAsync editorAdministration = null;
 
 	private ListDataProvider<ContactList> contactListDataProvider = null;
+	
+	private BusinessObjectKeyProvider boKeyProvider = null;
+	private SingleSelectionModel<BusinessObject> selectionModel = null;
 	
 	//verbindet eine Liste von Kontakten mit einer Kontaktliste
 	private Map<ContactList, ListDataProvider<Contact>> contactDataProviders = null;
 
-	//weißt jedem BO im Tree eine id zu
+	//weiï¿½t jedem BO im Tree eine id zu
 	private class BusinessObjectKeyProvider implements
 	ProvidesKey<BusinessObject> {
 	@Override
@@ -52,11 +57,10 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	}
 	};
 
-	private BusinessObjectKeyProvider boKeyProvider = null;
-	private SingleSelectionModel<BusinessObject> selectionModel = null;
+	
 	
 	/**
-	* Nested Class für die Reaktion auf Selektionsereignisse. Als Folge einer
+	* Nested Class fÃ¼r die Reaktion auf Selektionsereignisse. Als Folge einer
 	* Baumknotenauswahl wird je nach Typ des Business-Objekts der
 	* "selectedCustomer" bzw. das "selectedAccount" gesetzt.
 	*/
@@ -82,6 +86,8 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		selectionModel
 				.addSelectionChangeHandler(new SelectionChangeEventHandler());
 		contactDataProviders = new HashMap<ContactList, ListDataProvider<Contact>>();
+		
+		
 	}
 
 	//getter und setter
@@ -99,12 +105,13 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		contactForm.setSelected(null);
 	}
 
+	
 	Contact getSelectedContact() {
 		return selectedContact;
 	}
 
 	/*
-	 * Wenn ein Konto ausgewählt wird, wird auch der ausgewählte Kunde
+	 * Wenn ein Kontakt ausgewï¿½hlt wird, wird auch die ausgewÃ¤hlte Kontaktliste
 	 * angepasst.
 	 */
 	void setSelectedContact(Contact c) {
@@ -119,40 +126,42 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		
 		if(value.equals("Root")) {
 			contactListDataProvider = new ListDataProvider<ContactList>();
-	//		editorAdministration.getAllContactLists(new AsyncCallback<Vector<ContactList>>(){
-//				public void onFailure(Throwable t) {
-//					
-//				}
-//				
-//				public void onSuccess(Vector<ContactList> contactLists) {
-//					for (ContactList cl : contactLists) {
-//						contactListDataProvider.getList().add(cl);
-//						
-//					}
-//				}
-//			});
+			
+			// User-Parameter muss den aktuell angemeldeten User zurÃ¼ckgeben
+			editorAdministration.getAllContactListsOf(new User(), new AsyncCallback<Vector<ContactList>>(){
+				public void onFailure(Throwable t) {
+					
+				}
+				
+				public void onSuccess(Vector<ContactList> contactLists) {
+					for (ContactList cl : contactLists) {
+						contactListDataProvider.getList().add(cl);
+						
+					}
+				}
+			});
 			 
 			return new DefaultNodeInfo<ContactList>(contactListDataProvider,
 				new ContactListCell(), selectionModel, null);
 		
 		}if(value instanceof ContactList) {
-			// Erzeugen eines ListDataproviders für Account-Daten
+			// Erzeugen eines ListDataproviders fÃ¼r Account-Daten
 			final ListDataProvider<Contact> contactsProvider = new ListDataProvider<Contact>();
 			contactDataProviders.put((ContactList) value, contactsProvider);
 	
-//			editorAdministration.getContactsOf((ContactList) value,
-//					new AsyncCallback<Vector<Contact>>() {
-//						@Override
-//						public void onFailure(Throwable t) {
-//						}
-//	
-//						@Override
-//						public void onSuccess(Vector<Contact> contacts) {
-//							for (Contact c : contacts) {
-//								contactsProvider.getList().add(c);
-//							}
-//						}
-//					});
+			editorAdministration.getAllContactsOf((ContactList) value,
+					new AsyncCallback<Vector<Contact>>() {
+						@Override
+						public void onFailure(Throwable t) {
+						}
+	
+						@Override
+						public void onSuccess(Vector<Contact> contacts) {
+							for (Contact c : contacts) {
+								contactsProvider.getList().add(c);
+							}
+						}
+					});
 	
 			// Return a node info that pairs the data with a cell.
 					return new DefaultNodeInfo<Contact>(contactsProvider,
