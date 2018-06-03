@@ -24,6 +24,7 @@ import java.util.Vector;
 
 public class ContactListContactTreeViewModel implements TreeViewModel{
 	
+	
 	private ContactForm contactForm;
 	
 	private ContactList selectedContactList;

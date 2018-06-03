@@ -21,7 +21,7 @@ public class ContactForm extends Composite {
 	
 	//tdb: contactverwaltung
 	Contact contactToDisplay = null;
-	//tbd: treeviewmodel
+	ContactListContactTreeViewModel clctvm = null;
 	
 	
 	//innere Klasse f�r LockButtons
@@ -304,5 +304,9 @@ public class ContactForm extends Composite {
 	//todo: Methode "setSelected"
 	public void setSelected(Contact c) {
 		
+	}
+	
+	public void setClctvm(ContactListContactTreeViewModel clctvm) {
+		this.clctvm= clctvm;
 	}
 }

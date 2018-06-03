@@ -1,6 +1,7 @@
 package com.google.gwt.sample.itProjekt.client;
 
 import com.google.gwt.sample.itProjekt.shared.CommonSettings;
+import com.google.gwt.sample.itProjekt.shared.EditorAdministrationAsync;
 import com.google.gwt.sample.itProjekt.shared.LoginService;
 import com.google.gwt.sample.itProjekt.shared.LoginServiceAsync;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
@@ -11,6 +12,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.user.cellview.client.CellBrowser;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
@@ -39,7 +41,9 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	private Anchor signInLink = new Anchor("Sign In");
 	private Anchor signOutLink = new Anchor("Sign Out");
 
+
 	
+//	EditorAdministrationAsync editorAdministration = null;
 
 	  
 	  public void onModuleLoad() {
@@ -75,9 +79,21 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	  public void loadApplication() {
 		
 		signOutLink.setHref(loginInfo.getLogoutUrl());
-	// 	ContactListContactTreeViewModel clctvm;	
+		
 		ContactForm cf = new ContactForm();
-		RootPanel.get("contactForm").add(cf);
+		ContactListContactTreeViewModel clctvm = new ContactListContactTreeViewModel();	
+		
+		clctvm.setContactForm(cf);
+		cf.setClctvm(clctvm);
+		
+		VerticalPanel contactPanel = new VerticalPanel();
+		contactPanel.add(cf);
+		
+		CellBrowser.Builder<String> builder = new CellBrowser.Builder<>(clctvm, "Root");
+//		CellBrowser cellBrowser = builder.build();
+//		
+//		RootPanel.get("Navigator").add(cellBrowser);
+		RootPanel.get("Details").add(contactPanel);
 		    
 		  
 	  }
