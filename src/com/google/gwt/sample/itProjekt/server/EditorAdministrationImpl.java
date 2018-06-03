@@ -16,6 +16,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	private ContactListMapper clMapper;
 	private ContactMapper cMapper;
 	private PropertyMapper pMapper;
+	private PermissionMapper pmMapper;
 	private UserMapper uMapper;
 	private ValueMapper vMapper;
 
@@ -26,26 +27,34 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		this.clMapper = ContactListMapper.contactListMapper();
 		this.cMapper = ContactMapper.contactMapper();
 		this.pMapper = PropertyMapper.propertyMapper();
+		this.pmMapper = PermissionMapper.permissionMapper();
 		this.uMapper = UserMapper.userMapper();
+		this.vMapper = ValueMapper.valueMapper();
 		
 	}
 
 	@Override
 	public User createUser(String firstname, String lastname, String sex, String email)
 			throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+
+		User newuser = new User();
+		newuser.setFirstname(firstname);
+		newuser.setLastname(lastname);
+		newuser.setSex(sex);
+		newuser.setEmail(email);
+		
+		return uMapper.insert(newuser);
 	}
 
 	@Override
 	public Vector<ContactList> getAllContactListsOf(User user) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+
+		return clMapper.findAllByUID(user);
 	}
 
 	@Override
 	public Vector<Contact> getAllOwnedContactsOf(User user) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
+
 		Vector<Contact> resultcontacts = new Vector<Contact>();
 		resultcontacts = cMapper.findAllByUID(user);
 		return resultcontacts;
@@ -53,25 +62,25 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 
 	@Override
 	public Vector<Contact> getAllSharedContactsWith(User user) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+
+		return pmMapper.getAllContactsByUID(user);
 	}
 
 	@Override
 	public Vector<Contact> getAllContactsOf(ContactList contactlist) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+
+		return clMapper.getAllContacts(contactlist);
 	}
 
 	@Override
 	public Vector<Contact> getAllContactsWith(Value value) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return vMapper.findAllContactsByValue(value);
 	}
 
 	@Override
 	public Contact getContact(int id) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
+
 		Contact contact = new Contact();
 		contact.setId(id);
 		return cMapper.findByID(contact);
@@ -80,7 +89,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 
 	@Override
 	public Contact createContact(User user, String firstname, String lastname, String sex) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
+
 		Contact newcontact = new Contact();
 		newcontact.setFirstname(firstname);
 		newcontact.setLastname(lastname);
@@ -91,7 +100,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 
 	@Override
 	public Contact editContact(int id, String firstname, String lastname, String sex) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
+		
 		Contact changedcontact = new Contact();
 		changedcontact.setFirstname(firstname);
 		changedcontact.setLastname(lastname);
@@ -103,16 +112,18 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 
 	@Override
 	public Permission shareContact(Contact contact, User user) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		Permission newpermission = new Permission();
 		
-		// TODO insert Permission
-		return null;
+		Permission newpermission = new Permission();
+		newpermission.setParticipant(user);
+		newpermission.setIsowner(false);
+		newpermission.setShareableobject(contact);
+		
+		return pmMapper.insertContact(newpermission);
 	}
 
 	@Override
 	public void deleteContact(int id) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
+		
 		Contact deletedcontact = new Contact();
 		deletedcontact.setId(id);
 		
@@ -120,77 +131,78 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	}
 
 	@Override
-	public ContactList createContactList(String name) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
+	public ContactList createContactList(String name, User user) throws IllegalArgumentException {
+
 		ContactList newcontactlist = new ContactList();
 		newcontactlist.setName(name);
 		
-		// TODO insert
-		return null;
+		return clMapper.insert(newcontactlist, user);
 	}
 
 	@Override
 	public ContactList editContactList(int id, String name) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
+
 		ContactList changedcontactlist = new ContactList();
 		changedcontactlist.setId(id);
 		changedcontactlist.setName(name);
 		
-		// TODO update
-		return null;
+		return clMapper.update(changedcontactlist);
 	}
 
 	@Override
 	public ContactList addContactToContactList(ContactList contactlist, Contact contact)
 			throws IllegalArgumentException {
-		// TODO Auto-generated method stub
 		
-		// TODO addContact
-		return null;
+		return clMapper.addContact(contactlist, contact);
 	}
 
 	@Override
 	public Permission shareContactList(ContactList contactlist, User user) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
 		
-		// TODO insert Permission
-		return null;
+		Permission newpermission = new Permission();
+		newpermission.setParticipant(user);
+		newpermission.setIsowner(false);
+		newpermission.setShareableobject(contactlist);
+		
+		return pmMapper.insertContactList(newpermission);
 	}
 
 	@Override
 	public ContactList removeContactFromContactList(ContactList contactlist, Contact contact)
 			throws IllegalArgumentException {
-		// TODO Auto-generated method stub
 		
-		// TODO removeContact
-		return null;
+		return clMapper.removeContact(contactlist, contact);
 	}
 
 	@Override
 	public void deleteContactList(ContactList contactlist) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
 		
-		// TODO delete
+		clMapper.delete(contactlist);
 	}
 
 	@Override
-	public Contact createValue(Contact contact, Property property, String content) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
+	public Value createValue(Contact contact, Property property, String content) throws IllegalArgumentException {
 		
-		// TODO insert
-		return null;
+		Value newvalue = new Value();
+		newvalue.setContent(content);
+		
+		return vMapper.insert(newvalue, contact, property);
 	}
 
 	@Override
-	public Contact editValue(Contact contact, Property property, Value value, String content, boolean isshared)
+	public Value editValue(Contact contact, Property property, Value value, String content, boolean isshared)
 			throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Value newvalue = new Value();
+		newvalue = value;
+		newvalue.setContent(content);
+		
+		return vMapper.update(newvalue, contact, property, isshared);
 	}
 
 	@Override
 	public void deleteValue(Value value) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
 		
+		vMapper.delete(value);
 	}
 }

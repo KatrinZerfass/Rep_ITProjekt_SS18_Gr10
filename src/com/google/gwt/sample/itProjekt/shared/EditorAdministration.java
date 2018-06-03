@@ -30,7 +30,7 @@ public interface EditorAdministration extends RemoteService{
 	
 	public void deleteContact(int id) throws IllegalArgumentException;
 	
-	public ContactList createContactList(String name) throws IllegalArgumentException;
+	public ContactList createContactList(String name, User user) throws IllegalArgumentException;
 	
 	public ContactList editContactList(int id, String name) throws IllegalArgumentException;
 	
@@ -42,9 +42,9 @@ public interface EditorAdministration extends RemoteService{
 	
 	public void deleteContactList(ContactList contactlist) throws IllegalArgumentException;
 	
-	public Contact createValue(Contact contact, Property property, String content) throws IllegalArgumentException;
+	public Value createValue(Contact contact, Property property, String content) throws IllegalArgumentException;
 	
-	public Contact editValue(Contact contact, Property property, Value value, String content, boolean isshared) throws IllegalArgumentException;
+	public Value editValue(Contact contact, Property property, Value value, String content, boolean isshared) throws IllegalArgumentException;
 	
 	public void deleteValue(Value value) throws IllegalArgumentException;
 	

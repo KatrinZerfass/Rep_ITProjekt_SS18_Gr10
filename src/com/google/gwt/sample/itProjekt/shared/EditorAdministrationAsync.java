@@ -16,11 +16,11 @@ public interface EditorAdministrationAsync {
 
 	void createContact(User user, String firstname, String lastname, String sex, AsyncCallback<Contact> callback);
 
-	void createContactList(String name, AsyncCallback<ContactList> callback);
+	void createContactList(String name, User user, AsyncCallback<ContactList> callback);
 
 	void createUser(String firstname, String lastname, String sex, String email, AsyncCallback<User> callback);
 
-	void createValue(Contact contact, Property property, String content, AsyncCallback<Contact> callback);
+	void createValue(Contact contact, Property property, String content, AsyncCallback<Value> callback);
 
 	void deleteContact(int id, AsyncCallback<Void> callback);
 
@@ -33,7 +33,7 @@ public interface EditorAdministrationAsync {
 	void editContactList(int id, String name, AsyncCallback<ContactList> callback);
 
 	void editValue(Contact contact, Property property, Value value, String content, boolean isshared,
-			AsyncCallback<Contact> callback);
+			AsyncCallback<Value> callback);
 
 	void getAllContactListsOf(User user, AsyncCallback<Vector<ContactList>> callback);
 
