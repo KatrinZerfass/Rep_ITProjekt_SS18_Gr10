@@ -15,8 +15,6 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.gwt.view.client.TreeViewModel;
 import com.google.gwt.view.client.TreeViewModel.DefaultNodeInfo;
-
-
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import java.util.Vector;
 
@@ -119,7 +117,40 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		contactForm.setSelected(c);
 	}
 
+	
 
+	//GUI Funktionen
+	
+	
+	void addContactList(ContactList cl) {
+		contactListDataProvider.getList().add(cl);
+		selectionModel.setSelected(cl, true);
+	}
+	
+	void removeContactList(ContactList cl) {
+		contactListDataProvider.getList().remove(cl);
+		contactDataProviders.remove(cl);
+	}
+	
+	void addContactOfContactList(ContactList cl, Contact c) {
+		if (!contactDataProviders.containsKey(cl)) {
+			return;
+		}
+		ListDataProvider<Contact> contactsProvider = contactDataProviders.get(cl);
+		if (!contactsProvider.getList().contains(c)) {
+			contactsProvider.getList().add(c);
+		}
+		selectionModel.setSelected(c, true);
+	}
+	
+	void removeContactOfContactList(ContactList cl, Contact c) {
+		if (!contactDataProviders.containsKey(cl)) {
+			return;
+		}
+		contactDataProviders.get(cl).getList().remove(c);
+		selectionModel.setSelected(cl, true);
+	}
+	
 	
 
 	public <T> NodeInfo<?> getNodeInfo(T value) {
@@ -176,6 +207,8 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		return (value instanceof Contact);
 	}
 
+	
+	
 
 
 }
