@@ -3,6 +3,7 @@ package com.google.gwt.sample.itProjekt.client;
 import com.google.gwt.sample.itProjekt.shared.CommonSettings;
 import com.google.gwt.sample.itProjekt.shared.LoginService;
 import com.google.gwt.sample.itProjekt.shared.LoginServiceAsync;
+import com.google.gwt.sample.itProjekt.shared.bo.User;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -38,6 +39,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	private Anchor signInLink = new Anchor("Sign In");
 	private Anchor signOutLink = new Anchor("Sign Out");
 
+	
 
 	  
 	  public void onModuleLoad() {
@@ -71,9 +73,9 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	   */
 	  
 	  public void loadApplication() {
-		  
-		signOutLink.setHref(loginInfo.getLogoutUrl());
 		
+		signOutLink.setHref(loginInfo.getLogoutUrl());
+	// 	ContactListContactTreeViewModel clctvm;	
 		ContactForm cf = new ContactForm();
 		RootPanel.get("contactForm").add(cf);
 		    
@@ -91,4 +93,5 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	    loginPanel.add(signInLink);
 	    RootPanel.get("login").add(loginPanel);
 	  }
-}
+	  
+}	 
