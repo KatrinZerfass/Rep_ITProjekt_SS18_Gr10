@@ -17,6 +17,7 @@ import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.cellview.client.CellBrowser;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.CellTree;
+import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
@@ -90,6 +91,11 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 //		signOutLink.setHref(loginInfo.getLogoutUrl());
 		
 		ContactForm cf = new ContactForm();
+		VerticalPanel contactPanel = new VerticalPanel();
+		contactPanel.add(cf);
+		RootPanel.get("Details").add(contactPanel);
+		
+		
 		ContactListContactTreeViewModel clctvm = new ContactListContactTreeViewModel();	
 		
 		
@@ -101,7 +107,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		testContact.setFirstname("Hans");
 		testContact.setLastname("Müller");
 		testContact.setId(0001);
-		testContact.setSex("m");
+		testContact.setSex("w");
 		
 		
 		//test Kontaktliste
@@ -109,42 +115,40 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		testContactList.setId(1000);
 		testContactList.setName("Meine Freunde");
 		
-		//test Zusammensetzung
-//		editorAdministration.addContactToContactList(testContactList, testContact, new AsyncCallback<ContactList>() {
-//			public void onFailure{
-//				
-//			}
-//			public void onSuccess{
-//				
-//			}
-//		});
 		
-		cf.setSelected(testContact);
-		clctvm.addContactList(testContactList);
-		clctvm.addContactOfContactList(testContactList, testContact);
+		clctvm.setSelectedContactList(testContactList);
+		// Check: "2. Meine Freunde als selectedContactList des clctvm
 		
-		
-		VerticalPanel contactPanel = new VerticalPanel();
-		contactPanel.add(cf);
-		RootPanel.get("Details").add(contactPanel);
 		
 	
-	
-		
-		
-
 		
 		CellBrowser.Builder<String> builder = new CellBrowser.Builder<>(clctvm, "Root");	
-		CellBrowser cellBrowser = builder.build(); //<--
-	
-		Window.alert("created cellbrowser");
-		cellBrowser.setHeight("630");
-		cellBrowser.setWidth("200");
-	
+		CellBrowser cellBrowser = builder.build(); 
+//		cellBrowser.setHeight("630");
+//		cellBrowser.setWidth("200");
+		cellBrowser.setAnimationEnabled(true);
+		cellBrowser.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
+		
+		Window.alert("3. created cellbrowser");
+		
+		clctvm.addContactList(testContactList);
+		// "4. Meine Freunde im contactListDataProvider
+		
+		clctvm.addContactOfContactList(testContactList, testContact);
+		// "5. contactDataProvider enthält nicht die CL als Key 
+		
+		
+		//braucht man nicht mehr
+	//	clctvm.setSelectedContact(testContact);
+		//Check: Einfügen von Hans Müller
+			
+		
+		
+		
 	
 		
 		RootPanel.get("Navigator").add(cellBrowser);
-		Window.alert("hey");
+		Window.alert("6. finished onModuleLoad");
 		  
 	  }
 	  

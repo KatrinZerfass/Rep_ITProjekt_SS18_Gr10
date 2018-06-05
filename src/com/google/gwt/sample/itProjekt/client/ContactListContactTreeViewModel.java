@@ -8,6 +8,7 @@ import com.google.gwt.sample.itProjekt.shared.bo.BusinessObject;
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
@@ -26,7 +27,6 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	
 	
 	private ContactForm contactForm =null;
-	
 	private ContactList selectedContactList = null;
 	private Contact selectedContact = null;
 	
@@ -102,6 +102,8 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		selectedContactList = cl;
 		selectedContact = null;
 		contactForm.setSelected(null);
+		//Check
+		Window.alert("2. " + selectedContactList.getName() + " als selectedContactList des clctvm");
 	}
 
 	
@@ -121,8 +123,18 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	
 	
 	void addContactList(ContactList cl) {
+		//erste Zeile zu Test-Zwecken hinzugefügt
+		//contactListDataProvider = new ListDataProvider<ContactList>();
 		contactListDataProvider.getList().add(cl);
+		
+		//nachfolgende Zeile steht nirgends bei R&T ?!
+		contactDataProviders.put(cl, new ListDataProvider<Contact>());
+		
 		selectionModel.setSelected(cl, true);
+		//Check
+		Window.alert("4. " + contactListDataProvider.getList().get(0).getName() + " im contactListDataProvider");
+		
+		
 	}
 	
 	void removeContactList(ContactList cl) {
@@ -132,11 +144,13 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	
 	void addContactOfContactList(ContactList cl, Contact c) {
 		if (!contactDataProviders.containsKey(cl)) {
+			Window.alert("5. contactDataProvider enthält nicht die CL als Key");
 			return;
 		}
 		ListDataProvider<Contact> contactsProvider = contactDataProviders.get(cl);
 		if (!contactsProvider.getList().contains(c)) {
 			contactsProvider.getList().add(c);
+			Window.alert("neu: contact wurde zu contactsProvider der CL hinzugefügt, woopwoop");
 		}
 		selectionModel.setSelected(c, true);
 	}
@@ -155,43 +169,56 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		
 		if(value.equals("Root")) {
 			contactListDataProvider = new ListDataProvider<ContactList>();
+			Window.alert("Geht in NodeInfo rein");
 			
-			// User-Parameter muss den aktuell angemeldeten User zurückgeben
-			editorAdministration.getAllContactListsOf(new User(), new AsyncCallback<Vector<ContactList>>(){
-				public void onFailure(Throwable t) {
-					
-				}
-				
-				public void onSuccess(Vector<ContactList> contactLists) {
-					for (ContactList cl : contactLists) {
-						contactListDataProvider.getList().add(cl);
-						
-					}
-				}
-			});
-			 
+//			// User-Parameter muss den aktuell angemeldeten User zurückgeben
+//			editorAdministration.getAllContactListsOf(new User(), new AsyncCallback<Vector<ContactList>>(){
+//				public void onFailure(Throwable t) {
+//					
+//				}
+//				
+//				public void onSuccess(Vector<ContactList> contactLists) {
+//					for (ContactList cl : contactLists) {
+//						contactListDataProvider.getList().add(cl);
+//						
+//					}
+//				}
+//			});
+			
+			//test open
+			contactListDataProvider.getList().add(getSelectedContactList());
+			Window.alert("im NodeInfo-Root: selectedContactList in den DataProvider gesetzt: "
+					+ "/n Name der Kontaktliste: " + contactListDataProvider.getList().get(0).getName());
+			
+			//test close
 			return new DefaultNodeInfo<ContactList>(contactListDataProvider,
 				new ContactListCell(), selectionModel, null);
+			
 		
 		}if(value instanceof ContactList) {
 			// Erzeugen eines ListDataproviders für Account-Daten
 			final ListDataProvider<Contact> contactsProvider = new ListDataProvider<Contact>();
 			contactDataProviders.put((ContactList) value, contactsProvider);
 	
-			editorAdministration.getAllContactsOf((ContactList) value,
-					new AsyncCallback<Vector<Contact>>() {
-						@Override
-						public void onFailure(Throwable t) {
-						}
+//			editorAdministration.getAllContactsOf((ContactList) value,
+//					new AsyncCallback<Vector<Contact>>() {
+//						@Override
+//						public void onFailure(Throwable t) {
+//						}
+//	
+//						@Override
+//						public void onSuccess(Vector<Contact> contacts) {
+//							for (Contact c : contacts) {
+//								contactsProvider.getList().add(c);
+//							}
+//						}
+//					});
 	
-						@Override
-						public void onSuccess(Vector<Contact> contacts) {
-							for (Contact c : contacts) {
-								contactsProvider.getList().add(c);
-							}
-						}
-					});
-	
+			//test open
+			contactsProvider.getList().add(getSelectedContact());
+			//test close
+			
+			
 			// Return a node info that pairs the data with a cell.
 					return new DefaultNodeInfo<Contact>(contactsProvider,
 							new ContactCell(), selectionModel, null);

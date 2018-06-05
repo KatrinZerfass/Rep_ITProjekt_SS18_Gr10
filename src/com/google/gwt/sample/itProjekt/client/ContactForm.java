@@ -24,6 +24,11 @@ public class ContactForm extends VerticalPanel {
 	Contact contactToDisplay = null;
 	ContactListContactTreeViewModel clctvm = null;
 	
+	TextBox firstnameTextBox = new TextBox();
+	TextBox lastnameTextBox = new TextBox();
+	Label birthdayLabel = new Label();
+	ListBox sexListBox = new ListBox();
+	
 	
 	//innere Klasse f�r LockButtons
 	public class LockButton extends PushButton{
@@ -89,10 +94,8 @@ public class ContactForm extends VerticalPanel {
 		
 		//Zweite Zeile
 		Label firstnameLabel = new Label("Vorname: ");
-		TextBox firstnameTextBox = new TextBox();
 		Label lastnameLabel = new Label("Nachname: ");
-		TextBox lastnameTextBox = new TextBox();
-		
+				
 		contactTable.setWidget(2, 0, firstnameLabel);
 		contactTable.setWidget(2, 1, firstnameTextBox);
 		contactTable.setWidget(2, 2, lastnameLabel);
@@ -100,9 +103,9 @@ public class ContactForm extends VerticalPanel {
 		
 		//Dritte Zeile
 		Label birthdateLabel = new Label("Geburtsdatum: ");
-		Label birthdayLabel = new Label("01.01.2000");
+		birthdayLabel.setText("01.01.2000");
 		Label sexLabel = new Label("Geschlecht: ");
-		ListBox sexListBox = new ListBox();
+		
 
 		sexListBox.addItem("männlich");
 		sexListBox.addItem("weiblich");
@@ -279,7 +282,7 @@ public class ContactForm extends VerticalPanel {
 			}
 		});
 	
-		Window.alert("Ende onload von contactform");
+		Window.alert("1. Ende der Methode onLoad von contactForm");
 	} //ende der Methode onLoad();
 		
 	
@@ -309,9 +312,17 @@ public class ContactForm extends VerticalPanel {
 	}
 	
 	//todo: "Neuer Kontakt anlegen" - Button unten links
+	
 	//todo: Methode "setSelected"
 	public void setSelected(Contact c) {
-		
+		if (c != null){
+			contactToDisplay = c;
+			//test-zwecke
+			this.firstnameTextBox.setText(c.getFirstname());
+			this.lastnameTextBox.setText(c.getLastname());
+		//	this.birthdayLabel.setText(c.get); 				Geburtsdatum fehlt!!
+			this.sexListBox.setItemSelected(1, true);
+		}
 	}
 	
 	public void setClctvm(ContactListContactTreeViewModel clctvm) {
