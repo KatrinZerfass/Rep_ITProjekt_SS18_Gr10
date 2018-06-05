@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
 
-import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
 
 public class UserMapper {
@@ -50,10 +49,10 @@ public class UserMapper {
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT U_ID, eMail FROM T_User WHERE eMail ="+ email + " ORDER BY U_ID");
+			ResultSet rs = stmt.executeQuery("SELECT U_ID, eMail FROM T_User WHERE eMail ='"+ email + "' ORDER BY U_ID");
 			if (rs.next()){
 				User u = new User();
-				u.setId(rs.getInt("u_id"));
+				u.setId(rs.getInt("U_ID"));
 				u.setEmail(rs.getString("eMail"));
 	
 				return u;	
@@ -76,7 +75,7 @@ public class UserMapper {
 					
 					while (rs.next()){
 						User u = new User();
-						u.setId(rs.getInt("u_id"));
+						u.setId(rs.getInt("U_ID"));
 						u.setEmail(rs.getString("eMail"));
 						result.addElement(u);
 					}		
@@ -100,7 +99,7 @@ public class UserMapper {
 				+ u.getId() 
 				+ ", '" 
 				+ u.getEmail()
-				+ "');") ;
+				+ "')") ;
 						
 				return u;	
 				

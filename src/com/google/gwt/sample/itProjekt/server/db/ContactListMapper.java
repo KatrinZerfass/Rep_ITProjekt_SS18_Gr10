@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.Vector;
 
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
@@ -58,8 +57,6 @@ private static ContactListMapper  contactlistmapper = null;
 						ContactList c = new ContactList();
 						c.setId(rs.getInt("CL_ID"));
 						c.setName(rs.getString("listname"));
-						// Besitzer soll als User Objekt weitergegeben werden? warum nicht einfach als ID int?
-						//c.setParticipant(rs.getInt("U_ID"));
 						result.addElement(c);
 					}		
 				}catch(SQLException e2){
@@ -67,13 +64,13 @@ private static ContactListMapper  contactlistmapper = null;
 				}
 				return result;
 			}
-	public Vector <ContactList> findByName(ContactList cl){
+	public Vector <ContactList> findByName(String name){
 		Connection con = DBConnection.connection();
 		Vector<ContactList> result = new Vector<ContactList>();
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT CL_ID, listname, U_ID FROM T_ContactList WHERE listname ="+ cl.getName() + " ORDER BY CL_ID");
+			ResultSet rs = stmt.executeQuery("SELECT CL_ID, listname, U_ID FROM T_ContactList WHERE listname ='"+ name + "' ORDER BY CL_ID");
 			while (rs.next()){
 				ContactList c = new ContactList();
 				c.setId(rs.getInt("CL_ID"));
@@ -99,8 +96,6 @@ private static ContactListMapper  contactlistmapper = null;
 				ContactList c = new ContactList();
 				c.setId(rs.getInt("CL_ID"));
 				c.setName(rs.getString("listname"));
-				// Besitzer soll als User Objekt weitergegeben werden? warum nicht einfach als ID int?
-				//c.setParticipant(rs.getInt("U_ID"));
 				result.addElement(c);	
 			}
 		}
@@ -127,7 +122,7 @@ private static ContactListMapper  contactlistmapper = null;
 				+ c.getName() 
 				+ "', "
 				+ u.getId() 
-				+ ");") ;
+				+ ")") ;
 						
 				return c;	
 				
@@ -144,7 +139,7 @@ private static ContactListMapper  contactlistmapper = null;
 			
 			try{
 				Statement stmt = con.createStatement();
-				stmt.executeUpdate("UPDATE T_ContactList SET listname ='" + c.getName() + "' " + " WHERE CL_ID =" + c.getId());
+				stmt.executeUpdate("UPDATE T_ContactList SET listname ='" + c.getName() + "' " + "WHERE CL_ID =" + c.getId());
 			}
 		
 		catch (SQLException e2){
@@ -155,8 +150,19 @@ private static ContactListMapper  contactlistmapper = null;
 		
 		public void delete (ContactList c){
 Connection con = DBConnection.connection();
+//TODO: Add Permissions
 			
-			try{
+		try{
+	
+				Statement stmt2 = con.createStatement();
+					stmt2.executeUpdate("DELETE FROM T_Permission_Contactslist WHERE CL_ID =" + c.getId());
+			}
+
+			catch (SQLException e2){
+				e2.printStackTrace();
+
+				}	
+		try{
 				
 				Statement stmt = con.createStatement();
 				stmt.executeUpdate("DELETE FROM T_ContactsList WHERE CL_ID =" + c.getId());
@@ -175,7 +181,7 @@ Connection con = DBConnection.connection();
 			try{
 				Statement stmt = con.createStatement();
 				Statement stmt2 = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT C_ID FROM T_Contact_Contactlist WHERE CL_ID =" + cl.getId() + " ORDER BY C_ID");
+				ResultSet rs = stmt.executeQuery("SELECT DISTINCT C_ID FROM T_Contact_Contactlist WHERE CL_ID =" + cl.getId() + " ORDER BY C_ID");
 
 				
 				
@@ -187,7 +193,6 @@ Connection con = DBConnection.connection();
 					c.setFirstname(rs2.getString("firstName"));
 					c.setLastname(rs2.getString("lastName"));
 					c.setSex(rs2.getString("gender"));
-					//c.setParticipant(rs2.getInt("U_ID"));
 					result.addElement(c);
 				}
 				
@@ -209,7 +214,7 @@ Connection con = DBConnection.connection();
 				+ cl.getId() 
 				+ "', '" 
 				+ c.getId() 
-				+ "');") ;
+				+ "')") ;
 						
 				return cl;	
 				

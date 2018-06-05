@@ -4,11 +4,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.Vector;
-
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
-import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
 import com.google.gwt.sample.itProjekt.shared.bo.Value;
 import com.google.gwt.sample.itProjekt.shared.bo.Property;
 
@@ -27,7 +24,7 @@ private static ValueMapper valuemapper = null;
 				
 				try{
 					Statement stmt = con.createStatement();
-					ResultSet rs = stmt.executeQuery("SELECT V_ID, value FROM T_Value WHERE value=" + value.getContent()+ " ORDER BY V_ID");
+					ResultSet rs = stmt.executeQuery("SELECT DISTINCT V_ID, value FROM T_Value WHERE value='" + value.getContent()+ "' ORDER BY V_ID");
 					
 					while (rs.next()){
 						Value v = new Value();
@@ -48,7 +45,7 @@ private static ValueMapper valuemapper = null;
 				
 				try{
 					Statement stmt = con.createStatement();
-					ResultSet rs = stmt.executeQuery("SELECT DISTINCT C_ID FROM T_Value WHERE value=" + value.getContent()+ " ORDER BY C_ID");
+					ResultSet rs = stmt.executeQuery("SELECT DISTINCT C_ID FROM T_Value WHERE value='" + value.getContent()+ "' ORDER BY C_ID");
 					
 					while (rs.next()){
 						Contact c = new Contact();
@@ -82,6 +79,7 @@ private static ValueMapper valuemapper = null;
 				return result;
 			}
 	public Value insert(Value v, Contact c, Property p){
+		//Mit Default isShared=true
 		Connection con = DBConnection.connection();
 		
 		try{
@@ -101,8 +99,9 @@ private static ValueMapper valuemapper = null;
 				+ "', " 
 				+ c.getId() 
 				+ ", " 
+				//Default isShared Flag ist auf true gesetzt
 				+ true 
-				+ ");") ;
+				+ ")") ;
 						
 				return v;	
 				
@@ -134,7 +133,7 @@ private static ValueMapper valuemapper = null;
 				+ c.getId() 
 				+ ", " 
 				+ isShared
-				+ ");") ;
+				+ ")") ;
 						
 				return v;	
 				
@@ -146,13 +145,13 @@ private static ValueMapper valuemapper = null;
 		}
 		return v;}
 	
-		public Value update(Value v, Contact c, Property p, boolean s){
+		public Value update(Value v, Contact c, Property p, boolean isShared){
 			Connection con = DBConnection.connection();
 			
 			try{
 				Statement stmt = con.createStatement();
 				stmt.executeUpdate("UPDATE T_Value SET P_ID ="+p.getId()+", value ='" + v.getContent()+ "', C_ID=" + c.getId() +", isShared="
-						+ s);
+						+ isShared);
 			}
 		
 		catch (SQLException e2){
@@ -176,6 +175,7 @@ Connection con = DBConnection.connection();
 		}
 }
 		public Vector<Contact> getAllContactsByPID(Property property){
+			//TODO: Brauchen wir diese Methode?
 			Connection con = DBConnection.connection();
 			Vector<Contact> result = new Vector<Contact>();
 					
@@ -230,7 +230,7 @@ Connection con = DBConnection.connection();
 			
 			try{
 				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT V_ID, value, C_ID FROM T_Value WHERE C_ID ="+ contact.getId()+ " ORDER BY V_ID");
+				ResultSet rs = stmt.executeQuery("SELECT V_ID, value, C_ID FROM T_Value WHERE C_ID ="+ contact.getId()+ " ORDER BY C_ID");
 
 				while (rs.next()){
 					Value v = new Value();
