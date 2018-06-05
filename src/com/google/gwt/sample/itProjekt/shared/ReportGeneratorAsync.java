@@ -9,12 +9,12 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface ReportGeneratorAsync {
 
+	void init(AsyncCallback<Void> callback);
+
 	void generateAllContactsOfUserReport(User u, AsyncCallback<AllContactsOfUserReport> callback);
 
 	void generateAllContactsWithValueReport(Value v, AsyncCallback<AllContactsWithValueReport> callback);
 
 	void generateAllSharedContactsOfUserReport(User u, AsyncCallback<AllSharedContactsOfUserReport> callback);
-
-	void init(AsyncCallback<Void> callback);
 
 }

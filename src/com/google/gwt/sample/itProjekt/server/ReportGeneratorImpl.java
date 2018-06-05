@@ -3,11 +3,6 @@ package com.google.gwt.sample.itProjekt.server;
 import java.util.Date;
 import java.util.Vector;
 
-import com.google.gwt.sample.itProjekt.server.db.ContactListMapper;
-import com.google.gwt.sample.itProjekt.server.db.ContactMapper;
-import com.google.gwt.sample.itProjekt.server.db.PropertyMapper;
-import com.google.gwt.sample.itProjekt.server.db.UserMapper;
-import com.google.gwt.sample.itProjekt.server.db.ValueMapper;
 import com.google.gwt.sample.itProjekt.shared.EditorAdministration;
 import com.google.gwt.sample.itProjekt.server.EditorAdministrationImpl;
 import com.google.gwt.sample.itProjekt.shared.ReportGenerator;
@@ -19,12 +14,9 @@ import com.google.gwt.sample.itProjekt.shared.report.AllContactsWithValueReport;
 import com.google.gwt.sample.itProjekt.shared.report.AllSharedContactsOfUserReport;
 import com.google.gwt.sample.itProjekt.shared.report.Column;
 import com.google.gwt.sample.itProjekt.shared.report.CompositeParagraph;
-import com.google.gwt.sample.itProjekt.shared.report.Report;
 import com.google.gwt.sample.itProjekt.shared.report.Row;
 import com.google.gwt.sample.itProjekt.shared.report.SimpleParagraph;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-
-
 
 
 @SuppressWarnings("serial")
@@ -55,6 +47,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		report.setTitle("Alle vorhandenen Kontakte");
 	    report.setCreated(new Date());
 	}*/
+
 @Override	
 	public AllContactsOfUserReport generateAllContactsOfUserReport(User u) throws IllegalArgumentException {
 		if(this.getEditorAdministration()==null) {

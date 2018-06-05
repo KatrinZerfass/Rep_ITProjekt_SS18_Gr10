@@ -23,7 +23,6 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
@@ -44,7 +43,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 
 
 	
-	EditorAdministrationAsync editorAdministration = null;
+//	EditorAdministrationAsync editorAdministration = null;
 
 	  
 	  public void onModuleLoad() {
@@ -78,15 +77,6 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	   */
 	  
 	  public void loadApplication() {
-		  
-		if (editorAdministration == null) {
-		     editorAdministration = ClientsideSettings.getEditorAdministration();
-			}
-		  
-		User user = new User();
-		user.setEmail(this.loginInfo.getEmailAddress());
-		editorAdministration.setUser(user, new SetEditorCallback());
-		
 		
 		signOutLink.setHref(loginInfo.getLogoutUrl());
 		
@@ -119,17 +109,5 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	    loginPanel.add(signInLink);
 	    RootPanel.get("login").add(loginPanel);
 	  }
-	  
-	  class SetEditorCallback implements AsyncCallback<Void> {
-		  
-			public void onFailure(Throwable caught) {
-				    
-			  }
-			
-			@Override
-			public void onSuccess(Void result) {
-				// TODO Auto-generated method stub
-				
-			}}
 	  
 }	 

@@ -11,8 +11,8 @@ public interface ReportGenerator extends RemoteService{
 	public void init() throws IllegalArgumentException;
 	
 	//public abstract AllContactsReport generateAllContactsReport() throws IllegalArgumentException;
-	public abstract AllSharedContactsOfUserReport generateAllSharedContactsOfUserReport(User u) throws IllegalArgumentException;
 	public abstract AllContactsOfUserReport generateAllContactsOfUserReport(User u) throws IllegalArgumentException;
+	public abstract AllSharedContactsOfUserReport generateAllSharedContactsOfUserReport(User u) throws IllegalArgumentException;
 	public abstract AllContactsWithValueReport generateAllContactsWithValueReport(Value v) throws IllegalArgumentException;
 
 
