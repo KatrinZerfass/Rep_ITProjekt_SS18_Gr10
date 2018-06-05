@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Vector;
 
 import com.google.gwt.sample.itProjekt.shared.EditorAdministration;
+import com.google.gwt.sample.itProjekt.server.EditorAdministrationImpl;
 import com.google.gwt.sample.itProjekt.shared.ReportGenerator;
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
@@ -21,6 +22,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 @SuppressWarnings("serial")
 public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportGenerator{
 	
+	//private static final long serialVersionUID = 1L;
 	private EditorAdministration admin = null;
 	
 	public ReportGeneratorImpl () throws IllegalArgumentException {
