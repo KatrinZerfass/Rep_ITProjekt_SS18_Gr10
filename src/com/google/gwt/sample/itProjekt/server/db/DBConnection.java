@@ -14,10 +14,13 @@ public class DBConnection {
     private static Connection con = null;
 
    
-    private static String googleUrl = "jdbc:google:mysql://it-projekt-gruppe-10-203610:europe-west1:itprojectdb/itpdb?user=root&password=root";
-    private static String googleUrl2 = "jdbc:mysql://it-projekt-gruppe-10-203610:europe-west1:itprojektdb/itpdb";
-    private static String localUrl = "jdbc:mysql://127.0.0.1:3306/bankproject?user=demo&password=demo";
-
+    private static String googleUrl = "jdbc:google:mysql://it-projekt-gruppe-10-203610:europe-west1:itprojectdb/itpdb2?user=root&password=root";
+    private static String googleUrl2 = "jdbc:mysql://it-projekt-gruppe-10-203610:europe-west1:itprojektdb/itpdb2";
+    private static String googleUrl3 = "jdbc:google:mysql://$it-projekt-gruppe-10-203610:europe-west1:itprojektdb/$itpdb2?user=$root&amp;password=$root";
+   
+    
+    //private static String localUrl = "jdbc:mysql://127.0.0.1:3306/bankproject?user=demo&password=demo";
+    private static String localUrl2 = "jdbc:mysql://35.233.24.130/it-projekt-gruppe-10-203610:europe-west1:itprojectdb/itpdb2?user=root&password=root";
     
     public static Connection connection() {
        
@@ -27,11 +30,11 @@ public class DBConnection {
                 if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {
                     
                     Class.forName("com.mysql.jdbc.GoogleDriver");
-                    url = googleUrl;
+                    url = googleUrl3;
                 } else {
                    
                     Class.forName("com.mysql.jdbc.Driver");
-                    url = localUrl;
+                    url = localUrl2;
                 }
                 
                 con = DriverManager.getConnection(url);
