@@ -145,7 +145,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		newpermission.setIsowner(false);
 		newpermission.setShareableobject(contact);
 		
-		return pmMapper.insertContact(newpermission);
+		return pmMapper.shareContact(newpermission);
 	}
 
 	@Override
@@ -191,7 +191,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		newpermission.setIsowner(false);
 		newpermission.setShareableobject(contactlist);
 		
-		return pmMapper.insertContactList(newpermission);
+		return pmMapper.shareContactList(newpermission);
 	}
 
 	@Override
