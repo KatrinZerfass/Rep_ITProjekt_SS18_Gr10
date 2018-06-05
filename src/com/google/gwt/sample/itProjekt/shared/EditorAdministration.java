@@ -3,7 +3,9 @@ package com.google.gwt.sample.itProjekt.shared;
 import java.util.Vector;
 import com.google.gwt.sample.itProjekt.shared.bo.*;
 import com.google.gwt.user.client.rpc.RemoteService;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
+@RemoteServiceRelativePath("editoradministration")
 public interface EditorAdministration extends RemoteService{
 	
 	public void init() throws IllegalArgumentException;
