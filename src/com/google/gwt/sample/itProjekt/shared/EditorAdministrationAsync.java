@@ -16,13 +16,15 @@ public interface EditorAdministrationAsync {
 
 	void setUser(User u, AsyncCallback<Void> callback);
 
+	void getUserInformation(String email, AsyncCallback<User> callback);
+
+	void createUser(String firstname, String lastname, String sex, String email, AsyncCallback<User> callback);
+	
 	void addContactToContactList(ContactList contactlist, Contact contact, AsyncCallback<ContactList> callback);
 
 	void createContact(User user, String firstname, String lastname, String sex, AsyncCallback<Contact> callback);
 
 	void createContactList(String name, User user, AsyncCallback<ContactList> callback);
-
-	void createUser(String firstname, String lastname, String sex, String email, AsyncCallback<User> callback);
 
 	void createValue(Contact contact, Property property, String content, AsyncCallback<Value> callback);
 
