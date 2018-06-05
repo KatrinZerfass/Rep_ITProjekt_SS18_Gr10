@@ -27,7 +27,7 @@ private static ValueMapper valuemapper = null;
 				
 				try{
 					Statement stmt = con.createStatement();
-					ResultSet rs = stmt.executeQuery("SELECT V_ID, value From T_Value where value=" + value.getContent()+ " order by V_ID");
+					ResultSet rs = stmt.executeQuery("SELECT V_ID, value FROM T_Value WHERE value=" + value.getContent()+ " ORDER BY V_ID");
 					
 					while (rs.next()){
 						Value v = new Value();
@@ -48,7 +48,7 @@ private static ValueMapper valuemapper = null;
 				
 				try{
 					Statement stmt = con.createStatement();
-					ResultSet rs = stmt.executeQuery("SELECT DISTINCT C_ID From T_Value where value=" + value.getContent()+ " order by C_ID");
+					ResultSet rs = stmt.executeQuery("SELECT DISTINCT C_ID FROM T_Value WHERE value=" + value.getContent()+ " ORDER BY C_ID");
 					
 					while (rs.next()){
 						Contact c = new Contact();
@@ -67,7 +67,7 @@ private static ValueMapper valuemapper = null;
 				
 				try{
 					Statement stmt = con.createStatement();
-					ResultSet rs = stmt.executeQuery("SELECT V_ID, value From T_Value order by V_ID");
+					ResultSet rs = stmt.executeQuery("SELECT V_ID, value FROM T_Value ORDER BY V_ID");
 					
 					while (rs.next()){
 						Value v = new Value();
@@ -86,23 +86,23 @@ private static ValueMapper valuemapper = null;
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT MAX(V_ID) AS maxvid From T_Value");
+			ResultSet rs = stmt.executeQuery("SELECT MAX(V_ID) AS maxvid FROM T_Value");
 			if (rs.next()){
 				
 				v.setId(rs.getInt("maxvid")+1);
 				Statement stmt2 = con.createStatement();
 				stmt2.executeUpdate("INSERT INTO T_Value (V_ID, P_ID, value, C_ID, isShared)"
-				+ " VALUES ('"
+				+ " VALUES ("
 				+ v.getId() 
-				+ "', '" 
+				+ ", " 
 				+ p.getId() 
-				+ "', '" 
+				+ ", '" 
 				+ v.getContent() 
-				+ "', '" 
+				+ "', " 
 				+ c.getId() 
-				+ "', '" 
+				+ ", " 
 				+ true 
-				+ ")") ;
+				+ ");") ;
 						
 				return v;	
 				
@@ -118,23 +118,23 @@ private static ValueMapper valuemapper = null;
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT MAX(V_ID) AS maxvid From T_Value");
+			ResultSet rs = stmt.executeQuery("SELECT MAX(V_ID) AS maxvid FROM T_Value");
 			if (rs.next()){
 				
 				v.setId(rs.getInt("maxvid")+1);
 				Statement stmt2 = con.createStatement();
 				stmt2.executeUpdate("INSERT INTO T_Value (V_ID, P_ID, value, C_ID, isShared)"
-				+ " VALUES ('"
+				+ " VALUES ("
 				+ v.getId() 
-				+ "', '" 
+				+ ", " 
 				+ p.getId() 
-				+ "', '" 
+				+ ", '" 
 				+ v.getContent() 
-				+ "', '" 
+				+ "', " 
 				+ c.getId() 
-				+ "', '" 
+				+ ", " 
 				+ isShared
-				+ "')") ;
+				+ ");") ;
 						
 				return v;	
 				
@@ -151,7 +151,7 @@ private static ValueMapper valuemapper = null;
 			
 			try{
 				Statement stmt = con.createStatement();
-				stmt.executeUpdate("UPDATE T_Value SET P_ID ='"+p.getId()+"', value ='" + v.getContent()+ "', C_ID=" + c.getId() +"', isShared="
+				stmt.executeUpdate("UPDATE T_Value SET P_ID ="+p.getId()+", value ='" + v.getContent()+ "', C_ID=" + c.getId() +", isShared="
 						+ s);
 			}
 		
@@ -181,7 +181,7 @@ Connection con = DBConnection.connection();
 					
 					try{
 						Statement stmt = con.createStatement();
-						ResultSet rs = stmt.executeQuery("SELECT DISTINCT C_ID From T_Value where P_ID=" + property.getId()+ " order by C_ID");
+						ResultSet rs = stmt.executeQuery("SELECT DISTINCT C_ID FROM T_Value WHERE P_ID=" + property.getId()+ " ORDER BY C_ID");
 						
 						while (rs.next()){
 							Contact c = new Contact();

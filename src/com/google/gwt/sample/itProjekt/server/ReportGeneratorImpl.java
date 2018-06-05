@@ -3,31 +3,26 @@ package com.google.gwt.sample.itProjekt.server;
 import java.util.Date;
 import java.util.Vector;
 
-import com.google.gwt.sample.itProjekt.server.db.ContactListMapper;
-import com.google.gwt.sample.itProjekt.server.db.ContactMapper;
-import com.google.gwt.sample.itProjekt.server.db.PropertyMapper;
-import com.google.gwt.sample.itProjekt.server.db.UserMapper;
-import com.google.gwt.sample.itProjekt.server.db.ValueMapper;
 import com.google.gwt.sample.itProjekt.shared.EditorAdministration;
+import com.google.gwt.sample.itProjekt.server.EditorAdministrationImpl;
 import com.google.gwt.sample.itProjekt.shared.ReportGenerator;
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
+import com.google.gwt.sample.itProjekt.shared.bo.Value;
 import com.google.gwt.sample.itProjekt.shared.report.AllContactsOfUserReport;
-import com.google.gwt.sample.itProjekt.shared.report.AllContactsReport;
 import com.google.gwt.sample.itProjekt.shared.report.AllContactsWithValueReport;
 import com.google.gwt.sample.itProjekt.shared.report.AllSharedContactsOfUserReport;
+import com.google.gwt.sample.itProjekt.shared.report.Column;
 import com.google.gwt.sample.itProjekt.shared.report.CompositeParagraph;
-import com.google.gwt.sample.itProjekt.shared.report.Report;
 import com.google.gwt.sample.itProjekt.shared.report.Row;
 import com.google.gwt.sample.itProjekt.shared.report.SimpleParagraph;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
-import de.hdm.thies.bankProjekt.shared.BankAdministration;
-import de.hdm.thies.bankProjekt.shared.bo.Customer;
 
-
+@SuppressWarnings("serial")
 public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportGenerator{
 	
+	//private static final long serialVersionUID = 1L;
 	private EditorAdministration admin = null;
 	
 	public ReportGeneratorImpl () throws IllegalArgumentException {
@@ -44,14 +39,14 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		return this.admin;
 	}
 
-@Override
+/*@Override
 	public AllContactsReport generateAllContactsReport() throws IllegalArgumentException {
 		// TODO Auto-generated method stub
 		AllContactsReport report=new AllContactsReport();
 		
 		report.setTitle("Alle vorhandenen Kontakte");
 	    report.setCreated(new Date());
-	}
+	}*/
 
 @Override	
 	public AllContactsOfUserReport generateAllContactsOfUserReport(User u) throws IllegalArgumentException {
@@ -81,7 +76,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			report.addRow(headline);
 
 			Vector<Contact> allContacts=this.admin.getAllOwnedContactsOf(u);
-			allContacts.add(this.getAllSharedContactsWith(u));
+			allContacts.addAll(this.admin.getAllSharedContactsWith(u));
 			
 			for (Contact c: allContacts) {
 				Row contactRow=new Row();
@@ -122,7 +117,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		
 		report.addRow(headline);
 
-		Vector<Contact> allContacts=this.admin.getAllSharedContactsWith(u));
+		Vector<Contact> allContacts=this.admin.getAllSharedContactsWith(u);
 		
 		for (Contact c: allContacts) {
 			Row contactRow=new Row();

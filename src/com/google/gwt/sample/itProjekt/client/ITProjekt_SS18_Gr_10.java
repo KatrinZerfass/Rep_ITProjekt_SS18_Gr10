@@ -4,6 +4,8 @@ import com.google.gwt.sample.itProjekt.shared.CommonSettings;
 import com.google.gwt.sample.itProjekt.shared.EditorAdministrationAsync;
 import com.google.gwt.sample.itProjekt.shared.LoginService;
 import com.google.gwt.sample.itProjekt.shared.LoginServiceAsync;
+import com.google.gwt.sample.itProjekt.shared.bo.Contact;
+import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -86,12 +88,42 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		clctvm.setContactForm(cf);
 		cf.setClctvm(clctvm);
 		
+//		//test Kontakt
+//		Contact testContact = new Contact();
+//		testContact.setFirstname("Hans");
+//		testContact.setLastname("Müller");
+//		testContact.setId(0001);
+//		testContact.setSex("m");
+//		cf.setSelected(testContact);
+//		
+//		//test Kontaktliste
+//		ContactList testContactList = new ContactList();
+//		testContactList.setId(1000);
+//		testContactList.setName("Meine Freunde");
+//		
+		//test Zusammensetzung
+//		editorAdministration.addContactToContactList(testContactList, testContact, new AsyncCallback<ContactList>() {
+//			public void onFailure{
+//				
+//			}
+//			public void onSuccess{
+//				
+//			}
+//		});
+		
+//		cf.setSelected(testContact);
+//		clctvm.addContactList(testContactList);
+	//	clctvm.addContactOfContactList(testContactList, testContact);
+		
+		
 		VerticalPanel contactPanel = new VerticalPanel();
 		contactPanel.add(cf);
 		
-		CellBrowser.Builder<String> builder = new CellBrowser.Builder<>(clctvm, "Root");
+//		CellBrowser.Builder<String> builder = new CellBrowser.Builder<>(clctvm, "Root");
 //		CellBrowser cellBrowser = builder.build();
-//		
+		
+		
+		
 //		RootPanel.get("Navigator").add(cellBrowser);
 		RootPanel.get("Details").add(contactPanel);
 		    
@@ -107,7 +139,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	    signInLink.setHref(loginInfo.getLoginUrl());
 	    loginPanel.add(loginLabel);
 	    loginPanel.add(signInLink);
-	    RootPanel.get("login").add(loginPanel);
+	    RootPanel.get("Details").add(loginPanel);
 	  }
 	  
 }	 
