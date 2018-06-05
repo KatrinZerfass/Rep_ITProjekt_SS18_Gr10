@@ -27,7 +27,7 @@ private static ContactListMapper  contactlistmapper = null;
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT CL_ID, listname, U_ID" + "FROM T_ContactList" + "WHERE CL_ID =" + cl.getId() + "ORDER BY CL_ID");
+			ResultSet rs = stmt.executeQuery("SELECT CL_ID, listname, U_ID FROM T_ContactList WHERE CL_ID =" + cl.getId() + " ORDER BY CL_ID");
 			if (rs.next()){
 				ContactList c = new ContactList();
 				c.setId(rs.getInt("CL_ID"));
@@ -52,7 +52,7 @@ private static ContactListMapper  contactlistmapper = null;
 				
 				try{
 					Statement stmt = con.createStatement();
-					ResultSet rs = stmt.executeQuery("SELECT CL_ID, listname, U_ID" + "FROM T_ContactList" + "ORDER BY CL_ID");
+					ResultSet rs = stmt.executeQuery("SELECT CL_ID, listname, U_ID FROM T_ContactList ORDER BY CL_ID");
 					
 					while (rs.next()){
 						ContactList c = new ContactList();
@@ -73,7 +73,7 @@ private static ContactListMapper  contactlistmapper = null;
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT CL_ID, listname, U_ID" + "FROM T_ContactList" + "WHERE listname ="+ cl.getName() + "ORDER BY CL_ID");
+			ResultSet rs = stmt.executeQuery("SELECT CL_ID, listname, U_ID FROM T_ContactList WHERE listname ="+ cl.getName() + " ORDER BY CL_ID");
 			while (rs.next()){
 				ContactList c = new ContactList();
 				c.setId(rs.getInt("CL_ID"));
@@ -94,7 +94,7 @@ private static ContactListMapper  contactlistmapper = null;
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT CL_ID, listname, U_ID" + "FROM T_ContactList" + "WHERE U_ID=" + u.getId() + "ORDER BY CL_ID");
+			ResultSet rs = stmt.executeQuery("SELECT CL_ID, listname, U_ID FROM T_ContactList WHERE U_ID=" + u.getId() + " ORDER BY CL_ID");
 			while (rs.next()){
 				ContactList c = new ContactList();
 				c.setId(rs.getInt("CL_ID"));
@@ -115,19 +115,19 @@ private static ContactListMapper  contactlistmapper = null;
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT MAX(CL_ID) AS maxclid" + "FROM T_ContactList");
+			ResultSet rs = stmt.executeQuery("SELECT MAX(CL_ID) AS maxclid FROM T_ContactList");
 			if (rs.next()){
 				
 				c.setId(rs.getInt("maxclid")+1);
 				Statement stmt2 = con.createStatement();
 				stmt2.executeUpdate("INSERT INTO T_ContactList (CL_ID, listname, U_ID)"
-				+ " VALUES ('"
+				+ " VALUES ("
 				+ c.getId() 
-				+ "', '" 
+				+ ", '" 
 				+ c.getName() 
-				+ "', '" 
+				+ "', "
 				+ u.getId() 
-				+ "')") ;
+				+ ");") ;
 						
 				return c;	
 				
@@ -144,7 +144,7 @@ private static ContactListMapper  contactlistmapper = null;
 			
 			try{
 				Statement stmt = con.createStatement();
-				stmt.executeUpdate("UPDATE T_ContactList" + "SET listname =\"" + c.getName() + "\"" + "WHERE CL_ID =" + c.getId());
+				stmt.executeUpdate("UPDATE T_ContactList SET listname ='" + c.getName() + "' " + " WHERE CL_ID =" + c.getId());
 			}
 		
 		catch (SQLException e2){
@@ -159,7 +159,7 @@ Connection con = DBConnection.connection();
 			try{
 				
 				Statement stmt = con.createStatement();
-				stmt.executeUpdate("DELETE FROM T_ContactsList" + "WHERE CL_ID =" + c.getId());
+				stmt.executeUpdate("DELETE FROM T_ContactsList WHERE CL_ID =" + c.getId());
 			}
 		
 		catch (SQLException e2){
@@ -175,13 +175,13 @@ Connection con = DBConnection.connection();
 			try{
 				Statement stmt = con.createStatement();
 				Statement stmt2 = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT C_ID" + "FROM T_Contact_Contactlist" + "WHERE CL_ID =" + cl.getId() + "ORDER BY C_ID");
+				ResultSet rs = stmt.executeQuery("SELECT C_ID FROM T_Contact_Contactlist WHERE CL_ID =" + cl.getId() + " ORDER BY C_ID");
 
 				
 				
 				while (rs.next()){
 										
-					ResultSet rs2 = stmt2.executeQuery("SELECT C_ID, firstname, lastname, gender, U_ID" + "FROM T_Contact" + "WHERE C_ID =" + rs.getInt("C_ID") + "ORDER BY C_ID");
+					ResultSet rs2 = stmt2.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID FROM T_Contact WHERE C_ID =" + rs.getInt("C_ID") + " ORDER BY C_ID");
 					Contact c = new Contact();
 					c.setId(rs2.getInt("C_ID"));
 					c.setFirstname(rs2.getString("firstName"));
@@ -209,7 +209,7 @@ Connection con = DBConnection.connection();
 				+ cl.getId() 
 				+ "', '" 
 				+ c.getId() 
-				+ "')") ;
+				+ "');") ;
 						
 				return cl;	
 				
@@ -224,9 +224,9 @@ Connection con = DBConnection.connection();
 			
 			try{
 				Statement stmt = con.createStatement();
-				stmt.executeUpdate("DELETE FROM T_Contact_ContactList" + "WHERE CL_ID="
+				stmt.executeUpdate("DELETE FROM T_Contact_ContactList WHERE CL_ID="
 				+ cl.getId() 
-				+ "AND C_ID=" 
+				+ " AND C_ID=" 
 				+ c.getId());
 						
 				return cl;	
