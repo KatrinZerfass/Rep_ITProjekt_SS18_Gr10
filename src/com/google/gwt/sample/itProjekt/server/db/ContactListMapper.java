@@ -150,7 +150,7 @@ private static ContactListMapper  contactlistmapper = null;
 		
 		public void delete (ContactList c){
 Connection con = DBConnection.connection();
-//TODO: Add Permissions
+
 			
 		try{
 	

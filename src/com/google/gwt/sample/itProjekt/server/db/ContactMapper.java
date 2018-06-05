@@ -178,7 +178,7 @@ Vector<Contact> result = new Vector<Contact>();
 		
 		public void delete (Contact c){
 Connection con = DBConnection.connection();
-//TODO: Add Permissions
+
 			try{
 	
 				Statement stmt2 = con.createStatement();
