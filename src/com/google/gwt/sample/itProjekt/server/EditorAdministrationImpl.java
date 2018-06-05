@@ -47,6 +47,19 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		this.user = u;
 	}
 
+	public User getUserInformation (String email) throws IllegalArgumentException{
+		
+		User user = new User();
+
+		if(uMapper.findByEMail(email).getId() == 0) {
+			user.setEmail(email);
+			return uMapper.insert(user);
+		}
+		else {
+			return uMapper.findByEMail(email);
+		}
+	}
+	
 	@Override
 	public User createUser(String firstname, String lastname, String sex, String email)
 			throws IllegalArgumentException {
