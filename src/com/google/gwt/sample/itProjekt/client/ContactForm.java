@@ -17,7 +17,7 @@ import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class ContactForm extends Composite {
+public class ContactForm extends VerticalPanel {
 	
 	//tdb: contactverwaltung
 	Contact contactToDisplay = null;
@@ -67,9 +67,12 @@ public class ContactForm extends Composite {
 	FlexTable contactTable = new FlexTable();
 	
 	
-	public ContactForm() {
+//	public ContactForm() {
+	public void onLoad() {
+		super.onLoad();
+	
 		
-		initWidget(this.contactTable);
+//		initWidget(this.contactTable);
 		
 		//Nullte Zeile
 		contactTable.getFlexCellFormatter().setColSpan(0, 0, 4);

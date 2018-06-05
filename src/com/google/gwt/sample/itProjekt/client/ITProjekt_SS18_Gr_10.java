@@ -55,22 +55,22 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		  * Login Status des Benutzers wird geprüft. (Wird erst zu einem späteren Zeitpunkt implementiert) 
 		  */
 	    
-		LoginServiceAsync loginService = GWT.create(LoginService.class);
-	    loginService.login(GWT.getHostPageBaseURL(), new AsyncCallback<LoginInfo>() {
-	    public void onFailure(Throwable error) {
-	     }
-
-	     public void onSuccess(LoginInfo result) {
-	        loginInfo = result;
-	       if(loginInfo.isLoggedIn()) {
-	         loadApplication();
-	      } else {
-	          loadLogin();
-	    }
-	    }
-	    });
-	  }
-	  
+//		LoginServiceAsync loginService = GWT.create(LoginService.class);
+//	    loginService.login(GWT.getHostPageBaseURL(), new AsyncCallback<LoginInfo>() {
+//	    public void onFailure(Throwable error) {
+//	     }
+//
+//	     public void onSuccess(LoginInfo result) {
+//	        loginInfo = result;
+//	       if(loginInfo.isLoggedIn()) {
+//	         loadApplication();
+//	      } else {
+//	          loadLogin();
+//	    }
+//	    }
+//	    });
+//	  }
+//	  
 	  
 	  
 	  /*
@@ -78,7 +78,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	   * die eigentliche Applikation.  
 	   */
 	  
-	  public void loadApplication() {
+//	  public void loadApplication() {
 		
 		signOutLink.setHref(loginInfo.getLogoutUrl());
 		
@@ -88,19 +88,19 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		clctvm.setContactForm(cf);
 		cf.setClctvm(clctvm);
 		
-//		//test Kontakt
+		//test Kontakt
 //		Contact testContact = new Contact();
 //		testContact.setFirstname("Hans");
 //		testContact.setLastname("Müller");
 //		testContact.setId(0001);
 //		testContact.setSex("m");
 //		cf.setSelected(testContact);
-//		
-//		//test Kontaktliste
+		
+		//test Kontaktliste
 //		ContactList testContactList = new ContactList();
 //		testContactList.setId(1000);
 //		testContactList.setName("Meine Freunde");
-//		
+		
 		//test Zusammensetzung
 //		editorAdministration.addContactToContactList(testContactList, testContact, new AsyncCallback<ContactList>() {
 //			public void onFailure{
@@ -110,22 +110,23 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 //				
 //			}
 //		});
-		
+//		
 //		cf.setSelected(testContact);
 //		clctvm.addContactList(testContactList);
-	//	clctvm.addContactOfContactList(testContactList, testContact);
+//		clctvm.addContactOfContactList(testContactList, testContact);
 		
 		
-		VerticalPanel contactPanel = new VerticalPanel();
-		contactPanel.add(cf);
+//		VerticalPanel contactPanel = new VerticalPanel();
+//		contactPanel.add(cf);
 		
 //		CellBrowser.Builder<String> builder = new CellBrowser.Builder<>(clctvm, "Root");
-//		CellBrowser cellBrowser = builder.build();
-		
-		
-		
+//		CellBrowser cellBrowser = builder.build(); //<--
+////		cellBrowser.setHeight("200");
+////		cellBrowser.setWidth("200");
+//	
+//		
 //		RootPanel.get("Navigator").add(cellBrowser);
-		RootPanel.get("Details").add(contactPanel);
+		RootPanel.get("Details").add(cf);
 		    
 		  
 	  }
