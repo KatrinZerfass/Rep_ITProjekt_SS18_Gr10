@@ -9,8 +9,6 @@ import java.util.Vector;
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
 import com.google.gwt.sample.itProjekt.shared.bo.Permission;
-import com.google.gwt.sample.itProjekt.shared.bo.Property;
-import com.google.gwt.sample.itProjekt.shared.bo.Value;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
 
 public class PermissionMapper {
@@ -28,7 +26,7 @@ private static PermissionMapper  permissionmapper = null;
 				
 				try{
 					Statement stmt = con.createStatement();
-					ResultSet rs = stmt.executeQuery("SELECT U_ID, C_ID" + "FROM T_Permission_Contact" + "ORDER BY U_ID");
+					ResultSet rs = stmt.executeQuery("SELECT U_ID, C_ID FROM T_Permission_Contact ORDER BY U_ID");
 					
 					while (rs.next()){
 						Permission p = new Permission();
@@ -37,7 +35,7 @@ private static PermissionMapper  permissionmapper = null;
 						Contact c = new Contact();
 						c.setId(rs.getInt("C_ID"));
 						p.setShareableobject(ContactMapper.contactMapper().findByID(c));
-						//TODO: isShared if einf�gen
+						
 						result.addElement(p);
 					}		
 				}catch(SQLException e2){
@@ -45,7 +43,7 @@ private static PermissionMapper  permissionmapper = null;
 				}
 				try{
 					Statement stmt = con.createStatement();
-					ResultSet rs = stmt.executeQuery("SELECT U_ID, CL_ID" + "FROM T_Permission_Contactlist" + "ORDER BY U_ID");
+					ResultSet rs = stmt.executeQuery("SELECT U_ID, CL_ID FROM T_Permission_Contactlist ORDER BY U_ID");
 					
 					while (rs.next()){
 						Permission p = new Permission();
@@ -54,7 +52,6 @@ private static PermissionMapper  permissionmapper = null;
 						ContactList cl = new ContactList();
 						cl.setId(rs.getInt("CL_ID"));
 						p.setShareableobject(ContactListMapper.contactListMapper().findByID(cl));
-						//TODO: isShared if einf�gen
 						result.addElement(p);
 					}		
 				}catch(SQLException e2){
@@ -68,11 +65,11 @@ public Permission update(Permission permission){
 		
 		Connection con = DBConnection.connection();
 		
-		if(permission.getShareableobject().getId()> 30000000) {
+		if(permission.getShareableobject().getId()< 30000000) {
 		
 		try{
 			Statement stmt1 = con.createStatement();
-			stmt1.executeUpdate("UPDATE T_Permission_Contact" + "SET C_ID=\"" + permission.getShareableobject().getId() + "\"" + "WHERE U_ID =" + permission.getParticipant().getId());
+			stmt1.executeUpdate("UPDATE T_Permission_Contact SET C_ID=" + permission.getShareableobject().getId() + " WHERE U_ID =" + permission.getParticipant().getId());
 						}
 		
 		catch (SQLException e2){
@@ -83,11 +80,11 @@ public Permission update(Permission permission){
 		return permission;
 			}
 		
-		if(permission.getShareableobject().getId() <= 30000000) {
+		if(permission.getShareableobject().getId() >= 30000000) {
 			
 			try{
 			Statement stmt2 = con.createStatement();
-			stmt2.executeUpdate("UPDATE T_Permission_Contactlist" + "SET CL_ID=" + permission.getShareableobject().getId()+ "WHERE U_ID =" + permission.getParticipant().getId());
+			stmt2.executeUpdate("UPDATE T_Permission_Contactlist SET CL_ID=" + permission.getShareableobject().getId()+ " WHERE U_ID =" + permission.getParticipant().getId());
 					}
 	
 			catch (SQLException e2){
@@ -103,22 +100,22 @@ public Permission update(Permission permission){
 		
 		Connection con = DBConnection.connection();
 					
-		if(permission.getShareableobject().getId()> 30000000)
+		if(permission.getShareableobject().getId()< 30000000)
 			
 					try{
 						Statement stmt1 = con.createStatement();
-						stmt1.executeUpdate("DELETE FROM T_Permission_Contact" + "WHERE C_ID =" + permission.getShareableobject().getId()+ "AND U_ID=" + permission.getParticipant().getId());
+						stmt1.executeUpdate("DELETE FROM T_Permission_Contact WHERE C_ID =" + permission.getShareableobject().getId()+ " AND U_ID=" + permission.getParticipant().getId());
 					}
 				
 				catch (SQLException e2){
 					e2.printStackTrace();
 				}
 		
-		if(permission.getShareableobject().getId()<= 30000000) {
+		if(permission.getShareableobject().getId()>= 30000000) {
 			
 					try{
 					Statement stmt2 = con.createStatement();
-					stmt2.executeUpdate("DELETE FROM T_Permission_Contactlist" + "WHERE CL_ID =" + permission.getShareableobject().getId()+ "AND U_ID ="+ permission.getParticipant().getId());
+					stmt2.executeUpdate("DELETE FROM T_Permission_Contactlist WHERE CL_ID =" + permission.getShareableobject().getId()+ " AND U_ID ="+ permission.getParticipant().getId());
 				}
 			
 				catch (SQLException e2){
@@ -133,7 +130,7 @@ public Permission update(Permission permission){
 		
 		try{
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM T_Contact_Contactlist" + "WHERE CL_ID =" + contactlist.getId());
+			stmt.executeUpdate("DELETE FROM T_Permission_Contactlist WHERE CL_ID =" + contactlist.getId());
 		}
 	
 	catch (SQLException e2){
@@ -142,7 +139,8 @@ public Permission update(Permission permission){
 }
 	
 	
-	public Permission insertContact(Permission permission){
+	public Permission shareContact(Permission permission){
+		
 		
 		Connection con = DBConnection.connection();
 		
@@ -154,7 +152,7 @@ public Permission update(Permission permission){
 				stmt.executeUpdate("INSERT INTO T_Permission_Contact (C_ID, U_ID)"
 						+ " VALUES ("
 						+ permission.getShareableobject().getId()
-						+ "," 
+						+ ", " 
 						+ permission.getParticipant().getId()
 						+ ", "
 						+ ")") ;
@@ -169,7 +167,8 @@ public Permission update(Permission permission){
 		}
 	
 	
-	public Permission insertContactList(Permission permission){
+	public Permission shareContactList(Permission permission){
+		
 		
 		Connection con = DBConnection.connection();
 		
@@ -178,7 +177,7 @@ public Permission update(Permission permission){
 				
 			permission.setId(permission.getShareableobject().getId() + permission.getParticipant().getId());
 				
-			stmt.executeUpdate("INSERT INTO T_Permission_Contact (CL_ID, U_ID)"
+			stmt.executeUpdate("INSERT INTO T_Permission_Contactlist (CL_ID, U_ID)"
 						+ " VALUES ("
 						+ permission.getShareableobject().getId()
 						+ ", " 
@@ -203,7 +202,7 @@ public Vector<Contact> getAllContactsByUID(User user){
 			
 			try{
 				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT DISTINCT C_ID" + "From T_Permission_Contact" + "WHERE U_ID=" + user.getId()+ "ORDER BY C_ID");
+				ResultSet rs = stmt.executeQuery("SELECT DISTINCT C_ID From T_Permission_Contact WHERE U_ID=" + user.getId()+ " ORDER BY C_ID");
 				
 				while (rs.next()){
 					Contact c = new Contact();
@@ -224,7 +223,7 @@ public Vector<ContactList> getAllContactListsByUID(User user){
 			
 			try{
 				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT DISTINCT CL_ID" + "From T_Permission_Contact" + "WHERE U_ID=" + user.getId()+ "ORDER BY CL_ID");
+				ResultSet rs = stmt.executeQuery("SELECT DISTINCT CL_ID From T_Permission_Contact WHERE U_ID=" + user.getId()+ " ORDER BY CL_ID");
 				
 				while (rs.next()){
 					ContactList cl = new ContactList();

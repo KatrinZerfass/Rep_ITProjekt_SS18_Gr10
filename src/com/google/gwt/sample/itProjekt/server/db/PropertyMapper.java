@@ -23,7 +23,7 @@ public Property findByID(Property pr){
 	
 	try{
 		Statement stmt = con.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT P_ID, type" + "FROM T_Property" + "WHERE P_ID ="+ pr.getId() + "ORDER BY P_ID");
+		ResultSet rs = stmt.executeQuery("SELECT P_ID, type FROM T_Property WHERE P_ID ="+ pr.getId() + " ORDER BY P_ID");
 		if (rs.next()){
 			Property p = new Property();
 			p.setId(rs.getInt("P_ID"));

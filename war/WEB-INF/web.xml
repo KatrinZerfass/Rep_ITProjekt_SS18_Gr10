@@ -12,8 +12,34 @@
     <url-pattern>/itprojekt_ss18_gr_10/login</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+		<servlet-name>reportGeneratorServlet</servlet-name>
+		<servlet-class>com.google.gwt.sample.itProjekt.server.ReportGeneratorImpl</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+		<servlet-name>reportGeneratorServlet</servlet-name>
+		<url-pattern>/itprojekt_ss18_gr_10_report/reportgenerator</url-pattern>
+		<url-pattern>/itprojekt_ss18_gr_10/reportgenerator</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+		<servlet-name>editorAdministrationServlet</servlet-name>
+		<servlet-class>com.google.gwt.sample.itProjekt.server.EditorAdministrationImpl</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+		<servlet-name>editorAdministrationServlet</servlet-name>
+		<url-pattern>/itprojekt_ss18_gr_10/editorAdministration</url-pattern>
+		<url-pattern>/itprojekt_ss18_gr_10_report/editorAdministration</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+  
   <welcome-file-list>
     <welcome-file>ITProjekt_SS18_Gr_10.html</welcome-file>
+    <welcome-file>ITProjekt_SS18_Gr_10_Report.html</welcome-file>
   </welcome-file-list>
 
 </web-app>
