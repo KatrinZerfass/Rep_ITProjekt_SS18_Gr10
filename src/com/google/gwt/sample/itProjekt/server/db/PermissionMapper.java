@@ -28,7 +28,7 @@ private static PermissionMapper  permissionmapper = null;
 				
 				try{
 					Statement stmt = con.createStatement();
-					ResultSet rs = stmt.executeQuery("SELECT U_ID, C_ID" + "FROM T_Permission_Contact" + "ORDER BY U_ID");
+					ResultSet rs = stmt.executeQuery("SELECT U_ID, C_ID FROM T_Permission_Contact ORDER BY U_ID");
 					
 					while (rs.next()){
 						Permission p = new Permission();
@@ -45,7 +45,7 @@ private static PermissionMapper  permissionmapper = null;
 				}
 				try{
 					Statement stmt = con.createStatement();
-					ResultSet rs = stmt.executeQuery("SELECT U_ID, CL_ID" + "FROM T_Permission_Contactlist" + "ORDER BY U_ID");
+					ResultSet rs = stmt.executeQuery("SELECT U_ID, CL_ID FROM T_Permission_Contactlist ORDER BY U_ID");
 					
 					while (rs.next()){
 						Permission p = new Permission();
@@ -72,7 +72,7 @@ public Permission update(Permission permission){
 		
 		try{
 			Statement stmt1 = con.createStatement();
-			stmt1.executeUpdate("UPDATE T_Permission_Contact" + "SET C_ID=\"" + permission.getShareableobject().getId() + "\"" + "WHERE U_ID =" + permission.getParticipant().getId());
+			stmt1.executeUpdate("UPDATE T_Permission_Contact SET C_ID=" + permission.getShareableobject().getId() + " WHERE U_ID =" + permission.getParticipant().getId());
 						}
 		
 		catch (SQLException e2){
@@ -87,7 +87,7 @@ public Permission update(Permission permission){
 			
 			try{
 			Statement stmt2 = con.createStatement();
-			stmt2.executeUpdate("UPDATE T_Permission_Contactlist" + "SET CL_ID=" + permission.getShareableobject().getId()+ "WHERE U_ID =" + permission.getParticipant().getId());
+			stmt2.executeUpdate("UPDATE T_Permission_Contactlist SET CL_ID=" + permission.getShareableobject().getId()+ " WHERE U_ID =" + permission.getParticipant().getId());
 					}
 	
 			catch (SQLException e2){
@@ -107,7 +107,7 @@ public Permission update(Permission permission){
 			
 					try{
 						Statement stmt1 = con.createStatement();
-						stmt1.executeUpdate("DELETE FROM T_Permission_Contact" + "WHERE C_ID =" + permission.getShareableobject().getId()+ "AND U_ID=" + permission.getParticipant().getId());
+						stmt1.executeUpdate("DELETE FROM T_Permission_Contact WHERE C_ID =" + permission.getShareableobject().getId()+ " AND U_ID=" + permission.getParticipant().getId());
 					}
 				
 				catch (SQLException e2){
@@ -118,7 +118,7 @@ public Permission update(Permission permission){
 			
 					try{
 					Statement stmt2 = con.createStatement();
-					stmt2.executeUpdate("DELETE FROM T_Permission_Contactlist" + "WHERE CL_ID =" + permission.getShareableobject().getId()+ "AND U_ID ="+ permission.getParticipant().getId());
+					stmt2.executeUpdate("DELETE FROM T_Permission_Contactlist WHERE CL_ID =" + permission.getShareableobject().getId()+ " AND U_ID ="+ permission.getParticipant().getId());
 				}
 			
 				catch (SQLException e2){
@@ -133,7 +133,7 @@ public Permission update(Permission permission){
 		
 		try{
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM T_Contact_Contactlist" + "WHERE CL_ID =" + contactlist.getId());
+			stmt.executeUpdate("DELETE FROM T_Contact_Contactlist WHERE CL_ID =" + contactlist.getId());
 		}
 	
 	catch (SQLException e2){
@@ -154,10 +154,10 @@ public Permission update(Permission permission){
 				stmt.executeUpdate("INSERT INTO T_Permission_Contact (C_ID, U_ID)"
 						+ " VALUES ("
 						+ permission.getShareableobject().getId()
-						+ "," 
+						+ ", " 
 						+ permission.getParticipant().getId()
 						+ ", "
-						+ ")") ;
+						+ ");") ;
 						
 				return permission;	
 				
@@ -184,7 +184,7 @@ public Permission update(Permission permission){
 						+ ", " 
 						+ permission.getParticipant().getId()
 						+ ", "
-						+ ")") ;
+						+ ");") ;
 						
 			return permission;	
 				
@@ -203,7 +203,7 @@ public Vector<Contact> getAllContactsByUID(User user){
 			
 			try{
 				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT DISTINCT C_ID" + "From T_Permission_Contact" + "WHERE U_ID=" + user.getId()+ "ORDER BY C_ID");
+				ResultSet rs = stmt.executeQuery("SELECT DISTINCT C_ID From T_Permission_Contact WHERE U_ID=" + user.getId()+ " ORDER BY C_ID");
 				
 				while (rs.next()){
 					Contact c = new Contact();
@@ -224,7 +224,7 @@ public Vector<ContactList> getAllContactListsByUID(User user){
 			
 			try{
 				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT DISTINCT CL_ID" + "From T_Permission_Contact" + "WHERE U_ID=" + user.getId()+ "ORDER BY CL_ID");
+				ResultSet rs = stmt.executeQuery("SELECT DISTINCT CL_ID From T_Permission_Contact WHERE U_ID=" + user.getId()+ " ORDER BY CL_ID");
 				
 				while (rs.next()){
 					ContactList cl = new ContactList();
