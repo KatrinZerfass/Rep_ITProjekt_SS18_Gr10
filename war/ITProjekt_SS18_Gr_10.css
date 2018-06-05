@@ -32,21 +32,13 @@ div#Header {
 div#Navigator {
     float: left;
     width: 30%;
-    height: 37em;
+    height: 32em;
    	overflow: scroll;
     background-color: #5beb7f;
 
 }
 
-div#login {
-	float: right;
-	width: 70%;
-    height: 2em;
-    overflow: auto;
-    padding: 5px 0;
-    background:red;
-	
-}
+
 div#Details {
 	float: right;
     width: 70%;
