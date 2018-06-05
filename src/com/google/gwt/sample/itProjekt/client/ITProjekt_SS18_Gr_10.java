@@ -15,6 +15,9 @@ import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.cellview.client.CellBrowser;
+import com.google.gwt.user.cellview.client.CellList;
+import com.google.gwt.user.cellview.client.CellTree;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
@@ -24,6 +27,10 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+
+
+
+
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -36,12 +43,12 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	private static final String SERVER_ERROR = "An error occurred while "
 			+ "attempting to contact the server. Please check your network " + "connection and try again.";
 
-	private LoginInfo loginInfo = null;
-	private VerticalPanel loginPanel = new VerticalPanel();
-	private Label loginLabel = new Label(
-	      "Please sign in to your Google Account to access the application.");
-	private Anchor signInLink = new Anchor("Sign In");
-	private Anchor signOutLink = new Anchor("Sign Out");
+//	private LoginInfo loginInfo = null;
+//	private VerticalPanel loginPanel = new VerticalPanel();
+//	private Label loginLabel = new Label(
+//	      "Please sign in to your Google Account to access the application.");
+//	private Anchor signInLink = new Anchor("Sign In");
+//	private Anchor signOutLink = new Anchor("Sign Out");
 
 
 	
@@ -80,26 +87,27 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	  
 //	  public void loadApplication() {
 		
-		signOutLink.setHref(loginInfo.getLogoutUrl());
+//		signOutLink.setHref(loginInfo.getLogoutUrl());
 		
 		ContactForm cf = new ContactForm();
 		ContactListContactTreeViewModel clctvm = new ContactListContactTreeViewModel();	
+		
 		
 		clctvm.setContactForm(cf);
 		cf.setClctvm(clctvm);
 		
 		//test Kontakt
-//		Contact testContact = new Contact();
-//		testContact.setFirstname("Hans");
-//		testContact.setLastname("Müller");
-//		testContact.setId(0001);
-//		testContact.setSex("m");
-//		cf.setSelected(testContact);
+		Contact testContact = new Contact();
+		testContact.setFirstname("Hans");
+		testContact.setLastname("Müller");
+		testContact.setId(0001);
+		testContact.setSex("m");
+		
 		
 		//test Kontaktliste
-//		ContactList testContactList = new ContactList();
-//		testContactList.setId(1000);
-//		testContactList.setName("Meine Freunde");
+		ContactList testContactList = new ContactList();
+		testContactList.setId(1000);
+		testContactList.setName("Meine Freunde");
 		
 		//test Zusammensetzung
 //		editorAdministration.addContactToContactList(testContactList, testContact, new AsyncCallback<ContactList>() {
@@ -110,24 +118,33 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 //				
 //			}
 //		});
-//		
-//		cf.setSelected(testContact);
-//		clctvm.addContactList(testContactList);
-//		clctvm.addContactOfContactList(testContactList, testContact);
+		
+		cf.setSelected(testContact);
+		clctvm.addContactList(testContactList);
+		clctvm.addContactOfContactList(testContactList, testContact);
 		
 		
-//		VerticalPanel contactPanel = new VerticalPanel();
-//		contactPanel.add(cf);
+		VerticalPanel contactPanel = new VerticalPanel();
+		contactPanel.add(cf);
+		RootPanel.get("Details").add(contactPanel);
 		
-//		CellBrowser.Builder<String> builder = new CellBrowser.Builder<>(clctvm, "Root");
-//		CellBrowser cellBrowser = builder.build(); //<--
-////		cellBrowser.setHeight("200");
-////		cellBrowser.setWidth("200");
-//	
-//		
-//		RootPanel.get("Navigator").add(cellBrowser);
-		RootPanel.get("Details").add(cf);
-		    
+	
+	
+		
+		
+
+		
+		CellBrowser.Builder<String> builder = new CellBrowser.Builder<>(clctvm, "Root");	
+		CellBrowser cellBrowser = builder.build(); //<--
+	
+		Window.alert("created cellbrowser");
+		cellBrowser.setHeight("630");
+		cellBrowser.setWidth("200");
+	
+	
+		
+		RootPanel.get("Navigator").add(cellBrowser);
+		Window.alert("hey");
 		  
 	  }
 	  
@@ -135,12 +152,12 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	   * Das Login Panel wird aufgerufen wenn der Benutzer nicht eingeloggt ist. 
 	   */
 
-	  private void loadLogin() {
-		  
-	    signInLink.setHref(loginInfo.getLoginUrl());
-	    loginPanel.add(loginLabel);
-	    loginPanel.add(signInLink);
-	    RootPanel.get("Details").add(loginPanel);
-	  }
-	  
+//	  private void loadLogin() {
+//		  
+//	    signInLink.setHref(loginInfo.getLoginUrl());
+//	    loginPanel.add(loginLabel);
+//	    loginPanel.add(signInLink);
+//	    RootPanel.get("Details").add(loginPanel);
+//	  }
+//	  
 }	 

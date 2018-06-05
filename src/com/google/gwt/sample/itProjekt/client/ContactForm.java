@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.sample.itProjekt.shared.EditorAdministrationAsync;
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
@@ -19,7 +20,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class ContactForm extends VerticalPanel {
 	
-	//tdb: contactverwaltung
+//	EditorAdministrationAsync editorVerwaltung = ClientsideSettings.getEditorAdministration();
 	Contact contactToDisplay = null;
 	ContactListContactTreeViewModel clctvm = null;
 	
@@ -63,16 +64,19 @@ public class ContactForm extends VerticalPanel {
 		
 	}
 	
-	//allumfassende Tabelle f�r die Darstellung von Kontakten
-	FlexTable contactTable = new FlexTable();
+	
 	
 	
 //	public ContactForm() {
 	public void onLoad() {
+		
 		super.onLoad();
-	
+		
 		
 //		initWidget(this.contactTable);
+		//allumfassende Tabelle f�r die Darstellung von Kontakten
+		FlexTable contactTable = new FlexTable();
+		this.add(contactTable);
 		
 		//Nullte Zeile
 		contactTable.getFlexCellFormatter().setColSpan(0, 0, 4);
@@ -275,6 +279,7 @@ public class ContactForm extends VerticalPanel {
 			}
 		});
 	
+		Window.alert("Ende onload von contactform");
 	} //ende der Methode onLoad();
 		
 	

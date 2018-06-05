@@ -42,7 +42,7 @@ div#Navigator {
 div#Details {
 	float: right;
     width: 70%;
-    height: 32em;
+    height: 34em;
     overflow: auto;
     padding: 5px 0;
     background: orange;

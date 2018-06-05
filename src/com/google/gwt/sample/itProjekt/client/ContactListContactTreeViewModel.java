@@ -25,17 +25,16 @@ import java.util.Vector;
 public class ContactListContactTreeViewModel implements TreeViewModel{
 	
 	
-	private ContactForm contactForm;
+	private ContactForm contactForm =null;
 	
-	private ContactList selectedContactList;
-	private Contact selectedContact;
+	private ContactList selectedContactList = null;
+	private Contact selectedContact = null;
 	
 	private EditorAdministrationAsync editorAdministration = null;
 
 	private ListDataProvider<ContactList> contactListDataProvider = null;
 	
-	private BusinessObjectKeyProvider boKeyProvider = null;
-	private SingleSelectionModel<BusinessObject> selectionModel = null;
+	
 	
 	//verbindet eine Liste von Kontakten mit einer Kontaktliste
 	private Map<ContactList, ListDataProvider<Contact>> contactDataProviders = null;
@@ -56,7 +55,8 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	}
 	};
 
-	
+	private BusinessObjectKeyProvider boKeyProvider = null;
+	private SingleSelectionModel<BusinessObject> selectionModel = null;
 	
 	/**
 	* Nested Class für die Reaktion auf Selektionsereignisse. Als Folge einer
@@ -79,7 +79,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	
 	//Konstruktor
 	public ContactListContactTreeViewModel() {
-	//	bankVerwaltung = ClientsideSettings.getBankVerwaltung();
+		editorAdministration= ClientsideSettings.getEditorAdministration();
 		boKeyProvider = new BusinessObjectKeyProvider();
 		selectionModel = new SingleSelectionModel<BusinessObject>(boKeyProvider);
 		selectionModel
@@ -109,10 +109,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		return selectedContact;
 	}
 
-	/*
-	 * Wenn ein Kontakt ausgew�hlt wird, wird auch die ausgewählte Kontaktliste
-	 * angepasst.
-	 */
+
 	void setSelectedContact(Contact c) {
 		selectedContact = c;
 		contactForm.setSelected(c);
