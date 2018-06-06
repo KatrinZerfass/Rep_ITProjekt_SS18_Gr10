@@ -31,8 +31,6 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 
 
-
-
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
@@ -52,7 +50,6 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	private Anchor signOutLink = new Anchor("Sign Out");
 
 
-	
 	EditorAdministrationAsync editorAdministration = null;
 
 	  
@@ -87,8 +84,49 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	   */
 	  
 	    public void loadApplication() {
+	    	
+	    if(editorAdministration == null) {
+	    	editorAdministration = ClientsideSettings.getEditorAdministration();
+	    }
+	    
+	    
+	    //Anlegen des User Objekts 
+	    
+	    editorAdministration.getUserInformation(loginInfo.getEmailAddress(), new AsyncCallback<User>() {
+			
+	    	public void onFailure(Throwable caught) {
+				editorAdministration.createUser(loginInfo.getEmailAddress(), new AsyncCallback<User>() {
+    				public void onFailure(Throwable caught) {
+					}
+    				public void onSuccess(User result) {
+    					editorAdministration.setUser(result, new AsyncCallback<Void>() {
+    						public void onFailure(Throwable caught) {
+    						}
+    						public void onSuccess(Void result) {
+    						}
+    			 
+				        });
+			        }
+    		    });
+				
+			}
+
+			
+			public void onSuccess(User result) {
+				editorAdministration.setUser(result, new AsyncCallback<Void>() {
+					public void onFailure(Throwable caught) {
+					}
+					public void onSuccess(Void result) {
+					}
+			
+		        });
+			}    		
+	    });
+
+	    		   		    		    			
+	      
 		
-	  	signOutLink.setHref(loginInfo.getLogoutUrl());
+		signOutLink.setHref(loginInfo.getLogoutUrl());
 		
 		ContactForm cf = new ContactForm();
 		VerticalPanel contactPanel = new VerticalPanel();
@@ -124,8 +162,8 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		
 		CellBrowser.Builder<String> builder = new CellBrowser.Builder<>(clctvm, "Root");	
 		CellBrowser cellBrowser = builder.build(); 
-		cellBrowser.setHeight("100%");
-		cellBrowser.setWidth("100%");
+//		cellBrowser.setHeight("630");
+//		cellBrowser.setWidth("200");
 		cellBrowser.setAnimationEnabled(true);
 		cellBrowser.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 		
@@ -144,8 +182,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 			
 		
 		
-//		VerticalPanel cellBrowserPanel = new VerticalPanel();
-//		cellBrowserPanel.add(cellBrowser);
+		
 	
 		
 		RootPanel.get("Navigator").add(cellBrowser);
@@ -159,8 +196,8 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	   */
 
 	  private void loadLogin() {
-		 
-		signInLink.setHref(loginInfo.getLoginUrl());
+		  
+	    signInLink.setHref(loginInfo.getLoginUrl());
 	    loginPanel.add(loginLabel);
 	    loginPanel.add(signInLink);
 	    RootPanel.get("login").add(loginPanel);

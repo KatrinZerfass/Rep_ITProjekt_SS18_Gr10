@@ -35,6 +35,7 @@ public class ValueMapper {
 	 * FindAllByValue.
 	 * 
 	 * Findet alle V_ID durch ein value welches als Filterkriterium dient
+	 * Befüllt ein Value Objekt mit V_ID und value und fügt dieses Objekt dem Vector hinzu
 	 * Gibt ein Vector voller Value Objekte zurück
 	 *
 	 */
@@ -64,7 +65,7 @@ public class ValueMapper {
 	 * FindAllContactsByValue.
 	 *
 	 * Findet alle C_ID durch ein value welches als Filterkriterium dient
-	 * Mit dem Contect Objekt welches C_ID beinhaltet wird durch findByID im ContactMapper das Contact Objekt vollständig befüllt
+	 * Mit dem Contect Objekt welches C_ID beinhaltet wird durch findByID im ContactMapper das Contact Objekt vollständig befüllt und fügt diesen dem Vector hinzu
 	 * Gibt ein Vector voller Contact Objekte zurück welche eine bestimmte value besitzen
 	 *
 	 */
@@ -92,6 +93,7 @@ public class ValueMapper {
 	 * FindAll.
 	 *
 	 *Gibt alle Value Objekte zurück welche mit V_ID und value befüllt sind
+	 *Hierfür holen wir V_ID und value aus der T_Value Tabelle und speichern diese in einem Value Objekt ab und fügen diese dem Vector hinzu
 	 *
 	 */
 	public Vector<Value> findAll(){
@@ -246,12 +248,11 @@ Connection con = DBConnection.connection();
 		/**
 		 * getAllContactsByPID.
 		 *
-		 *Befülle ein Vector mit Contacts welche eine bestimmte Property haben
+		 *Befüllt ein Vector mit Contacts welche eine bestimmte Property haben und gibt diesen Vactor zurück
 		 *Hierfür suchen wir nach C_ID in der T_Value Tabelle wo die P_ID der ID des übergebenen Objekts entspricht
-		 *Mit der C_ID befüllen wir ein Contact Objekt mit den 
+		 *Mit der C_ID befüllen wir ein Contact Objekt mit der Methode findByID und fügen diesen dem Vector hinzu
 		 *
-		 * @param property the property
-		 * @return the all contacts by PID
+		 *
 		 */
 		public Vector<Contact> getAllContactsByPID(Property property){
 			//TODO: Brauchen wir diese Methode?
@@ -275,10 +276,12 @@ Connection con = DBConnection.connection();
 				}
 		
 		/**
-		 * Gets the all properties by CID.
+		 * getAllPropertiesByCID.
 		 *
-		 * @param contact the contact
-		 * @return the all properties by CID
+		 *Befüllt ein Vector mit Property welche eine bestimmter Contact hat und gibt diesen Vactor zurück
+		 *Hierfür suchen wir nach P_ID in der T_Value Tabelle wo die C_ID der ID des übergebenen Objekts entspricht
+		 *Mit dieser P_ID werden alle type und P_ID aus T_Property geholt und in einem neuen Property Objekt gespeichert und den Vector hinzugefügt
+		 *
 		 */
 		public Vector <Property> getAllPropertiesByCID (Contact contact){
 			Connection con = DBConnection.connection();
@@ -292,7 +295,7 @@ Connection con = DBConnection.connection();
 				while (rs.next()){
 					ResultSet rs2 = stmt2.executeQuery ("SELECT P_ID, type FROM T_Property WHERE P_ID =" + rs.getInt("P_ID")+ " ORDER BY C_ID");
 					Property p = new Property();
-					p.setId(rs2.getInt("V_ID"));
+					p.setId(rs2.getInt("P_ID"));
 					p.setType(rs2.getString("type"));
 	
 					result.addElement(p);
@@ -310,10 +313,12 @@ Connection con = DBConnection.connection();
 		
 		
 		/**
-		 * Gets the all value by CID.
+		 * getAllValueByCID.
 		 *
-		 * @param contact the contact
-		 * @return the all value by CID
+		 *Befüllt ein Vector mit Value welche eine bestimmter Contact hat und gibt diesen Vactor zurück
+		 *Hierfür suchen wir nach V_ID und value in der T_Value Tabelle wo die C_ID der ID des übergebenen Objekts entspricht
+		 *Wir befüllen diese Daten in ein Value Objekt welches wir dem Vector hinzufügen
+		 *
 		 */
 		public Vector <Value> getAllValueByCID (Contact contact){
 			Connection con = DBConnection.connection();
@@ -321,7 +326,7 @@ Connection con = DBConnection.connection();
 			
 			try{
 				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT V_ID, value, C_ID FROM T_Value WHERE C_ID ="+ contact.getId()+ " ORDER BY C_ID");
+				ResultSet rs = stmt.executeQuery("SELECT V_ID, value FROM T_Value WHERE C_ID ="+ contact.getId()+ " ORDER BY C_ID");
 
 				while (rs.next()){
 					Value v = new Value();
