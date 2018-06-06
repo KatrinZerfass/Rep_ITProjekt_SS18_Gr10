@@ -48,6 +48,7 @@ public class ContactListMapper {
 				ContactList c = new ContactList();
 				c.setId(rs.getInt("CL_ID"));
 				c.setName((rs.getString("listname")));
+				c.setOwner(rs.getInt("U_ID"));
 				
 				
 				return c;	
@@ -79,6 +80,7 @@ public class ContactListMapper {
 						ContactList c = new ContactList();
 						c.setId(rs.getInt("CL_ID"));
 						c.setName(rs.getString("listname"));
+						c.setOwner(rs.getInt("U_ID"));
 						result.addElement(c);
 					}		
 				}catch(SQLException e2){
@@ -104,7 +106,7 @@ public class ContactListMapper {
 				ContactList c = new ContactList();
 				c.setId(rs.getInt("CL_ID"));
 				c.setName(rs.getString("listname"));
-				
+				c.setOwner(rs.getInt("U_ID"));
 				result.addElement(c);	
 			}
 		}
@@ -132,6 +134,7 @@ public class ContactListMapper {
 				ContactList c = new ContactList();
 				c.setId(rs.getInt("CL_ID"));
 				c.setName(rs.getString("listname"));
+				c.setOwner(rs.getInt("U_ID"));
 				result.addElement(c);	
 			}
 		}
@@ -254,6 +257,7 @@ Connection con = DBConnection.connection();
 					c.setFirstname(rs2.getString("firstName"));
 					c.setLastname(rs2.getString("lastName"));
 					c.setSex(rs2.getString("gender"));
+					c.setOwner(rs.getInt("U_ID"));
 					result.addElement(c);
 				}
 				

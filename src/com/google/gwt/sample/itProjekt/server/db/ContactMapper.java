@@ -50,6 +50,7 @@ public class ContactMapper {
 				c.setFirstname(rs.getString("firstName"));
 				c.setLastname(rs.getString("lastName"));
 				c.setSex(rs.getString("gender"));
+				c.setOwner(rs.getInt("U_ID"));
 				return c;	
 			}
 		}
@@ -80,6 +81,7 @@ Vector<Contact> result = new Vector<Contact>();
 				c.setFirstname(rs.getString("firstName"));
 				c.setLastname(rs.getString("lastName"));
 				c.setSex(rs.getString("gender"));
+				c.setOwner(rs.getInt("U_ID"));
 				result.addElement(c);
 			}		
 		}catch(SQLException e2){
@@ -107,6 +109,7 @@ Vector<Contact> result = new Vector<Contact>();
 				c.setFirstname(rs.getString("firstName"));
 				c.setLastname(rs.getString("lastName"));
 				c.setSex(rs.getString("gender"));
+				c.setOwner(rs.getInt("U_ID"));
 				result.addElement(c);	
 			}
 		}
@@ -137,6 +140,7 @@ Vector<Contact> result = new Vector<Contact>();
 						c.setFirstname(rs.getString("firstName"));
 						c.setLastname(rs.getString("lastName"));
 						c.setSex(rs.getString("gender"));
+						c.setOwner(rs.getInt("U_ID"));
 						result.addElement(c);
 					}		
 				}catch(SQLException e2){
