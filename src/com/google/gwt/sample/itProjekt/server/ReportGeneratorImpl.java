@@ -61,7 +61,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			
 			CompositeParagraph header=new CompositeParagraph();
 			
-			header.addSubParagraph(new SimpleParagraph("Nutzer: " + u.getFirstname() + " " + u.getLastname()));
+			header.addSubParagraph(new SimpleParagraph("Nutzer: " + u.getEmail()));
 			header.addSubParagraph(new SimpleParagraph("Nutzer-ID: " + u.getId()));
 			
 			report.setHeaderData(header);
@@ -103,7 +103,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		
 		CompositeParagraph header=new CompositeParagraph();
 		
-		header.addSubParagraph(new SimpleParagraph("Nutzer: " + u.getFirstname() + " " + u.getLastname()));
+		header.addSubParagraph(new SimpleParagraph("Nutzer: " + u.getEmail()));
 		header.addSubParagraph(new SimpleParagraph("Nutzer-ID: " + u.getId()));
 		
 		report.setHeaderData(header);
@@ -139,10 +139,10 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	else {
 		AllContactsWithValueReport report = new AllContactsWithValueReport();
 		
-		report.setTitle("Alle Kontakte mit der Ausprägung");
+		report.setTitle("Alle Kontakte mit der Ausprï¿½gung");
 		report.setCreated(new Date());
 			
-		report.setHeaderData(new SimpleParagraph("Gesuchte Ausprägung: " + v.getContent()));
+		report.setHeaderData(new SimpleParagraph("Gesuchte Ausprï¿½gung: " + v.getContent()));
 		
 		Row headline = new Row();
 		
