@@ -44,16 +44,16 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	private static final String SERVER_ERROR = "An error occurred while "
 			+ "attempting to contact the server. Please check your network " + "connection and try again.";
 
-//	private LoginInfo loginInfo = null;
-//	private VerticalPanel loginPanel = new VerticalPanel();
-//	private Label loginLabel = new Label(
-//	      "Please sign in to your Google Account to access the application.");
-//	private Anchor signInLink = new Anchor("Sign In");
-//	private Anchor signOutLink = new Anchor("Sign Out");
+	private LoginInfo loginInfo = null;
+	private VerticalPanel loginPanel = new VerticalPanel();
+	private Label loginLabel = new Label(
+	      "Please sign in to your Google Account to access the application.");
+	private Anchor signInLink = new Anchor("Sign In");
+	private Anchor signOutLink = new Anchor("Sign Out");
 
 
 	
-//	EditorAdministrationAsync editorAdministration = null;
+	EditorAdministrationAsync editorAdministration = null;
 
 	  
 	  public void onModuleLoad() {
@@ -63,22 +63,22 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		  * Login Status des Benutzers wird geprüft. (Wird erst zu einem späteren Zeitpunkt implementiert) 
 		  */
 	    
-//		LoginServiceAsync loginService = GWT.create(LoginService.class);
-//	    loginService.login(GWT.getHostPageBaseURL(), new AsyncCallback<LoginInfo>() {
-//	    public void onFailure(Throwable error) {
-//	     }
-//
-//	     public void onSuccess(LoginInfo result) {
-//	        loginInfo = result;
-//	       if(loginInfo.isLoggedIn()) {
-//	         loadApplication();
-//	      } else {
-//	          loadLogin();
-//	    }
-//	    }
-//	    });
-//	  }
-//	  
+		LoginServiceAsync loginService = GWT.create(LoginService.class);
+	    loginService.login(GWT.getHostPageBaseURL(), new AsyncCallback<LoginInfo>() {
+	    public void onFailure(Throwable error) {
+	     }
+
+	     public void onSuccess(LoginInfo result) {
+	        loginInfo = result;
+	       if(loginInfo.isLoggedIn()) {
+	         loadApplication();
+	      } else {
+	          loadLogin();
+	    }
+	    }
+	    });
+	  }
+	  
 	  
 	  
 	  /*
@@ -86,9 +86,9 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	   * die eigentliche Applikation.  
 	   */
 	  
-//	  public void loadApplication() {
+	    public void loadApplication() {
 		
-//		signOutLink.setHref(loginInfo.getLogoutUrl());
+		signOutLink.setHref(loginInfo.getLogoutUrl());
 		
 		ContactForm cf = new ContactForm();
 		VerticalPanel contactPanel = new VerticalPanel();
@@ -148,6 +148,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	
 		
 		RootPanel.get("Navigator").add(cellBrowser);
+		RootPanel.get("login").add(signOutLink);
 		Window.alert("6. finished onModuleLoad");
 		  
 	  }
@@ -156,12 +157,12 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	   * Das Login Panel wird aufgerufen wenn der Benutzer nicht eingeloggt ist. 
 	   */
 
-//	  private void loadLogin() {
-//		  
-//	    signInLink.setHref(loginInfo.getLoginUrl());
-//	    loginPanel.add(loginLabel);
-//	    loginPanel.add(signInLink);
-//	    RootPanel.get("Details").add(loginPanel);
-//	  }
-//	  
+	  private void loadLogin() {
+		  
+	    signInLink.setHref(loginInfo.getLoginUrl());
+	    loginPanel.add(loginLabel);
+	    loginPanel.add(signInLink);
+	    RootPanel.get("login").add(loginPanel);
+	  }
+	  
 }	 

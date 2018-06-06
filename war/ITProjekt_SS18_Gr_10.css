@@ -38,6 +38,12 @@ div#Navigator {
 
 }
 
+div#login {
+	float: right;
+    width: 70%;
+    height: 4em;
+    background-color: red;
+}
 
 div#Details {
 	float: right;
