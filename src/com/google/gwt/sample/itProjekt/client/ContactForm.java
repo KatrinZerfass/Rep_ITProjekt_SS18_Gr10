@@ -6,7 +6,10 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.sample.itProjekt.shared.EditorAdministrationAsync;
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
+import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
+import com.google.gwt.sample.itProjekt.shared.bo.User;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -20,7 +23,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class ContactForm extends VerticalPanel {
 	
-//	EditorAdministrationAsync editorVerwaltung = ClientsideSettings.getEditorAdministration();
+	EditorAdministrationAsync editorAdministration = ClientsideSettings.getEditorAdministration();
 	Contact contactToDisplay = null;
 	ContactListContactTreeViewModel clctvm = null;
 	
@@ -237,6 +240,7 @@ public class ContactForm extends VerticalPanel {
 		Button shareButton = new Button("Teilen");
 		Button deleteButton = new Button("Löschen");
 		Button saveChangesButton = new Button("Änderungen speichern");
+		Button addContactButton = new Button("Neuen Kontakt anlegen");
 		
 		contactTable.setWidget(8, 1, shareButton);
 		contactTable.setWidget(8, 2, deleteButton);
@@ -281,6 +285,8 @@ public class ContactForm extends VerticalPanel {
 				//tdb: wie �nderungen �bernehmen, wenn mehreres ge�ndert wurde?! + zuerst check, ob es der Eigent�mer ist
 			}
 		});
+		
+		addContactButton.addClickHandler(new newContactClickHandler());
 	
 		Window.alert("1. Ende der Methode onLoad von contactForm");
 	} //ende der Methode onLoad();
@@ -311,8 +317,50 @@ public class ContactForm extends VerticalPanel {
 		
 	}
 	
+	private class newContactClickHandler implements ClickHandler{
+
+		@Override
+		public void onClick(ClickEvent event) {
+			clearContactForm();
+			ContactList myContactsContactList = clctvm.getMyContactsContactList();
+
+		//TODO: if abfrage für m und w beim Kontakt anlegen
+			
+			editorAdministration.createContact(new User(), firstnameTextBox.getText(),
+					lastnameTextBox.getText(), sexListBox.getValue(0).toString(),
+					new GetContactCallback(myContactsContactList));
+				
+		}
+
+		
+		
+	}
+	
+	
+	private class GetContactCallback implements AsyncCallback<Contact>{
+		ContactList cl = null;
+		
+		public GetContactCallback(ContactList cl) {
+			this.cl = cl;
+		}
+		public void onFailure(Throwable caught) {
+			
+		}
+		
+		public void onSuccess(Contact result) {
+			clctvm.addContactOfContactList(cl, result);
+				
+			
+		}
+	}
+	
 	//todo: "Neuer Kontakt anlegen" - Button unten links
 	
+	
+	public void clearContactForm() {
+		// TODO Auto-generated method stub
+		
+	}
 	//todo: Methode "setSelected"
 	public void setSelected(Contact c) {
 		if (c != null){

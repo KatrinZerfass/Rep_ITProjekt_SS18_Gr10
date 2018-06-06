@@ -11,7 +11,10 @@ import com.google.gwt.sample.itProjekt.shared.LoginServiceAsync;
 import com.google.gwt.sample.itProjekt.shared.ReportGenerator;
 import com.google.gwt.sample.itProjekt.shared.ReportGeneratorAsync;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
+import com.google.gwt.sample.itProjekt.shared.bo.Value;
 import com.google.gwt.sample.itProjekt.shared.report.AllContactsOfUserReport;
+import com.google.gwt.sample.itProjekt.shared.report.AllContactsWithValueReport;
+import com.google.gwt.sample.itProjekt.shared.report.AllSharedContactsOfUserReport;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
@@ -88,6 +91,48 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	        	 });
 	         }	 
 		});
+		
+		allSharedContactsOfUserButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				reportGenerator.getEditorAdministration(new AsyncCallback<EditorAdministration>() {
+       			 public void onFailure(Throwable caught) {
+       				 
+       			 }
+   				 public void onSuccess(EditorAdministration result) {
+   					 User u=null;
+   					 u=result.getUserInformation(userTextBox.getText());
+   					 reportGenerator.generateAllSharedContactsOfUserReport(u, new AsyncCallback<AllSharedContactsOfUserReport>() {
+   						 public void onFailure(Throwable caught) {
+   							 
+   						 }
+   						 public void onSuccess(AllSharedContactsOfUserReport result) {
+   							 
+   						 }
+   					 });
+   				 	}
+				});
+			}
+		});
+		
+		allContactsWithValueButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				Value v = new Value();
+				v.setContent(userTextBox.getText());
+				 reportGenerator.generateAllContactsWithValueReport(v, new AsyncCallback<AllContactsWithValueReport>() {
+					 public void onFailure(Throwable caught) {
+						 
+					 }
+					 public void onSuccess(AllContactsWithValueReport result) {
+						 
+					 }
+				 });
+   			}
+		});
+			
+				
+			
 	
 		
 		LoginServiceAsync loginService = GWT.create(LoginService.class);
