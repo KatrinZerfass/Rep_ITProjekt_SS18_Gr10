@@ -50,6 +50,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 		
 		
 		
+		
 		LoginServiceAsync loginService = GWT.create(LoginService.class);
 	    loginService.login(GWT.getHostPageBaseURL(), new AsyncCallback<LoginInfo>() {
 	    public void onFailure(Throwable error) {
@@ -77,7 +78,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			addPanel.add(allContactsWithValue);
 			addPanel.add(allSharedContactsOfUser);
 			
-			
+			mainPanel.add(signOutLink);
 			mainPanel.add(addPanel);
 			RootPanel.get("report").add(mainPanel);
 			  

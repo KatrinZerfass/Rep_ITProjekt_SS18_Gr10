@@ -10,6 +10,7 @@
   <servlet-mapping>
     <servlet-name>loginService</servlet-name>
     <url-pattern>/itprojekt_ss18_gr_10/login</url-pattern>
+    <url-pattern>/itprojekt_ss18_gr_10_report/login</url-pattern>
   </servlet-mapping>
   
   <servlet>
@@ -36,10 +37,9 @@
   
   
   
-  
   <welcome-file-list>
-    <welcome-file>ITProjekt_SS18_Gr_10.html</welcome-file>
     <welcome-file>ITProjekt_SS18_Gr_10_Report.html</welcome-file>
+    <welcome-file>ITProjekt_SS18_Gr_10.html</welcome-file>
   </welcome-file-list>
 
 </web-app>
