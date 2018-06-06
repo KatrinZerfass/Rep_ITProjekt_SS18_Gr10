@@ -10,6 +10,8 @@ public class Value extends BusinessObject {
 
 	/** Der Inhalt einer Ausprägung. */
 	private String content;
+	
+	private int propertyid;
 
 	/**
 	 * Getter für die Ausprägung.
@@ -27,5 +29,13 @@ public class Value extends BusinessObject {
 	 */
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public int getPropertyid() {
+		return propertyid;
+	}
+
+	public void setPropertyid(int propertyid) {
+		this.propertyid = propertyid;
 	}
 }
