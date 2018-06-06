@@ -125,7 +125,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	void addContactList(ContactList cl) {
 		//erste Zeile zu Test-Zwecken hinzugefügt
 		//contactListDataProvider = new ListDataProvider<ContactList>();
-		contactListDataProvider.getList().add(cl);
+	//	contactListDataProvider.getList().add(cl);
 		
 		//nachfolgende Zeile steht nirgends bei R&T ?!
 		contactDataProviders.put(cl, new ListDataProvider<Contact>());

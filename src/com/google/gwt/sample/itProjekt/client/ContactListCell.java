@@ -15,7 +15,7 @@ public class ContactListCell extends AbstractCell<ContactList> {
 		
 		sb.appendHtmlConstant("<div>");
 	    sb.appendEscaped(value.getName());
-	    sb.appendHtmlConstant("<div>");
+	    sb.appendHtmlConstant("</div>");
 		
 	}
 
