@@ -240,7 +240,7 @@ public class ContactForm extends VerticalPanel {
 		Button shareButton = new Button("Teilen");
 		Button deleteButton = new Button("Löschen");
 		Button saveChangesButton = new Button("Änderungen speichern");
-		Button addContactButton = new Button("Neuen Kontakt anlegen");
+		Button newContactButton = new Button("Neuen Kontakt anlegen");
 		
 		contactTable.setWidget(8, 1, shareButton);
 		contactTable.setWidget(8, 2, deleteButton);
@@ -286,7 +286,7 @@ public class ContactForm extends VerticalPanel {
 			}
 		});
 		
-		addContactButton.addClickHandler(new newContactClickHandler());
+		newContactButton.addClickHandler(new newContactClickHandler());
 	
 		Window.alert("1. Ende der Methode onLoad von contactForm");
 	} //ende der Methode onLoad();
@@ -326,14 +326,11 @@ public class ContactForm extends VerticalPanel {
 
 		//TODO: if abfrage für m und w beim Kontakt anlegen
 			
-			editorAdministration.createContact(new User(), firstnameTextBox.getText(),
+			editorAdministration.createContact(firstnameTextBox.getText(),
 					lastnameTextBox.getText(), sexListBox.getValue(0).toString(),
 					new GetContactCallback(myContactsContactList));
 				
-		}
-
-		
-		
+		}		
 	}
 	
 	
@@ -354,13 +351,14 @@ public class ContactForm extends VerticalPanel {
 		}
 	}
 	
-	//todo: "Neuer Kontakt anlegen" - Button unten links
-	
-	
+
 	public void clearContactForm() {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
+	
 	//todo: Methode "setSelected"
 	public void setSelected(Contact c) {
 		if (c != null){
