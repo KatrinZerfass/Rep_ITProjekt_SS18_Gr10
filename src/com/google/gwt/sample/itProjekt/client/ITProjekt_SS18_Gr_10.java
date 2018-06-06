@@ -88,7 +88,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	  
 	    public void loadApplication() {
 		
-		signOutLink.setHref(loginInfo.getLogoutUrl());
+	  	signOutLink.setHref(loginInfo.getLogoutUrl());
 		
 		ContactForm cf = new ContactForm();
 		VerticalPanel contactPanel = new VerticalPanel();
@@ -124,8 +124,8 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		
 		CellBrowser.Builder<String> builder = new CellBrowser.Builder<>(clctvm, "Root");	
 		CellBrowser cellBrowser = builder.build(); 
-//		cellBrowser.setHeight("630");
-//		cellBrowser.setWidth("200");
+		cellBrowser.setHeight("100%");
+		cellBrowser.setWidth("100%");
 		cellBrowser.setAnimationEnabled(true);
 		cellBrowser.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 		
@@ -144,7 +144,8 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 			
 		
 		
-		
+//		VerticalPanel cellBrowserPanel = new VerticalPanel();
+//		cellBrowserPanel.add(cellBrowser);
 	
 		
 		RootPanel.get("Navigator").add(cellBrowser);
@@ -158,8 +159,8 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	   */
 
 	  private void loadLogin() {
-		  
-	    signInLink.setHref(loginInfo.getLoginUrl());
+		 
+		signInLink.setHref(loginInfo.getLoginUrl());
 	    loginPanel.add(loginLabel);
 	    loginPanel.add(signInLink);
 	    RootPanel.get("login").add(loginPanel);
