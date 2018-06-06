@@ -98,8 +98,21 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			
 			report.addRow(headline);
 
-			Vector<Contact> allContacts=this.admin.getAllOwnedContactsOf(u);
-			allContacts.addAll(this.admin.getAllSharedContactsWith(u));
+//			Vector<Contact> allContacts=this.admin.getAllOwnedContactsOf(u);
+//			allContacts.addAll(this.admin.getAllSharedContactsWith(u));
+			
+			Contact con=new Contact();
+			con.setFirstname("Josef");
+			con.setLastname("Hügel");
+			con.setSex("male");
+			Contact con1=new Contact();
+			con1.setFirstname("Heidi");
+			con1.setLastname("Almödi");
+			con1.setSex("female");
+			Vector<Contact> allContacts= new Vector<Contact>();
+			allContacts.add(con1);
+			allContacts.add(con);
+			
 			
 			for (Contact c: allContacts) {
 				Row contactRow=new Row();
@@ -143,7 +156,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		
 		report.addRow(headline);
 
-		Vector<Contact> allContacts=this.admin.getAllSharedContactsWith(u);
+		Vector<Contact> allContacts=this.admin.getAllSharedContactsWith(u.getEmail());
 		
 		for (Contact c: allContacts) {
 			Row contactRow=new Row();
