@@ -7,9 +7,21 @@ import java.sql.Statement;
 
 import com.google.gwt.sample.itProjekt.shared.bo.Property;
 
+/**
+ * The Class PropertyMapper.
+ */
 public class PropertyMapper {
-private static PropertyMapper  propertymapper = null;
+
+	/** Konstruktor für den PropertyMapper (Singleton) */
+	//static weil Singleton. Einzige Instanz dieser Klasse
+	private static PropertyMapper  propertymapper = null;
 	
+	/**
+	 * PropertyMapper.
+	 *
+	 *Falls noch kein ProperyMapper existiert erstellt er ein neuen PropertyMapper und gibt ihn zurück
+	 * 
+	 */
 	public static PropertyMapper propertyMapper() {
 		if (propertymapper == null){
 			propertymapper = new PropertyMapper();
@@ -18,6 +30,12 @@ private static PropertyMapper  propertymapper = null;
 		}
 
 
+/**
+ * Find by ID.
+ *
+ * @param pr the pr
+ * @return the property
+ */
 public Property findByID(Property pr){
 	Connection con = DBConnection.connection();
 	

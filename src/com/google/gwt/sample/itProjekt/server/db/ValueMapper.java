@@ -9,15 +9,35 @@ import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.sample.itProjekt.shared.bo.Value;
 import com.google.gwt.sample.itProjekt.shared.bo.Property;
 
+/**
+ * The Class ValueMapper.
+ */
 public class ValueMapper {
-private static ValueMapper valuemapper = null;
+
+	/** Konstruktor für den ValueMapper (Singleton) */
+	//static weil Singleton. Einzige Instanz dieser Klasse
+	private static ValueMapper valuemapper = null;
 	
+	/**
+	 * ValueMapper.
+	 *
+	 *Falls noch kein ValueMapper existiert erstellt er ein neuen ValueMapper und gibt ihn zurück
+	 * 
+	 */
 	public static ValueMapper  valueMapper() {
 		if (valuemapper == null){
 			valuemapper = new ValueMapper();
 		}
 		return valuemapper;
 		}
+	
+	/**
+	 * FindAllByValue.
+	 * 
+	 * Findet alle V_ID durch ein value welches als Filterkriterium dient
+	 * Gibt ein Vector voller Value Objekte zurück
+	 *
+	 */
 	public Vector<Value> findAllByValue(Value value){
 		Connection con = DBConnection.connection();
 		Vector<Value> result = new Vector<Value>();
@@ -39,6 +59,15 @@ private static ValueMapper valuemapper = null;
 				}
 				return result;
 			}
+	
+	/**
+	 * FindAllContactsByValue.
+	 *
+	 * Findet alle C_ID durch ein value welches als Filterkriterium dient
+	 * Mit dem Contect Objekt welches C_ID beinhaltet wird durch findByID im ContactMapper das Contact Objekt vollständig befüllt
+	 * Gibt ein Vector voller Contact Objekte zurück welche eine bestimmte value besitzen
+	 *
+	 */
 	public Vector<Contact> findAllContactsByValue(Value value){
 		Connection con = DBConnection.connection();
 		Vector<Contact> result = new Vector<Contact>();
@@ -58,6 +87,13 @@ private static ValueMapper valuemapper = null;
 				}
 				return result;
 			}
+	
+	/**
+	 * FindAll.
+	 *
+	 *Gibt alle Value Objekte zurück welche mit V_ID und value befüllt sind
+	 *
+	 */
 	public Vector<Value> findAll(){
 		Connection con = DBConnection.connection();
 		Vector<Value> result = new Vector<Value>();
@@ -78,7 +114,16 @@ private static ValueMapper valuemapper = null;
 				}
 				return result;
 			}
-	public Value insert(Value v, Contact c, Property p){
+	
+	/**
+	 * Insert.
+	 *
+	 *Sucht nach der hochsten V_ID um diese um eins zu erhöhen und als neue V_ID zu nutzen
+	 *Befüllt T_Value mit V_ID, P_ID, value, C_ID und isShared, welcher standardmässig auf True gesetzt ist, also als geteilt
+	 *Ein value wird zurückgegeben
+	 *
+	 */
+	public Value insert(Value value, Contact contact, Property property){
 		//Mit Default isShared=true
 		Connection con = DBConnection.connection();
 		
@@ -87,32 +132,42 @@ private static ValueMapper valuemapper = null;
 			ResultSet rs = stmt.executeQuery("SELECT MAX(V_ID) AS maxvid FROM T_Value");
 			if (rs.next()){
 				
-				v.setId(rs.getInt("maxvid")+1);
+				value.setId(rs.getInt("maxvid")+1);
 				Statement stmt2 = con.createStatement();
 				stmt2.executeUpdate("INSERT INTO T_Value (V_ID, P_ID, value, C_ID, isShared)"
 				+ " VALUES ("
-				+ v.getId() 
+				+ value.getId() 
 				+ ", " 
-				+ p.getId() 
+				+ property.getId() 
 				+ ", '" 
-				+ v.getContent() 
+				+ value.getContent() 
 				+ "', " 
-				+ c.getId() 
+				+ contact.getId() 
 				+ ", " 
 				//Default isShared Flag ist auf true gesetzt
 				+ true 
 				+ ")") ;
 						
-				return v;	
+				return value;	
 				
 			}
 		}
 		catch (SQLException e2){
 			e2.printStackTrace();
-			return v;
+			return value;
 		}
-		return v;}
-	public Value insert(Value v, Contact c, Property p, boolean isShared){
+		return value;}
+	
+	/**
+	 * Insert.
+	 *
+	 *Sucht nach der hochsten V_ID um diese um eins zu erhöhen und als neue V_ID zu nutzen
+	 *Befüllt T_Value mit V_ID, P_ID, value, C_ID und isShared
+	 *Mit dem isShared legen wir fest ob die value True oder False ist bzw. ob es geteilt ist oder nicht
+	 *Eine value wird zum Schluss zurückgegeben
+	 *
+	 */
+	public Value insert(Value value, Contact contact, Property property, boolean isShared){
 		Connection con = DBConnection.connection();
 		
 		try{
@@ -120,53 +175,66 @@ private static ValueMapper valuemapper = null;
 			ResultSet rs = stmt.executeQuery("SELECT MAX(V_ID) AS maxvid FROM T_Value");
 			if (rs.next()){
 				
-				v.setId(rs.getInt("maxvid")+1);
+				value.setId(rs.getInt("maxvid")+1);
 				Statement stmt2 = con.createStatement();
 				stmt2.executeUpdate("INSERT INTO T_Value (V_ID, P_ID, value, C_ID, isShared)"
 				+ " VALUES ("
-				+ v.getId() 
+				+ value.getId() 
 				+ ", " 
-				+ p.getId() 
+				+ property.getId() 
 				+ ", '" 
-				+ v.getContent() 
+				+ value.getContent() 
 				+ "', " 
-				+ c.getId() 
+				+ contact.getId() 
 				+ ", " 
 				+ isShared
 				+ ")") ;
 						
-				return v;	
+				return value;	
 				
 			}
 		}
 		catch (SQLException e2){
 			e2.printStackTrace();
-			return v;
+			return value;
 		}
-		return v;}
+		return value;}
 	
-		public Value update(Value v, Contact c, Property p, boolean isShared){
+		/**
+		 * Update.
+		 *
+		 *Update von Veränderungen falls sich value, P_ID, C_ID oder isShared ändert
+		 *Gibt ein value zurück
+		 * 
+		 */
+		public Value update(Value value, Contact contact, Property property, boolean isShared){
 			Connection con = DBConnection.connection();
 			
 			try{
 				Statement stmt = con.createStatement();
-				stmt.executeUpdate("UPDATE T_Value SET P_ID ="+p.getId()+", value ='" + v.getContent()+ "', C_ID=" + c.getId() +", isShared="
+				stmt.executeUpdate("UPDATE T_Value SET P_ID ="+property.getId()+", value ='" + value.getContent()+ "', C_ID=" + contact.getId() +", isShared="
 						+ isShared);
 			}
 		
 		catch (SQLException e2){
 			e2.printStackTrace();
-			return v;
+			return value;
 		}
-		return v;}
+		return value;}
 		
-		public void delete (Value v){
+		/**
+		 * Delete.
+		 *
+		 *Entfernt alles aus T_Value wo die V_ID der ID des übergebenen Objekts entspricht
+		 * 
+		 */
+		public void delete (Value value){
 Connection con = DBConnection.connection();
 			
 			try{
 				
 				Statement stmt = con.createStatement();
-				stmt.executeUpdate("DELETE FROM T_Value WHERE V_ID =" +v.getId());
+				stmt.executeUpdate("DELETE FROM T_Value WHERE V_ID =" +value.getId());
 			}
 		
 		catch (SQLException e2){
@@ -174,6 +242,17 @@ Connection con = DBConnection.connection();
 			
 		}
 }
+		
+		/**
+		 * getAllContactsByPID.
+		 *
+		 *Befülle ein Vector mit Contacts welche eine bestimmte Property haben
+		 *Hierfür suchen wir nach C_ID in der T_Value Tabelle wo die P_ID der ID des übergebenen Objekts entspricht
+		 *Mit der C_ID befüllen wir ein Contact Objekt mit den 
+		 *
+		 * @param property the property
+		 * @return the all contacts by PID
+		 */
 		public Vector<Contact> getAllContactsByPID(Property property){
 			//TODO: Brauchen wir diese Methode?
 			Connection con = DBConnection.connection();
@@ -195,6 +274,12 @@ Connection con = DBConnection.connection();
 					return result;
 				}
 		
+		/**
+		 * Gets the all properties by CID.
+		 *
+		 * @param contact the contact
+		 * @return the all properties by CID
+		 */
 		public Vector <Property> getAllPropertiesByCID (Contact contact){
 			Connection con = DBConnection.connection();
 			Vector <Property> result=new Vector <Property>();
@@ -224,6 +309,12 @@ Connection con = DBConnection.connection();
 		
 		
 		
+		/**
+		 * Gets the all value by CID.
+		 *
+		 * @param contact the contact
+		 * @return the all value by CID
+		 */
 		public Vector <Value> getAllValueByCID (Contact contact){
 			Connection con = DBConnection.connection();
 			Vector <Value> result = new Vector <Value>();

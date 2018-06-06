@@ -10,17 +10,34 @@ import java.util.Vector;
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
 
+/**
+ * The Class ContactMapper.
+ */
 public class ContactMapper {
 	
+	/** Konstruktor für den ContactMapper (Singleton) */
 	//static weil Singleton. Einzige Instanz dieser Klasse
 	private static ContactMapper  contactmapper = null;
 	
+	/**
+	 * ContactMapper.
+	 *
+	 *Falls noch kein ContactMapper existiert erstellt er ein neuen ContactMapper und gibt ihn zurück
+	 * 
+	 */
 	public static ContactMapper contactMapper() {
 		if (contactmapper == null){
 			contactmapper = new ContactMapper();
 		}
 		return contactmapper;
 		}
+	
+	/**
+	 * Find by ID.
+	 *
+	 * @param contact the contact
+	 * @return the contact
+	 */
 	public Contact findByID(Contact contact){
 		Connection con = DBConnection.connection();
 		
@@ -33,6 +50,7 @@ public class ContactMapper {
 				c.setFirstname(rs.getString("firstName"));
 				c.setLastname(rs.getString("lastName"));
 				c.setSex(rs.getString("gender"));
+				c.setOwner(rs.getInt("U_ID"));
 				return c;	
 			}
 		}
@@ -44,6 +62,11 @@ public class ContactMapper {
 	}
 	
 	
+	/**
+	 * Find all.
+	 *
+	 * @return the vector
+	 */
 	public Vector<Contact> findAll(){
 Connection con = DBConnection.connection();
 Vector<Contact> result = new Vector<Contact>();
@@ -58,6 +81,7 @@ Vector<Contact> result = new Vector<Contact>();
 				c.setFirstname(rs.getString("firstName"));
 				c.setLastname(rs.getString("lastName"));
 				c.setSex(rs.getString("gender"));
+				c.setOwner(rs.getInt("U_ID"));
 				result.addElement(c);
 			}		
 		}catch(SQLException e2){
@@ -66,6 +90,12 @@ Vector<Contact> result = new Vector<Contact>();
 		return result;
 	}
 	
+	/**
+	 * Find by name.
+	 *
+	 * @param contact the contact
+	 * @return the vector
+	 */
 	public Vector<Contact> findByName(Contact contact){
 		Connection con = DBConnection.connection();
 		Vector<Contact> result = new Vector<Contact>();
@@ -79,6 +109,7 @@ Vector<Contact> result = new Vector<Contact>();
 				c.setFirstname(rs.getString("firstName"));
 				c.setLastname(rs.getString("lastName"));
 				c.setSex(rs.getString("gender"));
+				c.setOwner(rs.getInt("U_ID"));
 				result.addElement(c);	
 			}
 		}
@@ -88,6 +119,13 @@ Vector<Contact> result = new Vector<Contact>();
 		}
 		return result;
 	}
+	
+	/**
+	 * Find all by UID.
+	 *
+	 * @param user the user
+	 * @return the vector
+	 */
 	public Vector<Contact> findAllByUID(User user){
 		Connection con = DBConnection.connection();
 		Vector<Contact> result = new Vector<Contact>();
@@ -102,6 +140,7 @@ Vector<Contact> result = new Vector<Contact>();
 						c.setFirstname(rs.getString("firstName"));
 						c.setLastname(rs.getString("lastName"));
 						c.setSex(rs.getString("gender"));
+						c.setOwner(rs.getInt("U_ID"));
 						result.addElement(c);
 					}		
 				}catch(SQLException e2){
@@ -110,6 +149,13 @@ Vector<Contact> result = new Vector<Contact>();
 				return result;
 			}
 	
+	/**
+	 * Insert.
+	 *
+	 * @param c the c
+	 * @param u the u
+	 * @return the contact
+	 */
 	public Contact insert(Contact c, User u){
 		Connection con = DBConnection.connection();
 		
@@ -151,6 +197,12 @@ Vector<Contact> result = new Vector<Contact>();
 	
 	
 	
+		/**
+		 * Update.
+		 *
+		 * @param c the c
+		 * @return the contact
+		 */
 		public Contact update(Contact c){
 			Connection con = DBConnection.connection();
 			
@@ -176,6 +228,11 @@ Vector<Contact> result = new Vector<Contact>();
 		}
 		return c;}
 		
+		/**
+		 * Delete.
+		 *
+		 * @param c the c
+		 */
 		public void delete (Contact c){
 Connection con = DBConnection.connection();
 
