@@ -91,4 +91,12 @@ public class Contact extends BusinessObject {
 	public void setSex(String sex) {
 		this.sex = sex;
 	}
+
+	public int getOwner() {
+		return owner;
+	}
+
+	public void setOwner(int owner) {
+		this.owner = owner;
+	}
 }
