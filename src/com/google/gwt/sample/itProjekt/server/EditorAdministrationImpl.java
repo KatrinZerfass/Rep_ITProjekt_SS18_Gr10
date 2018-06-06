@@ -49,25 +49,14 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 
 	public User getUserInformation (String email) throws IllegalArgumentException{
 		
-		User user = new User();
-
-		if(uMapper.findByEMail(email).getId() == 0) {
-			user.setEmail(email);
-			return uMapper.insert(user);
-		}
-		else {
-			return uMapper.findByEMail(email);
-		}
+		return uMapper.findByEMail(email);
 	}
 	
 	@Override
-	public User createUser(String firstname, String lastname, String sex, String email)
+	public User createUser(String email)
 			throws IllegalArgumentException {
 
 		User newuser = new User();
-		newuser.setFirstname(firstname);
-		newuser.setLastname(lastname);
-		newuser.setSex(sex);
 		newuser.setEmail(email);
 		
 		return uMapper.insert(newuser);

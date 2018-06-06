@@ -18,7 +18,7 @@ public interface EditorAdministrationAsync {
 
 	void getUserInformation(String email, AsyncCallback<User> callback);
 
-	void createUser(String firstname, String lastname, String sex, String email, AsyncCallback<User> callback);
+	void createUser(String email, AsyncCallback<User> callback);
 	
 	void addContactToContactList(ContactList contactlist, Contact contact, AsyncCallback<ContactList> callback);
 
