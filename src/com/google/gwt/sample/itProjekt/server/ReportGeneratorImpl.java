@@ -19,15 +19,29 @@ import com.google.gwt.sample.itProjekt.shared.report.SimpleParagraph;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 
+// 
+/**
+ * Die ReportGeneratorImpl Klasse.
+ */
 @SuppressWarnings("serial")
 public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportGenerator{
 	
-	//private static final long serialVersionUID = 1L;
+	/** Die Instanz der Klasse der . */
 	private EditorAdministration admin = null;
 	
+	/**
+	 * Instantiates a new report generator impl.
+	 *
+	 * @throws IllegalArgumentException the illegal argument exception
+	 */
 	public ReportGeneratorImpl () throws IllegalArgumentException {
 		
 	}
+
+	
+/**
+ * @see javax.servlet.GenericServlet#init()
+ */
 @Override
 	public void init() throws IllegalArgumentException{
 		EditorAdministrationImpl a =new EditorAdministrationImpl();
@@ -35,9 +49,15 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		this.admin=a;
 	}
 
-	protected EditorAdministration getEditorAdministration() {
+	/**
+	 * Gets the editor administration.
+	 *
+	 * @return the editor administration
+	 */
+@Override
+	public EditorAdministration getEditorAdministration() {
 		return this.admin;
-	}
+	}	
 
 /*@Override
 	public AllContactsReport generateAllContactsReport() throws IllegalArgumentException {
@@ -48,6 +68,9 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	    report.setCreated(new Date());
 	}*/
 
+/* (non-Javadoc)
+ * @see com.google.gwt.sample.itProjekt.shared.ReportGenerator#generateAllContactsOfUserReport(com.google.gwt.sample.itProjekt.shared.bo.User)
+ */
 @Override	
 	public AllContactsOfUserReport generateAllContactsOfUserReport(User u) throws IllegalArgumentException {
 		if(this.getEditorAdministration()==null) {
@@ -90,6 +113,9 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		}
 	}
 	
+/* (non-Javadoc)
+ * @see com.google.gwt.sample.itProjekt.shared.ReportGenerator#generateAllSharedContactsOfUserReport(com.google.gwt.sample.itProjekt.shared.bo.User)
+ */
 @Override	
 	public AllSharedContactsOfUserReport generateAllSharedContactsOfUserReport(User u) {
 	if(this.getEditorAdministration()==null) {
@@ -131,6 +157,9 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	}
 }
 
+/* (non-Javadoc)
+ * @see com.google.gwt.sample.itProjekt.shared.ReportGenerator#generateAllContactsWithValueReport(com.google.gwt.sample.itProjekt.shared.bo.Value)
+ */
 @Override	
 	public AllContactsWithValueReport generateAllContactsWithValueReport(Value v) {
 	if(this.getEditorAdministration()==null) {
