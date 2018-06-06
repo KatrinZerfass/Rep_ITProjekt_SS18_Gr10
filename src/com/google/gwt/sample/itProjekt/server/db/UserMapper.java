@@ -8,10 +8,21 @@ import java.util.Vector;
 
 import com.google.gwt.sample.itProjekt.shared.bo.User;
 
+/**
+ * The Class UserMapper.
+ */
 public class UserMapper {
 	
+	/** Konstruktor für den UserMapper (Singleton) */
+	//static weil Singleton. Einzige Instanz dieser Klasse
 	private static UserMapper  usermapper = null;
 	
+	/**
+	 * UserMapper.
+	 *
+	 *Falls noch kein UserMapper existiert erstellt er ein neuen UserMapper und gibt ihn zurück
+	 * 
+	 */
 	public static UserMapper userMapper() {
 		if (usermapper == null){
 			usermapper = new UserMapper();
@@ -20,6 +31,12 @@ public class UserMapper {
 		return usermapper;
 		}
 	
+	/**
+	 * Find by ID.
+	 *
+	 * @param uid the uid
+	 * @return the user
+	 */
 	public User findByID(int uid){
 		Connection con = DBConnection.connection();
 		
@@ -44,6 +61,12 @@ public class UserMapper {
 		return null;
 	}
 	
+	/**
+	 * Find by E mail.
+	 *
+	 * @param email the email
+	 * @return the user
+	 */
 	public User findByEMail(String email){
 		Connection con = DBConnection.connection();
 		
@@ -65,6 +88,12 @@ public class UserMapper {
 		
 		return null;
 	}
+	
+	/**
+	 * Find all.
+	 *
+	 * @return the vector
+	 */
 	public Vector<User> findAll(){
 		Connection con = DBConnection.connection();
 		Vector<User> result = new Vector<User>();
@@ -84,6 +113,13 @@ public class UserMapper {
 				}
 				return result;
 			}	
+	
+	/**
+	 * Insert.
+	 *
+	 * @param u the u
+	 * @return the user
+	 */
 	public User insert(User u){
 		Connection con = DBConnection.connection();
 		
@@ -111,6 +147,12 @@ public class UserMapper {
 		}
 		return u;}
 	
+	/**
+	 * Update.
+	 *
+	 * @param u the u
+	 * @return the user
+	 */
 	public User update(User u){
 		Connection con = DBConnection.connection();
 		
@@ -127,6 +169,12 @@ public class UserMapper {
 		return u;
 	}
 	return u;}
+	
+	/**
+	 * Delete.
+	 *
+	 * @param u the u
+	 */
 	public void delete (User u){
 		Connection con = DBConnection.connection();
 					

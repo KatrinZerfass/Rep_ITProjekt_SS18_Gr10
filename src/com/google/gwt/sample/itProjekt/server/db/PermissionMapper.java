@@ -11,15 +11,33 @@ import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
 import com.google.gwt.sample.itProjekt.shared.bo.Permission;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
 
+/**
+ * The Class PermissionMapper.
+ */
 public class PermissionMapper {
-private static PermissionMapper  permissionmapper = null;
+
+	/** Konstruktor für den PermissionMapper (Singleton) */
+	//static weil Singleton. Einzige Instanz dieser Klasse
+	private static PermissionMapper  permissionmapper = null;
 	
+	/**
+	 * PermissionMapper.
+	 *
+	 * Falls noch kein PermissionMapper existiert erstellt er ein neuen PermissionMapper und gibt ihn zurück
+	 * 
+	 */
 	public static PermissionMapper permissionMapper() {
 		if (permissionmapper == null){
 			permissionmapper = new PermissionMapper();
 		}
 		return permissionmapper;
 		}
+	
+	/**
+	 * Find all.
+	 *
+	 * @return the vector
+	 */
 	public Vector<Permission> findAll(){
 		Connection con = DBConnection.connection();
 		Vector<Permission> result = new Vector<Permission>();
@@ -61,6 +79,12 @@ private static PermissionMapper  permissionmapper = null;
 				return result;
 			}
 	
+/**
+ * Update.
+ *
+ * @param permission the permission
+ * @return the permission
+ */
 public Permission update(Permission permission){
 		
 		Connection con = DBConnection.connection();
@@ -96,6 +120,11 @@ public Permission update(Permission permission){
 		return permission;
 	}
 	
+	/**
+	 * Delete.
+	 *
+	 * @param permission the permission
+	 */
 	public void delete (Permission permission){
 		
 		Connection con = DBConnection.connection();
@@ -124,6 +153,11 @@ public Permission update(Permission permission){
 		}
 	}
 	
+	/**
+	 * Delete all by CLID.
+	 *
+	 * @param contactlist the contactlist
+	 */
 	public void deleteAllByCLID (ContactList contactlist){
 		
 		Connection con = DBConnection.connection();
@@ -139,6 +173,12 @@ public Permission update(Permission permission){
 }
 	
 	
+	/**
+	 * Share contact.
+	 *
+	 * @param permission the permission
+	 * @return the permission
+	 */
 	public Permission shareContact(Permission permission){
 		
 		
@@ -167,6 +207,12 @@ public Permission update(Permission permission){
 		}
 	
 	
+	/**
+	 * Share contact list.
+	 *
+	 * @param permission the permission
+	 * @return the permission
+	 */
 	public Permission shareContactList(Permission permission){
 		
 		
@@ -195,6 +241,12 @@ public Permission update(Permission permission){
 		}
 	
 
+/**
+ * Gets the all contacts by UID.
+ *
+ * @param user the user
+ * @return the all contacts by UID
+ */
 public Vector<Contact> getAllContactsByUID(User user){
 	
 	Connection con = DBConnection.connection();
@@ -216,6 +268,12 @@ public Vector<Contact> getAllContactsByUID(User user){
 			return result;
 		}
 
+/**
+ * Gets the all contact lists by UID.
+ *
+ * @param user the user
+ * @return the all contact lists by UID
+ */
 public Vector<ContactList> getAllContactListsByUID(User user){
 	
 	Connection con = DBConnection.connection();
