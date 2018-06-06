@@ -10,6 +10,8 @@ public class ContactList extends BusinessObject {
 	
 	/** Der Name der Kontaktliste. */
 	private String name;
+	
+	private int owner;
 
 	/**
 	 * Getter für den Namen.
@@ -27,5 +29,13 @@ public class ContactList extends BusinessObject {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public int getOwner() {
+		return owner;
+	}
+
+	public void setOwner(int owner) {
+		this.owner = owner;
 	}
 }
