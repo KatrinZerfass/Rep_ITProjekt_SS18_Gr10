@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
@@ -29,13 +30,16 @@ public class ContactForm extends VerticalPanel {
 	
 	TextBox firstnameTextBox = new TextBox();
 	TextBox lastnameTextBox = new TextBox();
-	Label birthdayLabel = new Label();
+	TextBox birthdayTextBox = new TextBox();
 	ListBox sexListBox = new ListBox();
+	TextBox streetTextBox = new TextBox();
+	TextBox houseNrTextBox = new TextBox();
+	TextBox plzTextBox = new TextBox();
+	TextBox cityTextBox = new TextBox();
 	
-	
-	//innere Klasse f�r LockButtons
+	//innere Klasse für LockButtons
 	public class LockButton extends PushButton{
-		
+				
 		public LockButton() {
 			lockUnlocked.setPixelSize(20, 20);
 			lockLocked.setPixelSize(20, 20);
@@ -51,8 +55,8 @@ public class ContactForm extends VerticalPanel {
 		});
 		}
 		private boolean isLocked = false;
-		Image lockUnlocked = new Image("schlossUnlocked.png");
-		Image lockLocked = new Image ("schlossLocked.png");
+		Image lockUnlocked = new Image("lock_unlocked.png");
+		Image lockLocked = new Image ("lock_locked.png");
 		
 		
 		
@@ -71,18 +75,18 @@ public class ContactForm extends VerticalPanel {
 			
 		
 	}
+			
 	
 	
 	
 	
-//	public ContactForm() {
+
 	public void onLoad() {
 		
 		super.onLoad();
 		
-		
-//		initWidget(this.contactTable);
-		//allumfassende Tabelle f�r die Darstellung von Kontakten
+	
+		//allumfassende Tabelle für die Darstellung von Kontakten
 		FlexTable contactTable = new FlexTable();
 		this.add(contactTable);
 		
@@ -99,6 +103,8 @@ public class ContactForm extends VerticalPanel {
 		Label firstnameLabel = new Label("Vorname: ");
 		Label lastnameLabel = new Label("Nachname: ");
 				
+		firstnameTextBox.getElement().setPropertyString("placeholder", "Vorname...");
+		lastnameTextBox.getElement().setPropertyString("placeholder", "Nachname...");
 		contactTable.setWidget(2, 0, firstnameLabel);
 		contactTable.setWidget(2, 1, firstnameTextBox);
 		contactTable.setWidget(2, 2, lastnameLabel);
@@ -106,17 +112,22 @@ public class ContactForm extends VerticalPanel {
 		
 		//Dritte Zeile
 		Label birthdateLabel = new Label("Geburtsdatum: ");
-		birthdayLabel.setText("01.01.2000");
+		birthdayTextBox.getElement().setPropertyString("placeholder", "Geburtsdatum...");
+		birthdayTextBox.setReadOnly(true);
 		Label sexLabel = new Label("Geschlecht: ");
 		
-
 		sexListBox.addItem("männlich");
 		sexListBox.addItem("weiblich");
 		
-		contactTable.setWidget(3, 0, birthdateLabel);
-		contactTable.setWidget(3, 1, birthdayLabel);
-		contactTable.setWidget(3, 2, sexLabel);
-		contactTable.setWidget(3, 3, sexListBox);
+		contactTable.setWidget(3, 0, sexLabel);
+		contactTable.setWidget(3, 1, sexListBox);
+		contactTable.setWidget(3, 2, birthdateLabel);
+		
+		HorizontalPanel birthdayPanel = new HorizontalPanel();
+		birthdayPanel.add(birthdayTextBox);
+		birthdayPanel.add(new LockButton());
+		contactTable.setWidget(3, 3, birthdayPanel);
+		
 		
 		
 		//Vierte Zeile
@@ -127,20 +138,17 @@ public class ContactForm extends VerticalPanel {
 		FlexTable addressTable = new FlexTable();
 		contactTable.setWidget(4, 1, addressTable);
 		
-	//	addressTable.getFlexCellFormatter().setColSpan(0,0,2);
-	//	addressTable.getFlexCellFormatter().setColSpan(1,1,2);
 		
-		TextBox streetTextBox = new TextBox();
+		streetTextBox.getElement().setPropertyString("placeholder", "Straße...");
 		addressTable.setWidget(0, 0, streetTextBox);
-		TextBox houseNrTextBox = new TextBox();
+		houseNrTextBox.getElement().setPropertyString("placeholder", "Hausnummer...");
 		addressTable.setWidget(0, 1, houseNrTextBox);
-		TextBox plzTextBox = new TextBox();
+		plzTextBox.getElement().setPropertyString("placeholder", "PLZ...");
 		addressTable.setWidget(1, 0, plzTextBox);
-		TextBox cityTextBox = new TextBox();
+		cityTextBox.getElement().setPropertyString("placeholder", "Wohnort...");
 		addressTable.setWidget(1, 1, cityTextBox);
 		
 		addressTable.getFlexCellFormatter().setRowSpan(0, 2, 2);
-		
 		addressTable.setWidget(0, 2, new LockButton());
 		
 //		//nur zum innere Rahmenlinien anzeigen lassen, zu Debug-Zwecken
@@ -150,42 +158,45 @@ public class ContactForm extends VerticalPanel {
 //			}
 //		}
 		
-		//F�nfte Zeile
-		contactTable.getFlexCellFormatter().setColSpan(5, 1, 3);
-		Label phoneNumbersLabel = new Label("Telefonnummer: ");
+		//Fünfte Zeile
+		Label phoneNumbersLabel = new Label("Telefonnummern: ");
 		contactTable.setWidget(5, 0, phoneNumbersLabel);
 		
 		FlexTable phoneNumbersTable = new FlexTable();
 //		phoneNumbersTable.getFlexCellFormatter().setColSpan(0,1,2);
 //		phoneNumbersTable.getFlexCellFormatter().setColSpan(1,1,2);
 //		phoneNumbersTable.getFlexCellFormatter().setColSpan(2,1,2);
-		
+		contactTable.getFlexCellFormatter().setColSpan(5, 1, 3);
 		contactTable.setWidget(5, 1, phoneNumbersTable);
 		
 		
-		Label mobileNrLabel = new Label("Mobil: ");
+		Button addPrivatePhoneNumberButton = new Button(" + ");
+		phoneNumbersTable.setWidget(0, 0, addPrivatePhoneNumberButton);
+		Button addBusinessPhoneNumberButton = new Button(" + ");
+		phoneNumbersTable.setWidget(1, 0, addBusinessPhoneNumberButton);
+
 		Label privateNrLabel = new Label("Privat: ");
-		Label businessNrLabel = new Label("Geschäftlich: ");
-		phoneNumbersTable.setWidget(0, 0, mobileNrLabel);
-		phoneNumbersTable.setWidget(1, 0, privateNrLabel);
-		phoneNumbersTable.setWidget(2, 0, businessNrLabel);
-
-		TextBox mobileNrTextBox = new TextBox();
+		Label businessNrLabel = new Label("Geschäftl.: ");
+		phoneNumbersTable.setWidget(0, 1, privateNrLabel);
+		phoneNumbersTable.setWidget(1, 1, businessNrLabel);
+		
 		TextBox privateNrTextBox = new TextBox();
+		privateNrTextBox.getElement().setPropertyString("placeholder", "Private Nummer...");
+		phoneNumbersTable.setWidget(0, 2, privateNrTextBox);
+		
 		TextBox businessNrTextBox = new TextBox();
-		phoneNumbersTable.setWidget(0, 1, mobileNrTextBox);
-		phoneNumbersTable.setWidget(1, 1, privateNrTextBox);
-		phoneNumbersTable.setWidget(2, 1, businessNrTextBox);
+		businessNrTextBox.getElement().setPropertyString("placeholder", "Geschäftl. Nummer...");
+		phoneNumbersTable.setWidget(1, 2, businessNrTextBox);
 		
-		phoneNumbersTable.setWidget(0, 2, new LockButton());
-		phoneNumbersTable.setWidget(1, 2, new LockButton());
-		phoneNumbersTable.setWidget(2, 2, new LockButton());
+		phoneNumbersTable.setWidget(0, 3, new LockButton());
+		phoneNumbersTable.setWidget(1, 3, new LockButton());
 		
-		Button addPhoneNumberButton = new Button("Hinzufügen");
-		phoneNumbersTable.getFlexCellFormatter().setRowSpan(0, 3, 3);
-		phoneNumbersTable.setWidget(0, 3, addPhoneNumberButton);
-
-
+		
+		Button deletePrivatePhoneNumberButton = new Button("Nr. löschen");
+		phoneNumbersTable.setWidget(0, 4, deletePrivatePhoneNumberButton);
+		Button deleteBusinessPhoneNumberButton = new Button("Nr. löschen");
+		phoneNumbersTable.setWidget(1, 4, deleteBusinessPhoneNumberButton);
+		
 //		//nur zum innere Rahmenlinien anzeigen lassen, zu Debug-Zwecken
 //		for (int i= 0; i<phoneNumbersTable.getRowCount(); i++) {
 //			for (int a=0; a<phoneNumbersTable.getCellCount(i); a++) {
@@ -195,7 +206,6 @@ public class ContactForm extends VerticalPanel {
 		
 		
 		//Sechste Zeile: eMail-Adresse
-		contactTable.getFlexCellFormatter().setColSpan(6, 1, 3);
 		Label eMailsLabel = new Label("e-Mail-Adressen: ");
 		contactTable.setWidget(6, 0, eMailsLabel);
 		
@@ -203,25 +213,21 @@ public class ContactForm extends VerticalPanel {
 //		phoneNumbersTable.getFlexCellFormatter().setColSpan(0,1,2);
 //		phoneNumbersTable.getFlexCellFormatter().setColSpan(1,1,2);
 //		phoneNumbersTable.getFlexCellFormatter().setColSpan(2,1,2);
-		
+		contactTable.getFlexCellFormatter().setColSpan(6, 1, 3);
 		contactTable.setWidget(6, 1, eMailsTable);
-		
-		Label privateEmailLabel = new Label("Privat: ");
-		Label businessEmailLabel = new Label("Geschäftlich: ");
-		eMailsTable.setWidget(0, 0, privateEmailLabel);
-		eMailsTable.setWidget(1, 0, businessEmailLabel);
 
-		TextBox privateEmailTextBox = new TextBox();
-		TextBox businessEmailTextBox = new TextBox();
-		eMailsTable.setWidget(0, 1, privateEmailTextBox);
-		eMailsTable.setWidget(1, 1, businessEmailTextBox);
+		Button addEmailButton = new Button(" + ");
+		eMailsTable.setWidget(0, 0, addEmailButton);
 		
+		TextBox emailTextBox = new TextBox();
+		emailTextBox.getElement().setPropertyString("placeholder", "e-Mail-Adresse...");
+		eMailsTable.setWidget(0, 1, emailTextBox);
 		eMailsTable.setWidget(0, 2, new LockButton());
-		eMailsTable.setWidget(1, 2, new LockButton());
 		
-		Button addEmailButton = new Button("Hinzufügen");
-		eMailsTable.getFlexCellFormatter().setRowSpan(0, 3, 2);
-		eMailsTable.setWidget(0, 3, addEmailButton);
+		Button deleteEmailButton = new Button ("e-Mail löschen");
+		eMailsTable.setWidget(0, 3, deleteEmailButton);
+		
+		
 		
 		
 		//Siebte Zeile: Arbeitsstelle
@@ -231,23 +237,57 @@ public class ContactForm extends VerticalPanel {
 		
 		FlexTable jobTable = new FlexTable();
 		contactTable.setWidget(7, 1, jobTable);
+		
+		Button addJobButton = new Button(" + ");
+		jobTable.setWidget(0, 0, addJobButton);
+		
 		TextBox jobTextBox = new TextBox();
-		jobTable.setWidget(0,0, jobTextBox);
+		jobTextBox.getElement().setPropertyString("placeholder", "Arbeitsstelle...");
+		jobTable.setWidget(0,1, jobTextBox);
 		jobTable.setWidget(0, 2, new LockButton());
 		
-		//Achte Zeile: Buttons
+		Button deleteJobButton = new Button("Arbeitsstelle löschen");
+		jobTable.setWidget(0, 3, deleteJobButton);
 		
-		Button shareButton = new Button("Teilen");
-		Button deleteButton = new Button("Löschen");
+		//Achte Zeile: Homepage
+		contactTable.getFlexCellFormatter().setColSpan(8, 1, 3);
+		Label homepageLabel = new Label("Homepage: ");
+		contactTable.setWidget(8, 0, homepageLabel);
+		
+		FlexTable homepageTable = new FlexTable();
+		contactTable.setWidget(8, 1, homepageTable);
+		
+		Button addHomepageButton = new Button(" + ");
+		homepageTable.setWidget(0, 0, addHomepageButton);
+		
+		TextBox homepageTextBox = new TextBox();
+		homepageTextBox.getElement().setPropertyString("placeholder", "Homepage...");
+		homepageTable.setWidget(0, 1, homepageTextBox);
+		homepageTable.setWidget(0, 2, new LockButton());
+		
+		Button deleteHomepageButton = new Button("Homepage löschen");
+		homepageTable.setWidget(0, 3, deleteHomepageButton);
+		
+		//Neunte Zeile: Buttons
+		contactTable.getFlexCellFormatter().setColSpan(9, 0, 4);
+		contactTable.getFlexCellFormatter().setHeight(9, 0, "30px");
+		HorizontalPanel buttonPanel = new HorizontalPanel();
+		Button addContactButton = new Button("Neuen Kontakt anlegen");
+		Button shareContactButton = new Button("Kontakt teilen");
+		Button deleteContactButton = new Button("Kontakt löschen");
 		Button saveChangesButton = new Button("Änderungen speichern");
-		Button newContactButton = new Button("Neuen Kontakt anlegen");
+	
+		contactTable.setWidget(9, 0, buttonPanel);
+		buttonPanel.add(addContactButton);
+		buttonPanel.add(shareContactButton);
+		buttonPanel.add(deleteContactButton);
+		buttonPanel.add(saveChangesButton);
 		
-		contactTable.setWidget(8, 1, shareButton);
-		contactTable.setWidget(8, 2, deleteButton);
-		contactTable.setWidget(8, 3, saveChangesButton);
+	
 		
 				
-		//Innere Rahmenlinien markieren zu Debug-Zwecken
+		
+	//	Innere Rahmenlinien markieren zu Debug-Zwecken
 		for (int i= 0; i<contactTable.getRowCount(); i++) {
 			for (int a=0; a<contactTable.getCellCount(i); a++) {
 				contactTable.getCellFormatter().addStyleName(i, a, "cellBordersBlack");
@@ -256,7 +296,13 @@ public class ContactForm extends VerticalPanel {
 		
 		
 		//ClickHandler
-		addPhoneNumberButton.addClickHandler(new ClickHandler(){
+		addPrivatePhoneNumberButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event) {
+				newPhoneNumberPopUp();
+			}	
+		});
+		
+		addBusinessPhoneNumberButton.addClickHandler(new ClickHandler(){
 			public void onClick(ClickEvent event) {
 				newPhoneNumberPopUp();
 			}	
@@ -268,13 +314,13 @@ public class ContactForm extends VerticalPanel {
 			}	
 		});
 		
-		shareButton.addClickHandler(new ClickHandler(){
+		shareContactButton.addClickHandler(new ClickHandler(){
 			public void onClick(ClickEvent event) {
 				shareContactPopUp();
 			}
 		});
 		
-		deleteButton.addClickHandler(new ClickHandler(){
+		deleteContactButton.addClickHandler(new ClickHandler(){
 			public void onClick(ClickEvent event) {
 				deletePopUp();
 			}
@@ -282,26 +328,29 @@ public class ContactForm extends VerticalPanel {
 		
 		saveChangesButton.addClickHandler(new ClickHandler(){
 			public void onClick(ClickEvent event) {
-				//tdb: wie �nderungen �bernehmen, wenn mehreres ge�ndert wurde?! + zuerst check, ob es der Eigent�mer ist
+				//tdb: wie Änderungen übernehmen, wenn mehreres geändert wurde?! + zuerst check, ob es der Eigentümer ist
 			}
 		});
-		
-		newContactButton.addClickHandler(new newContactClickHandler());
 	
-		Window.alert("1. Ende der Methode onLoad von contactForm");
-	} //ende der Methode onLoad();
+		addContactButton.addClickHandler(new newContactClickHandler());
 		
+		Window.alert("1. Ende der Methode onLoad von contactForm");	
+		
+	} //ende der Methode onLoad();
+	
+	
+	
 	
 	
 	public void newPhoneNumberPopUp() {
-		//check, ob es der Eigent�mer ist --> if not: Fehlermeldung-Popup
+		//check, ob es der Eigentümer ist --> if not: Fehlermeldung-Popup
 		Window.alert("Here you can add a new phone Number");
 		
 		
 	}
 	
 	public void newEmailPopUp() {
-		//check, ob es der Eigent�mer ist --> if not: Fehlermeldung-Popup
+		//check, ob es der Eigentümer ist --> if not: Fehlermeldung-Popup
 		Window.alert("Here you can add a new e-Mail adress");
 		
 	}
@@ -312,7 +361,7 @@ public class ContactForm extends VerticalPanel {
 	}
 	
 	public void deletePopUp() {
-		//check, ob es der Eigent�mer ist --> if not: nur Teilhaberschaft l�schen
+		//check, ob es der Eigentümer ist --> if not: nur Teilhaberschaft löschen
 		Window.alert("Here is going to appear a Window where you can select which values you want to delelte");
 		
 	}
