@@ -51,7 +51,7 @@ public class ValueMapper {
 						Value v = new Value();
 						v.setId(rs.getInt("V_ID"));
 						v.setContent(rs.getString("value"));
-						v.setPropertyid(rs.getInt("U_ID"));
+						v.setPropertyid(rs.getInt("P_ID"));
 						
 						
 						result.addElement(v);
