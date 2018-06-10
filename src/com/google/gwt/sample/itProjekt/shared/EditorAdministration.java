@@ -58,7 +58,7 @@ public interface EditorAdministration extends RemoteService{
 	
 	public Vector<Value> getAllValuesOf(Contact contact) throws IllegalArgumentException;
 	
-	public Value editValue(Contact contact, Property property, Value value, String content, boolean isshared) throws IllegalArgumentException;
+	Value editValue(Contact contact, int propertyId, Value value, String content, boolean isshared);
 	
 	public void deleteValue(Value value) throws IllegalArgumentException;
 	

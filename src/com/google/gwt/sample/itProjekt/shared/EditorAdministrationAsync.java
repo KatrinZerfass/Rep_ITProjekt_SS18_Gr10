@@ -32,7 +32,7 @@ public interface EditorAdministrationAsync {
 
 	void editContactList(int id, String name, AsyncCallback<ContactList> callback);
 
-	void editValue(Contact contact, Property property, Value value, String content, boolean isshared,
+	void editValue(Contact contact, int propertyId, Value value, String content, boolean isshared,
 			AsyncCallback<Value> callback);
 
 	void getAllContactListsOf(String email, AsyncCallback<Vector<ContactList>> callback);

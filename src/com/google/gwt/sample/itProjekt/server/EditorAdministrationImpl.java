@@ -219,12 +219,14 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	}
 
 	@Override
-	public Value editValue(Contact contact, Property property, Value value, String content, boolean isshared)
+	public Value editValue(Contact contact, int propertyId, Value value, String content, boolean isshared)
 			throws IllegalArgumentException {
 		
 		Value newvalue = new Value();
 		newvalue = value;
 		newvalue.setContent(content);
+		Property property = new Property();
+		property.setId(propertyId);
 		
 		return vMapper.update(newvalue, contact, property, isshared);
 	}
