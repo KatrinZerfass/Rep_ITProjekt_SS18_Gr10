@@ -234,4 +234,10 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		
 		vMapper.delete(value);
 	}
+
+	@Override
+	public Vector<Value> getAllValuesOf(Contact contact) throws IllegalArgumentException {
+		
+		return vMapper.getAllValueByCID(contact);
+	}
 }

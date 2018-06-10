@@ -64,4 +64,6 @@ public interface EditorAdministrationAsync {
 	void shareContactList(ContactList contactlist, User user, AsyncCallback<Permission> callback);
 
 	void getAllContactListsOfActiveUser(AsyncCallback<Vector<ContactList>> callback);
+
+	void getAllValuesOf(Contact contact, AsyncCallback<Vector<Value>> callback);
 }
