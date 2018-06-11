@@ -6,6 +6,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.sample.itProjekt.client.ContactForm.ValueDisplay;
 import com.google.gwt.sample.itProjekt.shared.EditorAdministrationAsync;
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
@@ -23,6 +24,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.ValueBoxBase;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
@@ -46,12 +48,22 @@ public class ContactForm extends VerticalPanel {
 	/**Ein Vector, in dem alle im Kontaktformular instantiierten ValueTextBoxes gespeichert werden. */
 	Vector<ValueTextBox> allValueTextBoxes = new Vector<ValueTextBox>();
 	
+	ValueDisplay birthdayDisplay;
+	Vector<ValueDisplay> privatePhoneNumberDisplays;
+	Vector<ValueDisplay> businessPhoneNumberDisplays;
+	Vector<ValueDisplay> eMailDisplays;
+	Vector<ValueDisplay> jobDisplays;
+	Vector<ValueDisplay> homepageDisplays;
+	
+	
+	/** Allumfassende Tabelle zur Darstellung von Kontakten */
+	FlexTable contactTable = new FlexTable();
 	
 	/** The firstname text box. */
-	TextBox firstnameTextBox = new TextBox();
+	ValueTextBox firstnameTextBox = new ValueTextBox();
 	
 	/** The lastname text box. */
-	TextBox lastnameTextBox = new TextBox();
+	ValueTextBox lastnameTextBox = new ValueTextBox();
 	
 	/** The birthday text box. */
 	ValueTextBox birthdayTextBox ;
@@ -59,17 +71,34 @@ public class ContactForm extends VerticalPanel {
 	/** The sex list box. */
 	ListBox sexListBox = new ListBox();
 	
-	/** The street text box. */
-	TextBox streetTextBox = new TextBox();
+	/** Tabelle, in der Anschrift angezeigt wird */
+	FlexTable addressTable = new FlexTable();
 	
-	/** The house nr text box. */
-	TextBox houseNrTextBox = new TextBox();
+	/** Tabelle, in der die privaten Telefonnummern eines Kontakt angezeigt werden */
+	FlexTable privatePhoneNumbersTable = new FlexTable();
 	
-	/** The plz text box. */
-	TextBox plzTextBox = new TextBox();
+	/**Tabelle, in der die geschäftlichen Telefonnummern eines Kontakt angezeigt werden */
+	FlexTable businessPhoneNumbersTable = new FlexTable();
 	
-	/** The city text box. */
-	TextBox cityTextBox = new TextBox();
+	/**Tabelle, in der die e-Mail-Adressen eines Kontakts angezeigt werden */
+	FlexTable eMailsTable = new FlexTable();
+	
+	/**Tabelle, in der die Homepages eines Kontakts angezeigt werden */
+	FlexTable homepagesTable = new FlexTable();
+	
+	/**Tabelle, in der die Arbeitsstellen eines Kontakts angezeigt werden */
+	FlexTable jobsTable = new FlexTable();
+	
+
+	
+	
+	ValueTextBox streetTextBox = new ValueTextBox();
+
+	ValueTextBox houseNrTextBox = new ValueTextBox();
+	
+	ValueTextBox plzTextBox = new ValueTextBox();
+	
+	ValueTextBox cityTextBox = new ValueTextBox();
 	
 	
 	/**
@@ -226,12 +255,13 @@ public class ContactForm extends VerticalPanel {
 		 * @param int die ID der referenzierten Eigenschaft
 		 */
 		public AddValueButton(int pid) {
+			this.setText(" + ");
 			this.propertyId= pid;
 		
-			
+					
 			this.addClickHandler(new ClickHandler() {
 				public void onClick (ClickEvent event) {
-					addValuePopUp();	
+					addValuePopUp(propertyId);	
 				}
 			});
 		}
@@ -261,12 +291,15 @@ public class ContactForm extends VerticalPanel {
 		private boolean isChanged=false;
 		
 		/** Die referenzierte Ausprägung, welche in der TextBox angezeigt wird. */
-		private Value value;
+		private Value value = null;
 		
 		/**
-		 * Konstruktor von ValueTextBox. Fügt der TextBox den valueChangeHandler hinzu,  welcher den Zustand von <code>isChanged</code> ändert.
+		 * Konstruktor von ValueTextBox. Fügt die TextBox dem Vector aller TextBoxen hinzu.
+		 * Und fügt der TextBox den valueChangeHandler hinzu,  welcher den Zustand von <code>isChanged</code> ändert.
 		 */
 		public ValueTextBox() {
+			
+			allValueTextBoxes.add(this);
 			
 			this.addValueChangeHandler(new ValueChangeHandler<String>(){
 
@@ -296,12 +329,13 @@ public class ContactForm extends VerticalPanel {
 		}
 		
 		/**
-		 * Setter von <code>value</code>
+		 * Setter von <code>value</code>. Setzt auch gleichzeitig den Inhalt als Text der TextBox.
 		 * 
 		 * @param Value die anzuzeigende Ausprägung
 		 */
 		public void setValue(Value v) {
 			this.value = v;
+			this.setText(value.getContent());
 		}
 	}
 	
@@ -329,28 +363,25 @@ public class ContactForm extends VerticalPanel {
 		 */
 		public ValueDisplay(ValueTextBox vtb) {
 			valueTextBox = vtb;
-			valueTextBox.setValue(getValue());
-			valueTextBox.setText(getValue().getContent());
-			
 			lockButton = new LockButton();
-			lockButton.setValue(getValue());
-			
 			deleteValueButton = new DeleteValueButton(" x ");
-			deleteValueButton.setValue(getValue());
-			
 			this.add(valueTextBox);
 			this.add(lockButton);
 			this.add(deleteValueButton);
-			
+				
 		}
 		
 		/**
-		 * Setter von <code>value</code>
+		 * Setter von <code>value</code>. Setzt die Ausprägung in alle Elemente des Displays, welche auf diese referenzieren.
 		 * 
 		 * @param Value die anzuzeigende Ausprägung
 		 */
 		public void setValue(Value v) {
 			this.value = v;
+			valueTextBox.setValue(value);
+			lockButton.setValue(value);
+			deleteValueButton.setValue(value);
+			
 		}
 		
 		/**
@@ -381,30 +412,7 @@ public class ContactForm extends VerticalPanel {
 		 */
 		//To Do! 
 		
-		
-		/*
-		 * Als nächstes wird geprüft, ob das Kontaktformular infolge des Auswählens eines bestimmten Kontakts aufgerufen wird. 
-		 * Ist dies der Fall, so werden alle Ausprägungen des contactToDisplay ausgelesen und in einem Vector<Values> gespeichert.
-		 */
-		if(contactToDisplay!= null) {
-			editorAdministration.getAllValuesOf(contactToDisplay, new AsyncCallback<Vector<Value>>() {
-				public void onFailure(Throwable t) {
-					
-				}
-				public void onSuccess(Vector<Value> values) {
-					for (Value v : values) {
-						allValuesOfContact = new Vector<Value>();
-						allValuesOfContact.add(v);
-					}
-				}
-			});
-		}
-		
 	
-		/*
-		 * Allumfassende Tabelle zur Darstellung von Kontakten
-		 */
-		FlexTable contactTable = new FlexTable();
 		this.add(contactTable);
 		
 		/*
@@ -433,17 +441,6 @@ public class ContactForm extends VerticalPanel {
 		contactTable.setWidget(2, 2, lastnameLabel);
 		contactTable.setWidget(2, 3, lastnameTextBox);
 		
-		/*
-		 * Wenn ein anzuzeigender Kontakt vorliegt, wird dessen Vor- und Nachname in den dazugehörigen TextBoxes angezeigt.
-		 * Ist dies nicht der Fall, werden die TextBoxes mit einem Placeholder aufgefüllt.
-		 */
-		if (contactToDisplay !=null) {
-			firstnameTextBox.setText(contactToDisplay.getFirstname());
-			lastnameTextBox.setText(contactToDisplay.getLastname());
-		}else {
-			firstnameTextBox.getElement().setPropertyString("placeholder", "Vorname...");
-			lastnameTextBox.getElement().setPropertyString("placeholder", "Nachname...");
-		}
 		
 		
 		/*
@@ -457,72 +454,32 @@ public class ContactForm extends VerticalPanel {
 		contactTable.setWidget(3, 0, sexLabel);
 		contactTable.setWidget(3, 1, sexListBox);
 		
-		/*
-		 * Abfrage und Anzeigen des Geschlechts, wenn ein Kontakt vorliegt.
-		 */
-		if(contactToDisplay!=null) {
-			if (contactToDisplay.getSex() == "m") {
-				sexListBox.setItemSelected(0, true);
-			}
-			else if(contactToDisplay.getSex() == "f"){
-				sexListBox.setItemSelected(1, true);
-			}
-			else if(contactToDisplay.getSex() == "o") {
-				sexListBox.setItemSelected(2, true);
-			}
-			sexListBox.setEnabled(false);
-		}
-		
-		
 		
 		Label birthdateLabel = new Label("Geburtsdatum: ");
 		contactTable.setWidget(3, 2, birthdateLabel);
 		
-		birthdayTextBox = new ValueTextBox();
-		allValueTextBoxes.add(birthdayTextBox);
+		contactTable.setWidget(3, 3, new ValueDisplay(new ValueTextBox()));
 		
-		ValueDisplay birthdayDisplay = new ValueDisplay(birthdayTextBox);
-		contactTable.setWidget(3, 2, birthdayDisplay);
+		
 		
 		/*
-		 * Wenn ein anzuzeigender Kontakt vorliegt, wird der dazugehörige Vector seiner Ausprägungen nach der Ausprägung mit der Eigenschaftsart
-		 * "Geburtsdatum" durchsucht (P_ID = 00000004). Ist sie gefunden, wird sie als Ausprägung des birthdayDisplay gesetzt.
-		 * Liegt kein anzuzeigender Kontakt vor, wird die TextBox mit einem Placeholder aufgefüllt.
-		 */ 
-		if (contactToDisplay !=null){
-			for(int i=0; i<allValuesOfContact.size(); i++) {
-				if(allValuesOfContact.get(i).getPropertyid()== 000000004) {
-					birthdayDisplay.setValue(allValuesOfContact.get(i));
-				}
-			}
-		}
-		else {
-			birthdayTextBox.getElement().setPropertyString("placeholder", "Geburtsdatum...");
-		}
-		
-		
-
-		
-		//Vierte Zeile
+		 * Vierte Zeile: Anschrift
+		 */
 		Label addressLabel = new Label("Anschrift: ");
 		contactTable.setWidget(4, 0, addressLabel);
 		
 		contactTable.getFlexCellFormatter().setColSpan(4, 1, 3);
-		FlexTable addressTable = new FlexTable();
 		contactTable.setWidget(4, 1, addressTable);
 		
-		
-		streetTextBox.getElement().setPropertyString("placeholder", "Straße...");
 		addressTable.setWidget(0, 0, streetTextBox);
-		houseNrTextBox.getElement().setPropertyString("placeholder", "Hausnummer...");
 		addressTable.setWidget(0, 1, houseNrTextBox);
-		plzTextBox.getElement().setPropertyString("placeholder", "PLZ...");
 		addressTable.setWidget(1, 0, plzTextBox);
-		cityTextBox.getElement().setPropertyString("placeholder", "Wohnort...");
 		addressTable.setWidget(1, 1, cityTextBox);
-		
+			
 		addressTable.getFlexCellFormatter().setRowSpan(0, 2, 2);
 		addressTable.setWidget(0, 2, new LockButton());
+		addressTable.getFlexCellFormatter().setRowSpan(0, 3, 2);
+		addressTable.setWidget(0, 3, new DeleteValueButton(" x "));
 		
 //		//nur zum innere Rahmenlinien anzeigen lassen, zu Debug-Zwecken
 //		for (int i= 0; i<addressTable.getRowCount(); i++) {
@@ -531,51 +488,49 @@ public class ContactForm extends VerticalPanel {
 //			}
 //		}
 		
-		//Fünfte Zeile
-		Label privatePhoneNumbersLabel = new Label("Telefonnummern privat: ");
-		contactTable.setWidget(5, 0, privatePhoneNumbersLabel);
+
+		/*
+		 * Fünfte Zeile: Telefonnummern privat (PID 2)
+		 */
+		VerticalPanel privatePhoneNumbersPanel = new VerticalPanel();
+		contactTable.setWidget(5, 0, privatePhoneNumbersPanel);
 		
-		FlexTable privatePhoneNumbersTable = new FlexTable();
-//		phoneNumbersTable.getFlexCellFormatter().setColSpan(0,1,2);
-//		phoneNumbersTable.getFlexCellFormatter().setColSpan(1,1,2);
-//		phoneNumbersTable.getFlexCellFormatter().setColSpan(2,1,2);
+		Label privatePhoneNumbersLabel = new Label("Telefonnummern privat: ");
+		privatePhoneNumbersPanel.add(privatePhoneNumbersLabel);
+			
+		AddValueButton addPrivatePhoneNumberButton = new AddValueButton(2);
+		privatePhoneNumbersPanel.add(addPrivatePhoneNumberButton);
+		
+		
 		contactTable.getFlexCellFormatter().setColSpan(5, 1, 3);
 		contactTable.setWidget(5, 1, privatePhoneNumbersTable);
 		
-		
-		Button addPrivatePhoneNumberButton = new Button(" + ");
-		privatePhoneNumbersTable.setWidget(0, 0, addPrivatePhoneNumberButton);
-		
-		
-		TextBox privateNrTextBox = new TextBox();
-		privateNrTextBox.getElement().setPropertyString("placeholder", "Private Nummer...");
-		privatePhoneNumbersTable.setWidget(0, 1, privateNrTextBox);
-		
-		privatePhoneNumbersTable.setWidget(0, 2, new LockButton());
-		
-		Button deletePrivatePhoneNumberButton = new Button("Nr. löschen");
-		privatePhoneNumbersTable.setWidget(0, 3, deletePrivatePhoneNumberButton);
+		privatePhoneNumbersTable.setWidget(0, 0, new ValueDisplay(new ValueTextBox()));
+	
 		
 		
-		//Sechste Zeile
+		/*
+		 * Sechste Zeile: Telefonnummer privat (PID 1)
+		 */
+		
+		VerticalPanel businessPhoneNumbersPanel = new VerticalPanel();
+		contactTable.setWidget(6, 0,  businessPhoneNumbersPanel);
+		
 		Label businessPhoneNumbersLabel = new Label("Telefonnummern geschäftl: ");
-		contactTable.setWidget(6, 0, businessPhoneNumbersLabel);
+		businessPhoneNumbersPanel.add(businessPhoneNumbersLabel);
 		
-		FlexTable businessPhoneNumbersTable = new FlexTable();
+		AddValueButton addBusinessPhoneNumberButton = new AddValueButton(1);
+		businessPhoneNumbersPanel.add(addBusinessPhoneNumberButton);
+			
+		
 		contactTable.getFlexCellFormatter().setColSpan(6, 1, 3);
 		contactTable.setWidget(6, 1, businessPhoneNumbersTable);
 		
-		Button addBusinessPhoneNumberButton = new Button(" + ");
-		businessPhoneNumbersTable.setWidget(0, 0, addBusinessPhoneNumberButton);
+		businessPhoneNumbersTable.setWidget(0, 0, new ValueDisplay(new ValueTextBox()));
 		
-		TextBox businessNrTextBox = new TextBox();
-		businessNrTextBox.getElement().setPropertyString("placeholder", "Geschäftl. Nummer...");
-		businessPhoneNumbersTable.setWidget(0, 1, businessNrTextBox);
 		
-		businessPhoneNumbersTable.setWidget(0, 2, new LockButton());
 			
-		Button deleteBusinessPhoneNumberButton = new Button("Nr. löschen");
-		businessPhoneNumbersTable.setWidget(0, 3, deleteBusinessPhoneNumberButton);
+		
 		
 //		//nur zum innere Rahmenlinien anzeigen lassen, zu Debug-Zwecken
 //		for (int i= 0; i<phoneNumbersTable.getRowCount(); i++) {
@@ -585,69 +540,72 @@ public class ContactForm extends VerticalPanel {
 //		}
 		
 		
-		//Siebte Zeile: eMail-Adresse
-		Label eMailsLabel = new Label("e-Mail-Adressen: ");
-		contactTable.setWidget(7, 0, eMailsLabel);
+
+		/*
+		 * Siebte Zeile: Telefonnummer privat (PID 1)
+		 */
 		
-		FlexTable eMailsTable = new FlexTable();
+		VerticalPanel eMailsPanel = new VerticalPanel();
+		contactTable.setWidget(7, 0,  eMailsPanel);
+		
+		Label eMailsLabel = new Label("e-Mail-Adressen: ");
+		eMailsPanel.add(eMailsLabel);
+		
+		AddValueButton addEmailButton = new AddValueButton(3);
+		eMailsPanel.add(addEmailButton);
+			
+		
 		contactTable.getFlexCellFormatter().setColSpan(7, 1, 3);
 		contactTable.setWidget(7, 1, eMailsTable);
-
-		Button addEmailButton = new Button(" + ");
-		eMailsTable.setWidget(0, 0, addEmailButton);
 		
-		TextBox emailTextBox = new TextBox();
-		emailTextBox.getElement().setPropertyString("placeholder", "e-Mail-Adresse...");
-		eMailsTable.setWidget(0, 1, emailTextBox);
-		eMailsTable.setWidget(0, 2, new LockButton());
-		
-		Button deleteEmailButton = new Button ("e-Mail löschen");
-		eMailsTable.setWidget(0, 3, deleteEmailButton);
+		eMailsTable.setWidget(0, 0, new ValueDisplay(new ValueTextBox()));
 		
 		
 		
+		/*
+		 * Achte Zeile: Homepages (PID 10)
+		 */
+		VerticalPanel homepagesPanel = new VerticalPanel();
+		contactTable.setWidget(8, 0,  homepagesPanel);
 		
-		//Achte Zeile: Arbeitsstelle
+		Label homepagesLabel = new Label("Homepages: ");
+		homepagesPanel.add(homepagesLabel);
+		
+		AddValueButton addHomepageButton = new AddValueButton(10);
+		homepagesPanel.add(addHomepageButton);
+			
+		
 		contactTable.getFlexCellFormatter().setColSpan(8, 1, 3);
-		Label jobLabel = new Label("Arbeitsstelle: ");
-		contactTable.setWidget(8, 0, jobLabel);
+		contactTable.setWidget(8, 1, homepagesTable);
 		
-		FlexTable jobTable = new FlexTable();
-		contactTable.setWidget(8, 1, jobTable);
+		homepagesTable.setWidget(0, 0, new ValueDisplay(new ValueTextBox()));
 		
-		Button addJobButton = new Button(" + ");
-		jobTable.setWidget(0, 0, addJobButton);
 		
-		TextBox jobTextBox = new TextBox();
-		jobTextBox.getElement().setPropertyString("placeholder", "Arbeitsstelle...");
-		jobTable.setWidget(0,1, jobTextBox);
-		jobTable.setWidget(0, 2, new LockButton());
 		
-		Button deleteJobButton = new Button("Arbeitsstelle löschen");
-		jobTable.setWidget(0, 3, deleteJobButton);
+		/*
+		 * Neunte Zeile: Arbeitsstelle (PID 5)
+		 */
+		VerticalPanel jobsPanel = new VerticalPanel();
+		contactTable.setWidget(9, 0,  jobsPanel);
 		
-		//Neunte Zeile: Homepage
+		Label jobsLabel = new Label("Arbeitsstellen: ");
+		jobsPanel.add(jobsLabel);
+		
+		AddValueButton addJobButton = new AddValueButton(5);
+		jobsPanel.add(addJobButton);
+			
+		
 		contactTable.getFlexCellFormatter().setColSpan(9, 1, 3);
-		Label homepageLabel = new Label("Homepage: ");
-		contactTable.setWidget(9, 0, homepageLabel);
+		contactTable.setWidget(9, 1, jobsTable);
 		
-		FlexTable homepageTable = new FlexTable();
-		contactTable.setWidget(9, 1, homepageTable);
+		jobsTable.setWidget(0, 0, new ValueDisplay(new ValueTextBox()));
 		
-		Button addHomepageButton = new Button(" + ");
-		homepageTable.setWidget(0, 0, addHomepageButton);
 		
-		TextBox homepageTextBox = new TextBox();
-		homepageTextBox.getElement().setPropertyString("placeholder", "Homepage...");
-		homepageTable.setWidget(0, 1, homepageTextBox);
-		homepageTable.setWidget(0, 2, new LockButton());
-		
-		Button deleteHomepageButton = new Button("Homepage löschen");
-		homepageTable.setWidget(0, 3, deleteHomepageButton);
 		
 		//Zehnte Zeile: Buttons
 		contactTable.getFlexCellFormatter().setColSpan(10, 0, 4);
 		contactTable.getFlexCellFormatter().setHeight(10, 0, "30px");
+		
 		HorizontalPanel buttonPanel = new HorizontalPanel();
 		Button addContactButton = new Button("Neuen Kontakt anlegen");
 		Button shareContactButton = new Button("Kontakt teilen");
@@ -672,108 +630,63 @@ public class ContactForm extends VerticalPanel {
 		}
 		
 		
-		//ClickHandler
-		addPrivatePhoneNumberButton.addClickHandler(new ClickHandler(){
-			public void onClick(ClickEvent event) {
-				newPhoneNumberPopUp();
-			}	
-		});
+//		//ClickHandler für die AddValueButtons
+//		addPrivatePhoneNumberButton.addClickHandler(new ClickHandler(){
+//			public void onClick(ClickEvent event) {
+//				
+//			}	
+//		});
+//		
+//		addBusinessPhoneNumberButton.addClickHandler(new ClickHandler(){
+//			public void onClick(ClickEvent event) {
+//				
+//			}	
+//		});
+//		
+//		addEmailButton.addClickHandler(new ClickHandler(){
+//			public void onClick(ClickEvent event) {
+//				
+//			}	
+//		});
+//		
+//		addHomepageButton.addClickHandler(new ClickHandler(){
+//			public void onClick(ClickEvent event) {
+//				
+//			}	
+//		});
+//		
+//		addJobButton.addClickHandler(new ClickHandler(){
+//			public void onClick(ClickEvent event) {
+//				
+//			}	
+//		});
 		
-		addBusinessPhoneNumberButton.addClickHandler(new ClickHandler(){
-			public void onClick(ClickEvent event) {
-				newPhoneNumberPopUp();
-			}	
-		});
-		
-		addEmailButton.addClickHandler(new ClickHandler(){
-			public void onClick(ClickEvent event) {
-				newEmailPopUp();
-			}	
-		});
-		
-		shareContactButton.addClickHandler(new ClickHandler(){
-			public void onClick(ClickEvent event) {
-				shareContactPopUp();
-			}
-		});
-		
-		deleteContactButton.addClickHandler(new ClickHandler(){
-			public void onClick(ClickEvent event) {
-				deletePopUp();
-			}
-		});
-		
-		saveChangesButton.addClickHandler(new ClickHandler(){
-			public void onClick(ClickEvent event) {
-				//tdb: wie Änderungen übernehmen, wenn mehreres geändert wurde?! + zuerst check, ob es der Eigentümer ist
-			}
-		});
-	
+		//ClickHandler für die Funktionsbuttons --> jeweils eigene innere Klasse, siehe unten
 		addContactButton.addClickHandler(new newContactClickHandler());
 		
-		Window.alert("1. Ende der Methode onLoad von contactForm");	
+		shareContactButton.addClickHandler(new shareContactClickHandler());
 		
-	} //ende der Methode onLoad();
+		deleteContactButton.addClickHandler(new deleteContactClickHandler());
+		
+		saveChangesButton.addClickHandler(new saveChangesClickHandler());
+				//tdb: wie Änderungen übernehmen, wenn mehreres geändert wurde?! 
+		
+	
+		
+		
+		Window.alert("1. Ende der Methode onLoad() von contactForm");	
+	} 
+	
 	
 	
 	
 	
 	
 	/**
-	 * New phone number pop up.
-	 */
-	public void newPhoneNumberPopUp() {
-		//check, ob es der Eigentümer ist --> if not: Fehlermeldung-Popup
-		Window.alert("Here you can add a new phone Number");
-		
-		
-	}
-	
-	/**
-	 * New email pop up.
-	 */
-	public void newEmailPopUp() {
-		//check, ob es der Eigentümer ist --> if not: Fehlermeldung-Popup
-		Window.alert("Here you can add a new e-Mail adress");
-		
-	}
-
-	/**
-	 * Share contact pop up.
-	 */
-	public void shareContactPopUp() {
-		Window.alert("Here you can select another user to share the contact with");
-		
-	}
-	
-	/**
-	 * Delete pop up.
-	 */
-	public void deletePopUp() {
-		//check, ob es der Eigentümer ist --> if not: nur Teilhaberschaft löschen
-		Window.alert("Here is going to appear a Window where you can select which values you want to delelte");
-		
-	}
-	
-	
-	/**
-	 * Adds the value pop up.
-	 */
-	public void addValuePopUp() {
-		//abfrage, welche pid
-		//button "Hinzufügen" hat ClickHandler, welcher createValue aufruft
-	}
-	
-	
-	
-	/**
-	 * The Class newContactClickHandler.
+	 * Die innere Klasse newContactClickHandler.
 	 */
 	private class newContactClickHandler implements ClickHandler{
 
-		/* (non-Javadoc)
-		 * @see com.google.gwt.event.dom.client.ClickHandler#onClick(com.google.gwt.event.dom.client.ClickEvent)
-		 */
 		@Override
 		public void onClick(ClickEvent event) {
 			clearContactForm();
@@ -806,16 +719,12 @@ public class ContactForm extends VerticalPanel {
 			this.cl = cl;
 		}
 		
-		/* (non-Javadoc)
-		 * @see com.google.gwt.user.client.rpc.AsyncCallback#onFailure(java.lang.Throwable)
-		 */
+		
 		public void onFailure(Throwable caught) {
 			
 		}
 		
-		/* (non-Javadoc)
-		 * @see com.google.gwt.user.client.rpc.AsyncCallback#onSuccess(java.lang.Object)
-		 */
+		
 		public void onSuccess(Contact result) {
 			clctvm.addContactOfContactList(cl, result);
 				
@@ -823,9 +732,50 @@ public class ContactForm extends VerticalPanel {
 		}
 	}
 	
-
 	/**
-	 * Clear contact form.
+	 * Die innere Klasse shareContactClickHandler.
+	 */
+	private class shareContactClickHandler implements ClickHandler{
+
+		@Override
+		public void onClick(ClickEvent event) {
+		
+		}
+	}
+	
+	/**
+	 * Die innere Klasse deleteContactClickHandler.
+	 */
+	private class deleteContactClickHandler implements ClickHandler{
+
+		@Override
+		public void onClick(ClickEvent event) {
+		
+		}
+	}
+	
+	/**
+	 * Die innere Klasse saveChangesClickHandler.
+	 */
+	private class saveChangesClickHandler implements ClickHandler{
+
+		@Override
+		public void onClick(ClickEvent event) {
+		
+		}
+	}
+	
+	
+	public void addValuePopUp(int pid) {
+		//popup, wo man neuen wert einträgt
+		//der wert aus der TextBox wird ausgelesen und mit ihm
+		// a) ein neues ValueDisplay erstellt und
+		// b) der Value in die Datenbank abgespeichert
+	}
+	
+	/**
+	 * Die Methode wird aufgerufen, wenn der addContactButton gedrückt wird. Die Felder leeren sich und ein neuer Kontakt
+	 * kann eingetragen werden.
 	 */
 	public void clearContactForm() {
 		// TODO Auto-generated method stub
@@ -835,28 +785,181 @@ public class ContactForm extends VerticalPanel {
 	
 	
 	/**
-	 * Sets the selected.
+	 * Zeigt den selektierten Kontakt an.
 	 *
-	 * @param c the new selected
+	 * @param Contact der selektierte Kontakt
 	 */
-	//todo: Methode "setSelected"
 	public void setSelected(Contact c) {
 		if (c != null){
 			contactToDisplay = c;
-			//test-zwecke
-			this.firstnameTextBox.setText(c.getFirstname());
-			this.lastnameTextBox.setText(c.getLastname());
-		//	this.birthdayLabel.setText(c.get); 				Geburtsdatum fehlt!!
-			this.sexListBox.setItemSelected(1, true);
+			
+			/*
+			 * Alle Ausprägungen des contactToDisplay werden ausgelesen und in einem Vector<Values> gespeichert.
+			 */
+			editorAdministration.getAllValuesOf(contactToDisplay, new AsyncCallback<Vector<Value>>() {
+				public void onFailure(Throwable t) {
+					
+				}
+				public void onSuccess(Vector<Value> values) {
+					for (Value v : values) {
+						allValuesOfContact = new Vector<Value>();
+						allValuesOfContact.add(v);
+					}
+				}
+			});
+			
+			/*
+			 * Vor und Nachname des Kontakts werden gesetzt.
+			 */
+			firstnameTextBox.setText(contactToDisplay.getFirstname());
+			lastnameTextBox.setText(contactToDisplay.getLastname());
+			
+			/*
+			 * Das Geschlecht des Kontaktes wird abgefragt und gesetzt.
+			 */
+			if (contactToDisplay.getSex() == "m") {
+				sexListBox.setItemSelected(0, true);
+			}
+			else if(contactToDisplay.getSex() == "f"){
+				sexListBox.setItemSelected(1, true);
+			}
+			else if(contactToDisplay.getSex() == "o") {
+				sexListBox.setItemSelected(2, true);
+			}
+			sexListBox.setEnabled(false);
+			
+			
+			
+			/*
+			 * Der Vector allValuesOfContact, welcher alle Ausprägungen des anzuzeigenden Kontaktes enthält, wird durchiteriert
+			 * und jede Ausprägung wird im dazugehörigen Display angezeigt.
+			 */ 
+			for(int i=0; i<allValuesOfContact.size(); i++) {
+				int pid = allValuesOfContact.get(i).getPropertyid();
+				switch (pid) {
+					case 1: pid= 1; // Tel.Nr. geschäftlich
+						if(((ValueDisplay) businessPhoneNumbersTable.getWidget(0,0)).getValue() == null){
+							((ValueDisplay) businessPhoneNumbersTable.getWidget(0,0)).setValue(allValuesOfContact.get(i));
+						}else {
+							/*
+							 * Gibt es mehrere Ausprägungen zu geschäftlichen Telefonnummern, wird eine neue Zeile in der FlexTable
+							 * erstellt und dieser ebenfalls ein ValueDisplay hinzugefügt.
+							 */
+							businessPhoneNumbersTable.setWidget(businessPhoneNumbersTable.getRowCount(), 0, 
+																					new ValueDisplay(new ValueTextBox()));
+							((ValueDisplay) businessPhoneNumbersTable.getWidget(businessPhoneNumbersTable.getRowCount(), 0))
+																					.setValue(allValuesOfContact.get(i));
+						}
+							
+					
+					case 2: pid= 2; // Tel.Nr. privat
+							if(((ValueDisplay) privatePhoneNumbersTable.getWidget(0,0)).getValue() == null){
+								((ValueDisplay) privatePhoneNumbersTable.getWidget(0,0)).setValue(allValuesOfContact.get(i));
+							}else {
+								/*
+								 * Gibt es mehrere Ausprägungen zu privaten Telefonnummern, wird eine neue Zeile in der FlexTable
+								 * erstellt und dieser ebenfalls ein ValueDisplay hinzugefügt.
+								 */
+								privatePhoneNumbersTable.setWidget(privatePhoneNumbersTable.getRowCount(), 0, 
+																						new ValueDisplay(new ValueTextBox()));
+								((ValueDisplay) privatePhoneNumbersTable.getWidget(privatePhoneNumbersTable.getRowCount(), 0))
+																						.setValue(allValuesOfContact.get(i));
+							}
+							
+					
+					case 3: pid= 3; // e-Mail
+							if(((ValueDisplay) eMailsTable.getWidget(0,0)).getValue() == null){
+								((ValueDisplay) eMailsTable.getWidget(0,0)).setValue(allValuesOfContact.get(i));
+							}else {
+								/*
+								 * Gibt es mehrere Ausprägungen zu e-Mail-Adressen, wird eine neue Zeile in der FlexTable
+								 * erstellt und dieser ebenfalls ein ValueDisplay hinzugefügt.
+								 */
+								eMailsTable.setWidget(eMailsTable.getRowCount(), 0, new ValueDisplay(new ValueTextBox()));
+								
+								((ValueDisplay) eMailsTable.getWidget(eMailsTable.getRowCount(), 0))
+																						.setValue(allValuesOfContact.get(i));
+							}
+					
+					case 4: pid= 4; // Geburtstag
+							((ValueDisplay) contactTable.getWidget(3,3)).setValue(allValuesOfContact.get(i));
+							
+							
+					case 5: pid= 5; // Arbeitsplatz
+							if(((ValueDisplay) jobsTable.getWidget(0,0)).getValue() == null){
+								((ValueDisplay) jobsTable.getWidget(0,0)).setValue(allValuesOfContact.get(i));
+							}else {
+								/*
+								 * Gibt es mehrere Ausprägungen zu Arbeitsstellen, wird eine neue Zeile in der FlexTable
+								 * erstellt und dieser ebenfalls ein ValueDisplay hinzugefügt.
+								 */
+								jobsTable.setWidget(jobsTable.getRowCount(), 0, new ValueDisplay(new ValueTextBox()));
+								
+								((ValueDisplay) jobsTable.getWidget(jobsTable.getRowCount(), 0)).setValue(allValuesOfContact.get(i));
+							}
+							
+					
+					case 6: pid= 6; // Straße
+							streetTextBox.setValue(allValuesOfContact.get(i));
+							((LockButton) addressTable.getWidget(0, 2)).setValue(allValuesOfContact.get(i));
+							((DeleteValueButton) addressTable.getWidget(0,3)).setValue(allValuesOfContact.get(i));
+			
+					case 7: pid= 7; // Hausnummer
+							houseNrTextBox.setValue(allValuesOfContact.get(i));
+							
+					
+					case 8: pid= 8; // PLZ
+							plzTextBox.setValue(allValuesOfContact.get(i));
+					
+					
+					case 9: pid= 9; // Wohnort
+							cityTextBox.setValue(allValuesOfContact.get(i));
+							
+					
+					case 10: pid= 10; // Homepage
+							 if(((ValueDisplay) homepagesTable.getWidget(0,0)).getValue() == null){
+								((ValueDisplay) homepagesTable.getWidget(0,0)).setValue(allValuesOfContact.get(i));
+							 }else {
+								/*
+								 * Gibt es mehrere Ausprägungen zu e-Mail-Adressen, wird eine neue Zeile in der FlexTable
+								 * erstellt und dieser ebenfalls ein ValueDisplay hinzugefügt.
+								 */
+								homepagesTable.setWidget(homepagesTable.getRowCount(), 0, new ValueDisplay(new ValueTextBox()));
+								
+								((ValueDisplay) homepagesTable.getWidget(homepagesTable.getRowCount(), 0)).setValue(allValuesOfContact.get(i));
+							 }
+						
+				}
+			}
+				
+		
+	
+		}else {
+			firstnameTextBox.getElement().setPropertyString("placeholder", "Vorname...");
+			lastnameTextBox.getElement().setPropertyString("placeholder", "Nachname...");
+			contactTable.getWidget(3,3).getElement().setPropertyString("placeholder", "Geburtsdatum...");
+			streetTextBox.getElement().setPropertyString("placeholder", "Straße...");
+			houseNrTextBox.getElement().setPropertyString("placeholder", "Hausnummer...");
+			plzTextBox.getElement().setPropertyString("placeholder", "PLZ...");
+			cityTextBox.getElement().setPropertyString("placeholder", "Wohnort...");
+		//	privatePhoneNumbersTable.getElement().setPropertyString("placeholder", "Private Nummer...");
+		// sind alles valueTextBoxen, vllt irgendwie vereinheitlichen?! EVtl oben in Konstruktor von
+			//ValueTextBox: pid abfragen und dann placeholder setzen?!
+			
+			//businessNrTextBox.getElement().setPropertyString("placeholder", "Geschäftl. Nummer...");
+			//mailTextBox.getElement().setPropertyString("placeholder", "e-Mail-Adresse...");
+			//homepageTextBox.getElement().setPropertyString("placeholder", "Homepage...");
+			//jobTextBox.getElement().setPropertyString("placeholder", "Arbeitsstelle...");
 		}
 	}
 	
 	/**
-	 * Sets the clctvm.
+	 * Setzt das referenzierte TreeViewModel
 	 *
-	 * @param clctvm the new clctvm
+	 * @param ContactListContactTreeViewModel das referenzierte TreeViewModel
 	 */
 	public void setClctvm(ContactListContactTreeViewModel clctvm) {
 		this.clctvm= clctvm;
+		
 	}
 }
