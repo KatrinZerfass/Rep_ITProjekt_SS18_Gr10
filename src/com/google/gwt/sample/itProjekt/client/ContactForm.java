@@ -622,6 +622,8 @@ public class ContactForm extends VerticalPanel {
 		buttonPanel.add(deleteContactButton);
 		buttonPanel.add(saveChangesButton);
 		
+		
+	
 	
 		
 				
@@ -978,6 +980,26 @@ public class ContactForm extends VerticalPanel {
 			//homepageTextBox.getElement().setPropertyString("placeholder", "Homepage...");
 			//jobTextBox.getElement().setPropertyString("placeholder", "Arbeitsstelle...");
 		}
+		
+		
+		//Add-, Lock-, DeleteButtons + saveChangesButton TODO: richtige buttons disablen
+				editorAdministration.getUser(new AsyncCallback<User>() {
+					public void onFailure(Throwable caught) {
+						System.out.println("Kein User ist angemeldet");
+					}
+					public void onSuccess(User result) {
+						if(result.getId() != contactToDisplay.getOwner()) {
+														
+							//saveChangesButton.setEnabled(false);
+							//deleteContactButton.setEnabled(false);
+							
+							
+						}
+						}
+						
+						
+				});
+		
 	}
 	
 	/**
