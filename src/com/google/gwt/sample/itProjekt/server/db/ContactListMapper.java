@@ -149,6 +149,27 @@ public class ContactListMapper {
 		}
 		return result;
 	}
+	//TODO: Robert hier Kommentar pls
+	public Vector <ContactList> findAllByCID(Contact contact){
+		Connection con = DBConnection.connection();
+		Vector<ContactList> result = new Vector<ContactList>();
+		
+		try{
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT DISTINCT CL_ID FROM T_Contact_Contactlist WHERE C_ID=" + contact.getId() + " ORDER BY CL_ID");
+			while (rs.next()){
+				ContactList cl = new ContactList();
+				cl.setId(rs.getInt("CL_ID"));
+								
+				result.addElement(ContactListMapper.contactListMapper().findByID(cl));
+			}
+		}
+		catch (SQLException e2){
+			e2.printStackTrace();
+			return result;
+		}
+		return result;
+	}
 	
 	/**
 	 * Insert.
