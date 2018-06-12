@@ -162,7 +162,7 @@ Vector<Contact> result = new Vector<Contact>();
 	 *Befüllt T_Contact mit C_ID, firstName, lastName, gender, create_date, mod_date, U_ID
 	 *Ein Contact wird zurückgegeben
 	 */
-	public Contact insert(Contact c, User u){
+	public Contact insert(Contact contact, User user){
 		Connection con = DBConnection.connection();
 		
 		try{
@@ -170,35 +170,35 @@ Vector<Contact> result = new Vector<Contact>();
 			ResultSet rs = stmt.executeQuery("SELECT MAX(C_ID) AS maxcid FROM T_Contact");
 			if (rs.next()){
 				
-				c.setId(rs.getInt("maxcid")+1);
+				contact.setId(rs.getInt("maxcid")+1);
 				Statement stmt2 = con.createStatement();
 				stmt2.executeUpdate("INSERT INTO T_Contact (C_ID, firstName, lastName, gender, create_date, mod_date, U_ID)"
 				+ " VALUES ("
-				+ c.getId() 
+				+ contact.getId() 
 				+ ", '" 
-				+ c.getFirstname() 
+				+ contact.getFirstname() 
 				+ "', '" 
-				+ c.getLastname() 
+				+ contact.getLastname() 
 				+ "', '" 
-				+ c.getSex() 
+				+ contact.getSex() 
 				+ "', " 
 				+ new Timestamp(System.currentTimeMillis())  
 				+ ", "
 				+ new Timestamp(System.currentTimeMillis()) 
 				+ ", " 
-				+ u.getId()
+				+ user.getId()
 				+ ")") ;
 						
-				return c;	
+				return contact;	
 				// TODO: Timestamp testen...
 				
 			}
 		}
 		catch (SQLException e2){
 			e2.printStackTrace();
-			return c;
+			return contact;
 		}
-		return c;}
+		return contact;}
 	
 	
 	
@@ -211,30 +211,30 @@ Vector<Contact> result = new Vector<Contact>();
 		 * Gibt ein Contact zurück
 		 * 
 		 */
-		public Contact update(Contact c){
+		public Contact update(Contact contact){
 			Connection con = DBConnection.connection();
 			
 			try{
 				Statement stmt = con.createStatement();
 				stmt.executeUpdate("UPDATE T_Contact SET firstName ='" 
-				+ c.getFirstname()
+				+ contact.getFirstname()
 				+ "', " 
 				+ "lastName ='" 
-				+ c.getLastname()
+				+ contact.getLastname()
 				+ "', " 
 				+ "gender='" 
-				+ c.getSex() 
+				+ contact.getSex() 
 				+ "', " 
 				+ "mod_date="
 				+ new java.sql.Timestamp(System.currentTimeMillis()) 
-				+ " WHERE C_ID =" + c.getId());
+				+ " WHERE C_ID =" + contact.getId());
 			}
 		
 		catch (SQLException e2){
 			e2.printStackTrace();
-			return c;
+			return contact;
 		}
-		return c;}
+		return contact;}
 		
 		/**
 		 * Delete.
@@ -244,13 +244,13 @@ Vector<Contact> result = new Vector<Contact>();
 		 * der nächste Schritt entfernt alles aus T_Contact wo die C_ID der ID des übergebenen Objekts entspricht
 		 * 
 		 */
-		public void delete (Contact c){
+		public void delete (Contact contact){
 Connection con = DBConnection.connection();
 
 			try{
 	
 				Statement stmt2 = con.createStatement();
-				stmt2.executeUpdate("DELETE FROM T_Permission_Contact WHERE C_ID =" +c.getId());
+				stmt2.executeUpdate("DELETE FROM T_Permission_Contact WHERE C_ID =" +contact.getId());
 			}
 
 			catch (SQLException e2){
@@ -261,7 +261,7 @@ Connection con = DBConnection.connection();
 			try{
 				
 				Statement stmt = con.createStatement();
-				stmt.executeUpdate("DELETE FROM T_Contact WHERE C_ID =" +c.getId());
+				stmt.executeUpdate("DELETE FROM T_Contact WHERE C_ID =" +contact.getId());
 			}
 		
 		catch (SQLException e2){

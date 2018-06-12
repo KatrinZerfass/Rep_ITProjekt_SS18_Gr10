@@ -37,20 +37,20 @@ public class ContactListMapper {
 	 *
 	 * Findet ContactList durch eine CL_ID und speichert die dazugehörigen Werte (CL_ID, listname und U_ID) in einem ContactList Objekt ab und gibt dieses wieder
 	 */
-	public ContactList findByID(ContactList cl){
+	public ContactList findByID(ContactList contactlist){
 		Connection con = DBConnection.connection();
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT CL_ID, listname, U_ID FROM T_ContactList WHERE CL_ID =" + cl.getId() + " ORDER BY CL_ID");
+			ResultSet rs = stmt.executeQuery("SELECT CL_ID, listname, U_ID FROM T_ContactList WHERE CL_ID =" + contactlist.getId() + " ORDER BY CL_ID");
 			if (rs.next()){
-				ContactList c = new ContactList();
-				c.setId(rs.getInt("CL_ID"));
-				c.setName((rs.getString("listname")));
-				c.setOwner(rs.getInt("U_ID"));
+				ContactList cl = new ContactList();
+				cl.setId(rs.getInt("CL_ID"));
+				cl.setName((rs.getString("listname")));
+				cl.setOwner(rs.getInt("U_ID"));
 				
 				
-				return c;	
+				return cl;	
 			}
 		}
 		catch (SQLException e2){
@@ -79,11 +79,11 @@ public class ContactListMapper {
 					ResultSet rs = stmt.executeQuery("SELECT CL_ID, listname, U_ID FROM T_ContactList ORDER BY CL_ID");
 					
 					while (rs.next()){
-						ContactList c = new ContactList();
-						c.setId(rs.getInt("CL_ID"));
-						c.setName(rs.getString("listname"));
-						c.setOwner(rs.getInt("U_ID"));
-						result.addElement(c);
+						ContactList cl = new ContactList();
+						cl.setId(rs.getInt("CL_ID"));
+						cl.setName(rs.getString("listname"));
+						cl.setOwner(rs.getInt("U_ID"));
+						result.addElement(cl);
 					}		
 				}catch(SQLException e2){
 					e2.printStackTrace();
@@ -106,11 +106,11 @@ public class ContactListMapper {
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT CL_ID, listname, U_ID FROM T_ContactList WHERE listname ='"+ name + "' ORDER BY CL_ID");
 			while (rs.next()){
-				ContactList c = new ContactList();
-				c.setId(rs.getInt("CL_ID"));
-				c.setName(rs.getString("listname"));
-				c.setOwner(rs.getInt("U_ID"));
-				result.addElement(c);	
+				ContactList cl = new ContactList();
+				cl.setId(rs.getInt("CL_ID"));
+				cl.setName(rs.getString("listname"));
+				cl.setOwner(rs.getInt("U_ID"));
+				result.addElement(cl);	
 			}
 		}
 		catch (SQLException e2){
@@ -128,19 +128,19 @@ public class ContactListMapper {
 	 * Gibt ein Vector voller ContactList Objekte zurück welche ein User erstellt hat
 	 * 
 	 */
-	public Vector <ContactList> findAllByUID(User u){
+	public Vector <ContactList> findAllByUID(User user){
 		Connection con = DBConnection.connection();
 		Vector<ContactList> result = new Vector<ContactList>();
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT CL_ID, listname, U_ID FROM T_ContactList WHERE U_ID=" + u.getId() + " ORDER BY CL_ID");
+			ResultSet rs = stmt.executeQuery("SELECT CL_ID, listname, U_ID FROM T_ContactList WHERE U_ID=" + user.getId() + " ORDER BY CL_ID");
 			while (rs.next()){
-				ContactList c = new ContactList();
-				c.setId(rs.getInt("CL_ID"));
-				c.setName(rs.getString("listname"));
-				c.setOwner(rs.getInt("U_ID"));
-				result.addElement(c);	
+				ContactList cl = new ContactList();
+				cl.setId(rs.getInt("CL_ID"));
+				cl.setName(rs.getString("listname"));
+				cl.setOwner(rs.getInt("U_ID"));
+				result.addElement(cl);	
 			}
 		}
 		catch (SQLException e2){
@@ -158,7 +158,7 @@ public class ContactListMapper {
 	 *Ein ContactList wird zurückgegeben
 	 *
 	 */
-	public ContactList insert(ContactList c, User u){
+	public ContactList insert(ContactList contactlist, User user){
 		Connection con = DBConnection.connection();
 		
 		try{
@@ -166,26 +166,26 @@ public class ContactListMapper {
 			ResultSet rs = stmt.executeQuery("SELECT MAX(CL_ID) AS maxclid FROM T_ContactList");
 			if (rs.next()){
 				
-				c.setId(rs.getInt("maxclid")+1);
+				contactlist.setId(rs.getInt("maxclid")+1);
 				Statement stmt2 = con.createStatement();
 				stmt2.executeUpdate("INSERT INTO T_ContactList (CL_ID, listname, U_ID)"
 				+ " VALUES ("
-				+ c.getId() 
+				+ contactlist.getId() 
 				+ ", '" 
-				+ c.getName() 
+				+ contactlist.getName() 
 				+ "', "
-				+ u.getId() 
+				+ user.getId() 
 				+ ")") ;
 						
-				return c;	
+				return contactlist;	
 				
 			}
 		}
 		catch (SQLException e2){
 			e2.printStackTrace();
-			return c;
+			return contactlist;
 		}
-		return c;}
+		return contactlist;}
 	
 		/**
 		 * Update.
@@ -193,19 +193,19 @@ public class ContactListMapper {
 		 * Update von Veränderungen falls sich der listname ändert
 		 * Gibt ein ContactList zurück
 		 */
-		public ContactList update(ContactList c){
+		public ContactList update(ContactList contactlist){
 			Connection con = DBConnection.connection();
 			
 			try{
 				Statement stmt = con.createStatement();
-				stmt.executeUpdate("UPDATE T_ContactList SET listname ='" + c.getName() + "' " + "WHERE CL_ID =" + c.getId());
+				stmt.executeUpdate("UPDATE T_ContactList SET listname ='" + contactlist.getName() + "' " + "WHERE CL_ID =" + contactlist.getId());
 			}
 		
 		catch (SQLException e2){
 			e2.printStackTrace();
-			return c;
+			return contactlist;
 		}
-		return c;}
+		return contactlist;}
 		
 		/**
 		 * Delete.
@@ -215,14 +215,14 @@ public class ContactListMapper {
 		 * der nächste Schritt entfernt alles aus T_ContactList wo die CL_ID der ID des übergebenen Objekts entspricht
 		 * 
 		 */
-		public void delete (ContactList c){
+		public void delete (ContactList contactlist){
 Connection con = DBConnection.connection();
 
 			
 		try{
 	
 				Statement stmt2 = con.createStatement();
-					stmt2.executeUpdate("DELETE FROM T_Permission_Contactslist WHERE CL_ID =" + c.getId());
+					stmt2.executeUpdate("DELETE FROM T_Permission_Contactslist WHERE CL_ID =" + contactlist.getId());
 			}
 
 			catch (SQLException e2){
@@ -232,7 +232,7 @@ Connection con = DBConnection.connection();
 		try{
 				
 				Statement stmt = con.createStatement();
-				stmt.executeUpdate("DELETE FROM T_ContactsList WHERE CL_ID =" + c.getId());
+				stmt.executeUpdate("DELETE FROM T_ContactsList WHERE CL_ID =" + contactlist.getId());
 			}
 		
 		catch (SQLException e2){
@@ -245,10 +245,11 @@ Connection con = DBConnection.connection();
 		 *
 		 * Befüllt den Vector mit Contacts die in einer ContactList enthalten sind
 		 * Hierfür durchsuchen wir die T_Contact_ContactList Tabelle nach C_ID wo die CL_ID der ID des übergebenen Objektes entspricht
-		 * Diese C_ID nutzen wir um die C_ID, firstName, lastName, gender und U_ID aus der T_Contact zu holen wo die C_ID 
+		 * Diese C_ID nutzen wir um die C_ID, firstName, lastName, gender und U_ID aus der T_Contact zu holen wo die C_ID der ID des ResultSets entspricht (Die C_ID welche wir aus T_Contact_Contactlist erhalten haben)
+		 * Die Werte aus der T_Contact speichern wir in einem Contact Objekt ab und geben den Vector zurück
 		 *
 		 */
-		public Vector <Contact> getAllContacts(ContactList cl){
+		public Vector <Contact> getAllContacts(ContactList contactlist){
 			Connection con = DBConnection.connection();
 			
 			Vector<Contact> result = new Vector<Contact>();
@@ -256,7 +257,7 @@ Connection con = DBConnection.connection();
 			try{
 				Statement stmt = con.createStatement();
 				Statement stmt2 = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT DISTINCT C_ID FROM T_Contact_Contactlist WHERE CL_ID =" + cl.getId() + " ORDER BY C_ID");
+				ResultSet rs = stmt.executeQuery("SELECT DISTINCT C_ID FROM T_Contact_Contactlist WHERE CL_ID =" + contactlist.getId() + " ORDER BY C_ID");
 
 				
 				
@@ -282,56 +283,58 @@ Connection con = DBConnection.connection();
 		}	
 		
 		/**
-		 * Adds the contact.
+		 * AddContact.
 		 *
-		 * @param cl the cl
-		 * @param c the c
-		 * @return the contact list
+		 * Fügt der ContactList einen Contact hinzu
+		 * Hierfür fügen wir der T_Contact_ContactList die CL_ID und C_ID hinzu und geben die ContactList zurück
+		 * 
+		 * 
 		 */
-		public ContactList addContact(ContactList cl, Contact c){
+		public ContactList addContact(ContactList contactlist, Contact contact){
 			Connection con = DBConnection.connection();
 			
 			try{
 				Statement stmt = con.createStatement();
 				stmt.executeUpdate("INSERT INTO T_Contact_ContactList (CL_ID, C_ID)"
 				+ " VALUES ('"
-				+ cl.getId() 
+				+ contactlist.getId() 
 				+ "', '" 
-				+ c.getId() 
+				+ contact.getId() 
 				+ "')") ;
 						
-				return cl;	
+				return contactlist;	
 				
 			}
 			catch (SQLException e2){
 				e2.printStackTrace();
-				return cl;
+				return contactlist;
 			}
 			}
 		
 		/**
-		 * Removes the contact.
-		 *
-		 * @param cl the cl
-		 * @param c the c
-		 * @return the contact list
+		 * RemoveContact.
+		 * 
+		 * Entfernt einen Contact aus der ContactList
+		 * Hierfür löschen wir den Eintag aus T_Contact_ContactList wo die CL_ID der CL_ID des übergebenen Objektes entspricht
+		 * 
+		 * 
 		 */
-		public ContactList removeContact(ContactList cl, Contact c){
+		public ContactList removeContact(ContactList contactlist, Contact contact){
 			Connection con = DBConnection.connection();
 			
 			try{
 				Statement stmt = con.createStatement();
 				stmt.executeUpdate("DELETE FROM T_Contact_ContactList WHERE CL_ID="
-				+ cl.getId() 
+				+ contactlist.getId() 
 				+ " AND C_ID=" 
-				+ c.getId());
+				+ contact.getId());
 						
-				return cl;	
+				return contactlist;	
 				
 			}
 			catch (SQLException e2){
 				e2.printStackTrace();
-				return cl;
+				return contactlist;
 			}
 			}
 		
