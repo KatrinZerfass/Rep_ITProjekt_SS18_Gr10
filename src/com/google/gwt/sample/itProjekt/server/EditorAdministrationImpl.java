@@ -61,25 +61,38 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		
 		return uMapper.insert(newuser);
 	}
-
-	@Override
-	public Vector<ContactList> getAllContactListsOf(User user) throws IllegalArgumentException {
-
-		return clMapper.findAllByUID(user);
+	
+	public Vector<Contact> getAllContactsOfActiveUser() throws IllegalArgumentException {
+		
+		Vector<Contact> result = cMapper.findAllByUID(this.user);
+		result.addAll(pmMapper.getAllContactsByUID(this.user));
+		
+		return result;
+	}
+	
+	public Vector<ContactList> getAllContactListsOfActiveUser() throws IllegalArgumentException {
+		
+		return clMapper.findAllByUID(this.user);
 	}
 
 	@Override
-	public Vector<Contact> getAllOwnedContactsOf(User user) throws IllegalArgumentException {
+	public Vector<ContactList> getAllContactListsOf(String email) throws IllegalArgumentException {
+
+		return clMapper.findAllByUID(uMapper.findByEMail(email));
+	}
+
+	@Override
+	public Vector<Contact> getAllOwnedContactsOf(String email) throws IllegalArgumentException {
 
 		Vector<Contact> resultcontacts = new Vector<Contact>();
-		resultcontacts = cMapper.findAllByUID(user);
+		resultcontacts = cMapper.findAllByUID(uMapper.findByEMail(email));
 		return resultcontacts;
 	}
 
 	@Override
-	public Vector<Contact> getAllSharedContactsWith(User user) throws IllegalArgumentException {
+	public Vector<Contact> getAllSharedContactsWith(String email) throws IllegalArgumentException {
 
-		return pmMapper.getAllContactsByUID(user);
+		return pmMapper.getAllContactsByUID(uMapper.findByEMail(email));
 	}
 
 	@Override
@@ -104,14 +117,14 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 
 
 	@Override
-	public Contact createContact(User user, String firstname, String lastname, String sex) throws IllegalArgumentException {
+	public Contact createContact(String firstname, String lastname, String sex) throws IllegalArgumentException {
 
 		Contact newcontact = new Contact();
 		newcontact.setFirstname(firstname);
 		newcontact.setLastname(lastname);
 		newcontact.setSex(sex);
 		
-		return cMapper.insert(newcontact, user);
+		return cMapper.insert(newcontact, this.user);
 	}
 
 	@Override
@@ -127,10 +140,10 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	}
 
 	@Override
-	public Permission shareContact(Contact contact, User user) throws IllegalArgumentException {
+	public Permission shareContact(Contact contact, String email) throws IllegalArgumentException {
 		
 		Permission newpermission = new Permission();
-		newpermission.setParticipant(user);
+		newpermission.setParticipant(uMapper.findByEMail(email));
 		newpermission.setIsowner(false);
 		newpermission.setShareableobject(contact);
 		
@@ -147,12 +160,12 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	}
 
 	@Override
-	public ContactList createContactList(String name, User user) throws IllegalArgumentException {
+	public ContactList createContactList(String name) throws IllegalArgumentException {
 
 		ContactList newcontactlist = new ContactList();
 		newcontactlist.setName(name);
 		
-		return clMapper.insert(newcontactlist, user);
+		return clMapper.insert(newcontactlist, this.user);
 	}
 
 	@Override
@@ -206,12 +219,14 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	}
 
 	@Override
-	public Value editValue(Contact contact, Property property, Value value, String content, boolean isshared)
+	public Value editValue(Contact contact, int propertyId, Value value, String content, boolean isshared)
 			throws IllegalArgumentException {
 		
 		Value newvalue = new Value();
 		newvalue = value;
 		newvalue.setContent(content);
+		Property property = new Property();
+		property.setId(propertyId);
 		
 		return vMapper.update(newvalue, contact, property, isshared);
 	}
@@ -220,5 +235,11 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	public void deleteValue(Value value) throws IllegalArgumentException {
 		
 		vMapper.delete(value);
+	}
+
+	@Override
+	public Vector<Value> getAllValuesOf(Contact contact) throws IllegalArgumentException {
+		
+		return vMapper.getAllValueByCID(contact);
 	}
 }

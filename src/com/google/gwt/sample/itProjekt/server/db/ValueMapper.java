@@ -49,6 +49,7 @@ public class ValueMapper {
 						Value v = new Value();
 						v.setId(rs.getInt("V_ID"));
 						v.setContent(rs.getString("value"));
+						v.setPropertyid(rs.getInt("P_ID"));
 						
 						
 						result.addElement(v);
@@ -106,6 +107,7 @@ public class ValueMapper {
 						Value v = new Value();
 						v.setId(rs.getInt("V_ID"));
 						v.setContent(rs.getString("value"));
+						v.setPropertyid(rs.getInt("U_ID"));
 						
 						result.addElement(v);
 					}		
@@ -324,12 +326,13 @@ Connection con = DBConnection.connection();
 			
 			try{
 				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT V_ID, value FROM T_Value WHERE C_ID ="+ contact.getId()+ " ORDER BY C_ID");
+				ResultSet rs = stmt.executeQuery("SELECT V_ID, value, U_ID FROM T_Value WHERE C_ID ="+ contact.getId()+ " ORDER BY C_ID");
 
 				while (rs.next()){
 					Value v = new Value();
 					v.setId(rs.getInt("V_ID"));
 					v.setContent(rs.getString("value"));
+					v.setPropertyid(rs.getInt("U_ID"));
 	
 					result.addElement(v);
 				}

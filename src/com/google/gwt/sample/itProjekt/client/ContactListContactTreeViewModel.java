@@ -29,6 +29,8 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	private ContactForm contactForm =null;
 	private ContactList selectedContactList = null;
 	private Contact selectedContact = null;
+	private ContactList myContactsContactList = null;
+	//TODO: myContactsContactList setzen 
 	
 	private EditorAdministrationAsync editorAdministration = null;
 
@@ -117,6 +119,13 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		contactForm.setSelected(c);
 	}
 
+	ContactList getMyContactsContactList() {
+		return this.myContactsContactList;
+	}
+	
+	void setMyContactsContactList(ContactList cl) {
+		myContactsContactList = cl;
+	}
 	
 
 	//GUI Funktionen
