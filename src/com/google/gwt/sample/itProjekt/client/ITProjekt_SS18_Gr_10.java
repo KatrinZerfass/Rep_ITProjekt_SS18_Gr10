@@ -24,7 +24,11 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -131,13 +135,51 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		ContactForm cf = new ContactForm();
 		VerticalPanel contactPanel = new VerticalPanel();
 		contactPanel.add(cf);
-		RootPanel.get("Details").add(contactPanel);
+		RootPanel.get("ContactForm").add(contactPanel);
 		
 		ContactListContactTreeViewModel clctvm = new ContactListContactTreeViewModel();	
-		VerticalPanel contactListPanel = new VerticalPanel();
-		Button newContactlist = new Button();
-		contactListPanel.add(newContactlist);
-		RootPanel.get("Contactlist").add(contactListPanel);
+		
+		HorizontalPanel clButtonsAndSearchPanel = new HorizontalPanel();
+		
+		VerticalPanel contactListButtonsPanel = new VerticalPanel();
+		contactListButtonsPanel.setStyleName("buttonPanel");
+		
+		Button newContactList = new Button("Neue Kontaktliste anlegen");
+		Button deleteContactList = new Button("Kontaktliste löschen");
+		Button shareContactList = new Button("Kontaktliste teilen");
+		
+		contactListButtonsPanel.add(shareContactList);
+		contactListButtonsPanel.add(deleteContactList);
+		contactListButtonsPanel.add(newContactList);
+		
+		clButtonsAndSearchPanel.add(contactListButtonsPanel);
+		
+		
+		RootPanel.get("Contactlist").add(clButtonsAndSearchPanel);
+		
+		VerticalPanel searchPanel = new VerticalPanel();
+		
+		
+		Label searchLabel = new Label();
+		searchLabel.setText("Suchfeld für Kontakte: ");
+		searchPanel.add(searchLabel);
+		
+		HorizontalPanel searchBox = new HorizontalPanel();
+		TextBox searchTextBox = new TextBox();
+		PushButton searchButton = new PushButton();
+		Image searchButtonImg = new Image("searchButton.png");
+		searchButtonImg.setPixelSize(17, 17);
+		searchButton.getUpFace().setImage(searchButtonImg);
+		
+		searchBox.add(searchTextBox);
+		searchBox.add(searchButton);
+		
+		searchPanel.add(searchBox);
+		
+		
+		
+		clButtonsAndSearchPanel.add(searchPanel);
+		
 		
 		clctvm.setContactForm(cf);
 		cf.setClctvm(clctvm);

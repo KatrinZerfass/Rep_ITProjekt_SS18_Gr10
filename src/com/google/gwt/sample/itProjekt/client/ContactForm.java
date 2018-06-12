@@ -127,8 +127,8 @@ public class ContactForm extends VerticalPanel {
 			
 			this.addStyleName("lockButton");
 			
-			lockUnlocked.setPixelSize(20, 20);
-			lockLocked.setPixelSize(20, 20);
+			lockUnlocked.setPixelSize(17, 17);
+			lockLocked.setPixelSize(17, 17);
 			
 			//per default sind alle Auspr√§gungen geteilt, d.h. das Schloss ist zu Beginn unlocked.
 			this.getUpFace().setImage(lockUnlocked);
@@ -211,7 +211,7 @@ public class ContactForm extends VerticalPanel {
 		 */
 		public DeleteValueButton() {
 			this.getUpFace().setImage(bin);
-			bin.setPixelSize(20, 20);
+			bin.setPixelSize(17, 17);
 			
 			this.addStyleName("deleteValueButton");
 			
@@ -433,20 +433,20 @@ public class ContactForm extends VerticalPanel {
 	
 		this.add(contactTable);
 		
-		/*
-		 * Nullte Zeile
-		 */
-		contactTable.getFlexCellFormatter().setColSpan(0, 0, 4);
-		contactTable.setText(0, 0, "  ");
+//		/*
+//		 * Nullte Zeile
+//		 */
+//		contactTable.getFlexCellFormatter().setColSpan(0, 0, 4);
+//		contactTable.setText(0, 0, "  ");
 		
 		
 		/*
 		 * Erste Zeile: √úberschrift
 		 */
-		contactTable.getFlexCellFormatter().setColSpan(1, 0, 4);
-		Label contactInfoLabel = new Label("Kontaktinformationen");
-		contactTable.setWidget(1, 0, contactInfoLabel);
-		
+//		contactTable.getFlexCellFormatter().setColSpan(1, 0, 4);
+//		Label contactInfoLabel = new Label("Kontaktinformationen");
+//		contactTable.setWidget(1, 0, contactInfoLabel);
+//		
 		
 		/*
 		 * Zweite Zeile: Vor- und Nachname
@@ -652,12 +652,15 @@ public class ContactForm extends VerticalPanel {
 		
 				
 		
-	//	Innere Rahmenlinien markieren zu Debug-Zwecken
-		for (int i= 0; i<contactTable.getRowCount(); i++) {
-			for (int a=0; a<contactTable.getCellCount(i); a++) {
-				contactTable.getCellFormatter().addStyleName(i, a, "cellBordersBlack");
-			}
-		}
+//	//	Innere Rahmenlinien markieren zu Debug-Zwecken
+//		for (int i= 0; i<contactTable.getRowCount(); i++) {
+//			for (int a=0; a<contactTable.getCellCount(i); a++) {
+//				contactTable.getCellFormatter().addStyleName(i, a, "cellBordersBlack");
+//			}
+//			contactTable.getCellFormatter().addStyleName(0,0, "firstRow");
+//		}
+//		contactTable.addStyleName("contactTableStyle");
+		
 		
 		
 //		//ClickHandler f√ºr die AddValueButtons
@@ -704,7 +707,7 @@ public class ContactForm extends VerticalPanel {
 	
 		
 		
-		Window.alert("1. Ende der Methode onLoad() von contactForm");	
+		//Window.alert("1. Ende der Methode onLoad() von contactForm");	
 	} 
 	
 	
@@ -737,7 +740,7 @@ public class ContactForm extends VerticalPanel {
 	        
 
 			
-			Label label = new Label("Bitte geben Sie die Email-Adresse des Nutzers ein it dem Sie teilen mˆchten.");
+			Label label = new Label("Bitte geben Sie die Email-Adresse des Nutzers ein it dem Sie teilen mÔøΩchten.");
 			
 			VerticalPanel panel = new VerticalPanel();
 			
@@ -817,7 +820,7 @@ public class ContactForm extends VerticalPanel {
 		public void onClick(ClickEvent event) {
 			
 			if (contactToDisplay == null) {
-				Window.alert("kein Kontakt ausgew‰hlt");
+				Window.alert("kein Kontakt ausgewÔøΩhlt");
 			}
 			else {
 				EmailDialogBox dialog = new EmailDialogBox();
@@ -841,7 +844,7 @@ public class ContactForm extends VerticalPanel {
 		public void onClick(ClickEvent event) {
 			
 			if (contactToDisplay == null) {
-				Window.alert("kein Kontakt ausgew‰hlt");
+				Window.alert("kein Kontakt ausgewÔøΩhlt");
 			}
 			else {	
 				clearContactForm();
@@ -865,7 +868,7 @@ public class ContactForm extends VerticalPanel {
 		public void onClick(ClickEvent event) {
 			
 			if (contactToDisplay == null) {
-				Window.alert("kein Kontakt ausgew‰hlt");
+				Window.alert("kein Kontakt ausgewÔøΩhlt");
 			}
 			else {
 				for(ValueTextBox vtb : allValueTextBoxes) {
