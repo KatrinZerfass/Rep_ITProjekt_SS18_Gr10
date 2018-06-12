@@ -228,7 +228,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		Property property = new Property();
 		property.setId(propertyId);
 		
-		return vMapper.update(newvalue, contact, property, isshared);
+		return vMapper.update(newvalue, contact, property);
 	}
 
 	@Override
