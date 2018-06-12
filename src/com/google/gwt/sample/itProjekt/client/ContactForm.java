@@ -300,7 +300,9 @@ public class ContactForm extends VerticalPanel {
 		 */
 		public ValueTextBox() {
 	
-			allValueTextBoxes.add(this);
+			
+			// brauchen wir nicht mehr, passiert jetzt in der setSelected
+			//allValueTextBoxes.add(this);
 			
 			this.addValueChangeHandler(new ValueChangeHandler<String>(){
 
@@ -337,6 +339,7 @@ public class ContactForm extends VerticalPanel {
 		public void setValue(Value v) {
 			this.value = v;
 			this.setText(value.getContent());
+			allValueTextBoxes.add(this);
 		}
 	}
 	
@@ -763,6 +766,24 @@ public class ContactForm extends VerticalPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 		
+			for(ValueTextBox vtb : allValueTextBoxes) {
+				if (vtb.getIsChanged()) {
+					editorAdministration.editValue(contactToDisplay, vtb.getTextBoXValue().getPropertyid(), vtb.getTextBoXValue(), vtb.getTextBoXValue().getContent(), 
+							vtb.getTextBoXValue().getIsShared(), new AsyncCallback<Value>() {
+						
+						public void onFailure(Throwable arg0) {
+							// TODO Auto-generated method stub
+							
+						}
+					
+						public void onSuccess(Value arg0) {
+							// TODO Auto-generated method stub
+							
+						}
+					});
+				}
+			}
+			
 		}
 	}
 	
@@ -791,6 +812,9 @@ public class ContactForm extends VerticalPanel {
 	 * @param Contact der selektierte Kontakt
 	 */
 	public void setSelected(Contact c) {
+		
+		allValueTextBoxes = null;
+		
 		if (c != null){
 			contactToDisplay = c;
 			
@@ -813,7 +837,9 @@ public class ContactForm extends VerticalPanel {
 			 * Vor und Nachname des Kontakts werden gesetzt.
 			 */
 			firstnameTextBox.setText(contactToDisplay.getFirstname());
+			allValueTextBoxes.add(firstnameTextBox);
 			lastnameTextBox.setText(contactToDisplay.getLastname());
+			allValueTextBoxes.add(lastnameTextBox);
 			
 			/*
 			 * Das Geschlecht des Kontaktes wird abgefragt und gesetzt.
