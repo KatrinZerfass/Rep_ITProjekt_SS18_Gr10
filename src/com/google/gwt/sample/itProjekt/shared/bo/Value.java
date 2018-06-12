@@ -11,7 +11,7 @@ public class Value extends BusinessObject {
 	/** Der Inhalt einer Ausprägung. */
 	private String content;
 	
-	private boolean isShared;
+	private boolean isShared = true;
 	
 	private int propertyid;
 
