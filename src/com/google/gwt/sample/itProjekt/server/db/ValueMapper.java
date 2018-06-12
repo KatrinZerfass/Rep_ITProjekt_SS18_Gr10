@@ -43,13 +43,14 @@ public class ValueMapper {
 				
 				try{
 					Statement stmt = con.createStatement();
-					ResultSet rs = stmt.executeQuery("SELECT DISTINCT V_ID, value FROM T_Value WHERE value='" + value.getContent()+ "' ORDER BY V_ID");
+					ResultSet rs = stmt.executeQuery("SELECT DISTINCT V_ID, value, P_ID, isShared FROM T_Value WHERE value='" + value.getContent()+ "' ORDER BY V_ID");
 					
 					while (rs.next()){
 						Value v = new Value();
 						v.setId(rs.getInt("V_ID"));
 						v.setContent(rs.getString("value"));
 						v.setPropertyid(rs.getInt("P_ID"));
+						v.setIsShared(rs.getBoolean("isShared"));
 						
 						
 						result.addElement(v);
@@ -102,13 +103,14 @@ public class ValueMapper {
 				
 				try{
 					Statement stmt = con.createStatement();
-					ResultSet rs = stmt.executeQuery("SELECT V_ID, value FROM T_Value ORDER BY V_ID");
+					ResultSet rs = stmt.executeQuery("SELECT V_ID, value, P_ID, isShared FROM T_Value ORDER BY V_ID");
 					
 					while (rs.next()){
 						Value v = new Value();
 						v.setId(rs.getInt("V_ID"));
 						v.setContent(rs.getString("value"));
-						v.setPropertyid(rs.getInt("U_ID"));
+						v.setPropertyid(rs.getInt("P_ID"));
+						v.setIsShared(rs.getBoolean("isShared"));
 						
 						result.addElement(v);
 					}		
@@ -118,48 +120,7 @@ public class ValueMapper {
 				return result;
 			}
 	
-	/**
-	 * Insert.
-	 *
-	 *Sucht nach der höchsten V_ID um diese um eins zu erhöhen und als neue V_ID zu nutzen
-	 *Befüllt T_Value mit V_ID, P_ID, value, C_ID und isShared, welcher standardmässig auf True gesetzt ist, also als geteilt
-	 *Ein value wird zurückgegeben
-	 *
-	 */
-	public Value insert(Value value, Contact contact, Property property){
-		//Mit Default isShared=true
-		Connection con = DBConnection.connection();
-		
-		try{
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT MAX(V_ID) AS maxvid FROM T_Value");
-			if (rs.next()){
-				
-				value.setId(rs.getInt("maxvid")+1);
-				Statement stmt2 = con.createStatement();
-				stmt2.executeUpdate("INSERT INTO T_Value (V_ID, P_ID, value, C_ID, isShared)"
-				+ " VALUES ("
-				+ value.getId() 
-				+ ", " 
-				+ property.getId() 
-				+ ", '" 
-				+ value.getContent() 
-				+ "', " 
-				+ contact.getId() 
-				+ ", " 
-				//Default isShared Flag ist auf true gesetzt
-				+ true 
-				+ ")") ;
-						
-				return value;	
-				
-			}
-		}
-		catch (SQLException e2){
-			e2.printStackTrace();
-			return value;
-		}
-		return value;}
+	
 	
 	/**
 	 * Insert.
@@ -170,7 +131,7 @@ public class ValueMapper {
 	 *Eine value wird zum Schluss zurückgegeben
 	 *
 	 */
-	public Value insert(Value value, Contact contact, Property property, boolean isShared){
+	public Value insert(Value value, Contact contact, Property property){
 		Connection con = DBConnection.connection();
 		
 		try{
@@ -190,7 +151,7 @@ public class ValueMapper {
 				+ "', " 
 				+ contact.getId() 
 				+ ", " 
-				+ isShared
+				+ value.getIsShared()
 				+ ")") ;
 						
 				return value;	
@@ -210,13 +171,13 @@ public class ValueMapper {
 		 *Gibt ein value zurück
 		 * 
 		 */
-		public Value update(Value value, Contact contact, Property property, boolean isShared){
+		public Value update(Value value, Contact contact, Property property){
 			Connection con = DBConnection.connection();
 			
 			try{
 				Statement stmt = con.createStatement();
 				stmt.executeUpdate("UPDATE T_Value SET P_ID ="+property.getId()+", value ='" + value.getContent()+ "', C_ID=" + contact.getId() +", isShared="
-						+ isShared);
+						+ value.getIsShared());
 			}
 		
 		catch (SQLException e2){
@@ -328,13 +289,14 @@ Connection con = DBConnection.connection();
 			
 			try{
 				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT V_ID, value, P_ID FROM T_Value WHERE C_ID ="+ contact.getId()+ " ORDER BY C_ID");
+				ResultSet rs = stmt.executeQuery("SELECT V_ID, value, P_ID, isShared FROM T_Value WHERE C_ID ="+ contact.getId()+ " ORDER BY C_ID");
 
 				while (rs.next()){
 					Value v = new Value();
 					v.setId(rs.getInt("V_ID"));
 					v.setContent(rs.getString("value"));
 					v.setPropertyid(rs.getInt("P_ID"));
+					v.setIsShared(rs.getBoolean("isShared"));
 	
 					result.addElement(v);
 				}

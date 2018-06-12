@@ -11,6 +11,8 @@ public class Value extends BusinessObject {
 	/** Der Inhalt einer Ausprägung. */
 	private String content;
 	
+	private boolean isShared;
+	
 	private int propertyid;
 
 	/**
@@ -37,5 +39,13 @@ public class Value extends BusinessObject {
 
 	public void setPropertyid(int propertyid) {
 		this.propertyid = propertyid;
+	}
+
+	public boolean getIsShared() {
+		return isShared;
+	}
+
+	public void setIsShared(boolean isShared) {
+		this.isShared = isShared;
 	}
 }
