@@ -255,7 +255,8 @@ public class ContactForm extends VerticalPanel {
 		 * @param int die ID der referenzierten Eigenschaft
 		 */
 		public AddValueButton(int pid) {
-			this.setText(" + ");
+			this.setText(" neu ");
+			this.setStyleName("addButton");
 			this.propertyId= pid;
 		
 					
@@ -298,7 +299,7 @@ public class ContactForm extends VerticalPanel {
 		 * Und fügt der TextBox den valueChangeHandler hinzu,  welcher den Zustand von <code>isChanged</code> ändert.
 		 */
 		public ValueTextBox() {
-			
+	
 			allValueTextBoxes.add(this);
 			
 			this.addValueChangeHandler(new ValueChangeHandler<String>(){
