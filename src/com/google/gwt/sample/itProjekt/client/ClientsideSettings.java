@@ -27,11 +27,11 @@ public class ClientsideSettings {
 	
 	
 	
-	public static ReportGeneratorAsync getReportGenerator() {
-	    if (reportGenerator == null) {
-	      reportGenerator = GWT.create(ReportGenerator.class);
-	    }
-	    return reportGenerator;
-	  }
+//	public static ReportGeneratorAsync getReportGenerator() {
+//	    if (reportGenerator == null) {
+//	      reportGenerator = GWT.create(ReportGenerator.class);
+//	    }
+//	    return reportGenerator;
+//	  }
 
 }
