@@ -41,9 +41,8 @@ public class PermissionMapper {
 	 * Für das setzten des Participant holen wir, durch das aufrufen der findByID im UserMapper, die U_ID
 	 * und speichern diese in einem Permission Objekt ab
 	 * zudem setzen wir die C_ID in einem neuen Contact Objekt und ein Shareableobject durch das aufrufen der findByID Methode im ContactMapper 
+	 * Das selbe führen wir für ContactList durch und fügen das Permission Objekt dem Vector hinzu
 	 * 
-	 * und holen die U_ID und CL_ID aus der T_Permission_Contactlist Tabelle 
-	 * und speichern diese in einem Permission Objekt ab und fügen diese dem Vector hinzu
 	 * 
 	 */
 	public Vector<Permission> findAll(){
@@ -90,8 +89,9 @@ public class PermissionMapper {
 /**
  * Update.
  *
- * @param permission the permission
- * @return the permission
+ * Update von Veränderungen falls sich die Shareableobject ändert
+ * Falls die ID unter 30000000 liegt wird ein Contact geupdated, falls die ID über 30000000 liegt werden ContactLists geupdated
+ * Gibt ein permission zurück
  */
 public Permission update(Permission permission){
 		
@@ -131,7 +131,11 @@ public Permission update(Permission permission){
 	/**
 	 * Delete.
 	 *
-	 * @param permission the permission
+	 * falls die ID des übergebenen Shareableobjects Objekts unter 30000000 liegt wird aus der T_Permission_Contact alles entfernt
+	 * wo die U_ID und C_ID der ID des Participants und des Shareableobjects entspricht
+	 * 
+	 * falls die ID des übergebenen Shareableobjects Objekts über 30000000 liegt wird aus der T_Permission_Contactlist alles entfernt
+	 * wo die U_ID und C_ID der ID des Participants und des Shareableobjects entspricht
 	 */
 	public void delete (Permission permission){
 		
@@ -162,9 +166,11 @@ public Permission update(Permission permission){
 	}
 	
 	/**
-	 * Delete all by CLID.
+	 * DeleteAllByCLID.
 	 *
-	 * @param contactlist the contactlist
+	 * Entfernt alle Einträge aus T_Permission_Contactlist falls eine ContactList gelöscht wird
+	 * Hierfür wird die T_Permission_Contactlist nach der CL_ID durchsucht wo sie der ID der ContactList entspricht welches wir übergeben bekommen haben
+	 * 
 	 */
 	public void deleteAllByCLID (ContactList contactlist){
 		
@@ -182,10 +188,12 @@ public Permission update(Permission permission){
 	
 	
 	/**
-	 * Share contact.
+	 * ShareContact.
 	 *
-	 * @param permission the permission
-	 * @return the permission
+	 * Befüllt die T_Permission_Contact mit einer zusammengesetzten ID aus C_ID und U_ID 
+	 * und befüllt die Tabelle mit der C_ID aus dem Shareableobject und der U_ID aus Participant
+	 * und gibt die permission zurück
+	 * 
 	 */
 	public Permission shareContact(Permission permission){
 		
@@ -218,8 +226,10 @@ public Permission update(Permission permission){
 	/**
 	 * Share contact list.
 	 *
-	 * @param permission the permission
-	 * @return the permission
+	 * Befüllt die T_Permission_Contactlist mit einer zusammengesetzten ID aus CL_ID und U_ID 
+	 * und befüllt die Tabelle mit der CL_ID aus dem Shareableobject und der U_ID aus Participant
+	 * und gibt die permission zurück
+	 * 
 	 */
 	public Permission shareContactList(Permission permission){
 		
@@ -250,10 +260,14 @@ public Permission update(Permission permission){
 	
 
 /**
- * Gets the all contacts by UID.
- *
- * @param user the user
- * @return the all contacts by UID
+ * GetAllContactsByUID.
+ * 
+ * Sucht nach allen Contacts die einem User zur Verfügung stehen
+ * Hierfür suchen wir nach allen U_ID die der ID des User Objektes entsprechen
+ * Die gefundenen C_ID werden in einem Contact Objekt abgespeichert 
+ * und durch den Aufruf der findByID im ContactMapper vollständig befüllt und dem Vector hinzugefügt
+ * Zum Schluss geben wir den Vector zurück
+ * 
  */
 public Vector<Contact> getAllContactsByUID(User user){
 	
@@ -272,6 +286,7 @@ public Vector<Contact> getAllContactsByUID(User user){
 				}		
 			}catch(SQLException e2){
 				e2.printStackTrace();
+				return result;
 			}
 			return result;
 		}
@@ -279,8 +294,11 @@ public Vector<Contact> getAllContactsByUID(User user){
 /**
  * Gets the all contact lists by UID.
  *
- * @param user the user
- * @return the all contact lists by UID
+ * Sucht nach allen ContactLists die einem User zur Verfügung stehen
+ * Hierfür suchen wir nach allen U_ID die der ID des User Objektes entsprechen
+ * Die gefundenen CL_ID werden in einem ContactList Objekt abgespeichert 
+ * und durch den Aufruf der findByID im ContactListMapper vollständig befüllt und dem Vector hinzugefügt
+ * Zum Schluss geben wir den Vector zurück
  */
 public Vector<ContactList> getAllContactListsByUID(User user){
 	

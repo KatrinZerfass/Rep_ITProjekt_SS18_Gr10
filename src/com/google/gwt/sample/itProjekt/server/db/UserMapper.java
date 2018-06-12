@@ -62,7 +62,8 @@ public class UserMapper {
 	/**
 	 * FindByEMail.
 	 *
-	 * Findet User durch eine EMail und speichert die dazugehörigen Werte (U_ID und eMail) in einem User Objekt ab und gibt dieses wieder
+	 * Findet User durch eine EMail und speichert die dazugehörigen Werte (U_ID und eMail) in einem User Objekt ab 
+	 * und speichert dieses Objekt im Vector ab und gibt diesen wieder
 	 *  
 	 */
 	public User findByEMail(String email){
@@ -92,6 +93,7 @@ public class UserMapper {
 	 *
 	 *Gibt alle User Objekte zurück welche mit U_ID und eMail befüllt sind
 	 *Hierfür holen wir U_ID und eMail aus der T_User Tabelle und speichern diese in einem User Objekt ab und fügen diese dem Vector hinzu
+	 *Diesen Vector befüllt mit User geben wir zurück
 	 *
 	 */
 	public Vector<User> findAll(){
@@ -117,7 +119,7 @@ public class UserMapper {
 	/**
 	 * Insert.
 	 *
-	 *Sucht nach der hochsten U_ID um diese um eins zu erhöhen und als neue U_ID zu nutzen
+	 *Sucht nach der höchsten U_ID um diese um eins zu erhöhen und als neue U_ID zu nutzen
 	 *Befüllt T_User mit U_ID und eMail
 	 *Ein value wird zurückgegeben
 	 */
@@ -152,7 +154,7 @@ public class UserMapper {
 	 * Update.
 	 *
 	 * Update von Veränderungen falls sich die eMail ändert
-	 * Gibt ein user zurück
+	 * Gibt ein User zurück
 	 */
 	public User update(User user){
 		Connection con = DBConnection.connection();

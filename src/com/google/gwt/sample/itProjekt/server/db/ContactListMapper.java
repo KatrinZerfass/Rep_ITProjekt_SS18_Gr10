@@ -33,10 +33,9 @@ public class ContactListMapper {
 		}
 	
 	/**
-	 * Find by ID.
+	 * FindByID.
 	 *
-	 * @param cl the cl
-	 * @return the contact list
+	 * Findet ContactList durch eine CL_ID und speichert die dazugehörigen Werte (CL_ID, listname und U_ID) in einem ContactList Objekt ab und gibt dieses wieder
 	 */
 	public ContactList findByID(ContactList cl){
 		Connection con = DBConnection.connection();
@@ -64,9 +63,12 @@ public class ContactListMapper {
 	
 	
 	/**
-	 * Find all.
+	 * FindAll.
 	 *
-	 * @return the vector
+	 *Gibt alle ContactList Objekte zurück welche mit CL_ID, listname und U_ID befüllt sind
+	 *Hierfür holen wir CL_ID, listname und U_ID aus der T_ContactList Tabelle und speichern diese in einem ContactList Objekt ab und fügen diese dem Vector hinzu
+	 *Am Ende geben wir diesen Vector zurück
+	 *
 	 */
 	public Vector<ContactList> findAll(){
 		Connection con = DBConnection.connection();
@@ -90,10 +92,11 @@ public class ContactListMapper {
 			}
 	
 	/**
-	 * Find by name.
+	 * FindByName.
 	 *
-	 * @param name the name
-	 * @return the vector
+	 * Findet ContactLists durch einen Namen und speichert die dazugehörigen Werte (CL_ID, listname und U_ID) in einem ContactList Objekt ab
+	 * und Speichert dieses Objekt im Vector ab und gibt diesen wieder
+	 * 
 	 */
 	public Vector <ContactList> findByName(String name){
 		Connection con = DBConnection.connection();
@@ -118,10 +121,12 @@ public class ContactListMapper {
 	}
 	
 	/**
-	 * Find all by UID.
+	 * FindAllByUID.
 	 *
-	 * @param u the u
-	 * @return the vector
+	 * Findet alle ContactLists die ein User erstellt hat durch seine U_ID
+	 * Alle Values werden aus T_ContactList ausgelesen und in einem ContactList Objekt gespeichert und einem Vector hinzugefügt und zurückgegeben
+	 * Gibt ein Vector voller ContactList Objekte zurück welche ein User erstellt hat
+	 * 
 	 */
 	public Vector <ContactList> findAllByUID(User u){
 		Connection con = DBConnection.connection();
@@ -148,9 +153,10 @@ public class ContactListMapper {
 	/**
 	 * Insert.
 	 *
-	 * @param c the c
-	 * @param u the u
-	 * @return the contact list
+	 *Sucht nach der höchsten CL_ID um diese um eins zu erhöhen und als neue CL_ID zu nutzen
+	 *Befüllt T_ContactList mit CL_ID, listname und U_ID
+	 *Ein ContactList wird zurückgegeben
+	 *
 	 */
 	public ContactList insert(ContactList c, User u){
 		Connection con = DBConnection.connection();
@@ -184,8 +190,8 @@ public class ContactListMapper {
 		/**
 		 * Update.
 		 *
-		 * @param c the c
-		 * @return the contact list
+		 * Update von Veränderungen falls sich der listname ändert
+		 * Gibt ein ContactList zurück
 		 */
 		public ContactList update(ContactList c){
 			Connection con = DBConnection.connection();
@@ -204,7 +210,10 @@ public class ContactListMapper {
 		/**
 		 * Delete.
 		 *
-		 * @param c the c
+		 * Entfernt alles aus T_Permission_Contactlist wo die CL_ID der ID des übergebenen Objekts entspricht
+		 * Damit lösen wir die Teilhaberschaft an einem ContactList auf
+		 * der nächste Schritt entfernt alles aus T_ContactList wo die CL_ID der ID des übergebenen Objekts entspricht
+		 * 
 		 */
 		public void delete (ContactList c){
 Connection con = DBConnection.connection();
@@ -232,10 +241,12 @@ Connection con = DBConnection.connection();
 		}}
 		
 		/**
-		 * Gets the all contacts.
+		 * GetAllContacts.
 		 *
-		 * @param cl the cl
-		 * @return the all contacts
+		 * Befüllt den Vector mit Contacts die in einer ContactList enthalten sind
+		 * Hierfür durchsuchen wir die T_Contact_ContactList Tabelle nach C_ID wo die CL_ID der ID des übergebenen Objektes entspricht
+		 * Diese C_ID nutzen wir um die C_ID, firstName, lastName, gender und U_ID aus der T_Contact zu holen wo die C_ID 
+		 *
 		 */
 		public Vector <Contact> getAllContacts(ContactList cl){
 			Connection con = DBConnection.connection();

@@ -64,7 +64,7 @@ public class ValueMapper {
 	 * FindAllContactsByValue.
 	 *
 	 * Findet alle C_ID durch ein value welches als Filterkriterium dient
-	 * Mit dem Contect Objekt welches C_ID beinhaltet wird durch findByID im ContactMapper das Contact Objekt vollständig befüllt und fügt diesen dem Vector hinzu
+	 * Mit dem Contact Objekt welches C_ID beinhaltet wird durch findByID im ContactMapper das Contact Objekt vollständig befüllt und fügt diesen dem Vector hinzu
 	 * Gibt ein Vector voller Contact Objekte zurück welche eine bestimmte value besitzen
 	 *
 	 */
@@ -93,6 +93,7 @@ public class ValueMapper {
 	 *
 	 *Gibt alle Value Objekte zurück welche mit V_ID und value befüllt sind
 	 *Hierfür holen wir V_ID und value aus der T_Value Tabelle und speichern diese in einem Value Objekt ab und fügen diese dem Vector hinzu
+	 *Am Ende geben wir diesen Vector zurück
 	 *
 	 */
 	public Vector<Value> findAll(){
@@ -120,7 +121,7 @@ public class ValueMapper {
 	/**
 	 * Insert.
 	 *
-	 *Sucht nach der hochsten V_ID um diese um eins zu erhöhen und als neue V_ID zu nutzen
+	 *Sucht nach der höchsten V_ID um diese um eins zu erhöhen und als neue V_ID zu nutzen
 	 *Befüllt T_Value mit V_ID, P_ID, value, C_ID und isShared, welcher standardmässig auf True gesetzt ist, also als geteilt
 	 *Ein value wird zurückgegeben
 	 *
@@ -163,7 +164,7 @@ public class ValueMapper {
 	/**
 	 * Insert.
 	 *
-	 *Sucht nach der hochsten V_ID um diese um eins zu erhöhen und als neue V_ID zu nutzen
+	 *Sucht nach der höchsten V_ID um diese um eins zu erhöhen und als neue V_ID zu nutzen
 	 *Befüllt T_Value mit V_ID, P_ID, value, C_ID und isShared
 	 *Mit dem isShared legen wir fest ob die value True oder False ist bzw. ob es geteilt ist oder nicht
 	 *Eine value wird zum Schluss zurückgegeben
@@ -271,6 +272,7 @@ Connection con = DBConnection.connection();
 						}		
 					}catch(SQLException e2){
 						e2.printStackTrace();
+						return result;
 					}
 					return result;
 				}

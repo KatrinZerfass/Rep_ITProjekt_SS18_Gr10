@@ -33,10 +33,10 @@ public class ContactMapper {
 		}
 	
 	/**
-	 * Find by ID.
+	 * FindByID.
 	 *
-	 * @param contact the contact
-	 * @return the contact
+	 * Findet Contacts durch eine C_ID und speichert die dazugehörigen Werte (C_ID, firstName, lastName, gender und U_ID) in einem COntact Objekt ab und gibt dieses wieder
+	 * 
 	 */
 	public Contact findByID(Contact contact){
 		Connection con = DBConnection.connection();
@@ -63,9 +63,12 @@ public class ContactMapper {
 	
 	
 	/**
-	 * Find all.
+	 * FindAll.
 	 *
-	 * @return the vector
+	 *Gibt alle Contact Objekte zurück welche mit C_ID, firstName, lastName, geder und U_ID befüllt sind
+	 *Hierfür holen wir C_ID, firstName, lastName, geder und U_ID aus der T_Contact Tabelle und speichern diese in einem Contact Objekt ab und fügen diese dem Vector hinzu
+	 *Diesen Vector befüllt mit Contacts geben wir zurück
+	 *
 	 */
 	public Vector<Contact> findAll(){
 Connection con = DBConnection.connection();
@@ -91,10 +94,11 @@ Vector<Contact> result = new Vector<Contact>();
 	}
 	
 	/**
-	 * Find by name.
+	 * FindByName.
 	 *
-	 * @param contact the contact
-	 * @return the vector
+	 * Findet Contacts durch einen Namen und speichert die dazugehörigen Werte (C_ID, firstName, lastName, gender und U_ID) in einem Contact Objekt ab
+	 * und Speichert dieses Objekt im Vector ab und gibt diesen wieder
+	 * 
 	 */
 	public Vector<Contact> findByName(Contact contact){
 		Connection con = DBConnection.connection();
@@ -121,10 +125,12 @@ Vector<Contact> result = new Vector<Contact>();
 	}
 	
 	/**
-	 * Find all by UID.
+	 * FindAllByUID.
 	 *
-	 * @param user the user
-	 * @return the vector
+	 * Findet alle Contacts die ein User erstellt hat durch seine U_ID
+	 * Alle Values werden aus T_Contact ausgelesen und in einem Contact Objekt gespeichert und einem Vector hinzugefügt und zurückgegeben
+	 * Gibt ein Vector voller Contact Objekte zurück welche ein User erstellt hat
+	 * 
 	 */
 	public Vector<Contact> findAllByUID(User user){
 		Connection con = DBConnection.connection();
@@ -152,9 +158,9 @@ Vector<Contact> result = new Vector<Contact>();
 	/**
 	 * Insert.
 	 *
-	 * @param c the c
-	 * @param u the u
-	 * @return the contact
+	 *Sucht nach der höchsten C_ID um diese um eins zu erhöhen und als neue C_ID zu nutzen
+	 *Befüllt T_Contact mit C_ID, firstName, lastName, gender, create_date, mod_date, U_ID
+	 *Ein Contact wird zurückgegeben
 	 */
 	public Contact insert(Contact c, User u){
 		Connection con = DBConnection.connection();
@@ -200,8 +206,10 @@ Vector<Contact> result = new Vector<Contact>();
 		/**
 		 * Update.
 		 *
-		 * @param c the c
-		 * @return the contact
+		 * Update von Veränderungen falls sich die firstName, lastName und/oder gender ändert
+		 * Falls Updates vorgenommen werden wird ein neuer mod_date gesetzt
+		 * Gibt ein Contact zurück
+		 * 
 		 */
 		public Contact update(Contact c){
 			Connection con = DBConnection.connection();
@@ -231,7 +239,10 @@ Vector<Contact> result = new Vector<Contact>();
 		/**
 		 * Delete.
 		 *
-		 * @param c the c
+		 * Entfernt alles aus T_Permission_Contact wo die C_ID der ID des übergebenen Objekts entspricht
+		 * Damit lösen wir die Teilhaberschaft an einem Contact auf
+		 * der nächste Schritt entfernt alles aus T_Contact wo die C_ID der ID des übergebenen Objekts entspricht
+		 * 
 		 */
 		public void delete (Contact c){
 Connection con = DBConnection.connection();
