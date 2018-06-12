@@ -28,13 +28,28 @@ div#Header {
     background-color: #69e0dc ;
 }
 
-
+div#wrapper{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+}
 div#Navigator {
     float: left;
     width: 40%;
-    height: 35em;
+    height: 25em;
     background-color: #5beb7f;
 
+}
+
+div#Contactlist{
+	position: absolute;
+	float: left;
+	
+	width: 40%;
+	height: auto;
+	
+	background-color: blue;
+	
 }
 
 div#login {
@@ -66,11 +81,32 @@ div#Trailer {
     background: yellow;
 }
 
-.addButton{
-	margin: 0 auto;
-	align: center;
+
+
+.addValueButton{
+/* 	margin: 0 auto; */
+/* 	div-align: center; */
 	height: 1,5em;
-	width: 5em;
+	width: 4em;
+}
+
+.lockButton{
+	margin: 0 5em;
+	align: center;
+	border: 1px solid black;
+	
+}
+
+.deleteValueButton {
+	margin: 0 5em;
+	align: center;
+	border: 1px solid black;
+}
+
+
+.buttonPanel .gwt-Button{
+	margin: 2px 10px;
+	border: 1px solid black;
 }
 
 /* .sendButton { */

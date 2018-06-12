@@ -224,6 +224,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		
 		Value newvalue = new Value();
 		newvalue = value;
+		newvalue.setIsShared(isshared);
 		newvalue.setContent(content);
 		Property property = new Property();
 		property.setId(propertyId);
@@ -241,5 +242,10 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	public Vector<Value> getAllValuesOf(Contact contact) throws IllegalArgumentException {
 		
 		return vMapper.getAllValueByCID(contact);
+	}
+
+	@Override
+	public Vector<ContactList> getAllContactListsWith(Contact contact) throws IllegalArgumentException {
+		return clMapper.findAllByCID(contact);
 	}
 }

@@ -32,6 +32,8 @@ public interface EditorAdministration extends RemoteService{
 	
 	public Vector<Contact> getAllContactsWith(Value value) throws IllegalArgumentException;
 	
+	public Vector<ContactList> getAllContactListsWith(Contact contact) throws IllegalArgumentException;
+	
 	public Contact getContact(int id) throws IllegalArgumentException;
 	
 	public Contact createContact(String firstname, String lastname, String sex) throws IllegalArgumentException;

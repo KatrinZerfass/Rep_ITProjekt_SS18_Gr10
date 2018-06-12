@@ -66,4 +66,6 @@ public interface EditorAdministrationAsync {
 	void getAllContactListsOfActiveUser(AsyncCallback<Vector<ContactList>> callback);
 
 	void getAllValuesOf(Contact contact, AsyncCallback<Vector<Value>> callback);
+
+	void getAllContactListsWith(Contact contact, AsyncCallback<Vector<ContactList>> callback);
 }

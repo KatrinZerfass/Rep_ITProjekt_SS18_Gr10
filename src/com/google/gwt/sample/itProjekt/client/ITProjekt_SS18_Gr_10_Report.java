@@ -63,10 +63,10 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	
 	public void onModuleLoad() {
 		
-		if(reportGenerator ==null) {
-			reportGenerator=ClientsideSettings.getReportGenerator();
-			
-		}
+//		if(reportGenerator ==null) {
+//			reportGenerator=ClientsideSettings.getReportGenerator();
+//			
+//		}
 	
 		
 		allContactsOfUserButton.addClickHandler(new ClickHandler() {
