@@ -34,9 +34,17 @@ public class PermissionMapper {
 		}
 	
 	/**
-	 * Find all.
+	 * FindAll.
 	 *
-	 * @return the vector
+	 * Gibt alle Permission Objekte zurück welche mit U_ID und C_ID befüllt sind
+	 * Hierfür holen wir U_ID und C_ID aus der T_Permission_Contact Tabelle und setzten als permissionID ein zusammengesetzten Key aus U_ID und C_ID
+	 * Für das setzten des Participant holen wir, durch das aufrufen der findByID im UserMapper, die U_ID
+	 * und speichern diese in einem Permission Objekt ab
+	 * zudem setzen wir die C_ID in einem neuen Contact Objekt und ein Shareableobject durch das aufrufen der findByID Methode im ContactMapper 
+	 * 
+	 * und holen die U_ID und CL_ID aus der T_Permission_Contactlist Tabelle 
+	 * und speichern diese in einem Permission Objekt ab und fügen diese dem Vector hinzu
+	 * 
 	 */
 	public Vector<Permission> findAll(){
 		Connection con = DBConnection.connection();

@@ -7,9 +7,7 @@ import java.sql.Statement;
 
 import com.google.gwt.sample.itProjekt.shared.bo.Property;
 
-/**
- * The Class PropertyMapper.
- */
+
 public class PropertyMapper {
 
 	/** Konstruktor für den PropertyMapper (Singleton) */
@@ -31,17 +29,17 @@ public class PropertyMapper {
 
 
 /**
- * Find by ID.
+ * FindByID.
  *
- * @param pr the pr
- * @return the property
+ *Findet Property durch eine P_ID und speichert die dazugehörigen Werte (P_ID und type) in einem Property Objekt ab und gibt dieses wieder
+ *
  */
-public Property findByID(Property pr){
+public Property findByID(Property property){
 	Connection con = DBConnection.connection();
 	
 	try{
 		Statement stmt = con.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT P_ID, type FROM T_Property WHERE P_ID ="+ pr.getId() + " ORDER BY P_ID");
+		ResultSet rs = stmt.executeQuery("SELECT P_ID, type FROM T_Property WHERE P_ID ="+ property.getId() + " ORDER BY P_ID");
 		if (rs.next()){
 			Property p = new Property();
 			p.setId(rs.getInt("P_ID"));

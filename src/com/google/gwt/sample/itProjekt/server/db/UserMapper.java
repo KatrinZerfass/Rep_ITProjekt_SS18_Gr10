@@ -8,9 +8,7 @@ import java.util.Vector;
 
 import com.google.gwt.sample.itProjekt.shared.bo.User;
 
-/**
- * The Class UserMapper.
- */
+
 public class UserMapper {
 	
 	/** Konstruktor für den UserMapper (Singleton) */
@@ -32,10 +30,10 @@ public class UserMapper {
 		}
 	
 	/**
-	 * Find by ID.
-	 *
-	 * @param uid the uid
-	 * @return the user
+	 * FindByID.
+	 * 
+	 * Findet User durch eine U_ID und speichert die dazugehörigen Werte (U_ID und email) in einem User Objekt ab und gibt dieses wieder
+	 * 
 	 */
 	public User findByID(int uid){
 		Connection con = DBConnection.connection();
@@ -62,10 +60,10 @@ public class UserMapper {
 	}
 	
 	/**
-	 * Find by E mail.
+	 * FindByEMail.
 	 *
-	 * @param email the email
-	 * @return the user
+	 * Findet User durch eine EMail und speichert die dazugehörigen Werte (U_ID und eMail) in einem User Objekt ab und gibt dieses wieder
+	 *  
 	 */
 	public User findByEMail(String email){
 		Connection con = DBConnection.connection();
@@ -90,9 +88,11 @@ public class UserMapper {
 	}
 	
 	/**
-	 * Find all.
+	 * FindAll.
 	 *
-	 * @return the vector
+	 *Gibt alle User Objekte zurück welche mit U_ID und eMail befüllt sind
+	 *Hierfür holen wir U_ID und eMail aus der T_User Tabelle und speichern diese in einem User Objekt ab und fügen diese dem Vector hinzu
+	 *
 	 */
 	public Vector<User> findAll(){
 		Connection con = DBConnection.connection();
@@ -117,10 +117,11 @@ public class UserMapper {
 	/**
 	 * Insert.
 	 *
-	 * @param u the u
-	 * @return the user
+	 *Sucht nach der hochsten U_ID um diese um eins zu erhöhen und als neue U_ID zu nutzen
+	 *Befüllt T_User mit U_ID und eMail
+	 *Ein value wird zurückgegeben
 	 */
-	public User insert(User u){
+	public User insert(User user){
 		Connection con = DBConnection.connection();
 		
 		try{
@@ -128,60 +129,61 @@ public class UserMapper {
 			ResultSet rs = stmt.executeQuery("SELECT MAX(U_ID) AS maxuid FROM T_User");
 			if (rs.next()){
 				
-				u.setId(rs.getInt("maxuid")+1);
+				user.setId(rs.getInt("maxuid")+1);
 				Statement stmt2 = con.createStatement();
 				stmt2.executeUpdate("INSERT INTO T_User (U_ID, eMail)"
 				+ " VALUES ("
-				+ u.getId() 
+				+ user.getId() 
 				+ ", '" 
-				+ u.getEmail()
+				+ user.getEmail()
 				+ "')") ;
 						
-				return u;	
+				return user;	
 				
 			}
 		}
 		catch (SQLException e2){
 			e2.printStackTrace();
-			return u;
+			return user;
 		}
-		return u;}
+		return user;}
 	
 	/**
 	 * Update.
 	 *
-	 * @param u the u
-	 * @return the user
+	 * Update von Veränderungen falls sich die eMail ändert
+	 * Gibt ein user zurück
 	 */
-	public User update(User u){
+	public User update(User user){
 		Connection con = DBConnection.connection();
 		
 		try{
 			Statement stmt = con.createStatement();
 			stmt.executeUpdate("UPDATE T_User SET eMail ='"
-			+ u.getEmail()
+			+ user.getEmail()
 			+ "', "
-			+ "WHERE U_ID =" + u.getId());
+			+ "WHERE U_ID =" + user.getId());
 		}
 	
 	catch (SQLException e2){
 		e2.printStackTrace();
-		return u;
+		return user;
 	}
-	return u;}
+	return user;}
 	
 	/**
 	 * Delete.
 	 *
-	 * @param u the u
+	 * Entfernt alles aus T_User wo die U_ID der ID des übergebenen Objekts entspricht
+	 *
 	 */
-	public void delete (User u){
+	public void delete (User user){
 		Connection con = DBConnection.connection();
 					
 					try{
 						
 						Statement stmt = con.createStatement();
-						stmt.executeUpdate("DELETE FROM T_User WHERE U_ID =" + u.getId());
+						stmt.executeUpdate("DELETE FROM T_User WHERE U_ID =" + user.getId());
 					}
 				
 				catch (SQLException e2){

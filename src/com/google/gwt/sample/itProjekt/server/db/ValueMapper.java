@@ -9,9 +9,7 @@ import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.sample.itProjekt.shared.bo.Value;
 import com.google.gwt.sample.itProjekt.shared.bo.Property;
 
-/**
- * The Class ValueMapper.
- */
+
 public class ValueMapper {
 
 	/** Konstruktor für den ValueMapper (Singleton) */
