@@ -10,14 +10,17 @@ import com.google.gwt.sample.itProjekt.client.ContactForm.ValueDisplay;
 import com.google.gwt.sample.itProjekt.shared.EditorAdministrationAsync;
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
+import com.google.gwt.sample.itProjekt.shared.bo.Permission;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
 import com.google.gwt.sample.itProjekt.shared.bo.Value;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -689,6 +692,52 @@ public class ContactForm extends VerticalPanel {
 	/**
 	 * Die innere Klasse newContactClickHandler.
 	 */
+	
+	public class EmailDialogBox extends DialogBox{
+		
+		private String email;
+		
+        private TextBox eingabe = new TextBox();
+		
+		public EmailDialogBox() {
+			setText("Teilen");
+			setAnimationEnabled(true);
+			setGlassEnabled(true);
+			
+			Button ok = new Button("OK");
+	        ok.addClickHandler(new ClickHandler() {
+	        	public void onClick(ClickEvent event) {
+	        		email = eingabe.getText();
+	            	EmailDialogBox.this.hide();
+	            }
+	        });
+	        
+
+			
+			Label label = new Label("Bitte geben Sie die Email-Adresse des Nutzers ein it dem Sie teilen möchten.");
+			
+			VerticalPanel panel = new VerticalPanel();
+			
+	        panel.setHeight("100");
+	        panel.setWidth("300");
+	        panel.setSpacing(10);
+	        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+	        panel.add(label);
+	        panel.add(eingabe);
+	        panel.add(ok);
+
+	        setWidget(panel);
+		}
+		
+		public String getEmail() {
+			return this.email;
+		}
+		
+		public void setEmail(String email) {
+			this.email = email;
+		}
+	}
+	
 	private class newContactClickHandler implements ClickHandler{
 
 		@Override
@@ -743,7 +792,20 @@ public class ContactForm extends VerticalPanel {
 
 		@Override
 		public void onClick(ClickEvent event) {
-		
+			
+			if (contactToDisplay == null) {
+				Window.alert("kein Kontakt ausgewählt");
+			}
+			else {
+				EmailDialogBox dialog = new EmailDialogBox();
+				dialog.show();
+				editorAdministration.shareContact(contactToDisplay, dialog.getEmail(), new AsyncCallback<Permission>() {
+					public void onFailure(Throwable arg0) {
+					}
+					public void onSuccess(Permission arg0) {
+					}
+				});
+			}
 		}
 	}
 	
@@ -754,7 +816,20 @@ public class ContactForm extends VerticalPanel {
 
 		@Override
 		public void onClick(ClickEvent event) {
-		
+			
+			if (contactToDisplay == null) {
+				Window.alert("kein Kontakt ausgewählt");
+			}
+			else {	
+				clearContactForm();
+				editorAdministration.deleteContact(contactToDisplay.getId(), new AsyncCallback<Void>() {
+					public void onFailure(Throwable arg0) {
+					}
+					public void onSuccess(Void arg0) {
+					}
+				});
+			clctvm.removeContactOfContactList(clctvm.getSelectedContactList(), contactToDisplay);
+			}
 		}
 	}
 	
@@ -765,25 +840,37 @@ public class ContactForm extends VerticalPanel {
 
 		@Override
 		public void onClick(ClickEvent event) {
-		
-			for(ValueTextBox vtb : allValueTextBoxes) {
-				if (vtb.getIsChanged()) {
-					editorAdministration.editValue(contactToDisplay, vtb.getTextBoXValue().getPropertyid(), vtb.getTextBoXValue(), vtb.getTextBoXValue().getContent(), 
+			
+			if (contactToDisplay == null) {
+				Window.alert("kein Kontakt ausgewählt");
+			}
+			else {
+				for(ValueTextBox vtb : allValueTextBoxes) {
+					if (vtb.getIsChanged() && vtb.getTextBoXValue() != null) {
+						editorAdministration.editValue(contactToDisplay, vtb.getTextBoXValue().getPropertyid(), vtb.getTextBoXValue(), vtb.getTextBoXValue().getContent(), 
 							vtb.getTextBoXValue().getIsShared(), new AsyncCallback<Value>() {
-						
-						public void onFailure(Throwable arg0) {
-							// TODO Auto-generated method stub
 							
-						}
-					
-						public void onSuccess(Value arg0) {
-							// TODO Auto-generated method stub
-							
-						}
-					});
+							public void onFailure(Throwable arg0) {	
+							}
+							public void onSuccess(Value arg0) {
+							}
+						});
+					}
+					else if(vtb.getIsChanged() && vtb.getTextBoXValue() == null){
+						editorAdministration.editContact(contactToDisplay.getId(), firstnameTextBox.getText(), lastnameTextBox.getText(), 
+							contactToDisplay.getSex(), new AsyncCallback<Contact>() {
+	
+							public void onFailure(Throwable arg0) {
+							}
+							public void onSuccess(Contact arg0) {
+							}
+						});
+					}
+					else {
+						Window.alert("Problem in saveChangesClickHandler");
+					}
 				}
 			}
-			
 		}
 	}
 	
@@ -802,6 +889,7 @@ public class ContactForm extends VerticalPanel {
 	public void clearContactForm() {
 		// TODO Auto-generated method stub
 		
+		setSelected(null);
 	}
 	
 	
