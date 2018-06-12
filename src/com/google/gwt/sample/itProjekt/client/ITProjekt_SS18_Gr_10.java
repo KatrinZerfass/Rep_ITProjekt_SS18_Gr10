@@ -133,9 +133,11 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		contactPanel.add(cf);
 		RootPanel.get("Details").add(contactPanel);
 		
-		
 		ContactListContactTreeViewModel clctvm = new ContactListContactTreeViewModel();	
-		
+		VerticalPanel contactListPanel = new VerticalPanel();
+		Button newContactlist = new Button();
+		contactListPanel.add(newContactlist);
+		RootPanel.get("Contactlist").add(contactListPanel);
 		
 		clctvm.setContactForm(cf);
 		cf.setClctvm(clctvm);
@@ -162,8 +164,8 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		
 		CellBrowser.Builder<String> builder = new CellBrowser.Builder<>(clctvm, "Root");	
 		CellBrowser cellBrowser = builder.build(); 
-//		cellBrowser.setHeight("630");
-//		cellBrowser.setWidth("200");
+		cellBrowser.setHeight("100%");
+		cellBrowser.setWidth("100%");
 		cellBrowser.setAnimationEnabled(true);
 		cellBrowser.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 		

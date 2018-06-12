@@ -122,6 +122,8 @@ public class ContactForm extends VerticalPanel {
 		 */
 		public LockButton() {
 			
+			this.addStyleName("lockButton");
+			
 			lockUnlocked.setPixelSize(20, 20);
 			lockLocked.setPixelSize(20, 20);
 			
@@ -191,18 +193,24 @@ public class ContactForm extends VerticalPanel {
 	 * Sie dient der Darstellung der Buttons, welche hinter jeder einzelnen Ausprägung die Möglichkeit geben, diese zu löschen.
 	 * 
 	 */
-	public class DeleteValueButton extends Button{
+	public class DeleteValueButton extends PushButton{
 		
 		/** Die Ausprägung, auf welche der jeweilige DeleteValueButton referenziert */
 		private Value value;
+		
+		private Image bin = new Image("bin.png");
+		
 		
 		/**
 		 * Konstruktor von DeleteValueButton. Es wird dem Button ein ClickHandler hinzugefügt, welcher die Methode <code>deleteValue()</code> aufruft.
 		 *
 		 * @param String Text auf dem Button
 		 */
-		public DeleteValueButton(String text) {
-			super(text);
+		public DeleteValueButton() {
+			this.getUpFace().setImage(bin);
+			bin.setPixelSize(20, 20);
+			
+			this.addStyleName("deleteValueButton");
 			
 			this.addClickHandler(new ClickHandler() {
 				public void onClick (ClickEvent event) {
@@ -248,6 +256,7 @@ public class ContactForm extends VerticalPanel {
 		/** Die referenzierte Eigenschaftsart. */
 		private int propertyId;
 		
+			
 		/**
 		 * Konstruktor von AddValueButton. Setzt die Id der referenzierten Eigenschaft und fügt dem Button einen ClickHandler
 		 * hinzu, welcher ein neues PopUp-Fenster für das Hinzufügen einer Eigenschaftsausprägung öffnen.
@@ -256,7 +265,7 @@ public class ContactForm extends VerticalPanel {
 		 */
 		public AddValueButton(int pid) {
 			this.setText(" neu ");
-			this.setStyleName("addButton");
+			this.setStyleName("addValueButton");
 			this.propertyId= pid;
 		
 					
@@ -365,10 +374,12 @@ public class ContactForm extends VerticalPanel {
 		public ValueDisplay(ValueTextBox vtb) {
 			valueTextBox = vtb;
 			lockButton = new LockButton();
-			deleteValueButton = new DeleteValueButton(" x ");
+			deleteValueButton = new DeleteValueButton();
 			this.add(valueTextBox);
 			this.add(lockButton);
 			this.add(deleteValueButton);
+			
+
 				
 		}
 		
@@ -478,16 +489,9 @@ public class ContactForm extends VerticalPanel {
 		addressTable.setWidget(1, 1, cityTextBox);
 			
 		addressTable.getFlexCellFormatter().setRowSpan(0, 2, 2);
-		addressTable.setWidget(0, 2, new LockButton());
-		addressTable.getFlexCellFormatter().setRowSpan(0, 3, 2);
-		addressTable.setWidget(0, 3, new DeleteValueButton(" x "));
-		
-//		//nur zum innere Rahmenlinien anzeigen lassen, zu Debug-Zwecken
-//		for (int i= 0; i<addressTable.getRowCount(); i++) {
-//			for (int a=0; a<addressTable.getCellCount(i); a++) {
-//				addressTable.getCellFormatter().addStyleName(i, a, "cellBordersGreen");
-//			}
-//		}
+		addressTable.setWidget(0, 2, new ValueDisplay(new ValueTextBox()));
+		((ValueDisplay) addressTable.getWidget(0, 2)).remove(0);
+
 		
 
 		/*
@@ -505,9 +509,9 @@ public class ContactForm extends VerticalPanel {
 		
 		contactTable.getFlexCellFormatter().setColSpan(5, 1, 3);
 		contactTable.setWidget(5, 1, privatePhoneNumbersTable);
-		
+			
 		privatePhoneNumbersTable.setWidget(0, 0, new ValueDisplay(new ValueTextBox()));
-	
+		((ValueDisplay)privatePhoneNumbersTable.getWidget(0, 0)).getWidget(0).setWidth("290px");
 		
 		
 		/*
@@ -526,17 +530,17 @@ public class ContactForm extends VerticalPanel {
 		
 		contactTable.getFlexCellFormatter().setColSpan(6, 1, 3);
 		contactTable.setWidget(6, 1, businessPhoneNumbersTable);
-		
+	
 		businessPhoneNumbersTable.setWidget(0, 0, new ValueDisplay(new ValueTextBox()));
-		
+		((ValueDisplay)businessPhoneNumbersTable.getWidget(0, 0)).getWidget(0).setWidth("290px");
 		
 			
 		
 		
 //		//nur zum innere Rahmenlinien anzeigen lassen, zu Debug-Zwecken
-//		for (int i= 0; i<phoneNumbersTable.getRowCount(); i++) {
-//			for (int a=0; a<phoneNumbersTable.getCellCount(i); a++) {
-//				phoneNumbersTable.getCellFormatter().addStyleName(i, a, "cellBordersGreen");
+//		for (int i= 0; i<privatePhoneNumbersTable.getRowCount(); i++) {
+//			for (int a=0; a<privatePhoneNumbersTable.getCellCount(i); a++) {
+//				privatePhoneNumbersTable.getCellFormatter().addStyleName(i, a, "cellBordersGreen");
 //			}
 //		}
 		
@@ -560,6 +564,7 @@ public class ContactForm extends VerticalPanel {
 		contactTable.setWidget(7, 1, eMailsTable);
 		
 		eMailsTable.setWidget(0, 0, new ValueDisplay(new ValueTextBox()));
+		((ValueDisplay)eMailsTable.getWidget(0, 0)).getWidget(0).setWidth("290px");
 		
 		
 		
@@ -580,6 +585,7 @@ public class ContactForm extends VerticalPanel {
 		contactTable.setWidget(8, 1, homepagesTable);
 		
 		homepagesTable.setWidget(0, 0, new ValueDisplay(new ValueTextBox()));
+		((ValueDisplay)homepagesTable.getWidget(0, 0)).getWidget(0).setWidth("290px");
 		
 		
 		
@@ -600,6 +606,7 @@ public class ContactForm extends VerticalPanel {
 		contactTable.setWidget(9, 1, jobsTable);
 		
 		jobsTable.setWidget(0, 0, new ValueDisplay(new ValueTextBox()));
+		((ValueDisplay)jobsTable.getWidget(0, 0)).getWidget(0).setWidth("290px");
 		
 		
 		
@@ -607,17 +614,31 @@ public class ContactForm extends VerticalPanel {
 		contactTable.getFlexCellFormatter().setColSpan(10, 0, 4);
 		contactTable.getFlexCellFormatter().setHeight(10, 0, "30px");
 		
-		HorizontalPanel buttonPanel = new HorizontalPanel();
+		VerticalPanel buttonPanel = new VerticalPanel();
+		contactTable.setWidget(10, 0, buttonPanel);
+		buttonPanel.setStyleName("buttonPanel");
+		
+		HorizontalPanel contactButtonsPanel = new HorizontalPanel();
+		buttonPanel.add(contactButtonsPanel);
+		
 		Button addContactButton = new Button("Neuen Kontakt anlegen");
 		Button shareContactButton = new Button("Kontakt teilen");
 		Button deleteContactButton = new Button("Kontakt löschen");
 		Button saveChangesButton = new Button("Änderungen speichern");
 	
-		contactTable.setWidget(10, 0, buttonPanel);
-		buttonPanel.add(addContactButton);
-		buttonPanel.add(shareContactButton);
-		buttonPanel.add(deleteContactButton);
-		buttonPanel.add(saveChangesButton);
+		contactButtonsPanel.add(addContactButton);
+		contactButtonsPanel.add(shareContactButton);
+		contactButtonsPanel.add(deleteContactButton);
+		contactButtonsPanel.add(saveChangesButton);
+		
+		HorizontalPanel contactListButtonsPanel = new HorizontalPanel();
+		buttonPanel.add(contactListButtonsPanel);
+		
+		Button addContactToContactListButton = new Button("Kontakt zu einer Kontaktliste hinzufügen");
+		Button removeContactFromContactListButton = new Button("Kontakt aus der aktuellen Kontaktliste entfernen");
+		contactListButtonsPanel.add(addContactToContactListButton);
+		contactListButtonsPanel.add(removeContactFromContactListButton);
+		
 		
 	
 		
