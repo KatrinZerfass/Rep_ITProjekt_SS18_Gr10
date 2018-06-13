@@ -56,7 +56,7 @@ public interface EditorAdministration extends RemoteService{
 	
 	public void deleteContactList(ContactList contactlist) throws IllegalArgumentException;
 	
-	public Value createValue(Contact contact, Property property, String content) throws IllegalArgumentException;
+	public Value createValue(Contact contact, int propertyid, String content) throws IllegalArgumentException;
 	
 	public Vector<Value> getAllValuesOf(Contact contact) throws IllegalArgumentException;
 	

@@ -212,10 +212,12 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	}
 
 	@Override
-	public Value createValue(Contact contact, Property property, String content) throws IllegalArgumentException {
+	public Value createValue(Contact contact, int propertyid, String content) throws IllegalArgumentException {
 		
 		Value newvalue = new Value();
 		newvalue.setContent(content);
+		Property property = new Property();
+		property.setId(propertyid);
 		
 		return vMapper.insert(newvalue, contact, property);
 	}

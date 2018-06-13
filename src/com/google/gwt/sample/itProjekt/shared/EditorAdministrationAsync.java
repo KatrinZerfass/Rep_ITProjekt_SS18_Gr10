@@ -20,7 +20,7 @@ public interface EditorAdministrationAsync {
 
 	void createUser(String email, AsyncCallback<User> callback);
 
-	void createValue(Contact contact, Property property, String content, AsyncCallback<Value> callback);
+	void createValue(Contact contact, int propertyid, String content, AsyncCallback<Value> callback);
 
 	void deleteContact(int id, AsyncCallback<Void> callback);
 
