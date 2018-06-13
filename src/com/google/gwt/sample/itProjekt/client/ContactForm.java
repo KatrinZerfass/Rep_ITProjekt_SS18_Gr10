@@ -457,7 +457,7 @@ public class ContactForm extends VerticalPanel {
 	 * Die Methode <code>onLoad()</code> wird in der EntryPoint-Klasse aufgerufen, um im GUI eine Instanz von ContactForm zu erzeugen.
 	 */
 	
-public class EmailDialogBox extends DialogBox{
+	public class EmailDialogBox extends DialogBox{
 		
 		private String email;
 		
@@ -746,6 +746,8 @@ public class EmailDialogBox extends DialogBox{
 		buttonPanel.add(contactListButtonsPanel);
 		
 		Button addContactToContactListButton = new Button("Kontakt zu einer Kontaktliste hinzufügen");
+		addContactToContactListButton.addClickHandler(new addContactToContactListClickHandler());
+		
 		Button removeContactFromContactListButton = new Button("Kontakt aus der aktuellen Kontaktliste entfernen");
 		contactListButtonsPanel.add(addContactToContactListButton);
 		contactListButtonsPanel.add(removeContactFromContactListButton);
@@ -930,6 +932,67 @@ public class EmailDialogBox extends DialogBox{
 		}
 	}
 	
+	private class addContactToContactListClickHandler implements ClickHandler {
+		
+		ListBox listbox;
+		VerticalPanel panel;
+		ContactList choice;
+		
+        Vector<ContactList> contactLists;
+		
+		public void onClick(ClickEvent event) {
+			
+			panel = new VerticalPanel();
+			panel.setHeight("100");
+	        panel.setWidth("300");
+	        panel.setSpacing(10);
+	        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+
+	        editorAdministration.getAllContactListsOfActiveUser(new AsyncCallback<Vector<ContactList>>() {
+	        	@Override
+	        	public void onFailure(Throwable arg0) {	
+	        	}
+	        	@Override
+	        	public void onSuccess(Vector<ContactList> arg0) {
+	        		contactLists = arg0;
+	        	}
+			});
+	        
+	        listbox = new ListBox();
+	        
+	        for (ContactList cl : contactLists) {
+	        	listbox.addItem(cl.getName());
+	        }
+	        
+	        Button ok = new Button("OK");
+	        ok.addClickHandler(new ClickHandler() {
+	        	public void onClick(ClickEvent event) {
+	        		for (ContactList cl : contactLists) {
+	        			if (listbox.getSelectedItemText() == cl.getName()) {
+	        				choice = cl;
+	        			}
+	        		}       		
+	        		editorAdministration.addContactToContactList(choice, contactToDisplay, new AsyncCallback<ContactList>() {
+	        			@Override
+	        			public void onFailure(Throwable arg0) {
+	        				Window.alert("Fehler beim Hinzufügen des Kontakts zur Kontaktliste!");
+	        			}
+	        			@Override
+	        			public void onSuccess(ContactList arg0) {
+	        				Window.alert("Kontakt zur Kontaktliste hinzugefügt.");
+	        			}
+					});
+	        	}
+	        });
+	        
+	        Label label = new Label("Bitte wählen sie die Kontaktliste aus.");
+	        
+	        panel.add(label);
+	        panel.add(listbox);
+	        panel.add(ok);
+		}
+	}
+	
 	private boolean checkValue (ValueTextBox vtb) {
 		
 		String identifier = vtb.getIdentifier();
@@ -986,7 +1049,7 @@ public class EmailDialogBox extends DialogBox{
 					return false;
 				}
 			case "Telefonnummer":
-				if (text.matches("[1-9]")) {
+				if (text.matches("[0-9]")) {
 					return true;
 				}
 				else {

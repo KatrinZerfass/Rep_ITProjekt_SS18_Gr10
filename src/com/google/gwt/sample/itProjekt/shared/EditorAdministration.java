@@ -50,13 +50,13 @@ public interface EditorAdministration extends RemoteService{
 	
 	public ContactList addContactToContactList(ContactList contactlist, Contact contact) throws IllegalArgumentException;
 	
-	public Permission shareContactList(ContactList contactlist, User user) throws IllegalArgumentException;
+	public Permission shareContactList(ContactList contactlist, String email) throws IllegalArgumentException;
 	
 	public ContactList removeContactFromContactList(ContactList contactlist, Contact contact) throws IllegalArgumentException;
 	
 	public void deleteContactList(ContactList contactlist) throws IllegalArgumentException;
 	
-	public Value createValue(Contact contact, Property property, String content) throws IllegalArgumentException;
+	public Value createValue(Contact contact, int propertyid, String content) throws IllegalArgumentException;
 	
 	public Vector<Value> getAllValuesOf(Contact contact) throws IllegalArgumentException;
 	

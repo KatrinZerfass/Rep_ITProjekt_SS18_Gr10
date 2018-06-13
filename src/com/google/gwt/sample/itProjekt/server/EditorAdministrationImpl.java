@@ -186,9 +186,11 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	}
 
 	@Override
-	public Permission shareContactList(ContactList contactlist, User user) throws IllegalArgumentException {
+	public Permission shareContactList(ContactList contactlist, String email) throws IllegalArgumentException {
 		
 		Permission newpermission = new Permission();
+		User user = new User();
+		user = getUserInformation(email);
 		newpermission.setParticipant(user);
 		newpermission.setIsowner(false);
 		newpermission.setShareableobject(contactlist);
@@ -210,10 +212,12 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	}
 
 	@Override
-	public Value createValue(Contact contact, Property property, String content) throws IllegalArgumentException {
+	public Value createValue(Contact contact, int propertyid, String content) throws IllegalArgumentException {
 		
 		Value newvalue = new Value();
 		newvalue.setContent(content);
+		Property property = new Property();
+		property.setId(propertyid);
 		
 		return vMapper.insert(newvalue, contact, property);
 	}
