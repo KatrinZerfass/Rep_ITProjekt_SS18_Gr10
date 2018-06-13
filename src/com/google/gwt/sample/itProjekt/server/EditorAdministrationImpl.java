@@ -186,9 +186,11 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	}
 
 	@Override
-	public Permission shareContactList(ContactList contactlist, User user) throws IllegalArgumentException {
+	public Permission shareContactList(ContactList contactlist, String email) throws IllegalArgumentException {
 		
 		Permission newpermission = new Permission();
+		User user = new User();
+		user = getUserInformation(email);
 		newpermission.setParticipant(user);
 		newpermission.setIsowner(false);
 		newpermission.setShareableobject(contactlist);

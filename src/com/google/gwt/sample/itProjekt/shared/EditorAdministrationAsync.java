@@ -61,7 +61,7 @@ public interface EditorAdministrationAsync {
 
 	void shareContact(Contact contact, String email, AsyncCallback<Permission> callback);
 
-	void shareContactList(ContactList contactlist, User user, AsyncCallback<Permission> callback);
+	void shareContactList(ContactList contactlist, String email, AsyncCallback<Permission> callback);
 
 	void getAllContactListsOfActiveUser(AsyncCallback<Vector<ContactList>> callback);
 

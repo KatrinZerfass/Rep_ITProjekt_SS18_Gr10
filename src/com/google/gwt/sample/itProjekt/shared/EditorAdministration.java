@@ -50,7 +50,7 @@ public interface EditorAdministration extends RemoteService{
 	
 	public ContactList addContactToContactList(ContactList contactlist, Contact contact) throws IllegalArgumentException;
 	
-	public Permission shareContactList(ContactList contactlist, User user) throws IllegalArgumentException;
+	public Permission shareContactList(ContactList contactlist, String email) throws IllegalArgumentException;
 	
 	public ContactList removeContactFromContactList(ContactList contactlist, Contact contact) throws IllegalArgumentException;
 	

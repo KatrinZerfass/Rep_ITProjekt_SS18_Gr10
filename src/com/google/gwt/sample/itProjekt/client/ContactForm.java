@@ -456,7 +456,7 @@ public class ContactForm extends VerticalPanel {
 	 * Die Methode <code>onLoad()</code> wird in der EntryPoint-Klasse aufgerufen, um im GUI eine Instanz von ContactForm zu erzeugen.
 	 */
 	
-public class EmailDialogBox extends DialogBox{
+	public class EmailDialogBox extends DialogBox{
 		
 		private String email;
 		
