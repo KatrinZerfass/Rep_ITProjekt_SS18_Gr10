@@ -17,6 +17,5 @@ public interface ReportGeneratorAsync {
 
 	void generateAllSharedContactsOfUserReport(User u, AsyncCallback<AllSharedContactsOfUserReport> callback);
 
-	void getEditorAdministration(AsyncCallback<EditorAdministration> callback);
 
 }

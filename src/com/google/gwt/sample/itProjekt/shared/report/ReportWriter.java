@@ -20,13 +20,6 @@ public abstract class ReportWriter {
 		 *
 		 * @param r the r
 		 */
-		public abstract void process(AllContactsReport r);
-		
-		/**
-		 * Process.
-		 *
-		 * @param r the r
-		 */
 		public abstract void process(AllSharedContactsOfUserReport r);
 		
 		/**

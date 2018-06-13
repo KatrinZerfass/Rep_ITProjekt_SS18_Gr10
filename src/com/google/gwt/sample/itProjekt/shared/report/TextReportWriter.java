@@ -2,8 +2,8 @@ package com.google.gwt.sample.itProjekt.shared.report;
 
 import java.util.Vector;
 /**
- * die Klasse TextReportWriter, die für die textuelle Ausgabe des 
- * Reports zuständig ist./**
+ * die Klasse TextReportWriter, die fï¿½r die textuelle Ausgabe des 
+ * Reports zustï¿½ndig ist./**
  * @author Anna-MariaGmeiner
  */
 public class TextReportWriter extends ReportWriter{
@@ -20,7 +20,7 @@ public class TextReportWriter extends ReportWriter{
 	}
 	
 	/**
-	 * Getter für den header.
+	 * Getter fï¿½r den header.
 	 *
 	 * @param r the r
 	 * @return the header
@@ -52,32 +52,7 @@ public class TextReportWriter extends ReportWriter{
 		this.reportText=result.toString();
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.google.gwt.sample.itProjekt.shared.report.ReportWriter#process(com.google.gwt.sample.itProjekt.shared.report.AllContactsReport)
-	 */
-	@Override
-	public void process(AllContactsReport r) {
-		this.reportText="";
-		
-		StringBuffer result=new StringBuffer();
-		
-		result.append(" Report: "+ r.getTitle() +"\n\n");
-		
-		if(r.getHeaderData()!=null) {
-			result.append(r.getHeaderData()+ "\n");
-		}
-		
-		Vector <Row> rows=r.getRows();
-		result.append("Erstellt am: " + r.getCreated().toString()+"\n\n");
-		for (Row row:rows) {
-			for (int i=0; i< row.getNumColumns();i++){
-				result.append(row.getColumnAt(i) + "\t\t");
-			}
-			result.append("\n");
-		}
-		this.reportText=result.toString();
-	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.google.gwt.sample.itProjekt.shared.report.ReportWriter#process(com.google.gwt.sample.itProjekt.shared.report.AllSharedContactsOfUserReport)
 	 */

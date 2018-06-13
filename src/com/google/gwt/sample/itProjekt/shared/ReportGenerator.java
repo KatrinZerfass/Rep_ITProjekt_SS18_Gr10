@@ -5,12 +5,16 @@ import com.google.gwt.sample.itProjekt.shared.bo.Value;
 import com.google.gwt.sample.itProjekt.shared.report.AllContactsOfUserReport;
 import com.google.gwt.sample.itProjekt.shared.report.AllContactsWithValueReport;
 import com.google.gwt.sample.itProjekt.shared.report.AllSharedContactsOfUserReport;
+
 import com.google.gwt.user.client.rpc.RemoteService;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+
 
 // 
 /**
  * Das ReportGenerator Interface.
  */
+@RemoteServiceRelativePath("reportgenerator")
 public interface ReportGenerator extends RemoteService{
 	
 	/**
@@ -49,5 +53,4 @@ public interface ReportGenerator extends RemoteService{
 	 */
 	public abstract AllContactsWithValueReport generateAllContactsWithValueReport(Value v) throws IllegalArgumentException;
 
-	public abstract EditorAdministration getEditorAdministration() throws IllegalArgumentException;
 }

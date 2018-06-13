@@ -2,7 +2,6 @@ package com.google.gwt.sample.itProjekt.server;
 
 import java.util.Date;
 import java.util.Vector;
-
 import com.google.gwt.sample.itProjekt.shared.EditorAdministration;
 import com.google.gwt.sample.itProjekt.server.EditorAdministrationImpl;
 import com.google.gwt.sample.itProjekt.shared.ReportGenerator;
@@ -35,7 +34,6 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	 * @throws IllegalArgumentException the illegal argument exception
 	 */
 	public ReportGeneratorImpl () throws IllegalArgumentException {
-		
 	}
 
 	
@@ -54,19 +52,9 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	 *
 	 * @return the editor administration
 	 */
-@Override
-	public EditorAdministration getEditorAdministration() {
+	protected EditorAdministration getEditorAdministration() {
 		return this.admin;
 	}	
-
-/*@Override
-	public AllContactsReport generateAllContactsReport() throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		AllContactsReport report=new AllContactsReport();
-		
-		report.setTitle("Alle vorhandenen Kontakte");
-	    report.setCreated(new Date());
-	}*/
 
 /* (non-Javadoc)
  * @see com.google.gwt.sample.itProjekt.shared.ReportGenerator#generateAllContactsOfUserReport(com.google.gwt.sample.itProjekt.shared.bo.User)
@@ -84,8 +72,8 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			
 			CompositeParagraph header=new CompositeParagraph();
 			
-			header.addSubParagraph(new SimpleParagraph("Nutzer: " + u.getEmail()));
-			header.addSubParagraph(new SimpleParagraph("Nutzer-ID: " + u.getId()));
+			header.addSubParagraph(new SimpleParagraph("Nutzer: test@gmail.com"));
+			header.addSubParagraph(new SimpleParagraph("Nutzer-ID: 1234" ));
 			
 			report.setHeaderData(header);
 			
@@ -103,15 +91,17 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			
 			Contact con=new Contact();
 			con.setFirstname("Josef");
-			con.setLastname("HÃ¼gel");
+			con.setLastname("Hügel");
 			con.setSex("male");
+			con.setId(1234);
 			Contact con1=new Contact();
 			con1.setFirstname("Heidi");
-			con1.setLastname("AlmÃ¶di");
+			con1.setId(1234);
+			con1.setLastname("Almödi");
 			con1.setSex("female");
 			Vector<Contact> allContacts= new Vector<Contact>();
-			allContacts.add(con1);
-			allContacts.add(con);
+			allContacts.addElement(con1);
+			allContacts.addElement(con);
 			
 			
 			for (Contact c: allContacts) {
@@ -181,10 +171,10 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	else {
 		AllContactsWithValueReport report = new AllContactsWithValueReport();
 		
-		report.setTitle("Alle Kontakte mit der Ausprï¿½gung");
+		report.setTitle("Alle Kontakte mit der Ausprägung");
 		report.setCreated(new Date());
 			
-		report.setHeaderData(new SimpleParagraph("Gesuchte Ausprï¿½gung: " + v.getContent()));
+		report.setHeaderData(new SimpleParagraph("Gesuchte Ausprägung: " + v.getContent()));
 		
 		Row headline = new Row();
 		
