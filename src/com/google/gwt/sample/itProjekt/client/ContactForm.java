@@ -282,8 +282,9 @@ public class ContactForm extends VerticalPanel {
 			this.setText("+");
 			this.setStyleName("addValueButton");
 			this.propertyId= pid;
-		
-			this.setEnabled(false);
+			
+		//wieder zurück kommentieren!
+			this.setEnabled(true);
 					
 			this.addClickHandler(new ClickHandler() {
 				public void onClick (ClickEvent event) {
@@ -767,37 +768,7 @@ public class EmailDialogBox extends DialogBox{
 		
 		
 		
-//		//ClickHandler fÃ¼r die AddValueButtons
-//		addPrivatePhoneNumberButton.addClickHandler(new ClickHandler(){
-//			public void onClick(ClickEvent event) {
-//				
-//			}	
-//		});
-//		
-//		addBusinessPhoneNumberButton.addClickHandler(new ClickHandler(){
-//			public void onClick(ClickEvent event) {
-//				
-//			}	
-//		});
-//		
-//		addEmailButton.addClickHandler(new ClickHandler(){
-//			public void onClick(ClickEvent event) {
-//				
-//			}	
-//		});
-//		
-//		addHomepageButton.addClickHandler(new ClickHandler(){
-//			public void onClick(ClickEvent event) {
-//				
-//			}	
-//		});
-//		
-//		addJobButton.addClickHandler(new ClickHandler(){
-//			public void onClick(ClickEvent event) {
-//				
-//			}	
-//		});
-		
+
 		//ClickHandler fÃ¼r die Funktionsbuttons --> jeweils eigene innere Klasse, siehe unten
 		addContactButton.addClickHandler(new newContactClickHandler());
 		
@@ -1044,13 +1015,14 @@ public class EmailDialogBox extends DialogBox{
 	}
 	
 	
+	
 	public void addValuePopUp(int pid) {
 
-		DialogBox addValueDialog = new DialogBox();
-		addValueDialog.show();
-		addValueDialog.setText("Neue Ausprägung hinzufügen");
-		addValueDialog.setAnimationEnabled(true);
-		addValueDialog.setGlassEnabled(true);
+		DialogBox addValuePopUp = new DialogBox();
+		addValuePopUp.show();
+		addValuePopUp.setText("Neue Ausprägung hinzufügen");
+		addValuePopUp.setAnimationEnabled(true);
+		addValuePopUp.setGlassEnabled(true);
 		
 		VerticalPanel addValueDialogBoxPanel = new VerticalPanel();
 		addValueDialogBoxPanel.setHeight("100px");
@@ -1062,37 +1034,75 @@ public class EmailDialogBox extends DialogBox{
 		ValueTextBox addValueTextBox = null;
 		Button addValueButton = new Button("Hinzufügen");
 		
-		String identifier = null;
+		
+		
+	//	String identifier = null;
 		switch(pid) {
-		case 1: identifier = "Telefonnummer";
+		case 1: addValueTextBox = new ValueTextBox("Telefonnummer");
 				addValueLabel.setText("Neue geschäftliche Telefonnummer: ");
+				addValueButton.addClickHandler(new AddValueClickHandler(addValuePopUp, addValueTextBox,
+						businessPhoneNumbersTable, pid, addValueTextBox.getText()));
+				
 				break;
-		case 2: identifier = "Telefonnummer";
+		case 2: addValueTextBox = new ValueTextBox("Telefonnummer");
 				addValueLabel.setText("Neue private Telefonnummer: ");
 				break;
-		case 3: identifier = "Email";
+		case 3: addValueTextBox = new ValueTextBox("Email");
 				addValueLabel.setText("Neue e-Mail-Adresse: ");
 				break;
-		case 5: identifier = "Arbeitsplatz";
+		case 5: addValueTextBox = new ValueTextBox("Arbeitsplatz");
 				addValueLabel.setText("Neue Arbeitsstelle: ");
 				break;
-		case 10:identifier = "Homepage";
-				addValueLabel.setText("Neue bal: ");
+		case 10:addValueTextBox = new ValueTextBox("Homepage");
+				addValueLabel.setText("Neue Homepage: ");
 	
 		}
-		addValueTextBox = new ValueTextBox(identifier);
-		
+	//	addValueTextBox = new ValueTextBox(identifier);
 		addValueDialogBoxPanel.add(addValueLabel);
 		addValueDialogBoxPanel.add(addValueTextBox);
 		addValueDialogBoxPanel.add(addValueButton);
-		addValueDialog.add(addValueDialogBoxPanel);
+		addValuePopUp.add(addValueDialogBoxPanel);
+	
+	}
+	
+	
+	private class AddValueClickHandler implements ClickHandler {
+		DialogBox popup;
+		ValueTextBox tb;
+		FlexTable ft;
+		int pid;
+		Value v;
+		String content;
 		
 		
+		public AddValueClickHandler(DialogBox popup, ValueTextBox tb, FlexTable ft, int pid, String content) {
+			this.popup = popup;
+			this.tb = tb;
+			this.ft = ft;
+			this.pid = pid;
+			this. content = content;
+					
+		}
 		
-
-		//der wert aus der TextBox wird ausgelesen und mit ihm
-		// a) ein neues ValueDisplay erstellt und
-		// b) der Value in die Datenbank abgespeichert
+		public void onClick(ClickEvent event) {
+			popup.hide();
+			Value v = new Value();
+			v.setContent("Hallo");
+			checkValue(tb);
+			ft.setWidget(ft.getRowCount(), 0, new ValueDisplay(new ValueTextBox("")));
+			
+//			v= editorAdministration.createValue(contactToDisplay, pid, content, new AsyncCallback<Value>() {
+//				public void onFailure(Throwable t) {
+//					
+//				}
+//				public void onSuccess(Value v) {
+//					
+//				}
+//			});
+			((ValueDisplay) ft.getWidget(ft.getRowCount(),0)).setValue(v);
+			
+			
+		}
 	}
 	
 	/**
@@ -1169,14 +1179,14 @@ public class EmailDialogBox extends DialogBox{
 					case 1: // Tel.Nr. geschäftlich
 							if(((ValueDisplay) businessPhoneNumbersTable.getWidget(0,0)).getValue() == null){
 							((ValueDisplay) businessPhoneNumbersTable.getWidget(0,0)).setValue(allValuesOfContact.get(i));
-							if(compareUser()) {
-								((ValueDisplay) businessPhoneNumbersTable.getWidget(0,0)).enableButtons();
-								((AddValueButton) businessPhoneNumbersPanel.getWidget(1)).setEnabled(true);
-							}
-							else {
-								((ValueDisplay) businessPhoneNumbersTable.getWidget(0,0)).disableButtons();
-								((AddValueButton) businessPhoneNumbersPanel.getWidget(1)).setEnabled(false);
-							}
+								if(compareUser()) {
+									((ValueDisplay) businessPhoneNumbersTable.getWidget(0,0)).enableButtons();
+									((AddValueButton) businessPhoneNumbersPanel.getWidget(1)).setEnabled(true);
+								}
+								else {
+									((ValueDisplay) businessPhoneNumbersTable.getWidget(0,0)).disableButtons();
+									((AddValueButton) businessPhoneNumbersPanel.getWidget(1)).setEnabled(false);
+								}
 							
 						}else {
 							/*
