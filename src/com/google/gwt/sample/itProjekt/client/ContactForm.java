@@ -105,6 +105,12 @@ public class ContactForm extends VerticalPanel {
 	
 	User currentUser = null;
 	
+	VerticalPanel privatePhoneNumbersPanel = new VerticalPanel();
+	VerticalPanel businessPhoneNumbersPanel = new VerticalPanel();
+	VerticalPanel eMailsPanel = new VerticalPanel();
+	VerticalPanel homepagesPanel = new VerticalPanel();
+	VerticalPanel jobsPanel = new VerticalPanel();
+	
 	
 	/**
 	 * Die innere Klasse LockButton.
@@ -601,8 +607,9 @@ public class EmailDialogBox extends DialogBox{
 		/*
 		 * FÃ¼nfte Zeile: Telefonnummern privat (PID 2)
 		 */
-		VerticalPanel privatePhoneNumbersPanel = new VerticalPanel();
+		
 		contactTable.setWidget(5, 0, privatePhoneNumbersPanel);
+		
 		
 		Label privatePhoneNumbersLabel = new Label("Telefonnummern privat: ");
 		privatePhoneNumbersPanel.add(privatePhoneNumbersLabel);
@@ -621,7 +628,7 @@ public class EmailDialogBox extends DialogBox{
 		 * Sechste Zeile: Telefonnummer geschäftlich (PID 1)
 		 */
 		
-		VerticalPanel businessPhoneNumbersPanel = new VerticalPanel();
+		
 		contactTable.setWidget(6, 0,  businessPhoneNumbersPanel);
 		
 		Label businessPhoneNumbersLabel = new Label("Telefonnummern geschäftl: ");
@@ -653,7 +660,7 @@ public class EmailDialogBox extends DialogBox{
 		 * Siebte Zeile: eMail (PID 3)
 		 */
 		
-		VerticalPanel eMailsPanel = new VerticalPanel();
+		
 		contactTable.setWidget(7, 0,  eMailsPanel);
 		
 		Label eMailsLabel = new Label("e-Mail-Adressen: ");
@@ -675,7 +682,7 @@ public class EmailDialogBox extends DialogBox{
 		/*
 		 * Achte Zeile: Homepages (PID 10)
 		 */
-		VerticalPanel homepagesPanel = new VerticalPanel();
+		
 		contactTable.setWidget(8, 0,  homepagesPanel);
 		
 		Label homepagesLabel = new Label("Homepages: ");
@@ -696,7 +703,7 @@ public class EmailDialogBox extends DialogBox{
 		/*
 		 * Neunte Zeile: Arbeitsstelle (PID 5)
 		 */
-		VerticalPanel jobsPanel = new VerticalPanel();
+		
 		contactTable.setWidget(9, 0,  jobsPanel);
 		
 		Label jobsLabel = new Label("Arbeitsstellen: ");
@@ -1164,9 +1171,11 @@ public class EmailDialogBox extends DialogBox{
 							((ValueDisplay) businessPhoneNumbersTable.getWidget(0,0)).setValue(allValuesOfContact.get(i));
 							if(compareUser()) {
 								((ValueDisplay) businessPhoneNumbersTable.getWidget(0,0)).enableButtons();
+								((AddValueButton) businessPhoneNumbersPanel.getWidget(1)).setEnabled(true);
 							}
 							else {
 								((ValueDisplay) businessPhoneNumbersTable.getWidget(0,0)).disableButtons();
+								((AddValueButton) businessPhoneNumbersPanel.getWidget(1)).setEnabled(false);
 							}
 							
 						}else {
@@ -1180,9 +1189,11 @@ public class EmailDialogBox extends DialogBox{
 																					.setValue(allValuesOfContact.get(i));
 							if (compareUser()) {
 								((ValueDisplay) businessPhoneNumbersTable.getWidget(businessPhoneNumbersTable.getRowCount(), 0)).enableButtons();
+								((AddValueButton) businessPhoneNumbersPanel.getWidget(1)).setEnabled(true);
 							}
 							else {
 								((ValueDisplay) businessPhoneNumbersTable.getWidget(businessPhoneNumbersTable.getRowCount(), 0)).disableButtons();
+								((AddValueButton) businessPhoneNumbersPanel.getWidget(1)).setEnabled(false);
 							}
 						}
 						break;
@@ -1193,9 +1204,11 @@ public class EmailDialogBox extends DialogBox{
 								((ValueDisplay) privatePhoneNumbersTable.getWidget(0,0)).setValue(allValuesOfContact.get(i));
 								if(compareUser()) {
 									((ValueDisplay) privatePhoneNumbersTable.getWidget(0,0)).enableButtons();
+									((AddValueButton) privatePhoneNumbersPanel.getWidget(1)).setEnabled(true);
 								}
 								else {
 									((ValueDisplay) privatePhoneNumbersTable.getWidget(0,0)).disableButtons();
+									((AddValueButton) privatePhoneNumbersPanel.getWidget(1)).setEnabled(false);
 								}
 							}else {
 								/*
@@ -1208,9 +1221,11 @@ public class EmailDialogBox extends DialogBox{
 																						.setValue(allValuesOfContact.get(i));
 								if(compareUser()) {
 									((ValueDisplay) privatePhoneNumbersTable.getWidget(privatePhoneNumbersTable.getRowCount(), 0)).enableButtons();
+									((AddValueButton) privatePhoneNumbersPanel.getWidget(1)).setEnabled(true);
 								}
 								else {
 									((ValueDisplay) privatePhoneNumbersTable.getWidget(privatePhoneNumbersTable.getRowCount(), 0)).disableButtons();
+									((AddValueButton) privatePhoneNumbersPanel.getWidget(1)).setEnabled(false);
 								}
 							}
 							break;
@@ -1221,9 +1236,11 @@ public class EmailDialogBox extends DialogBox{
 								((ValueDisplay) eMailsTable.getWidget(0,0)).setValue(allValuesOfContact.get(i));
 								if(compareUser()) {
 									((ValueDisplay) eMailsTable.getWidget(0,0)).enableButtons();
+									((AddValueButton) eMailsPanel.getWidget(1)).setEnabled(true);
 								}
 								else {
 									((ValueDisplay) eMailsTable.getWidget(0,0)).disableButtons();
+									((AddValueButton) eMailsPanel.getWidget(1)).setEnabled(false);
 								}
 							}else {
 								/*
@@ -1236,9 +1253,11 @@ public class EmailDialogBox extends DialogBox{
 																						.setValue(allValuesOfContact.get(i));
 								if(compareUser()) {
 									((ValueDisplay) eMailsTable.getWidget(eMailsTable.getRowCount(), 0)).disableButtons();
+									((AddValueButton) eMailsPanel.getWidget(1)).setEnabled(true);
 								}
 								else {
 									((ValueDisplay) eMailsTable.getWidget(eMailsTable.getRowCount(), 0)).disableButtons();
+									((AddValueButton) eMailsPanel.getWidget(1)).setEnabled(false);
 								}
 							}
 							break;
@@ -1253,9 +1272,11 @@ public class EmailDialogBox extends DialogBox{
 								((ValueDisplay) jobsTable.getWidget(0,0)).setValue(allValuesOfContact.get(i));
 								if(compareUser()) {
 									((ValueDisplay) jobsTable.getWidget(0,0)).enableButtons();
+									((AddValueButton) jobsPanel.getWidget(1)).setEnabled(true);
 								}
 								else {
 									((ValueDisplay) jobsTable.getWidget(0,0)).disableButtons();
+									((AddValueButton) jobsPanel.getWidget(1)).setEnabled(false);
 								}
 							}else {
 								/*
@@ -1267,9 +1288,11 @@ public class EmailDialogBox extends DialogBox{
 								((ValueDisplay) jobsTable.getWidget(jobsTable.getRowCount(), 0)).setValue(allValuesOfContact.get(i));
 								if(compareUser()) {
 									((ValueDisplay) jobsTable.getWidget(jobsTable.getRowCount(), 0)).enableButtons();
+									((AddValueButton) jobsPanel.getWidget(1)).setEnabled(true);
 								}
 								else {
 									((ValueDisplay) jobsTable.getWidget(jobsTable.getRowCount(), 0)).disableButtons();
+									((AddValueButton) jobsPanel.getWidget(1)).setEnabled(false);
 								}
 							}
 							break;
@@ -1313,9 +1336,11 @@ public class EmailDialogBox extends DialogBox{
 								((ValueDisplay) homepagesTable.getWidget(0,0)).setValue(allValuesOfContact.get(i));
 								if(compareUser()) {
 									((ValueDisplay) homepagesTable.getWidget(0,0)).enableButtons();
+									((AddValueButton) homepagesPanel.getWidget(1)).setEnabled(true);
 								}
 								else {
 									((ValueDisplay) homepagesTable.getWidget(0,0)).disableButtons();
+									((AddValueButton) homepagesPanel.getWidget(1)).setEnabled(false);
 								}
 							 }else {
 								/*
@@ -1328,9 +1353,11 @@ public class EmailDialogBox extends DialogBox{
 								
 								if (compareUser()) {
 									((ValueDisplay) homepagesTable.getWidget(homepagesTable.getRowCount(), 0)).enableButtons();
+									((AddValueButton) homepagesPanel.getWidget(1)).setEnabled(true);
 								}
 								else {
 									((ValueDisplay) homepagesTable.getWidget(homepagesTable.getRowCount(), 0)).disableButtons();
+									((AddValueButton) homepagesPanel.getWidget(1)).setEnabled(false);
 								}
 							 }
 							 break;
