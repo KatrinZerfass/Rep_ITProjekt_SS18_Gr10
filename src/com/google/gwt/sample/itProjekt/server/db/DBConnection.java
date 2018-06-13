@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 import com.google.appengine.api.utils.SystemProperty;
+import com.google.gwt.user.client.Window;
 
 
 public class DBConnection {
@@ -30,18 +31,20 @@ public class DBConnection {
                 if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {
                     
                     Class.forName("com.mysql.jdbc.GoogleDriver");
-                    url = googleUrl3;
+                    con = DriverManager.getConnection("jdbc:google:mysql://it-projekt-gruppe-10-203610:itprojektdb/itpdb2?user=root&password=root");
+                    Window.alert("lief wohl durch hier");
                 } else {
+                   Window.alert("da lief was schief");
                    
-                    Class.forName("com.mysql.jdbc.Driver");
-                    url = localUrl2;
                 }
                 
-                con = DriverManager.getConnection(url);
+                
             } catch (Exception e) {
                 con = null;
                 e.printStackTrace();
+                Window.alert("Runtime Problem incoming");
                 throw new RuntimeException(e.getMessage());
+                
             }
         }
 
