@@ -1,11 +1,13 @@
 package com.google.gwt.sample.itProjekt.client;
 
+import com.google.gwt.sample.itProjekt.client.ContactForm.EmailDialogBox;
 import com.google.gwt.sample.itProjekt.shared.CommonSettings;
 import com.google.gwt.sample.itProjekt.shared.EditorAdministrationAsync;
 import com.google.gwt.sample.itProjekt.shared.LoginService;
 import com.google.gwt.sample.itProjekt.shared.LoginServiceAsync;
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
+import com.google.gwt.sample.itProjekt.shared.bo.Permission;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -52,12 +54,65 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	      "Please sign in to your Google Account to access the application.");
 	private Anchor signInLink = new Anchor("Sign In");
 	private Anchor signOutLink = new Anchor("Sign Out");
-
+	
+	ContactListContactTreeViewModel clctvm = new ContactListContactTreeViewModel();
 
 	EditorAdministrationAsync editorAdministration = null;
+	
+	public class InputDialogBox extends DialogBox{
+		
+		private String input;
+		
+		Label label;
+		
+        private TextBox eingabe = new TextBox();
+		
+		public InputDialogBox() {
+			setText("Eingabe");
+			setAnimationEnabled(true);
+			setGlassEnabled(true);
+			
+			Button ok = new Button("OK");
+	        ok.addClickHandler(new ClickHandler() {
+	        	public void onClick(ClickEvent event) {
+	        		input = eingabe.getText();
+	        		
+	            	InputDialogBox.this.hide();
+	            }
+	        });
+			
+			VerticalPanel panel = new VerticalPanel();
+			
+	        panel.setHeight("100");
+	        panel.setWidth("300");
+	        panel.setSpacing(10);
+	        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+	        panel.add(label);
+	        panel.add(eingabe);
+	        panel.add(ok);
+
+	        setWidget(panel);
+		}
+		
+		public String getInput() {
+			return this.input;
+		}
+		
+		public void setInput(String input) {
+			this.input = input;
+		}
+		
+		public void setLabel (String labelText) {
+			this.label = new Label(labelText);
+		}
+		
+		public Label getlabel () {
+			return this.label;
+		}
+	}
 
 	  
-	  public void onModuleLoad() {
+	public void onModuleLoad() {
 		  
 		  
 		 /* 
@@ -67,18 +122,19 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		LoginServiceAsync loginService = GWT.create(LoginService.class);
 	    loginService.login(GWT.getHostPageBaseURL(), new AsyncCallback<LoginInfo>() {
 	    public void onFailure(Throwable error) {
-	     }
-
-	     public void onSuccess(LoginInfo result) {
-	        loginInfo = result;
-	       if(loginInfo.isLoggedIn()) {
-	         loadApplication();
-	      } else {
-	          loadLogin();
 	    }
+
+	    public void onSuccess(LoginInfo result) {
+	    	loginInfo = result;
+	    	if(loginInfo.isLoggedIn()) {
+	    		loadApplication();
+	    	}
+	    	else {
+	    		loadLogin();
+	    	}
 	    }
 	    });
-	  }
+	}
 	  
 	  
 	  
@@ -87,10 +143,10 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	   * die eigentliche Applikation.  
 	   */
 	  
-	    public void loadApplication() {
+	public void loadApplication() {
 	    	
-	    if(editorAdministration == null) {
-	    	editorAdministration = ClientsideSettings.getEditorAdministration();
+		if(editorAdministration == null) {
+			editorAdministration = ClientsideSettings.getEditorAdministration();
 	    }
 	    
 	    
@@ -136,9 +192,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		ContactForm cf = new ContactForm();
 		VerticalPanel contactPanel = new VerticalPanel();
 		contactPanel.add(cf);
-		RootPanel.get("ContactForm").add(contactPanel);
-		
-		ContactListContactTreeViewModel clctvm = new ContactListContactTreeViewModel();	
+		RootPanel.get("ContactForm").add(contactPanel);	
 		
 		HorizontalPanel clButtonsAndSearchPanel = new HorizontalPanel();
 		
@@ -148,6 +202,10 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		Button newContactList = new Button("Neue Kontaktliste anlegen");
 		Button deleteContactList = new Button("Kontaktliste löschen");
 		Button shareContactList = new Button("Kontaktliste teilen");
+		
+		newContactList.addClickHandler(new newContactListClickHandler());
+		deleteContactList.addClickHandler(new deleteContactListClickHandler());
+		shareContactList.addClickHandler(new shareContactListClickHandler());
 		
 		contactListButtonsPanel.add(shareContactList);
 		contactListButtonsPanel.add(deleteContactList);
@@ -240,12 +298,66 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	   * Das Login Panel wird aufgerufen wenn der Benutzer nicht eingeloggt ist. 
 	   */
 
-	  private void loadLogin() {
+	private void loadLogin() {
 		  
-	    signInLink.setHref(loginInfo.getLoginUrl());
+		signInLink.setHref(loginInfo.getLoginUrl());
 	    loginPanel.add(loginLabel);
 	    loginPanel.add(signInLink);
 	    RootPanel.get("Login").add(loginPanel);
-	  }
+	}
 	  
+	private class newContactListClickHandler implements ClickHandler {
+		
+		InputDialogBox input;
+		
+		public void onClick(ClickEvent event) {
+			input = new InputDialogBox();
+			input.setLabel("Bitte geben Sie den Namen der neuen Kontaktliste an.");
+			editorAdministration.createContactList(input.getInput(), new AsyncCallback<ContactList>() {
+				public void onFailure(Throwable arg0) {
+					Window.alert("Fehler beim erstellen der Kontaktliste!");
+				}
+				public void onSuccess(ContactList arg0) {
+					Window.alert("Kontaktliste erfolgreich erstellt.");
+					clctvm.addContactList(arg0);
+				}
+			});
+		}
+	}
+	
+	private class deleteContactListClickHandler implements ClickHandler {
+
+		public void onClick(ClickEvent event) {
+			editorAdministration.deleteContactList(clctvm.getSelectedContactList(), new AsyncCallback<Void>() {
+				@Override
+				public void onFailure(Throwable arg0) {
+					Window.alert("Fehler beim löschen der Kontaktliste!");
+				}
+				@Override
+				public void onSuccess(Void arg0) {
+					Window.alert("Kontaktliste erfolgreich gelöscht.");	
+				}
+			});
+		}
+	}
+	
+	private class shareContactListClickHandler implements ClickHandler {
+		
+		InputDialogBox input;
+		
+		public void onClick(ClickEvent event) {
+			input = new InputDialogBox();
+			input.setLabel("Bitte geben Sie die Email-Adresse des Nutzers ein mit dem Sie die Kontaktliste teilen möchten.");
+			editorAdministration.shareContactList(clctvm.getSelectedContactList(), input.getInput(), new AsyncCallback<Permission>() {
+				@Override
+				public void onFailure(Throwable arg0) {
+					Window.alert("Fehler beim Teilen der Kontaktliste!");
+				}
+				@Override
+				public void onSuccess(Permission arg0) {
+					Window.alert("Kontaktliste erfolgreich geteilt.");
+				}
+			});
+		}
+	}
 }	 
