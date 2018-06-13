@@ -267,7 +267,7 @@ public class ContactForm extends VerticalPanel {
 		 * @param int die ID der referenzierten Eigenschaft
 		 */
 		public AddValueButton(int pid) {
-			this.setText(" neu ");
+			this.setText("+");
 			this.setStyleName("addValueButton");
 			this.propertyId= pid;
 		
@@ -444,20 +444,7 @@ public class ContactForm extends VerticalPanel {
 	
 		this.add(contactTable);
 		
-//		/*
-//		 * Nullte Zeile
-//		 */
-//		contactTable.getFlexCellFormatter().setColSpan(0, 0, 4);
-//		contactTable.setText(0, 0, "  ");
-		
-		
-		/*
-		 * Erste Zeile: Ãœberschrift
-		 */
-//		contactTable.getFlexCellFormatter().setColSpan(1, 0, 4);
-//		Label contactInfoLabel = new Label("Kontaktinformationen");
-//		contactTable.setWidget(1, 0, contactInfoLabel);
-//		
+
 		
 		/*
 		 * Zweite Zeile: Vor- und Nachname
@@ -520,9 +507,8 @@ public class ContactForm extends VerticalPanel {
 		Label privatePhoneNumbersLabel = new Label("Telefonnummern privat: ");
 		privatePhoneNumbersPanel.add(privatePhoneNumbersLabel);
 			
-		AddValueButton addPrivatePhoneNumberButton = new AddValueButton(2);
-		privatePhoneNumbersPanel.add(addPrivatePhoneNumberButton);
-		
+		privatePhoneNumbersPanel.add(new AddValueButton(2));
+				
 		
 		contactTable.getFlexCellFormatter().setColSpan(5, 1, 3);
 		contactTable.setWidget(5, 1, privatePhoneNumbersTable);
@@ -532,7 +518,7 @@ public class ContactForm extends VerticalPanel {
 		
 		
 		/*
-		 * Sechste Zeile: Telefonnummer privat (PID 1)
+		 * Sechste Zeile: Telefonnummer geschäftlich (PID 1)
 		 */
 		
 		VerticalPanel businessPhoneNumbersPanel = new VerticalPanel();
@@ -541,9 +527,9 @@ public class ContactForm extends VerticalPanel {
 		Label businessPhoneNumbersLabel = new Label("Telefonnummern geschÃ¤ftl: ");
 		businessPhoneNumbersPanel.add(businessPhoneNumbersLabel);
 		
-		AddValueButton addBusinessPhoneNumberButton = new AddValueButton(1);
-		businessPhoneNumbersPanel.add(addBusinessPhoneNumberButton);
-			
+	
+		businessPhoneNumbersPanel.add(new AddValueButton(1));
+				
 		
 		contactTable.getFlexCellFormatter().setColSpan(6, 1, 3);
 		contactTable.setWidget(6, 1, businessPhoneNumbersTable);
@@ -564,7 +550,7 @@ public class ContactForm extends VerticalPanel {
 		
 
 		/*
-		 * Siebte Zeile: Telefonnummer privat (PID 1)
+		 * Siebte Zeile: eMail (PID 3)
 		 */
 		
 		VerticalPanel eMailsPanel = new VerticalPanel();
@@ -573,8 +559,9 @@ public class ContactForm extends VerticalPanel {
 		Label eMailsLabel = new Label("e-Mail-Adressen: ");
 		eMailsPanel.add(eMailsLabel);
 		
-		AddValueButton addEmailButton = new AddValueButton(3);
-		eMailsPanel.add(addEmailButton);
+	
+		eMailsPanel.add(new AddValueButton(3));
+		
 			
 		
 		contactTable.getFlexCellFormatter().setColSpan(7, 1, 3);
@@ -594,8 +581,8 @@ public class ContactForm extends VerticalPanel {
 		Label homepagesLabel = new Label("Homepages: ");
 		homepagesPanel.add(homepagesLabel);
 		
-		AddValueButton addHomepageButton = new AddValueButton(10);
-		homepagesPanel.add(addHomepageButton);
+		homepagesPanel.add(new AddValueButton(10));
+		
 			
 		
 		contactTable.getFlexCellFormatter().setColSpan(8, 1, 3);
@@ -615,8 +602,7 @@ public class ContactForm extends VerticalPanel {
 		Label jobsLabel = new Label("Arbeitsstellen: ");
 		jobsPanel.add(jobsLabel);
 		
-		AddValueButton addJobButton = new AddValueButton(5);
-		jobsPanel.add(addJobButton);
+		jobsPanel.add(new AddValueButton(5));
 			
 		
 		contactTable.getFlexCellFormatter().setColSpan(9, 1, 3);
@@ -758,7 +744,7 @@ public class ContactForm extends VerticalPanel {
 	        panel.setHeight("100");
 	        panel.setWidth("300");
 	        panel.setSpacing(10);
-	        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+	        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 	        panel.add(label);
 	        panel.add(eingabe);
 	        panel.add(ok);
@@ -994,7 +980,34 @@ public class ContactForm extends VerticalPanel {
 	
 	
 	public void addValuePopUp(int pid) {
+
+		DialogBox addValueDialog = new DialogBox();
+		Label addValueLabel = new Label();
+		ValueTextBox addValueTextBox;
+		
+		String identifier;
+		switch(pid) {
+		case 1: identifier = "Telefonnummer";
+				addValueLabel.setText("Neue private Telefonnummer: ");
+		
+		case 2: identifier = "Telefonnummer";
+				addValueLabel.setText("Neue geschäftliche Telefonnummer: ");
+				
+		case 3: identifier = "Email";
+				addValueLabel.setText("Neue e-Mail-Adresse: ");
+				
+		case 5: identifier = "Arbeitsplatz";
+				addValueLabel.setText("Neue Arbeitsstelle: ");
+				
+		case 10: identifier = "Homepage";
+				addValueLabel.setText("Neue Homepage: ");
+		}
+	//	addValueTextBox = new ValueTextBox(identifier);
+		
+		//popup, wo man neuen wert einträgt
+
 		//popup, wo man neuen wert eintrÃ¤gt
+
 		//der wert aus der TextBox wird ausgelesen und mit ihm
 		// a) ein neues ValueDisplay erstellt und
 		// b) der Value in die Datenbank abgespeichert
@@ -1070,7 +1083,11 @@ public class ContactForm extends VerticalPanel {
 			for(int i=0; i<allValuesOfContact.size(); i++) {
 				int pid = allValuesOfContact.get(i).getPropertyid();
 				switch (pid) {
-					case 1: pid= 1; // Tel.Nr. geschÃ¤ftlich
+
+					case 1: // Tel.Nr. geschäftlich
+
+					
+
 						if(((ValueDisplay) businessPhoneNumbersTable.getWidget(0,0)).getValue() == null){
 							((ValueDisplay) businessPhoneNumbersTable.getWidget(0,0)).setValue(allValuesOfContact.get(i));
 						}else {
@@ -1085,7 +1102,7 @@ public class ContactForm extends VerticalPanel {
 						}
 							
 					
-					case 2: pid= 2; // Tel.Nr. privat
+					case 2:  // Tel.Nr. privat
 							if(((ValueDisplay) privatePhoneNumbersTable.getWidget(0,0)).getValue() == null){
 								((ValueDisplay) privatePhoneNumbersTable.getWidget(0,0)).setValue(allValuesOfContact.get(i));
 							}else {
@@ -1100,7 +1117,7 @@ public class ContactForm extends VerticalPanel {
 							}
 							
 					
-					case 3: pid= 3; // e-Mail
+					case 3:  // e-Mail
 							if(((ValueDisplay) eMailsTable.getWidget(0,0)).getValue() == null){
 								((ValueDisplay) eMailsTable.getWidget(0,0)).setValue(allValuesOfContact.get(i));
 							}else {
@@ -1114,11 +1131,11 @@ public class ContactForm extends VerticalPanel {
 																						.setValue(allValuesOfContact.get(i));
 							}
 					
-					case 4: pid= 4; // Geburtstag
+					case 4:  // Geburtstag
 							((ValueDisplay) contactTable.getWidget(3,3)).setValue(allValuesOfContact.get(i));
 							
 							
-					case 5: pid= 5; // Arbeitsplatz
+					case 5: // Arbeitsplatz
 							if(((ValueDisplay) jobsTable.getWidget(0,0)).getValue() == null){
 								((ValueDisplay) jobsTable.getWidget(0,0)).setValue(allValuesOfContact.get(i));
 							}else {
@@ -1132,24 +1149,27 @@ public class ContactForm extends VerticalPanel {
 							}
 							
 					
-					case 6: pid= 6; // StraÃŸe
+
+					case 6:  // Straße
+
+
 							streetTextBox.setValue(allValuesOfContact.get(i));
 							((LockButton) addressTable.getWidget(0, 2)).setValue(allValuesOfContact.get(i));
 							((DeleteValueButton) addressTable.getWidget(0,3)).setValue(allValuesOfContact.get(i));
 			
-					case 7: pid= 7; // Hausnummer
+					case 7:  // Hausnummer
 							houseNrTextBox.setValue(allValuesOfContact.get(i));
 							
 					
-					case 8: pid= 8; // PLZ
+					case 8:  // PLZ
 							plzTextBox.setValue(allValuesOfContact.get(i));
 					
 					
-					case 9: pid= 9; // Wohnort
+					case 9:  // Wohnort
 							cityTextBox.setValue(allValuesOfContact.get(i));
 							
 					
-					case 10: pid= 10; // Homepage
+					case 10:  // Homepage
 							 if(((ValueDisplay) homepagesTable.getWidget(0,0)).getValue() == null){
 								((ValueDisplay) homepagesTable.getWidget(0,0)).setValue(allValuesOfContact.get(i));
 							 }else {
