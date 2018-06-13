@@ -131,6 +131,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	      
 		
 		signOutLink.setHref(loginInfo.getLogoutUrl());
+		RootPanel.get("Login").add(signOutLink);
 		
 		ContactForm cf = new ContactForm();
 		VerticalPanel contactPanel = new VerticalPanel();
@@ -244,7 +245,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	    signInLink.setHref(loginInfo.getLoginUrl());
 	    loginPanel.add(loginLabel);
 	    loginPanel.add(signInLink);
-	    RootPanel.get("login").add(loginPanel);
+	    RootPanel.get("Login").add(loginPanel);
 	  }
 	  
 }	 
