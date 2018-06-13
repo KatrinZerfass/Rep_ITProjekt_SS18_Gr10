@@ -31,7 +31,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	
-	//Relevante Attribute für LoginService
+	//Relevante Attribute fÃ¼r LoginService
 	private ReportGeneratorAsync reportGenerator=null;
 	
 	private LoginInfo loginInfo = null;
@@ -43,18 +43,19 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	
 	
 	VerticalPanel mainPanel = new VerticalPanel ();
+	VerticalPanel logout=new VerticalPanel();
 	HorizontalPanel addPanel = new HorizontalPanel();
 	
 	
 	
 	/*
-	 * Die notwendigen Buttons für den Navigationsteil 
+	 * Die notwendigen Buttons fÃ¼r den Navigationsteil 
 	 */
 	Label userLabel = new Label("User: ");
 	TextBox userTextBox = new TextBox();
 	Button allContactsOfUserButton = new Button("Alle Kontakte eines Nutzers");
 	Button allSharedContactsOfUserButton = new Button("Alle geteilten Kontakte eines Nutzers");
-	Button allContactsWithValueButton = new Button("Kontakte mit bestimmter Ausprägung");
+	Button allContactsWithValueButton = new Button("Kontakte mit bestimmter AusprÃ¤gung");
 	
 	public void onModuleLoad() {
 		
@@ -156,8 +157,9 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			addPanel.add(allContactsWithValueButton);
 			addPanel.add(allSharedContactsOfUserButton);
 			
-			mainPanel.add(signOutLink);
+			logout.add(signOutLink);
 			mainPanel.add(addPanel);
+			RootPanel.get("report").add(logout);
 			RootPanel.get("report").add(mainPanel);
 			  
 		  }

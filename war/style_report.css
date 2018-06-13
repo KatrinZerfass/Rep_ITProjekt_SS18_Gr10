@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css?family=Lato:400,900|Roboto:400,700');
+
+body, table, button, p, a{
+	font-family: 'Lato', sans-serif;
+	font-weight:400;
+	font-size: 1em;
+}
+
+h1, h2, h3, h4{
+	font-family: 'Roboto', 'sans-serif';
+	font-weight: 700;
+}
+
+h1{
+	font-size: 2em;
+}
+
+div{
+	position:absolute;
+}
+
+#header{
+	width:40%;
+	height:auto;
+}
+
+#logo{
+	float:left;
+	width:30%;
+	height:auto;
+}
+
+#title{
+	float:right;
+	color:#00868b;
+}
+
+#content{
+	width:100%;
+	height:auto;
+	top: 60%;
+}
