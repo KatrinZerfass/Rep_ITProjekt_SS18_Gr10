@@ -103,6 +103,8 @@ public class ContactForm extends VerticalPanel {
 	
 	ValueTextBox cityTextBox = new ValueTextBox("Stadt");
 	
+	User currentUser = null;
+	
 	
 	/**
 	 * Die innere Klasse LockButton.
@@ -132,6 +134,8 @@ public class ContactForm extends VerticalPanel {
 			
 			//per default sind alle AusprÃ¤gungen geteilt, d.h. das Schloss ist zu Beginn unlocked.
 			this.getUpFace().setImage(lockUnlocked);
+			
+			this.setEnabled(false);
 			
 			this.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -215,6 +219,8 @@ public class ContactForm extends VerticalPanel {
 			
 			this.addStyleName("deleteValueButton");
 			
+			this.setEnabled(false);
+			
 			this.addClickHandler(new ClickHandler() {
 				public void onClick (ClickEvent event) {
 					editorAdministration.deleteValue(value, new AsyncCallback<Void>() {
@@ -271,6 +277,7 @@ public class ContactForm extends VerticalPanel {
 			this.setStyleName("addValueButton");
 			this.propertyId= pid;
 		
+			this.setEnabled(false);
 					
 			this.addClickHandler(new ClickHandler() {
 				public void onClick (ClickEvent event) {
@@ -421,6 +428,17 @@ public class ContactForm extends VerticalPanel {
 		public Value getValue() {
 			return this.value;
 		}
+		
+		public void enableButtons() {
+			this.deleteValueButton.setEnabled(true);
+			this.lockButton.setEnabled(true);
+		}
+		
+		public void disableButtons() {
+			this.deleteValueButton.setEnabled(false);
+			this.lockButton.setEnabled(false);
+		}
+		
 	}
 	
 
@@ -431,6 +449,78 @@ public class ContactForm extends VerticalPanel {
 	/**
 	 * Die Methode <code>onLoad()</code> wird in der EntryPoint-Klasse aufgerufen, um im GUI eine Instanz von ContactForm zu erzeugen.
 	 */
+	
+public class EmailDialogBox extends DialogBox{
+		
+		private String email;
+		
+        private TextBox eingabe = new TextBox();
+		
+		public EmailDialogBox() {
+			setText("Teilen");
+			setAnimationEnabled(true);
+			setGlassEnabled(true);
+			
+			Button ok = new Button("OK");
+	        ok.addClickHandler(new ClickHandler() {
+	        	public void onClick(ClickEvent event) {
+	        		email = eingabe.getText();
+	        		
+	        		if (contactToDisplay == null) {
+	    				Window.alert("kein Kontakt ausgewählt!");
+	    			}
+	    			else {
+	    				editorAdministration.shareContact(contactToDisplay, getEmail(), new AsyncCallback<Permission>() {
+	    					public void onFailure(Throwable arg0) {
+	    						Window.alert("Fehler beim teilen des Kontakts!");
+	    					}
+	    					public void onSuccess(Permission arg0) {
+	    						Window.alert("Kontakt erfolgreich geteilt.");
+	    					}
+	    				});
+	    			}
+	        		
+	            	EmailDialogBox.this.hide();
+	            }
+	        });
+	        
+
+			
+			Label label = new Label("Bitte geben Sie die Email-Adresse des Nutzers ein mit dem Sie teilen möchten.");
+			
+			VerticalPanel panel = new VerticalPanel();
+			
+	        panel.setHeight("100");
+	        panel.setWidth("300");
+	        panel.setSpacing(10);
+	        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+	        panel.add(label);
+	        panel.add(eingabe);
+	        panel.add(ok);
+
+	        setWidget(panel);
+		}
+		
+		public String getEmail() {
+			return this.email;
+		}
+		
+		public void setEmail(String email) {
+			this.email = email;
+		}
+	}
+
+	public boolean compareUser () {
+		
+		if (currentUser.getId() == contactToDisplay.getOwner()) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	
 	public void onLoad() {
 		
 		super.onLoad();
@@ -439,9 +529,19 @@ public class ContactForm extends VerticalPanel {
 		 * ZunÃ¤chst wird der angemeldete Nutzer abgefragt. Ist dieser nicht EigentÃ¼mer des anzuzeigenden Kontakts, so werden alle Funktionen, 
 		 * die zur Bearbeitung des Kontakts dienen (Buttons etc.) ausgegraut bzw. disabled.
 		 */
-		//To Do! 
+		//To Do!
 		
-	
+		editorAdministration.getUser(new AsyncCallback<User>() {
+			public void onFailure(Throwable caught) {
+				System.out.println("Kein User ist angemeldet");
+			}
+			public void onSuccess(User result) {
+				currentUser = result;
+			}		
+		});
+
+		
+		
 		this.add(contactTable);
 		
 
@@ -716,50 +816,7 @@ public class ContactForm extends VerticalPanel {
 	 * Die innere Klasse newContactClickHandler.
 	 */
 	
-	public class EmailDialogBox extends DialogBox{
-		
-		private String email;
-		
-        private TextBox eingabe = new TextBox();
-		
-		public EmailDialogBox() {
-			setText("Teilen");
-			setAnimationEnabled(true);
-			setGlassEnabled(true);
-			
-			Button ok = new Button("OK");
-	        ok.addClickHandler(new ClickHandler() {
-	        	public void onClick(ClickEvent event) {
-	        		email = eingabe.getText();
-	            	EmailDialogBox.this.hide();
-	            }
-	        });
-	        
-
-			
-			Label label = new Label("Bitte geben Sie die Email-Adresse des Nutzers ein mit dem Sie teilen möchten.");
-			
-			VerticalPanel panel = new VerticalPanel();
-			
-	        panel.setHeight("100");
-	        panel.setWidth("300");
-	        panel.setSpacing(10);
-	        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
-	        panel.add(label);
-	        panel.add(eingabe);
-	        panel.add(ok);
-
-	        setWidget(panel);
-		}
-		
-		public String getEmail() {
-			return this.email;
-		}
-		
-		public void setEmail(String email) {
-			this.email = email;
-		}
-	}
+	
 	
 	private class newContactClickHandler implements ClickHandler{
 
@@ -823,14 +880,6 @@ public class ContactForm extends VerticalPanel {
 			else {
 				EmailDialogBox dialog = new EmailDialogBox();
 				dialog.show();
-				editorAdministration.shareContact(contactToDisplay, dialog.getEmail(), new AsyncCallback<Permission>() {
-					public void onFailure(Throwable arg0) {
-						Window.alert("Fehler beim teilen des Kontakts!");
-					}
-					public void onSuccess(Permission arg0) {
-						Window.alert("Kontakt erfolgreich geteilt.");
-					}
-				});
 			}
 		}
 	}
@@ -1090,6 +1139,13 @@ public class ContactForm extends VerticalPanel {
 
 						if(((ValueDisplay) businessPhoneNumbersTable.getWidget(0,0)).getValue() == null){
 							((ValueDisplay) businessPhoneNumbersTable.getWidget(0,0)).setValue(allValuesOfContact.get(i));
+							if(compareUser()) {
+								((ValueDisplay) businessPhoneNumbersTable.getWidget(0,0)).enableButtons();
+							}
+							else {
+								((ValueDisplay) businessPhoneNumbersTable.getWidget(0,0)).disableButtons();
+							}
+							
 						}else {
 							/*
 							 * Gibt es mehrere AusprÃ¤gungen zu geschÃ¤ftlichen Telefonnummern, wird eine neue Zeile in der FlexTable
@@ -1099,12 +1155,25 @@ public class ContactForm extends VerticalPanel {
 																					new ValueDisplay(new ValueTextBox("Telefonnummer")));
 							((ValueDisplay) businessPhoneNumbersTable.getWidget(businessPhoneNumbersTable.getRowCount(), 0))
 																					.setValue(allValuesOfContact.get(i));
+							if (compareUser()) {
+								((ValueDisplay) businessPhoneNumbersTable.getWidget(businessPhoneNumbersTable.getRowCount(), 0)).enableButtons();
+							}
+							else {
+								((ValueDisplay) businessPhoneNumbersTable.getWidget(businessPhoneNumbersTable.getRowCount(), 0)).disableButtons();
+							}
 						}
+						break;
 							
 					
 					case 2:  // Tel.Nr. privat
 							if(((ValueDisplay) privatePhoneNumbersTable.getWidget(0,0)).getValue() == null){
 								((ValueDisplay) privatePhoneNumbersTable.getWidget(0,0)).setValue(allValuesOfContact.get(i));
+								if(compareUser()) {
+									((ValueDisplay) privatePhoneNumbersTable.getWidget(0,0)).enableButtons();
+								}
+								else {
+									((ValueDisplay) privatePhoneNumbersTable.getWidget(0,0)).disableButtons();
+								}
 							}else {
 								/*
 								 * Gibt es mehrere AusprÃ¤gungen zu privaten Telefonnummern, wird eine neue Zeile in der FlexTable
@@ -1114,12 +1183,25 @@ public class ContactForm extends VerticalPanel {
 																						new ValueDisplay(new ValueTextBox("Telefonnummer")));
 								((ValueDisplay) privatePhoneNumbersTable.getWidget(privatePhoneNumbersTable.getRowCount(), 0))
 																						.setValue(allValuesOfContact.get(i));
+								if(compareUser()) {
+									((ValueDisplay) privatePhoneNumbersTable.getWidget(privatePhoneNumbersTable.getRowCount(), 0)).enableButtons();
+								}
+								else {
+									((ValueDisplay) privatePhoneNumbersTable.getWidget(privatePhoneNumbersTable.getRowCount(), 0)).disableButtons();
+								}
 							}
+							break;
 							
 					
 					case 3:  // e-Mail
 							if(((ValueDisplay) eMailsTable.getWidget(0,0)).getValue() == null){
 								((ValueDisplay) eMailsTable.getWidget(0,0)).setValue(allValuesOfContact.get(i));
+								if(compareUser()) {
+									((ValueDisplay) eMailsTable.getWidget(0,0)).enableButtons();
+								}
+								else {
+									((ValueDisplay) eMailsTable.getWidget(0,0)).disableButtons();
+								}
 							}else {
 								/*
 								 * Gibt es mehrere AusprÃ¤gungen zu e-Mail-Adressen, wird eine neue Zeile in der FlexTable
@@ -1129,15 +1211,29 @@ public class ContactForm extends VerticalPanel {
 								
 								((ValueDisplay) eMailsTable.getWidget(eMailsTable.getRowCount(), 0))
 																						.setValue(allValuesOfContact.get(i));
+								if(compareUser()) {
+									((ValueDisplay) eMailsTable.getWidget(eMailsTable.getRowCount(), 0)).disableButtons();
+								}
+								else {
+									((ValueDisplay) eMailsTable.getWidget(eMailsTable.getRowCount(), 0)).disableButtons();
+								}
 							}
+							break;
 					
 					case 4:  // Geburtstag
 							((ValueDisplay) contactTable.getWidget(3,3)).setValue(allValuesOfContact.get(i));
+							break;
 							
 							
 					case 5: // Arbeitsplatz
 							if(((ValueDisplay) jobsTable.getWidget(0,0)).getValue() == null){
 								((ValueDisplay) jobsTable.getWidget(0,0)).setValue(allValuesOfContact.get(i));
+								if(compareUser()) {
+									((ValueDisplay) jobsTable.getWidget(0,0)).enableButtons();
+								}
+								else {
+									((ValueDisplay) jobsTable.getWidget(0,0)).disableButtons();
+								}
 							}else {
 								/*
 								 * Gibt es mehrere AusprÃ¤gungen zu Arbeitsstellen, wird eine neue Zeile in der FlexTable
@@ -1146,7 +1242,14 @@ public class ContactForm extends VerticalPanel {
 								jobsTable.setWidget(jobsTable.getRowCount(), 0, new ValueDisplay(new ValueTextBox("Arbeitsplatz")));
 								
 								((ValueDisplay) jobsTable.getWidget(jobsTable.getRowCount(), 0)).setValue(allValuesOfContact.get(i));
+								if(compareUser()) {
+									((ValueDisplay) jobsTable.getWidget(jobsTable.getRowCount(), 0)).enableButtons();
+								}
+								else {
+									((ValueDisplay) jobsTable.getWidget(jobsTable.getRowCount(), 0)).disableButtons();
+								}
 							}
+							break;
 							
 					
 
@@ -1156,22 +1259,41 @@ public class ContactForm extends VerticalPanel {
 							streetTextBox.setValue(allValuesOfContact.get(i));
 							((LockButton) addressTable.getWidget(0, 2)).setValue(allValuesOfContact.get(i));
 							((DeleteValueButton) addressTable.getWidget(0,3)).setValue(allValuesOfContact.get(i));
+							
+							if(compareUser()) {
+								((LockButton) addressTable.getWidget(0, 2)).setEnabled(true);
+								((DeleteValueButton) addressTable.getWidget(0,3)).setEnabled(true);
+							}
+							else {
+								((LockButton) addressTable.getWidget(0, 2)).setEnabled(false);
+								((DeleteValueButton) addressTable.getWidget(0,3)).setEnabled(false);
+							}
+							break;
 			
 					case 7:  // Hausnummer
 							houseNrTextBox.setValue(allValuesOfContact.get(i));
+							break;
 							
 					
 					case 8:  // PLZ
 							plzTextBox.setValue(allValuesOfContact.get(i));
+							break;
 					
 					
 					case 9:  // Wohnort
 							cityTextBox.setValue(allValuesOfContact.get(i));
+							break;
 							
 					
 					case 10:  // Homepage
 							 if(((ValueDisplay) homepagesTable.getWidget(0,0)).getValue() == null){
 								((ValueDisplay) homepagesTable.getWidget(0,0)).setValue(allValuesOfContact.get(i));
+								if(compareUser()) {
+									((ValueDisplay) homepagesTable.getWidget(0,0)).enableButtons();
+								}
+								else {
+									((ValueDisplay) homepagesTable.getWidget(0,0)).disableButtons();
+								}
 							 }else {
 								/*
 								 * Gibt es mehrere AusprÃ¤gungen zu e-Mail-Adressen, wird eine neue Zeile in der FlexTable
@@ -1180,7 +1302,15 @@ public class ContactForm extends VerticalPanel {
 								homepagesTable.setWidget(homepagesTable.getRowCount(), 0, new ValueDisplay(new ValueTextBox("Homepage")));
 								
 								((ValueDisplay) homepagesTable.getWidget(homepagesTable.getRowCount(), 0)).setValue(allValuesOfContact.get(i));
+								
+								if (compareUser()) {
+									((ValueDisplay) homepagesTable.getWidget(homepagesTable.getRowCount(), 0)).enableButtons();
+								}
+								else {
+									((ValueDisplay) homepagesTable.getWidget(homepagesTable.getRowCount(), 0)).disableButtons();
+								}
 							 }
+							 break;
 						
 				}
 			}
@@ -1207,23 +1337,7 @@ public class ContactForm extends VerticalPanel {
 		
 		
 		//Add-, Lock-, DeleteButtons + saveChangesButton TODO: richtige buttons disablen
-				editorAdministration.getUser(new AsyncCallback<User>() {
-					public void onFailure(Throwable caught) {
-						System.out.println("Kein User ist angemeldet");
-					}
-					public void onSuccess(User result) {
-						if(result.getId() != contactToDisplay.getOwner()) {
-														
-							//saveChangesButton.setEnabled(false);
-							//deleteContactButton.setEnabled(false);
-							
-							
-						}
-						}
-						
-						
-				});
-		
+				
 	}
 	
 	/**
