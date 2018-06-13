@@ -569,7 +569,7 @@ public class EmailDialogBox extends DialogBox{
 		 * Dritte Zeile: Geschlecht und Geburtsdatum
 		 */
 		Label sexLabel = new Label("Geschlecht: ");
-		sexListBox.addItem("mÃ¤nnlich");
+		sexListBox.addItem("männlich");
 		sexListBox.addItem("weiblich");
 		sexListBox.addItem("Sonstiges");
 		
@@ -631,7 +631,7 @@ public class EmailDialogBox extends DialogBox{
 		
 		contactTable.setWidget(6, 0,  businessPhoneNumbersPanel);
 		
-		Label businessPhoneNumbersLabel = new Label("Telefonnummern geschÃ¤ftl: ");
+		Label businessPhoneNumbersLabel = new Label("Telefonnummern geschäftl: ");
 		businessPhoneNumbersPanel.add(businessPhoneNumbersLabel);
 		
 	
@@ -733,8 +733,8 @@ public class EmailDialogBox extends DialogBox{
 		
 		Button addContactButton = new Button("Neuen Kontakt anlegen");
 		Button shareContactButton = new Button("Kontakt teilen");
-		Button deleteContactButton = new Button("Kontakt lÃ¶schen");
-		Button saveChangesButton = new Button("Ã„nderungen speichern");
+		Button deleteContactButton = new Button("Kontakt löschen");
+		Button saveChangesButton = new Button("Änderungen speichern");
 	
 		contactButtonsPanel.add(addContactButton);
 		contactButtonsPanel.add(shareContactButton);
@@ -744,7 +744,7 @@ public class EmailDialogBox extends DialogBox{
 		HorizontalPanel contactListButtonsPanel = new HorizontalPanel();
 		buttonPanel.add(contactListButtonsPanel);
 		
-		Button addContactToContactListButton = new Button("Kontakt zu einer Kontaktliste hinzufÃ¼gen");
+		Button addContactToContactListButton = new Button("Kontakt zu einer Kontaktliste hinzufügen");
 		Button removeContactFromContactListButton = new Button("Kontakt aus der aktuellen Kontaktliste entfernen");
 		contactListButtonsPanel.add(addContactToContactListButton);
 		contactListButtonsPanel.add(removeContactFromContactListButton);
@@ -963,6 +963,7 @@ public class EmailDialogBox extends DialogBox{
 		
 		String identifier = vtb.getIdentifier();
 		String text = vtb.getText().toUpperCase().trim();
+	// TODO: work on RegExs!
 		
 		switch(identifier) {
 			case "Name":
@@ -1029,6 +1030,14 @@ public class EmailDialogBox extends DialogBox{
 					Window.alert("Ungültige Zeichen in der Telefonnummer!");
 					return false;
 				}
+			case "Email":
+				if (text.matches("[1-9A-Z]")) {
+					return true;
+				}
+				else {
+					Window.alert("Ungültige Zeichen in der e-Mail-Adresse!");
+					return false;
+				}
 		}
 		Window.alert("Switch case hat nicht ausgelöst!");
 		return false;
@@ -1038,31 +1047,48 @@ public class EmailDialogBox extends DialogBox{
 	public void addValuePopUp(int pid) {
 
 		DialogBox addValueDialog = new DialogBox();
-		Label addValueLabel = new Label();
-		ValueTextBox addValueTextBox;
+		addValueDialog.show();
+		addValueDialog.setText("Neue Ausprägung hinzufügen");
+		addValueDialog.setAnimationEnabled(true);
+		addValueDialog.setGlassEnabled(true);
 		
-		String identifier;
+		VerticalPanel addValueDialogBoxPanel = new VerticalPanel();
+		addValueDialogBoxPanel.setHeight("100px");
+		addValueDialogBoxPanel.setWidth("230px");
+	    addValueDialogBoxPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+	
+		
+		Label addValueLabel = new Label();
+		ValueTextBox addValueTextBox = null;
+		Button addValueButton = new Button("Hinzufügen");
+		
+		String identifier = null;
 		switch(pid) {
 		case 1: identifier = "Telefonnummer";
-				addValueLabel.setText("Neue private Telefonnummer: ");
-		
-		case 2: identifier = "Telefonnummer";
 				addValueLabel.setText("Neue geschäftliche Telefonnummer: ");
-				
+				break;
+		case 2: identifier = "Telefonnummer";
+				addValueLabel.setText("Neue private Telefonnummer: ");
+				break;
 		case 3: identifier = "Email";
 				addValueLabel.setText("Neue e-Mail-Adresse: ");
-				
+				break;
 		case 5: identifier = "Arbeitsplatz";
 				addValueLabel.setText("Neue Arbeitsstelle: ");
-				
-		case 10: identifier = "Homepage";
-				addValueLabel.setText("Neue Homepage: ");
+				break;
+		case 10:identifier = "Homepage";
+				addValueLabel.setText("Neue bal: ");
+	
 		}
-	//	addValueTextBox = new ValueTextBox(identifier);
+		addValueTextBox = new ValueTextBox(identifier);
 		
-		//popup, wo man neuen wert einträgt
-
-		//popup, wo man neuen wert eintrÃ¤gt
+		addValueDialogBoxPanel.add(addValueLabel);
+		addValueDialogBoxPanel.add(addValueTextBox);
+		addValueDialogBoxPanel.add(addValueButton);
+		addValueDialog.add(addValueDialogBoxPanel);
+		
+		
+		
 
 		//der wert aus der TextBox wird ausgelesen und mit ihm
 		// a) ein neues ValueDisplay erstellt und
@@ -1141,10 +1167,7 @@ public class EmailDialogBox extends DialogBox{
 				switch (pid) {
 
 					case 1: // Tel.Nr. geschäftlich
-
-					
-
-						if(((ValueDisplay) businessPhoneNumbersTable.getWidget(0,0)).getValue() == null){
+							if(((ValueDisplay) businessPhoneNumbersTable.getWidget(0,0)).getValue() == null){
 							((ValueDisplay) businessPhoneNumbersTable.getWidget(0,0)).setValue(allValuesOfContact.get(i));
 							if(compareUser()) {
 								((ValueDisplay) businessPhoneNumbersTable.getWidget(0,0)).enableButtons();
@@ -1348,7 +1371,7 @@ public class EmailDialogBox extends DialogBox{
 			firstnameTextBox.getElement().setPropertyString("placeholder", "Vorname...");
 			lastnameTextBox.getElement().setPropertyString("placeholder", "Nachname...");
 			contactTable.getWidget(3,3).getElement().setPropertyString("placeholder", "Geburtsdatum...");
-			streetTextBox.getElement().setPropertyString("placeholder", "StraÃŸe...");
+			streetTextBox.getElement().setPropertyString("placeholder", "Straße...");
 			houseNrTextBox.getElement().setPropertyString("placeholder", "Hausnummer...");
 			plzTextBox.getElement().setPropertyString("placeholder", "PLZ...");
 			cityTextBox.getElement().setPropertyString("placeholder", "Wohnort...");
