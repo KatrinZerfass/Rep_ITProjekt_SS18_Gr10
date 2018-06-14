@@ -996,12 +996,12 @@ public class ContactForm extends VerticalPanel {
 	private boolean checkValue (ValueTextBox vtb) {
 		
 		String identifier = vtb.getIdentifier();
-		String text = vtb.getText().toUpperCase().trim();
+		String text = vtb.getText().toLowerCase().trim();
 	// TODO: work on RegExs!
 		
 		switch(identifier) {
 			case "Name":
-				if (text.matches("[A-Z]")) {
+				if (text.matches("\\w+")) {
 					return true;
 				}
 				else {
@@ -1009,7 +1009,7 @@ public class ContactForm extends VerticalPanel {
 					return false;
 				}
 			case "Straße":
-				if (text.matches("[A-Z]")) {
+				if (text.matches("\\w+")) {
 					return true;
 				}
 				else {
@@ -1017,7 +1017,7 @@ public class ContactForm extends VerticalPanel {
 					return false;
 				}
 			case "Hausnummer":
-				if (text.matches("[1-9]")) {
+				if (text.matches("\\d+")) {
 					return true;
 				}
 				else {
@@ -1025,14 +1025,14 @@ public class ContactForm extends VerticalPanel {
 					return false;
 				}
 			case "PLZ":
-				if (text.matches("[1-9]") && text.length() == 5) {
+				if (text.matches("\\d+") && text.length() == 5) {
 					return true;
 				}
-				else if (text.matches("[1-9]") && text.length() != 5) {
+				else if (text.matches("\\d+") && text.length() != 5) {
 					Window.alert("Bitte geben Sie eine gültige PLZ ein!");
 					return false;
 				}
-				else if(!text.matches("[1-9]") && text.length() == 5) {
+				else if(!text.matches("\\d+") && text.length() == 5) {
 					Window.alert("Ungültige Zeichen in der PLZ!");
 					return false;
 				}
@@ -1041,7 +1041,7 @@ public class ContactForm extends VerticalPanel {
 					return false;
 				}
 			case "Stadt":
-				if (text.matches("[A-Z]")) {
+				if (text.matches("\\w+")) {
 					return true;
 				}
 				else {
@@ -1049,7 +1049,7 @@ public class ContactForm extends VerticalPanel {
 					return false;
 				}
 			case "Telefonnummer":
-				if (text.matches("[0-9]")) {
+				if (text.matches("\\d+")) {
 					return true;
 				}
 				else {
@@ -1057,7 +1057,7 @@ public class ContactForm extends VerticalPanel {
 					return false;
 				}
 			case "Geburtstag":
-				if (text.matches("[1-9]")) {
+				if (text.matches("[0-3]\\d\\.[0\\d\\|1[0-2]].\\d\\d\\d\\d")) {
 					return true;
 				}
 				else {
@@ -1065,7 +1065,7 @@ public class ContactForm extends VerticalPanel {
 					return false;
 				}
 			case "Email":
-				if (text.matches("[1-9A-Z]")) {
+				if (text.matches("(?:[a-zäöü0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])")) {
 					return true;
 				}
 				else {
