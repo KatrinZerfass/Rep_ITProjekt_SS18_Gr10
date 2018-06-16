@@ -9,6 +9,9 @@ import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
 import com.google.gwt.sample.itProjekt.shared.bo.Permission;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
+
+import java.util.Vector;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -56,6 +59,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	private Anchor signOutLink = new Anchor("Sign Out");
 	
 	ContactListContactTreeViewModel clctvm = new ContactListContactTreeViewModel();
+	ContactList mccl = new ContactList();
 
 	EditorAdministrationAsync editorAdministration = null;
 	
@@ -220,6 +224,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		
 		Label searchLabel = new Label();
 		searchLabel.setText("Durchsuchen Sie Ihre Kontaktlisten nach bestimmten Ausprägungen: ");
+		searchLabel.setWidth("240px");
 		searchPanel.add(searchLabel);
 		
 		HorizontalPanel searchBox = new HorizontalPanel();
@@ -235,12 +240,22 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		searchPanel.add(searchBox);
 		
 		clButtonsAndSearchPanel.add(searchPanel);
+		clButtonsAndSearchPanel.setWidth("100%");
+		clButtonsAndSearchPanel.setCellHorizontalAlignment(searchPanel, HasHorizontalAlignment.ALIGN_RIGHT);
 		
 		
 		clctvm.setContactForm(cf);
 		cf.setClctvm(clctvm);
 		
-	
+		/*
+		 * Die default-Kontaktliste "Meine Kontakte" wird erstellt.
+		 */
+		mccl.setName("Meine Kontakte");
+//		mccl.setOwner();
+//		mccl.setId();
+		clctvm.setMyContactsContactList(mccl);
+
+		
 		CellBrowser.Builder<String> builder = new CellBrowser.Builder<>(clctvm, "Root");	
 		CellBrowser cellBrowser = builder.build(); 
 		cellBrowser.setHeight("100%");
@@ -249,6 +264,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		cellBrowser.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 		
 		Window.alert("3. created cellbrowser");
+		
 		
 		RootPanel.get("Navigator").add(cellBrowser);
 		Window.alert("6. finished loadApplication");

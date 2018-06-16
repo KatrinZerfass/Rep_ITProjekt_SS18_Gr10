@@ -125,6 +125,9 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	
 	void setMyContactsContactList(ContactList cl) {
 		myContactsContactList = cl;
+
+		setSelectedContactList(myContactsContactList);
+	
 	}
 	
 
@@ -132,12 +135,11 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	
 	
 	void addContactList(ContactList cl) {
-		//erste Zeile zu Test-Zwecken hinzugefügt
-		//contactListDataProvider = new ListDataProvider<ContactList>();
-	//	contactListDataProvider.getList().add(cl);
+		contactListDataProvider = new ListDataProvider<ContactList>();
+		contactListDataProvider.getList().add(cl);
 		
 		//nachfolgende Zeile steht nirgends bei R&T ?!
-		contactDataProviders.put(cl, new ListDataProvider<Contact>());
+		//contactDataProviders.put(cl, new ListDataProvider<Contact>());
 		
 		selectionModel.setSelected(cl, true);
 		//Check
@@ -180,26 +182,23 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 			contactListDataProvider = new ListDataProvider<ContactList>();
 			Window.alert("Geht in NodeInfo rein");
 			
-//			// User-Parameter muss den aktuell angemeldeten User zurückgeben
-//			editorAdministration.getAllContactListsOf(new User(), new AsyncCallback<Vector<ContactList>>(){
-//				public void onFailure(Throwable t) {
-//					
-//				}
-//				
-//				public void onSuccess(Vector<ContactList> contactLists) {
-//					for (ContactList cl : contactLists) {
-//						contactListDataProvider.getList().add(cl);
-//						
-//					}
-//				}
-//			});
+			contactListDataProvider.getList().add(myContactsContactList);
 			
-			//test open
-			contactListDataProvider.getList().add(getSelectedContactList());
-			Window.alert("im NodeInfo-Root: selectedContactList in den DataProvider gesetzt: "
-					+ "/n Name der Kontaktliste: " + contactListDataProvider.getList().get(0).getName());
+			// User-Parameter muss den aktuell angemeldeten User zurückgeben
+			editorAdministration.getAllContactListsOf(new User().getEmail(), new AsyncCallback<Vector<ContactList>>(){
+				public void onFailure(Throwable t) {
+					
+				}
+				
+				public void onSuccess(Vector<ContactList> contactLists) {
+					for (ContactList cl : contactLists) {
+						contactListDataProvider.getList().add(cl);
+						
+					}
+				}
+			});
 			
-			//test close
+		
 			return new DefaultNodeInfo<ContactList>(contactListDataProvider,
 				new ContactListCell(), selectionModel, null);
 			
@@ -209,24 +208,19 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 			final ListDataProvider<Contact> contactsProvider = new ListDataProvider<Contact>();
 			contactDataProviders.put((ContactList) value, contactsProvider);
 	
-//			editorAdministration.getAllContactsOf((ContactList) value,
-//					new AsyncCallback<Vector<Contact>>() {
-//						@Override
-//						public void onFailure(Throwable t) {
-//						}
-//	
-//						@Override
-//						public void onSuccess(Vector<Contact> contacts) {
-//							for (Contact c : contacts) {
-//								contactsProvider.getList().add(c);
-//							}
-//						}
-//					});
+			editorAdministration.getAllContactsOf((ContactList) value,
+					new AsyncCallback<Vector<Contact>>() {
+						public void onFailure(Throwable t) {
+						}
 	
-			//test open
-			contactsProvider.getList().add(getSelectedContact());
-			//test close
-			
+						
+						public void onSuccess(Vector<Contact> contacts) {
+							for (Contact c : contacts) {
+								contactsProvider.getList().add(c);
+							}
+						}
+					});
+	
 			
 			// Return a node info that pairs the data with a cell.
 					return new DefaultNodeInfo<Contact>(contactsProvider,
