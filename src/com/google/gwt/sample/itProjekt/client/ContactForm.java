@@ -21,6 +21,7 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -144,12 +145,12 @@ public class ContactForm extends VerticalPanel {
 			this.setEnabled(false);
 			
 			this.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				if(isLocked ==false) { // =Schloss ist geÃ¶ffnet
-				setValueToUnshared();	// =Schloss soll geschlossen werden, d.h. die AusprÃ¤gung wird nicht geteilt.
-				}else setValueToShared();
-			}
-		});
+				public void onClick(ClickEvent event) {
+					if(isLocked ==false) { // =Schloss ist geÃ¶ffnet
+					setValueToUnshared();	// =Schloss soll geschlossen werden, d.h. die AusprÃ¤gung wird nicht geteilt.
+					}else setValueToShared();
+				}
+			});
 		}
 		
 		/**
@@ -234,6 +235,7 @@ public class ContactForm extends VerticalPanel {
 						}
 						
 						public void onSuccess(Void result) {	
+							Window.alert("Die Ausprägung wurde gelöscht.");
 						}
 
 					});
@@ -301,6 +303,108 @@ public class ContactForm extends VerticalPanel {
 		public int getPropertyId() {
 			return this.propertyId;
 		}
+		
+		public void addValuePopUp(int pid) {
+
+			DialogBox addValuePopUp = new DialogBox();
+			addValuePopUp.show();
+			addValuePopUp.setText("Neue Ausprägung hinzufügen");
+			addValuePopUp.setAnimationEnabled(true);
+			addValuePopUp.setGlassEnabled(true);
+			
+			VerticalPanel addValueDialogBoxPanel = new VerticalPanel();
+			addValueDialogBoxPanel.setHeight("100px");
+			addValueDialogBoxPanel.setWidth("230px");
+		    addValueDialogBoxPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+		
+			
+			Label addValueLabel = new Label();
+			ValueTextBox addValueTextBox = null;
+			Button addValueButton = new Button("Hinzufügen");
+			
+			
+			
+		
+			switch(pid) {
+			case 1: addValueTextBox = new ValueTextBox("Telefonnummer");
+					addValueLabel.setText("Neue geschäftliche Telefonnummer: ");
+					addValueButton.addClickHandler(new AddValueClickHandler(addValuePopUp, addValueTextBox,
+							businessPhoneNumbersTable, pid, addValueTextBox.getText()));
+					break;
+			case 2: addValueTextBox = new ValueTextBox("Telefonnummer");
+					addValueLabel.setText("Neue private Telefonnummer: ");
+					addValueButton.addClickHandler(new AddValueClickHandler(addValuePopUp, addValueTextBox,
+							privatePhoneNumbersTable, pid, addValueTextBox.getText()));
+					break;
+			case 3: addValueTextBox = new ValueTextBox("Email");
+					addValueLabel.setText("Neue e-Mail-Adresse: ");
+					addValueButton.addClickHandler(new AddValueClickHandler(addValuePopUp, addValueTextBox,
+							eMailsTable, pid, addValueTextBox.getText()));
+					break;
+			case 5: addValueTextBox = new ValueTextBox("Arbeitsplatz");
+					addValueLabel.setText("Neue Arbeitsstelle: ");
+					addValueButton.addClickHandler(new AddValueClickHandler(addValuePopUp, addValueTextBox,
+							jobsTable, pid, addValueTextBox.getText()));
+					break;
+			case 10:addValueTextBox = new ValueTextBox("Homepage");
+					addValueLabel.setText("Neue Homepage: ");
+					addValueButton.addClickHandler(new AddValueClickHandler(addValuePopUp, addValueTextBox,
+							homepagesTable, pid, addValueTextBox.getText()));
+					break;
+		
+			}
+		
+			addValueDialogBoxPanel.add(addValueLabel);
+			addValueDialogBoxPanel.add(addValueTextBox);
+			addValueDialogBoxPanel.add(addValueButton);
+			addValuePopUp.add(addValueDialogBoxPanel);
+		
+		}
+		
+		
+		private class AddValueClickHandler implements ClickHandler {
+			DialogBox popup;
+			ValueTextBox tb;
+			FlexTable ft;
+			int pid;
+			String content;
+			
+			
+			public AddValueClickHandler(DialogBox popup, ValueTextBox tb, FlexTable ft, int pid, String content) {
+				this.popup = popup;
+				this.tb = tb;
+				this.ft = ft;
+				this.pid = pid;
+				this. content = content;
+						
+			}
+			
+			public void onClick(ClickEvent event) {
+			
+				if(!checkValue(tb)){
+					tb.setText("");				
+				}
+				else {
+					popup.hide();
+							
+					editorAdministration.createValue(contactToDisplay, pid, content, new AsyncCallback<Value>() {
+						public void onFailure(Throwable t) {
+							Window.alert("Ausprägung konnte nicht hinzugefügt werden. Versuchen Sie es erneut.");
+//							ft.setWidget(ft.getRowCount(), 0, new ValueDisplay(new ValueTextBox(tb.getIdentifier())));
+//							ValueTextBox vtb2= (ValueTextBox)((ValueDisplay) ft.getWidget(ft.getRowCount(),0)).getWidget(0);
+//							vtb2.setValue("Hallo");
+							
+						}
+						public void onSuccess(Value v) {
+							ft.setWidget(ft.getRowCount(), 0, new ValueDisplay(new ValueTextBox(tb.getIdentifier())));
+							((ValueDisplay) ft.getWidget(ft.getRowCount(),0)).setValue(v);
+						}
+					});
+				
+				}
+				
+			}
+		}
 	}
 	
 	
@@ -323,8 +427,9 @@ public class ContactForm extends VerticalPanel {
 		private String identifier;
 		
 		/**
-		 * Konstruktor von ValueTextBox. FÃ¼gt die TextBox dem Vector aller TextBoxen hinzu.
+		 * Konstruktor von ValueTextBox. Setzt den Identifier der TextBox, welcher für die Methode checkValue notwendig ist.
 		 * Und fÃ¼gt der TextBox den valueChangeHandler hinzu,  welcher den Zustand von <code>isChanged</code> Ã¤ndert.
+		 * @param String identifier der Identifier
 		 */
 		public ValueTextBox(String identifier) {
 	
@@ -378,6 +483,8 @@ public class ContactForm extends VerticalPanel {
 		public void setIdentifier(String identifier) {
 			this.identifier = identifier;
 		}
+
+	
 	}
 	
 	
@@ -410,6 +517,8 @@ public class ContactForm extends VerticalPanel {
 			this.add(lockButton);
 			this.add(deleteValueButton);
 			
+			this.getWidget(0).setWidth("290px");
+			
 
 				
 		}
@@ -436,6 +545,10 @@ public class ContactForm extends VerticalPanel {
 			return this.value;
 		}
 		
+		public ValueTextBox getValueTextBox() {
+			return this.valueTextBox;
+		}
+		
 		public void enableButtons() {
 			this.deleteValueButton.setEnabled(true);
 			this.lockButton.setEnabled(true);
@@ -445,6 +558,8 @@ public class ContactForm extends VerticalPanel {
 			this.deleteValueButton.setEnabled(false);
 			this.lockButton.setEnabled(false);
 		}
+		
+		
 		
 	}
 	
@@ -461,7 +576,7 @@ public class ContactForm extends VerticalPanel {
 		
 		private String email;
 		
-        private TextBox eingabe = new TextBox();
+        private ValueTextBox tb = new ValueTextBox("Email");
 		
 		public EmailDialogBox() {
 			setText("Teilen");
@@ -471,23 +586,29 @@ public class ContactForm extends VerticalPanel {
 			Button ok = new Button("OK");
 	        ok.addClickHandler(new ClickHandler() {
 	        	public void onClick(ClickEvent event) {
-	        		email = eingabe.getText();
-	        		
-	        		if (contactToDisplay == null) {
-	    				Window.alert("kein Kontakt ausgewählt!");
-	    			}
-	    			else {
-	    				editorAdministration.shareContact(contactToDisplay, getEmail(), new AsyncCallback<Permission>() {
-	    					public void onFailure(Throwable arg0) {
-	    						Window.alert("Fehler beim teilen des Kontakts!");
-	    					}
-	    					public void onSuccess(Permission arg0) {
-	    						Window.alert("Kontakt erfolgreich geteilt.");
-	    					}
-	    				});
-	    			}
-	        		
-	            	EmailDialogBox.this.hide();
+	        		if(!checkValue(tb)){
+						tb.setText("");				
+					}
+	        		else {
+		        		checkValue(tb);
+		        		email = tb.getText();
+		        		
+		        		if (contactToDisplay == null) {
+		    				Window.alert("kein Kontakt ausgewählt!");
+		    			}
+		    			else {
+		    				editorAdministration.shareContact(contactToDisplay, getEmail(), new AsyncCallback<Permission>() {
+		    					public void onFailure(Throwable arg0) {
+		    						Window.alert("Fehler beim teilen des Kontakts!");
+		    					}
+		    					public void onSuccess(Permission arg0) {
+		    						Window.alert("Kontakt erfolgreich geteilt.");
+		    					}
+		    				});
+		    			}
+		        		
+		            	EmailDialogBox.this.hide();
+	        		}
 	            }
 	        });
 	        
@@ -502,7 +623,7 @@ public class ContactForm extends VerticalPanel {
 	        panel.setSpacing(10);
 	        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 	        panel.add(label);
-	        panel.add(eingabe);
+	        panel.add(tb);
 	        panel.add(ok);
 
 	        setWidget(panel);
@@ -582,7 +703,8 @@ public class ContactForm extends VerticalPanel {
 		contactTable.setWidget(3, 2, birthdateLabel);
 		
 		contactTable.setWidget(3, 3, new ValueDisplay(new ValueTextBox("Geburtstag")));
-		
+		((ValueDisplay) contactTable.getWidget(3, 3)).getWidget(0).setWidth("105px");
+				
 		
 		
 		/*
@@ -606,23 +728,25 @@ public class ContactForm extends VerticalPanel {
 		
 
 		/*
-		 * FÃ¼nfte Zeile: Telefonnummern privat (PID 2)
+		 * Fünfte Zeile: Telefonnummern privat (PID 2)
 		 */
 		
 		contactTable.setWidget(5, 0, privatePhoneNumbersPanel);
+		contactTable.getFlexCellFormatter().setVerticalAlignment(5, 0, ALIGN_TOP);
 		
 		
 		Label privatePhoneNumbersLabel = new Label("Telefonnummern privat: ");
 		privatePhoneNumbersPanel.add(privatePhoneNumbersLabel);
 			
 		privatePhoneNumbersPanel.add(new AddValueButton(2));
+		privatePhoneNumbersPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_TOP);
 				
 		
 		contactTable.getFlexCellFormatter().setColSpan(5, 1, 3);
 		contactTable.setWidget(5, 1, privatePhoneNumbersTable);
 			
 		privatePhoneNumbersTable.setWidget(0, 0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
-		((ValueDisplay)privatePhoneNumbersTable.getWidget(0, 0)).getWidget(0).setWidth("290px");
+		
 		
 		
 		/*
@@ -631,19 +755,20 @@ public class ContactForm extends VerticalPanel {
 		
 		
 		contactTable.setWidget(6, 0,  businessPhoneNumbersPanel);
+		contactTable.getFlexCellFormatter().setVerticalAlignment(6, 0, ALIGN_TOP);
 		
 		Label businessPhoneNumbersLabel = new Label("Telefonnummern geschäftl: ");
 		businessPhoneNumbersPanel.add(businessPhoneNumbersLabel);
 		
 	
 		businessPhoneNumbersPanel.add(new AddValueButton(1));
-				
+
 		
 		contactTable.getFlexCellFormatter().setColSpan(6, 1, 3);
 		contactTable.setWidget(6, 1, businessPhoneNumbersTable);
 	
 		businessPhoneNumbersTable.setWidget(0, 0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
-		((ValueDisplay)businessPhoneNumbersTable.getWidget(0, 0)).getWidget(0).setWidth("290px");
+
 		
 			
 		
@@ -663,6 +788,7 @@ public class ContactForm extends VerticalPanel {
 		
 		
 		contactTable.setWidget(7, 0,  eMailsPanel);
+		contactTable.getFlexCellFormatter().setVerticalAlignment(7, 0, ALIGN_TOP);
 		
 		Label eMailsLabel = new Label("e-Mail-Adressen: ");
 		eMailsPanel.add(eMailsLabel);
@@ -676,7 +802,7 @@ public class ContactForm extends VerticalPanel {
 		contactTable.setWidget(7, 1, eMailsTable);
 		
 		eMailsTable.setWidget(0, 0, new ValueDisplay(new ValueTextBox("Email")));
-		((ValueDisplay)eMailsTable.getWidget(0, 0)).getWidget(0).setWidth("290px");
+		
 		
 		
 		
@@ -685,6 +811,7 @@ public class ContactForm extends VerticalPanel {
 		 */
 		
 		contactTable.setWidget(8, 0,  homepagesPanel);
+		contactTable.getFlexCellFormatter().setVerticalAlignment(8, 0, ALIGN_TOP);
 		
 		Label homepagesLabel = new Label("Homepages: ");
 		homepagesPanel.add(homepagesLabel);
@@ -697,7 +824,7 @@ public class ContactForm extends VerticalPanel {
 		contactTable.setWidget(8, 1, homepagesTable);
 		
 		homepagesTable.setWidget(0, 0, new ValueDisplay(new ValueTextBox("Homepage")));
-		((ValueDisplay)homepagesTable.getWidget(0, 0)).getWidget(0).setWidth("290px");
+		
 		
 		
 		
@@ -706,6 +833,7 @@ public class ContactForm extends VerticalPanel {
 		 */
 		
 		contactTable.setWidget(9, 0,  jobsPanel);
+		contactTable.getFlexCellFormatter().setVerticalAlignment(9, 0, ALIGN_TOP);
 		
 		Label jobsLabel = new Label("Arbeitsstellen: ");
 		jobsPanel.add(jobsLabel);
@@ -717,7 +845,7 @@ public class ContactForm extends VerticalPanel {
 		contactTable.setWidget(9, 1, jobsTable);
 		
 		jobsTable.setWidget(0, 0, new ValueDisplay(new ValueTextBox("Arbeitsplatz")));
-		((ValueDisplay)jobsTable.getWidget(0, 0)).getWidget(0).setWidth("290px");
+		
 		
 		
 		
@@ -746,7 +874,7 @@ public class ContactForm extends VerticalPanel {
 		buttonPanel.add(contactListButtonsPanel);
 		
 		Button addContactToContactListButton = new Button("Kontakt zu einer Kontaktliste hinzufügen");
-		addContactToContactListButton.addClickHandler(new addContactToContactListClickHandler());
+		addContactToContactListButton.addClickHandler(new AddContactToContactListClickHandler());
 		
 		Button removeContactFromContactListButton = new Button("Kontakt aus der aktuellen Kontaktliste entfernen");
 		contactListButtonsPanel.add(addContactToContactListButton);
@@ -772,13 +900,13 @@ public class ContactForm extends VerticalPanel {
 		
 
 		//ClickHandler fÃ¼r die Funktionsbuttons --> jeweils eigene innere Klasse, siehe unten
-		addContactButton.addClickHandler(new newContactClickHandler());
+		addContactButton.addClickHandler(new NewContactClickHandler());
 		
-		shareContactButton.addClickHandler(new shareContactClickHandler());
+		shareContactButton.addClickHandler(new ShareContactClickHandler());
 		
-		deleteContactButton.addClickHandler(new deleteContactClickHandler());
+		deleteContactButton.addClickHandler(new DeleteContactClickHandler());
 		
-		saveChangesButton.addClickHandler(new saveChangesClickHandler());
+		saveChangesButton.addClickHandler(new SaveChangesClickHandler());
 				//tdb: wie Ã„nderungen Ã¼bernehmen, wenn mehreres geÃ¤ndert wurde?! 
 		
 	
@@ -798,7 +926,7 @@ public class ContactForm extends VerticalPanel {
 	
 	
 	
-	private class newContactClickHandler implements ClickHandler{
+	private class NewContactClickHandler implements ClickHandler{
 
 		@Override
 		public void onClick(ClickEvent event) {
@@ -849,7 +977,7 @@ public class ContactForm extends VerticalPanel {
 	/**
 	 * Die innere Klasse shareContactClickHandler.
 	 */
-	private class shareContactClickHandler implements ClickHandler{
+	private class ShareContactClickHandler implements ClickHandler{
 
 		@Override
 		public void onClick(ClickEvent event) {
@@ -867,7 +995,7 @@ public class ContactForm extends VerticalPanel {
 	/**
 	 * Die innere Klasse deleteContactClickHandler.
 	 */
-	private class deleteContactClickHandler implements ClickHandler{
+	private class DeleteContactClickHandler implements ClickHandler{
 
 		@Override
 		public void onClick(ClickEvent event) {
@@ -893,7 +1021,7 @@ public class ContactForm extends VerticalPanel {
 	/**
 	 * Die innere Klasse saveChangesClickHandler.
 	 */
-	private class saveChangesClickHandler implements ClickHandler{
+	private class SaveChangesClickHandler implements ClickHandler{
 
 		@Override
 		public void onClick(ClickEvent event) {
@@ -932,7 +1060,7 @@ public class ContactForm extends VerticalPanel {
 		}
 	}
 	
-	private class addContactToContactListClickHandler implements ClickHandler {
+	private class AddContactToContactListClickHandler implements ClickHandler {
 		
 		ListBox listbox;
 		VerticalPanel panel;
@@ -1013,7 +1141,7 @@ public class ContactForm extends VerticalPanel {
 					return true;
 				}
 				else {
-					Window.alert("Ungültige Zeichen im Straßennamen!");
+					Window.alert("Ungültiger Straßenname!");
 					return false;
 				}
 			case "Hausnummer":
@@ -1021,7 +1149,7 @@ public class ContactForm extends VerticalPanel {
 					return true;
 				}
 				else {
-					Window.alert("Ungültige Zeichen in der Hausnummer!");
+					Window.alert("Ungültige Hausnummer!");
 					return false;
 				}
 			case "PLZ":
@@ -1045,7 +1173,7 @@ public class ContactForm extends VerticalPanel {
 					return true;
 				}
 				else {
-					Window.alert("Ungültige Zeichen im Stadtnamen!");
+					Window.alert("Ungültiger Stadtname!");
 					return false;
 				}
 			case "Telefonnummer":
@@ -1053,7 +1181,7 @@ public class ContactForm extends VerticalPanel {
 					return true;
 				}
 				else {
-					Window.alert("Ungültige Zeichen in der Telefonnummer!");
+					Window.alert("Ungültige Telefonnummer!");
 					return false;
 				}
 			case "Geburtstag":
@@ -1061,7 +1189,7 @@ public class ContactForm extends VerticalPanel {
 					return true;
 				}
 				else {
-					Window.alert("Ungültige Zeichen in der Telefonnummer!");
+					Window.alert("Ungültige Telefonnummer!");
 					return false;
 				}
 			case "Email":
@@ -1069,104 +1197,19 @@ public class ContactForm extends VerticalPanel {
 					return true;
 				}
 				else {
-					Window.alert("Ungültige Zeichen in der e-Mail-Adresse!");
+					Window.alert("Ungültige e-Mail-Adresse!");
 					return false;
 				}
+			default: 
+				Window.alert("Switch case hat nicht ausgelöst!");
+				return false;
 		}
-		Window.alert("Switch case hat nicht ausgelöst!");
-		return false;
+		
 	}
 	
 	
 	
-	public void addValuePopUp(int pid) {
-
-		DialogBox addValuePopUp = new DialogBox();
-		addValuePopUp.show();
-		addValuePopUp.setText("Neue Ausprägung hinzufügen");
-		addValuePopUp.setAnimationEnabled(true);
-		addValuePopUp.setGlassEnabled(true);
-		
-		VerticalPanel addValueDialogBoxPanel = new VerticalPanel();
-		addValueDialogBoxPanel.setHeight("100px");
-		addValueDialogBoxPanel.setWidth("230px");
-	    addValueDialogBoxPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 	
-		
-		Label addValueLabel = new Label();
-		ValueTextBox addValueTextBox = null;
-		Button addValueButton = new Button("Hinzufügen");
-		
-		
-		
-	//	String identifier = null;
-		switch(pid) {
-		case 1: addValueTextBox = new ValueTextBox("Telefonnummer");
-				addValueLabel.setText("Neue geschäftliche Telefonnummer: ");
-				addValueButton.addClickHandler(new AddValueClickHandler(addValuePopUp, addValueTextBox,
-						businessPhoneNumbersTable, pid, addValueTextBox.getText()));
-				
-				break;
-		case 2: addValueTextBox = new ValueTextBox("Telefonnummer");
-				addValueLabel.setText("Neue private Telefonnummer: ");
-				break;
-		case 3: addValueTextBox = new ValueTextBox("Email");
-				addValueLabel.setText("Neue e-Mail-Adresse: ");
-				break;
-		case 5: addValueTextBox = new ValueTextBox("Arbeitsplatz");
-				addValueLabel.setText("Neue Arbeitsstelle: ");
-				break;
-		case 10:addValueTextBox = new ValueTextBox("Homepage");
-				addValueLabel.setText("Neue Homepage: ");
-	
-		}
-	//	addValueTextBox = new ValueTextBox(identifier);
-		addValueDialogBoxPanel.add(addValueLabel);
-		addValueDialogBoxPanel.add(addValueTextBox);
-		addValueDialogBoxPanel.add(addValueButton);
-		addValuePopUp.add(addValueDialogBoxPanel);
-	
-	}
-	
-	
-	private class AddValueClickHandler implements ClickHandler {
-		DialogBox popup;
-		ValueTextBox tb;
-		FlexTable ft;
-		int pid;
-		Value v;
-		String content;
-		
-		
-		public AddValueClickHandler(DialogBox popup, ValueTextBox tb, FlexTable ft, int pid, String content) {
-			this.popup = popup;
-			this.tb = tb;
-			this.ft = ft;
-			this.pid = pid;
-			this. content = content;
-					
-		}
-		
-		public void onClick(ClickEvent event) {
-			popup.hide();
-			Value v = new Value();
-			v.setContent("Hallo");
-			checkValue(tb);
-			ft.setWidget(ft.getRowCount(), 0, new ValueDisplay(new ValueTextBox("")));
-			
-//			v= editorAdministration.createValue(contactToDisplay, pid, content, new AsyncCallback<Value>() {
-//				public void onFailure(Throwable t) {
-//					
-//				}
-//				public void onSuccess(Value v) {
-//					
-//				}
-//			});
-			((ValueDisplay) ft.getWidget(ft.getRowCount(),0)).setValue(v);
-			
-			
-		}
-	}
 	
 	/**
 	 * Die Methode wird aufgerufen, wenn der addContactButton gedrÃ¼ckt wird. Die Felder leeren sich und ein neuer Kontakt
@@ -1251,25 +1294,25 @@ public class ContactForm extends VerticalPanel {
 									((AddValueButton) businessPhoneNumbersPanel.getWidget(1)).setEnabled(false);
 								}
 							
-						}else {
-							/*
-							 * Gibt es mehrere AusprÃ¤gungen zu geschÃ¤ftlichen Telefonnummern, wird eine neue Zeile in der FlexTable
-							 * erstellt und dieser ebenfalls ein ValueDisplay hinzugefÃ¼gt.
-							 */
-							businessPhoneNumbersTable.setWidget(businessPhoneNumbersTable.getRowCount(), 0, 
-																					new ValueDisplay(new ValueTextBox("Telefonnummer")));
-							((ValueDisplay) businessPhoneNumbersTable.getWidget(businessPhoneNumbersTable.getRowCount(), 0))
-																					.setValue(allValuesOfContact.get(i));
-							if (compareUser()) {
-								((ValueDisplay) businessPhoneNumbersTable.getWidget(businessPhoneNumbersTable.getRowCount(), 0)).enableButtons();
-								((AddValueButton) businessPhoneNumbersPanel.getWidget(1)).setEnabled(true);
+							}else {
+								/*
+								 * Gibt es mehrere AusprÃ¤gungen zu geschÃ¤ftlichen Telefonnummern, wird eine neue Zeile in der FlexTable
+								 * erstellt und dieser ebenfalls ein ValueDisplay hinzugefÃ¼gt.
+								 */
+								businessPhoneNumbersTable.setWidget(businessPhoneNumbersTable.getRowCount(), 0, 
+																						new ValueDisplay(new ValueTextBox("Telefonnummer")));
+								((ValueDisplay) businessPhoneNumbersTable.getWidget(businessPhoneNumbersTable.getRowCount(), 0))
+																						.setValue(allValuesOfContact.get(i));
+								if (compareUser()) {
+									((ValueDisplay) businessPhoneNumbersTable.getWidget(businessPhoneNumbersTable.getRowCount(), 0)).enableButtons();
+									((AddValueButton) businessPhoneNumbersPanel.getWidget(1)).setEnabled(true);
+								}
+								else {
+									((ValueDisplay) businessPhoneNumbersTable.getWidget(businessPhoneNumbersTable.getRowCount(), 0)).disableButtons();
+									((AddValueButton) businessPhoneNumbersPanel.getWidget(1)).setEnabled(false);
+								}
 							}
-							else {
-								((ValueDisplay) businessPhoneNumbersTable.getWidget(businessPhoneNumbersTable.getRowCount(), 0)).disableButtons();
-								((AddValueButton) businessPhoneNumbersPanel.getWidget(1)).setEnabled(false);
-							}
-						}
-						break;
+							break;
 							
 					
 					case 2:  // Tel.Nr. privat
@@ -1443,19 +1486,16 @@ public class ContactForm extends VerticalPanel {
 		}else {
 			firstnameTextBox.getElement().setPropertyString("placeholder", "Vorname...");
 			lastnameTextBox.getElement().setPropertyString("placeholder", "Nachname...");
-			contactTable.getWidget(3,3).getElement().setPropertyString("placeholder", "Geburtsdatum...");
+			((ValueDisplay) contactTable.getWidget(3,3)).getValueTextBox().getElement().setPropertyString("placeholder", "Geburtsdatum...");			
 			streetTextBox.getElement().setPropertyString("placeholder", "Straße...");
 			houseNrTextBox.getElement().setPropertyString("placeholder", "Hausnummer...");
 			plzTextBox.getElement().setPropertyString("placeholder", "PLZ...");
 			cityTextBox.getElement().setPropertyString("placeholder", "Wohnort...");
-		//	privatePhoneNumbersTable.getElement().setPropertyString("placeholder", "Private Nummer...");
-		// sind alles valueTextBoxen, vllt irgendwie vereinheitlichen?! EVtl oben in Konstruktor von
-			//ValueTextBox: pid abfragen und dann placeholder setzen?!
-			
-			//businessNrTextBox.getElement().setPropertyString("placeholder", "GeschÃ¤ftl. Nummer...");
-			//mailTextBox.getElement().setPropertyString("placeholder", "e-Mail-Adresse...");
-			//homepageTextBox.getElement().setPropertyString("placeholder", "Homepage...");
-			//jobTextBox.getElement().setPropertyString("placeholder", "Arbeitsstelle...");
+			((ValueDisplay) privatePhoneNumbersTable.getWidget(0,0)).getValueTextBox().getElement().setPropertyString("placeholder", "Private Nummer...");			
+			((ValueDisplay) businessPhoneNumbersTable.getWidget(0,0)).getValueTextBox().getElement().setPropertyString("placeholder", "Geschätl. Nummer...");
+			((ValueDisplay) eMailsTable.getWidget(0,0)).getValueTextBox().getElement().setPropertyString("placeholder", "e-Mail-Adresse...");
+			((ValueDisplay) homepagesTable.getWidget(0,0)).getValueTextBox().getElement().setPropertyString("placeholder", "Homepage...");
+			((ValueDisplay) jobsTable.getWidget(0,0)).getValueTextBox().getElement().setPropertyString("placeholder", "Arbeitsstelle...");
 		}
 		
 		

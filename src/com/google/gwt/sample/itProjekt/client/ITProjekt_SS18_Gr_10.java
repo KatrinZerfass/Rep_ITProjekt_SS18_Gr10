@@ -65,7 +65,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		
 		Label label;
 		
-        private TextBox eingabe = new TextBox();
+        private TextBox tb = new TextBox();
 		
 		public InputDialogBox() {
 			setText("Eingabe");
@@ -75,7 +75,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 			Button ok = new Button("OK");
 	        ok.addClickHandler(new ClickHandler() {
 	        	public void onClick(ClickEvent event) {
-	        		input = eingabe.getText();
+	        		input = tb.getText();
 	        		
 	            	InputDialogBox.this.hide();
 	            }
@@ -88,7 +88,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	        panel.setSpacing(10);
 	        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 	        panel.add(label);
-	        panel.add(eingabe);
+	        panel.add(tb);
 	        panel.add(ok);
 
 	        setWidget(panel);
@@ -150,7 +150,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	    }
 	    
 	    
-	    //Anlegen des User Objekts 
+	    // Anlegen des User Objekts 
 	    
 	    editorAdministration.getUserInformation(loginInfo.getEmailAddress(), new AsyncCallback<User>() {
 			
@@ -203,9 +203,9 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		Button deleteContactList = new Button("Kontaktliste löschen");
 		Button shareContactList = new Button("Kontaktliste teilen");
 		
-		newContactList.addClickHandler(new newContactListClickHandler());
-		deleteContactList.addClickHandler(new deleteContactListClickHandler());
-		shareContactList.addClickHandler(new shareContactListClickHandler());
+		newContactList.addClickHandler(new NewContactListClickHandler());
+		deleteContactList.addClickHandler(new DeleteContactListClickHandler());
+		shareContactList.addClickHandler(new ShareContactListClickHandler());
 		
 		contactListButtonsPanel.add(shareContactList);
 		contactListButtonsPanel.add(deleteContactList);
@@ -218,9 +218,8 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		
 		VerticalPanel searchPanel = new VerticalPanel();
 		
-		
 		Label searchLabel = new Label();
-		searchLabel.setText("Suchfeld für Kontakte: ");
+		searchLabel.setText("Durchsuchen Sie Ihre Kontaktlisten nach bestimmten Ausprägungen: ");
 		searchPanel.add(searchLabel);
 		
 		HorizontalPanel searchBox = new HorizontalPanel();
@@ -235,34 +234,13 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		
 		searchPanel.add(searchBox);
 		
-		
-		
 		clButtonsAndSearchPanel.add(searchPanel);
 		
 		
 		clctvm.setContactForm(cf);
 		cf.setClctvm(clctvm);
 		
-		//test Kontakt
-		Contact testContact = new Contact();
-		testContact.setFirstname("Hans");
-		testContact.setLastname("Müller");
-		testContact.setId(0001);
-		testContact.setSex("w");
-		
-		
-		//test Kontaktliste
-		ContactList testContactList = new ContactList();
-		testContactList.setId(1000);
-		testContactList.setName("Meine Freunde");
-		
-		
-		clctvm.setSelectedContactList(testContactList);
-		// Check: "2. Meine Freunde als selectedContactList des clctvm
-		
-		
 	
-		
 		CellBrowser.Builder<String> builder = new CellBrowser.Builder<>(clctvm, "Root");	
 		CellBrowser cellBrowser = builder.build(); 
 		cellBrowser.setHeight("100%");
@@ -272,25 +250,8 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		
 		Window.alert("3. created cellbrowser");
 		
-		clctvm.addContactList(testContactList);
-		// "4. Meine Freunde im contactListDataProvider
-		
-		clctvm.addContactOfContactList(testContactList, testContact);
-		// "5. contactDataProvider enthält nicht die CL als Key 
-		
-		
-		//braucht man nicht mehr
-	//	clctvm.setSelectedContact(testContact);
-		//Check: Einfügen von Hans Müller
-			
-		
-		
-		
-	
-		
 		RootPanel.get("Navigator").add(cellBrowser);
-		RootPanel.get("login").add(signOutLink);
-		Window.alert("6. finished onModuleLoad");
+		Window.alert("6. finished loadApplication");
 		  
 	  }
 	  
@@ -306,16 +267,17 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	    RootPanel.get("Login").add(loginPanel);
 	}
 	  
-	private class newContactListClickHandler implements ClickHandler {
+	private class NewContactListClickHandler implements ClickHandler {
 		
 		InputDialogBox input;
 		
 		public void onClick(ClickEvent event) {
 			input = new InputDialogBox();
+			input.show();
 			input.setLabel("Bitte geben Sie den Namen der neuen Kontaktliste an.");
 			editorAdministration.createContactList(input.getInput(), new AsyncCallback<ContactList>() {
 				public void onFailure(Throwable arg0) {
-					Window.alert("Fehler beim erstellen der Kontaktliste!");
+					Window.alert("Fehler beim Erstellen der Kontaktliste!");
 				}
 				public void onSuccess(ContactList arg0) {
 					Window.alert("Kontaktliste erfolgreich erstellt.");
@@ -325,7 +287,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		}
 	}
 	
-	private class deleteContactListClickHandler implements ClickHandler {
+	private class DeleteContactListClickHandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
 			editorAdministration.deleteContactList(clctvm.getSelectedContactList(), new AsyncCallback<Void>() {
@@ -341,14 +303,16 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		}
 	}
 	
-	private class shareContactListClickHandler implements ClickHandler {
+	private class ShareContactListClickHandler implements ClickHandler {
 		
-		InputDialogBox input;
+		InputDialogBox inputDB;
 		
 		public void onClick(ClickEvent event) {
-			input = new InputDialogBox();
-			input.setLabel("Bitte geben Sie die Email-Adresse des Nutzers ein mit dem Sie die Kontaktliste teilen möchten.");
-			editorAdministration.shareContactList(clctvm.getSelectedContactList(), input.getInput(), new AsyncCallback<Permission>() {
+			inputDB.show();
+			inputDB = new InputDialogBox();
+			inputDB.setLabel("Bitte geben Sie die Email-Adresse des Nutzers ein mit dem Sie die Kontaktliste teilen möchten.");
+		
+			editorAdministration.shareContactList(clctvm.getSelectedContactList(), inputDB.getInput(), new AsyncCallback<Permission>() {
 				@Override
 				public void onFailure(Throwable arg0) {
 					Window.alert("Fehler beim Teilen der Kontaktliste!");
