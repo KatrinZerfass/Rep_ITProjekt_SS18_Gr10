@@ -236,6 +236,7 @@ public class ContactForm extends VerticalPanel {
 		
 		/** Die referenzierte Eigenschaftsart. */
 		private int propertyId;
+		private int row;
 		
 			
 		/**
@@ -244,24 +245,48 @@ public class ContactForm extends VerticalPanel {
 		 *
 		 * @param int die ID der referenzierten Eigenschaft
 		 */
-		public AddValueButton(int pid) {
+		public AddValueButton(int pid, int r) {
 			this.setText("+");
 			this.setStyleName("addValueButton");
 			this.propertyId= pid;
+			this.row= r;
+			
 			
 		//wieder zurück kommentieren!
 			this.setEnabled(true);
 					
 			this.addClickHandler(new ClickHandler() {
+			//	ValueTable vt = ((ValueTable) contactTable.getWidget(row, 1));
+				
 				public void onClick (ClickEvent event) {
-					//if(contactToDisplay != null) {
+					if(contactToDisplay != null) {
 						addValuePopUp(propertyId);	
-					//}else { //AddValueButton.this.get
+					}else { 
+						switch(propertyId) {
+						case 1: ((ValueTable) contactTable.getWidget(row, 1)).setWidget(((ValueTable) contactTable.getWidget(row, 1))
+									.getRowCount(),0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
+								break;
 						
-				//	}
+						case 2: ((ValueTable) contactTable.getWidget(row, 1)).setWidget(((ValueTable) contactTable.getWidget(row, 1))
+									.getRowCount(),0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
+								break;
+						case 3: ((ValueTable) contactTable.getWidget(row, 1)).setWidget(((ValueTable) contactTable.getWidget(row, 1))
+									.getRowCount(),0, new ValueDisplay(new ValueTextBox("Email")));
+								break;
+						case 5: ((ValueTable) contactTable.getWidget(row, 1)).setWidget(((ValueTable) contactTable.getWidget(row, 1))
+									.getRowCount(),0, new ValueDisplay(new ValueTextBox("Arbeitsplatz")));
+								break;
+						case 10: ((ValueTable) contactTable.getWidget(row, 1)).setWidget(((ValueTable) contactTable.getWidget(row, 1))
+									.getRowCount(),0, new ValueDisplay(new ValueTextBox("Homepage")));
+								break;
+					
+						}
+					}
+				
 				}
 			});
 		}
+		
 		
 		/**
 		 * Gibt die ID der referenzierten Eigenschaft zurÃ¼ck.
@@ -543,10 +568,10 @@ public class ContactForm extends VerticalPanel {
 		Label valueLabel = new Label();
 		AddValueButton addValueButton;
 		
-		public ValuePanel(int pid, String label){
+		public ValuePanel(int pid, int row, String label){
 			this.propertyId= pid;
 			this.valueLabel.setText(label);
-			this.addValueButton = new AddValueButton(propertyId);
+			this.addValueButton = new AddValueButton(propertyId, row);
 			this.add(valueLabel);
 			this.add(addValueButton);
 			
@@ -736,7 +761,7 @@ public class ContactForm extends VerticalPanel {
 		 * Fünfte Zeile: Telefonnummern privat (PID 2)
 		 */
 		
-		contactTable.setWidget(5, 0, new ValuePanel(2, "Telefonnummern privat: "));
+		contactTable.setWidget(5, 0, new ValuePanel(2, 5, "Telefonnummern privat: "));
 		contactTable.getFlexCellFormatter().setVerticalAlignment(5, 0, ALIGN_TOP);	
 		
 		contactTable.getFlexCellFormatter().setColSpan(5, 1, 3);
@@ -751,7 +776,7 @@ public class ContactForm extends VerticalPanel {
 		 */
 		
 		
-		contactTable.setWidget(6, 0, new ValuePanel(1, "Telefonnummern geschäftl: "));
+		contactTable.setWidget(6, 0, new ValuePanel(1, 6, "Telefonnummern geschäftl: "));
 		contactTable.getFlexCellFormatter().setVerticalAlignment(6, 0, ALIGN_TOP);
 		
 		contactTable.getFlexCellFormatter().setColSpan(6, 1, 3);
@@ -775,7 +800,7 @@ public class ContactForm extends VerticalPanel {
 		 */
 		
 		
-		contactTable.setWidget(7, 0, new ValuePanel(3, "e-Mail-Adressen: "));
+		contactTable.setWidget(7, 0, new ValuePanel(3, 7, "e-Mail-Adressen: "));
 		contactTable.getFlexCellFormatter().setVerticalAlignment(7, 0, ALIGN_TOP);
 	
 		contactTable.getFlexCellFormatter().setColSpan(7, 1, 3);
@@ -789,7 +814,7 @@ public class ContactForm extends VerticalPanel {
 		 * Achte Zeile: Homepages (PID 10)
 		 */
 		
-		contactTable.setWidget(8, 0, new ValuePanel(10, "Homepages: "));
+		contactTable.setWidget(8, 0, new ValuePanel(10, 8,  "Homepages: "));
 		contactTable.getFlexCellFormatter().setVerticalAlignment(8, 0, ALIGN_TOP);
 		
 		contactTable.getFlexCellFormatter().setColSpan(8, 1, 3);
@@ -804,7 +829,7 @@ public class ContactForm extends VerticalPanel {
 		 * Neunte Zeile: Arbeitsstelle (PID 5)
 		 */
 		
-		contactTable.setWidget(9, 0,  new ValuePanel(5, "Arbeitsstellen: "));
+		contactTable.setWidget(9, 0,  new ValuePanel(5, 9,  "Arbeitsstellen: "));
 		contactTable.getFlexCellFormatter().setVerticalAlignment(9, 0, ALIGN_TOP);
 		
 		contactTable.getFlexCellFormatter().setColSpan(9, 1, 3);
@@ -887,53 +912,40 @@ public class ContactForm extends VerticalPanel {
 	
 	
 	private class NewContactClickHandler implements ClickHandler{
-
 	
 		public void onClick(ClickEvent event) {
-			clearContactForm();
-			Window.alert("Füllen Sie das Formular für den neuen Kontakt aus.");
-			ContactList myContactsContactList = clctvm.getMyContactsContactList();
-
-		//TODO: if abfrage für m und w beim Kontakt anlegen
+			Window.alert("Tragen Sie im Formular Vor- und Nachname des Kontakts, sowie dessen Geschlecht ein und klicken Sie anschließend auf Kontaktstamm anlegen.");
+		//	clearContactForm();
 			
-			editorAdministration.createContact(firstnameTextBox.getText(),
-					lastnameTextBox.getText(), sexListBox.getValue(0).toString(),
-					new GetContactCallback(myContactsContactList));
-				
-		}		
+			contactTable.getFlexCellFormatter().setRowSpan(2, 4, 2);
+			Button addContactButton = new Button("Kontakt-stamm anlegen");
+			addContactButton.setWidth("60px");
+			contactTable.setWidget(2, 4, addContactButton);
+			
+			addContactButton.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event){
+					editorAdministration.createContact(firstnameTextBox.getText(),
+							lastnameTextBox.getText(), sexListBox.getValue(0).toString(), new AsyncCallback<Contact>() {
+						
+						public void onFailure(Throwable caught) {
+							Window.alert("Fehler beim Kontakt anlegen!");
+							
+						}
+						
+						
+						public void onSuccess(Contact result) {
+							clctvm.addContactOfContactList(clctvm.getMyContactsContactList(), result);
+							Window.alert("Kontakt wurde erfolgreich angelegt.");
+							
+						}
+					});
+				}
+			});		
+	
+		}
 	}
 	
 	
-	/**
-	 * The Class GetContactCallback.
-	 */
-	private class GetContactCallback implements AsyncCallback<Contact>{
-		
-		/** The cl. */
-		ContactList cl = null;
-		
-		/**
-		 * Instantiates a new gets the contact callback.
-		 *
-		 * @param cl the cl
-		 */
-		public GetContactCallback(ContactList cl) {
-			this.cl = cl;
-		}
-		
-		
-		public void onFailure(Throwable caught) {
-			Window.alert("Fehler beim Kontakt anlegen!");
-			
-		}
-		
-		
-		public void onSuccess(Contact result) {
-			clctvm.addContactOfContactList(cl, result);
-			Window.alert("Kontakt wurde erfolgreich angelegt.");
-			
-		}
-	}
 	
 	/**
 	 * Die innere Klasse shareContactClickHandler.
@@ -1487,7 +1499,7 @@ public class ContactForm extends VerticalPanel {
 			plzTextBox.getElement().setPropertyString("placeholder", "PLZ...");
 			cityTextBox.getElement().setPropertyString("placeholder", "Wohnort...");
 			((ValueTable) contactTable.getWidget(5, 1)).getValueDisplay(0,0).getValueTextBox().getElement().setPropertyString("placeholder", "Private Nummer...");		
-			((ValueTable) contactTable.getWidget(6, 1)).getValueDisplay(0,0).getValueTextBox().getElement().setPropertyString("placeholder", "Geschätl. Nummer...");
+			((ValueTable) contactTable.getWidget(6, 1)).getValueDisplay(0,0).getValueTextBox().getElement().setPropertyString("placeholder", "Geschäftl. Nummer...");
 			((ValueTable) contactTable.getWidget(7, 1)).getValueDisplay(0,0).getValueTextBox().getElement().setPropertyString("placeholder", "e-Mail-Adresse...");
 			((ValueTable) contactTable.getWidget(8, 1)).getValueDisplay(0,0).getValueTextBox().getElement().setPropertyString("placeholder", "Homepage...");
 			((ValueTable) contactTable.getWidget(9, 1)).getValueDisplay(0,0).getValueTextBox().getElement().setPropertyString("placeholder", "Arbeitsstelle...");

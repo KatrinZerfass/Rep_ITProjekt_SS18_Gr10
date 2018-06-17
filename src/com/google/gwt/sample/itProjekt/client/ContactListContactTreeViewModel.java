@@ -155,15 +155,14 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	
 	void addContactOfContactList(ContactList cl, Contact c) {
 		if (!contactDataProviders.containsKey(cl)) {
-			Window.alert("5. contactDataProvider enthält nicht die CL als Key");
 			return;
 		}
 		ListDataProvider<Contact> contactsProvider = contactDataProviders.get(cl);
 		if (!contactsProvider.getList().contains(c)) {
 			contactsProvider.getList().add(c);
-			Window.alert("neu: contact wurde zu contactsProvider der CL hinzugefügt, woopwoop");
 		}
 		selectionModel.setSelected(c, true);
+		
 	}
 	
 	void removeContactOfContactList(ContactList cl, Contact c) {
