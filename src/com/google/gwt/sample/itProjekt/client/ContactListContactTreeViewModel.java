@@ -20,30 +20,38 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import java.util.Vector;
 
 
-
-
-
+/**
+ * Die ContactListContactTreeViewModel. 
+ * Sie dient der Verwaltung von Kontaktlisten und den dazugehörigen Kontakten und stellt die Basis für den CellBrowser dar.
+ * 
+ * @author KatrinZerfass
+ */
 public class ContactListContactTreeViewModel implements TreeViewModel{
 	
+	private EditorAdministrationAsync editorAdministration = null;
 	
 	private ContactForm contactForm =null;
+
 	private ContactList selectedContactList = null;
 	private Contact selectedContact = null;
-	private ContactList myContactsContactList = null;
-	//TODO: myContactsContactList setzen 
 	
-	private EditorAdministrationAsync editorAdministration = null;
-
+	/** Default-Kontaktliste. Taucht bei jedem Benutzer auf und beinhaltet alle seine Kontakte.*/
+	private ContactList myContactsContactList = null; 
+	
+	/** Im contactListDataProvider befindet sich eine Liste aller Kontaktlisten */
 	private ListDataProvider<ContactList> contactListDataProvider = null;
 	
-	
-	
-	//verbindet eine Liste von Kontakten mit einer Kontaktliste
+	/** Der contactDataProvider vom Typ Map verbindet je eine Kontaktliste mit einem ListDataProvider von Kontakten.  */
 	private Map<ContactList, ListDataProvider<Contact>> contactDataProviders = null;
 
-	//wei�t jedem BO im Tree eine id zu
+	/**
+	 * Die innere Klasse BusinessObjectKeyProvider
+	 * Sie weißt jedem BusinessObject eine eindeutige id zu.
+	 * ?? Für was brauchen wir die ?? 
+	 */
 	private class BusinessObjectKeyProvider implements
 	ProvidesKey<BusinessObject> {
+	
 	@Override
 	public Integer getKey(BusinessObject bo) {
 		if (bo == null) {
@@ -57,16 +65,19 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	}
 	};
 
+	/** Eine Instanz der inneren Klasse BusinessObjectKeyProvider */
 	private BusinessObjectKeyProvider boKeyProvider = null;
+	
+	/** Das SelectionModel */
 	private SingleSelectionModel<BusinessObject> selectionModel = null;
 	
+	
 	/**
-	* Nested Class für die Reaktion auf Selektionsereignisse. Als Folge einer
-	* Baumknotenauswahl wird je nach Typ des Business-Objekts der
-	* "selectedCustomer" bzw. das "selectedAccount" gesetzt.
+	* Innere Klasse für die Reaktion auf Selektionsereignisse. Als Folge einer Baumknotenauswahl wird je 
+	* nach Typ des Business-Objekts die "selectedContactList" bzw. der "selectedContact" gesetzt.
 	*/
-	private class SelectionChangeEventHandler implements
-		SelectionChangeEvent.Handler {
+	private class SelectionChangeEventHandler implements SelectionChangeEvent.Handler {
+	
 	@Override
 		public void onSelectionChange(SelectionChangeEvent event) {
 			BusinessObject selection = selectionModel.getSelectedObject();
@@ -79,51 +90,60 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	}
 
 	
-	//Konstruktor
+	
+	/**
+	 * Konstruktor von ContactListContactTreeViewModel.
+	 * Die vorher deklarierten 
+	 */
 	public ContactListContactTreeViewModel() {
 		editorAdministration= ClientsideSettings.getEditorAdministration();
 		boKeyProvider = new BusinessObjectKeyProvider();
 		selectionModel = new SingleSelectionModel<BusinessObject>(boKeyProvider);
-		selectionModel
-				.addSelectionChangeHandler(new SelectionChangeEventHandler());
+		selectionModel.addSelectionChangeHandler(new SelectionChangeEventHandler());
 		contactDataProviders = new HashMap<ContactList, ListDataProvider<Contact>>();
 		
 		
 	}
 
-	//getter und setter
+	
+	/* 
+	 * Getter und Setter für ContactForm, selectedContactList, selectedContact und myContactContactList
+	 */
 	public void setContactForm(ContactForm cf) {
 		contactForm = cf;
 	}
 
-	ContactList getSelectedContactList() {
+	
+	public ContactList getSelectedContactList() {
 		return selectedContactList;
 	}
-
-	void setSelectedContactList (ContactList cl) {
+	
+	public void setSelectedContactList (ContactList cl) {
 		selectedContactList = cl;
 		selectedContact = null;
 		contactForm.setSelected(null);
 		//Check
 		Window.alert("2. " + selectedContactList.getName() + " als selectedContactList des clctvm");
 	}
-
 	
-	Contact getSelectedContact() {
+	
+	public Contact getSelectedContact() {
 		return selectedContact;
 	}
 
-
-	void setSelectedContact(Contact c) {
+	public void setSelectedContact(Contact c) {
 		selectedContact = c;
 		contactForm.setSelected(c);
+		
+	//muss dan auch die dazugehörige Kontaktliste ausgewählt werden?! --> siehe R&T
 	}
 
-	ContactList getMyContactsContactList() {
+	
+	public ContactList getMyContactsContactList() {
 		return this.myContactsContactList;
 	}
-	
-	void setMyContactsContactList(ContactList cl) {
+
+	public void setMyContactsContactList(ContactList cl) {
 		myContactsContactList = cl;
 
 		setSelectedContactList(myContactsContactList);
@@ -131,10 +151,16 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	}
 	
 
-	//GUI Funktionen
+	/*
+	 * GUI Funktionalitäten
+	 */
 	
 	
-	void addContactList(ContactList cl) {
+	/**
+	 * Wir eine neue Kontaktliste erstellt, wird diese dem ListDataProvider hinzugefügt und selektiert.
+	 * @param cl die neue Kontaktliste
+	 */
+	public void addContactList(ContactList cl) {
 		contactListDataProvider = new ListDataProvider<ContactList>();
 		contactListDataProvider.getList().add(cl);
 		
@@ -148,12 +174,14 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		
 	}
 	
-	void removeContactList(ContactList cl) {
+	
+	public void removeContactList(ContactList cl) {
 		contactListDataProvider.getList().remove(cl);
 		contactDataProviders.remove(cl);
 	}
 	
-	void addContactOfContactList(ContactList cl, Contact c) {
+	
+	public void addContactOfContactList(ContactList cl, Contact c) {
 		if (!contactDataProviders.containsKey(cl)) {
 			return;
 		}
@@ -165,7 +193,8 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		
 	}
 	
-	void removeContactOfContactList(ContactList cl, Contact c) {
+	
+	public void removeContactOfContactList(ContactList cl, Contact c) {
 		if (!contactDataProviders.containsKey(cl)) {
 			return;
 		}
@@ -175,6 +204,9 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	
 	
 
+	/** 
+	 * Die Methode getNodeInfo gibt für jeden Knoten im TreeViewModel dessen Kinder wieder 
+	 */
 	public <T> NodeInfo<?> getNodeInfo(T value) {
 		
 		if(value.equals("Root")) {
@@ -203,33 +235,31 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 			
 		
 		}if(value instanceof ContactList) {
-			// Erzeugen eines ListDataproviders für Account-Daten
 			final ListDataProvider<Contact> contactsProvider = new ListDataProvider<Contact>();
 			contactDataProviders.put((ContactList) value, contactsProvider);
 	
 			editorAdministration.getAllContactsOf((ContactList) value,
-					new AsyncCallback<Vector<Contact>>() {
-						public void onFailure(Throwable t) {
+				new AsyncCallback<Vector<Contact>>() {
+					public void onFailure(Throwable t) {
+					}
+
+					
+					public void onSuccess(Vector<Contact> contacts) {
+						for (Contact c : contacts) {
+							contactsProvider.getList().add(c);
 						}
-	
-						
-						public void onSuccess(Vector<Contact> contacts) {
-							for (Contact c : contacts) {
-								contactsProvider.getList().add(c);
-							}
-						}
-					});
-	
-			
-			// Return a node info that pairs the data with a cell.
-					return new DefaultNodeInfo<Contact>(contactsProvider,
-							new ContactCell(), selectionModel, null);
+					}
+				});
+
+				return new DefaultNodeInfo<Contact>(contactsProvider,
+						new ContactCell(), selectionModel, null);
 		}
 		return null;
 	}
 	
 
 	
+
 	public boolean isLeaf(Object value) {
 		return (value instanceof Contact);
 	}

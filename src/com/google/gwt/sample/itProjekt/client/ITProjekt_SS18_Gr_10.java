@@ -38,10 +38,8 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-
-
 /**
- * Entry point classes define <code>onModuleLoad()</code>.
+ * Die Entry-point-Klasse für den Editor
  */
 public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	/**
@@ -51,6 +49,9 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	private static final String SERVER_ERROR = "An error occurred while "
 			+ "attempting to contact the server. Please check your network " + "connection and try again.";
 
+	EditorAdministrationAsync editorAdministration = null;
+	
+	/* Die Instanzenvariablen, die mit dem Login-Service zusammenhängen. */
 	private LoginInfo loginInfo = null;
 	private VerticalPanel loginPanel = new VerticalPanel();
 	private Label loginLabel = new Label(
@@ -58,11 +59,21 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	private Anchor signInLink = new Anchor("Sign In");
 	private Anchor signOutLink = new Anchor("Sign Out");
 	
+	/** Das referenzierte ContactListContactTreeViewModel-Objekt */
 	ContactListContactTreeViewModel clctvm = new ContactListContactTreeViewModel();
+	
+	/** Die Default-Kontaktliste MyContactsContactList mccl. */
 	ContactList mccl = new ContactList();
 
-	EditorAdministrationAsync editorAdministration = null;
+
 	
+	
+	/**
+	 * Die innere Klasse InputDialogBox.
+	 * ?? was macht sie ??
+	 * 
+	 * @author JanNoller
+	 */
 	public class InputDialogBox extends DialogBox{
 		
 		private String input;
@@ -71,6 +82,10 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		
         private TextBox tb = new TextBox();
 		
+		/**
+		 * Der Konstruktor von InputDialogBox
+		 * ?? was macht er ??
+		 */
 		public InputDialogBox() {
 			setText("Eingabe");
 			setAnimationEnabled(true);
@@ -98,24 +113,47 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	        setWidget(panel);
 		}
 		
+		/**
+		 * Getter von input.
+		 *
+		 * @return den Input
+		 */
 		public String getInput() {
 			return this.input;
 		}
 		
+		/**
+		 * Setter von input.
+		 *
+		 * @param input der Input
+		 */
 		public void setInput(String input) {
 			this.input = input;
 		}
 		
+		/**
+		 * Setter des Labels.
+		 *
+		 * @param labelText der Text des Labels.
+		 */
 		public void setLabel (String labelText) {
 			this.label = new Label(labelText);
 		}
 		
+		/**
+		 * Gets the label.
+		 *
+		 * @return the label
+		 */
 		public Label getlabel () {
 			return this.label;
 		}
 	}
 
 	  
+	/**
+	 * Die Methode onModuelLoad() wird beim Starten der Anwendung aufgerufen
+	 */
 	public void onModuleLoad() {
 		  
 		  
@@ -142,12 +180,11 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	  
 	  
 	  
-	  /*
-	   * Diese Methode wird aufgerufen wenn der Benutzer eingeloggt ist. Sie beinhaltet 
-	   * die eigentliche Applikation.  
-	   */
-	  
-	public void loadApplication() {
+  /*
+   * Die Methode loadApplication() wird aufgerufen, wenn der Benutzer eingeloggt ist. Sie beinhaltet 
+   * die eigentliche Applikation.  
+   */
+  	public void loadApplication() {
 	    	
 		if(editorAdministration == null) {
 			editorAdministration = ClientsideSettings.getEditorAdministration();
@@ -186,40 +223,52 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		        });
 			}    		
 	    });
-
-	    		   		    		    			
-	      
+	    
 		
-		signOutLink.setHref(loginInfo.getLogoutUrl());
+		
+		
+		/*
+		 * Im Folgenden wird das GUI aufgebaut
+		 */
+	    
+	    signOutLink.setHref(loginInfo.getLogoutUrl());
 		RootPanel.get("Login").add(signOutLink);
 		
+		/*
+		 * Das Div "ContactForm" beinhaltet eine Instanz von ContactForm
+		 */
 		ContactForm cf = new ContactForm();
 		VerticalPanel contactPanel = new VerticalPanel();
 		contactPanel.add(cf);
 		RootPanel.get("ContactForm").add(contactPanel);	
 		
-		HorizontalPanel clButtonsAndSearchPanel = new HorizontalPanel();
 		
+		/*
+		 * Das Div "Contactlist" links unter der Navigation beinhaltet die Buttons für Kontaktlisten und das Suchfeld.
+		 */
+		HorizontalPanel clButtonsAndSearchPanel = new HorizontalPanel();
+		clButtonsAndSearchPanel.setWidth("100%");
+				
+		//Die Buttons für Kontaktlisten
 		VerticalPanel contactListButtonsPanel = new VerticalPanel();
 		contactListButtonsPanel.setStyleName("buttonPanel");
 		
-		Button newContactList = new Button("Neue Kontaktliste anlegen");
-		Button deleteContactList = new Button("Kontaktliste löschen");
-		Button shareContactList = new Button("Kontaktliste teilen");
+		Button newContactListButton = new Button("Neue Kontaktliste anlegen");
+		Button deleteContactListButton = new Button("Kontaktliste löschen");
+		Button shareContactListButton = new Button("Kontaktliste teilen");
 		
-		newContactList.addClickHandler(new NewContactListClickHandler());
-		deleteContactList.addClickHandler(new DeleteContactListClickHandler());
-		shareContactList.addClickHandler(new ShareContactListClickHandler());
+		contactListButtonsPanel.add(shareContactListButton);
+		contactListButtonsPanel.add(deleteContactListButton);
+		contactListButtonsPanel.add(newContactListButton);
 		
-		contactListButtonsPanel.add(shareContactList);
-		contactListButtonsPanel.add(deleteContactList);
-		contactListButtonsPanel.add(newContactList);
+		newContactListButton.addClickHandler(new NewContactListClickHandler());
+		deleteContactListButton.addClickHandler(new DeleteContactListClickHandler());
+		shareContactListButton.addClickHandler(new ShareContactListClickHandler());
 		
 		clButtonsAndSearchPanel.add(contactListButtonsPanel);
+	
 		
-		
-		RootPanel.get("Contactlist").add(clButtonsAndSearchPanel);
-		
+		//Das Suchfeld
 		VerticalPanel searchPanel = new VerticalPanel();
 		
 		Label searchLabel = new Label();
@@ -240,10 +289,14 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		searchPanel.add(searchBox);
 		
 		clButtonsAndSearchPanel.add(searchPanel);
-		clButtonsAndSearchPanel.setWidth("100%");
 		clButtonsAndSearchPanel.setCellHorizontalAlignment(searchPanel, HasHorizontalAlignment.ALIGN_RIGHT);
 		
+		RootPanel.get("Contactlist").add(clButtonsAndSearchPanel);
 		
+		
+		/*
+		 * TreeViewModel und ContactForm werden miteinander verbunden.
+		 */
 		clctvm.setContactForm(cf);
 		cf.setClctvm(clctvm);
 		
@@ -255,7 +308,9 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 //		mccl.setId();
 		clctvm.setMyContactsContactList(mccl);
 
-		
+		/*
+		 * Das div "Navigator" beinhaltet eine Instanz eines CellBrowswers
+		 */
 		CellBrowser.Builder<String> builder = new CellBrowser.Builder<>(clctvm, "Root");	
 		CellBrowser cellBrowser = builder.build(); 
 		cellBrowser.setHeight("100%");
@@ -265,33 +320,42 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		
 		Window.alert("3. created cellbrowser");
 		
-		
 		RootPanel.get("Navigator").add(cellBrowser);
+		
 		Window.alert("6. finished loadApplication");
 		  
 	  }
 	  
-	  /* 
-	   * Das Login Panel wird aufgerufen wenn der Benutzer nicht eingeloggt ist. 
-	   */
-
-	private void loadLogin() {
+	 
+  	
+	/**
+  	 * Die Methode loadLogin() wird aufgerufen wenn der Benutzer nicht eingeloggt ist. 
+  	 */
+  	private void loadLogin() {
 		  
 		signInLink.setHref(loginInfo.getLoginUrl());
 	    loginPanel.add(loginLabel);
 	    loginPanel.add(signInLink);
 	    RootPanel.get("Login").add(loginPanel);
 	}
-	  
+	 
+  	
+	/**
+	 * Die innere Klasse NewContactListClickHandler. 
+	 * Eine Instanz von ihr wird beim Klick auf den newContactListButton aufgerufen.
+	 * 
+	 * @author JanNoller
+	 */
 	private class NewContactListClickHandler implements ClickHandler {
 		
-		InputDialogBox input;
+		InputDialogBox inputDB;
+		
 		
 		public void onClick(ClickEvent event) {
-			input = new InputDialogBox();
-			input.show();
-			input.setLabel("Bitte geben Sie den Namen der neuen Kontaktliste an.");
-			editorAdministration.createContactList(input.getInput(), new AsyncCallback<ContactList>() {
+			inputDB = new InputDialogBox();
+			inputDB.show();
+			inputDB.setLabel("Bitte geben Sie den Namen der neuen Kontaktliste an.");
+			editorAdministration.createContactList(inputDB.getInput(), new AsyncCallback<ContactList>() {
 				public void onFailure(Throwable arg0) {
 					Window.alert("Fehler beim Erstellen der Kontaktliste!");
 				}
@@ -303,8 +367,15 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		}
 	}
 	
+	/**
+	 * Die innere Klasse DeleteContactListClickHandler. 
+	 * Eine Instanz von ihr wird beim Klick auf den deleteContactListButton aufgerufen.
+	 * 
+	 * @author JanNoller
+	 */
 	private class DeleteContactListClickHandler implements ClickHandler {
 
+		
 		public void onClick(ClickEvent event) {
 			editorAdministration.deleteContactList(clctvm.getSelectedContactList(), new AsyncCallback<Void>() {
 				@Override
@@ -319,15 +390,21 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		}
 	}
 	
+	/**
+	 * Die innere Klasse ShareContactListClickHandler. 
+	 * Eine Instanz von ihr wird beim Klick auf den ShareContactListButton aufgerufen.
+	 * 
+	 * @author JanNoller
+	 */
 	private class ShareContactListClickHandler implements ClickHandler {
-		
+	
 		InputDialogBox inputDB;
 		
 		public void onClick(ClickEvent event) {
-			inputDB.show();
 			inputDB = new InputDialogBox();
 			inputDB.setLabel("Bitte geben Sie die Email-Adresse des Nutzers ein mit dem Sie die Kontaktliste teilen möchten.");
-		
+			inputDB.show();
+			
 			editorAdministration.shareContactList(clctvm.getSelectedContactList(), inputDB.getInput(), new AsyncCallback<Permission>() {
 				@Override
 				public void onFailure(Throwable arg0) {
