@@ -65,20 +65,25 @@ div#Contactlist{
 
 
 div#ContactForm {
-	margin: 0em 8em 0em 35em;
-	height: 100%;
+	margin: 0em 9em 0em 36em;
+	height: 30em;
    	overflow: auto;
     background: white;
 	display: flex;
-  	align-items: center;
   	justify-content: center;
+
     
+}
+
+div#PropertyPanel{
+	margin: 0em 9em 0em 36em;
+	padding-left: 10px;
 }
 
 div#ButtonsPanel{
 	margin-right: 5px;
 	float: right;
-	clear: right;
+/* 	clear: left; */
 	width: 8em;
 	height: 33em;
 	display: flex;
@@ -101,7 +106,13 @@ div#Trailer {
     background: white;
 }
 
+.contactTable{
+	height: 100%;
+}
 
+.propertyPanel{
+/* 	margin-left: 5px; */
+}
 
 .addValueButton{
 /* 	margin: 0 auto; */

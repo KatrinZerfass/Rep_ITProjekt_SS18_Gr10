@@ -53,10 +53,14 @@ public class ContactForm extends VerticalPanel {
 	Vector<ValueTextBox> allValueTextBoxes = new Vector<ValueTextBox>();
 	
 	/**Allumfassendes Panel zur Aufteilung von Formular und Buttons */
-	HorizontalPanel contactFormPanel = new HorizontalPanel();
+	HorizontalPanel displayPanel = new HorizontalPanel();
 	
 	/** Allumfassende Tabelle zur Darstellung von Kontakten */
 	FlexTable contactTable = new FlexTable();
+	
+	VerticalPanel contactForm = new VerticalPanel();
+	
+	HorizontalPanel newPropertyPanel = new HorizontalPanel();
 	
 	VerticalPanel buttonsPanel = new VerticalPanel();
 	
@@ -838,13 +842,16 @@ public class ContactForm extends VerticalPanel {
 		
 		currentUser = ClientsideSettings.getUser();
 		
-		contactFormPanel.add(contactTable);
-		contactFormPanel.add(buttonsPanel);
-		this.add(contactFormPanel);
+		displayPanel.add(contactForm);
+		contactForm.add(contactTable);
+		contactForm.add(newPropertyPanel);
+		displayPanel.add(buttonsPanel);
+		this.add(displayPanel);
 		
 		
 		
 		//Zeile 0 und 1 der Tabelle contactTable sind leer
+		contactTable.setStyleName("contactTable");
 		
 		/*
 		 * Zweite Zeile: Vor- und Nachname
@@ -876,7 +883,30 @@ public class ContactForm extends VerticalPanel {
 		
 		contactTable.setWidget(3, 3, new ValueDisplay(new ValueTextBox("Geburtstag")));
 		((ValueDisplay) contactTable.getWidget(3, 3)).getWidget(0).setWidth("105px");
-				
+		
+		
+		
+	
+		Label newPropertyLabel = new Label("Eigenschaft hinzufügen: ");
+		ListBox newPropertyListBox = new ListBox();
+		Button addNewPropertyButton = new Button("Hinzufügen");
+		
+		newPropertyListBox.addItem("Private Telefonnummer");
+		newPropertyListBox.addItem("Anschrift");
+		newPropertyListBox.addItem("Geschäftliche Telefonnummer");
+		newPropertyListBox.addItem("e-Mail-Adresse");
+		newPropertyListBox.addItem("Homepage");
+		newPropertyListBox.addItem("Arbeitsstelle");
+		newPropertyListBox.addItem("Sonstiges");
+		//bzw. auch aus Datenbank mit ner Abfrage raus!
+		
+		newPropertyPanel.add(newPropertyLabel);
+		newPropertyPanel.add(newPropertyListBox);
+		newPropertyPanel.addStyleName("propertyPanel");
+		newPropertyPanel.add(addNewPropertyButton);
+		
+		
+		
 		
 		
 		Button addContactButton = new Button("Neuen Kontakt anlegen");
@@ -914,7 +944,8 @@ public class ContactForm extends VerticalPanel {
 		addContactToContactListButton.addClickHandler(new AddContactToContactListClickHandler());
 		
 		removeContactFromContactListButton.addClickHandler(new RemoveContactFromContactListClickHandler());
-				
+			
+	//	addNewPropertyButton.addClickHandler(new ClickHandler());
 	} //Ende von onLoad()
 	
 	
@@ -1859,4 +1890,8 @@ public class ContactForm extends VerticalPanel {
 	public VerticalPanel getButtonsPanel() {
 		return this.buttonsPanel;
 	}
-}
+	
+	public HorizontalPanel getNewPropertyPanel() {
+		return this.newPropertyPanel;
+		}
+	}

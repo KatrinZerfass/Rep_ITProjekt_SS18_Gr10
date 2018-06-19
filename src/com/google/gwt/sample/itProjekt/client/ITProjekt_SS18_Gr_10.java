@@ -236,6 +236,8 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		VerticalPanel buttonsPanel = cf.getButtonsPanel();
 		RootPanel.get("ButtonsPanel").add(buttonsPanel);
 		
+		HorizontalPanel newPropertyPanel = cf.getNewPropertyPanel();
+		RootPanel.get("PropertyPanel").add(newPropertyPanel);
 		
 		/*
 		 * Das Div "Contactlist" links unter der Navigation beinhaltet die Buttons für Kontaktlisten und das Suchfeld.
