@@ -12,9 +12,6 @@ import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
 public class ContactListCell extends AbstractCell<ContactList> {
 
 	
-	/* (non-Javadoc)
-	 * @see com.google.gwt.cell.client.AbstractCell#render(com.google.gwt.cell.client.Cell.Context, java.lang.Object, com.google.gwt.safehtml.shared.SafeHtmlBuilder)
-	 */
 	@Override
 	public void render(Context context, ContactList value, SafeHtmlBuilder sb) {
 		if(value == null) {

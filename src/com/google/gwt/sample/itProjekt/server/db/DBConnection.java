@@ -31,7 +31,7 @@ public class DBConnection {
 					//con = DriverManager.getConnection("jdbc:google:mysql://it-projekt-gruppe-10-203610:itprojektdb/itpdb2","root","root");
 					//Joshi probiers mal so... will den Fehlercode sehen
                    // con = DriverManager.getConnection("jdbc:google:mysql://it-projekt-gruppe-10-203610:itpdb2","root","root");
-                    con = DriverManager.getConnection("jdbc:google:rdbms://it-projekt-gruppe-10-203610:europe-west1:itprojektdb/itpdb2","root","root");
+                  con = DriverManager.getConnection("jdbc:google:mysql://it-projekt-gruppe-10-203610:itprojektdb?/itpdb2?user=root&password=root");
                     System.out.println("Verbindung zur google Datenbank hergestellt");
                 } else {
                 	
