@@ -1452,9 +1452,22 @@ public class ContactForm extends VerticalPanel {
 					return false;
 				}
 			case "Homepage": 
-				//TODO: 
+				if (text.matches("(http:\\/\\/|https:\\/\\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[a-z]{3}.?([a-z]+)?")) {
+					return true;
+				}
+				else {
+					Window.alert("Ungültige Homepage!");
+					return false;
+				}
 				
 			case "Arbeitsplatz":
+				if (text.matches("[\\w|\\s]*")) {
+					return true;
+				}
+				else {
+					Window.alert("Ungültige Zeichen im Arbeitgebernamen!");
+					return false;
+				}
 				
 			default: 
 				Window.alert("Switch case hat nicht ausgelöst!");
