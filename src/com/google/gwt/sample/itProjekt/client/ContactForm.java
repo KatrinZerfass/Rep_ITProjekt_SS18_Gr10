@@ -325,32 +325,32 @@ public class ContactForm extends VerticalPanel {
 			this.addClickHandler(new ClickHandler() {
 				
 				public void onClick (ClickEvent event) {
-				//	if(contactToDisplay != null) {
+					if(contactToDisplay != null) {
 						addValuePopUp(propertyId);	
 					/*
 					 * Eigentlich braucht man die Zeilen bei else jetzt gar nimmer?!
 					 */
-//					}else { 
-//						switch(propertyId) {
-//						case 1: ((ValueTable) contactTable.getWidget(row, 1)).setWidget(((ValueTable) contactTable.getWidget(row, 1))
-//									.getRowCount(),0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
-//								break;
-//						
-//						case 2: ((ValueTable) contactTable.getWidget(row, 1)).setWidget(((ValueTable) contactTable.getWidget(row, 1))
-//									.getRowCount(),0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
-//								break;
-//						case 3: ((ValueTable) contactTable.getWidget(row, 1)).setWidget(((ValueTable) contactTable.getWidget(row, 1))
-//									.getRowCount(),0, new ValueDisplay(new ValueTextBox("Email")));
-//								break;
-//						case 5: ((ValueTable) contactTable.getWidget(row, 1)).setWidget(((ValueTable) contactTable.getWidget(row, 1))
-//									.getRowCount(),0, new ValueDisplay(new ValueTextBox("Arbeitsplatz")));
-//								break;
-//						case 10: ((ValueTable) contactTable.getWidget(row, 1)).setWidget(((ValueTable) contactTable.getWidget(row, 1))
-//									.getRowCount(),0, new ValueDisplay(new ValueTextBox("Homepage")));
-//								break;
-//					
-//						}
-//					}
+					}else { 
+						switch(propertyId) {
+						case 1: ((ValueTable) contactTable.getWidget(row, 1)).setWidget(((ValueTable) contactTable.getWidget(row, 1))
+									.getRowCount(),0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
+								break;
+						
+						case 2: ((ValueTable) contactTable.getWidget(row, 1)).setWidget(((ValueTable) contactTable.getWidget(row, 1))
+									.getRowCount(),0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
+								break;
+						case 3: ((ValueTable) contactTable.getWidget(row, 1)).setWidget(((ValueTable) contactTable.getWidget(row, 1))
+									.getRowCount(),0, new ValueDisplay(new ValueTextBox("Email")));
+								break;
+						case 5: ((ValueTable) contactTable.getWidget(row, 1)).setWidget(((ValueTable) contactTable.getWidget(row, 1))
+									.getRowCount(),0, new ValueDisplay(new ValueTextBox("Arbeitsplatz")));
+								break;
+						case 10: ((ValueTable) contactTable.getWidget(row, 1)).setWidget(((ValueTable) contactTable.getWidget(row, 1))
+									.getRowCount(),0, new ValueDisplay(new ValueTextBox("Homepage")));
+								break;
+					
+						}
+					}
 				
 				}
 			});
@@ -519,6 +519,8 @@ public class ContactForm extends VerticalPanel {
 		public ValueTextBox(String identifier) {
 	
 			this.setIdentifier(identifier);
+			allValueTextBoxes.add(this);
+			this.setText("");
 			
 			this.addValueChangeHandler(new ValueChangeHandler<String>(){
 
@@ -558,7 +560,7 @@ public class ContactForm extends VerticalPanel {
 			this.value = v;
 			if(value!= null) {
 				this.setText(value.getContent());
-				allValueTextBoxes.add(this);
+			//	allValueTextBoxes.add(this);
 			}else {
 				/*
 				 * Wird als Übergabeparameter null übergeben, so wird der Text aus der TextBox gelöscht und die TextBox aus dem Vector entfernt.
@@ -736,6 +738,10 @@ public class ContactForm extends VerticalPanel {
 		public ValueDisplay getValueDisplay(int row) {
 			return (ValueDisplay) getWidget(row,  0);
 		}
+		
+		public int getPid() {
+			return this.propertyId;
+		}
 	}
 	
 	
@@ -826,14 +832,7 @@ public class ContactForm extends VerticalPanel {
 		 */
 		
 		
-		editorAdministration.getUser(new AsyncCallback<User>() {
-			public void onFailure(Throwable caught) {
-				System.out.println("Kein User ist angemeldet");
-			}
-			public void onSuccess(User result) {
-				currentUser = result;
-			}		
-		});
+		currentUser = ClientsideSettings.getUser();
 		
 		
 		this.add(contactTable);
@@ -1030,10 +1029,10 @@ public class ContactForm extends VerticalPanel {
 			/*
 			 * Ein neuer Button, der oben rechts erscheint, wenn man einen neuen Kontakt anlegen will.
 			 */
-			contactTable.getFlexCellFormatter().setRowSpan(2, 4, 2);
-			Button addContactButton = new Button("Kontakt-stamm anlegen");
-			addContactButton.setWidth("60px");
-			contactTable.setWidget(2, 4, addContactButton);
+//			contactTable.getFlexCellFormatter().setRowSpan(2, 4, 2);
+//			Button addContactButton = new Button("Kontakt-stamm anlegen");
+//			addContactButton.setWidth("60px");
+//			contactTable.setWidget(2, 4, addContactButton);
 			
 			/*
 			 * Bevor ein neuer Kontakt angelegt werden kann, muss der bestehende Kontakt aus dem Formular genommen werden.
@@ -1046,7 +1045,7 @@ public class ContactForm extends VerticalPanel {
 			 * Die Dialogbox, die dem Benutzer sagt, was er tun muss, um einen neuen Kontakt anzulegen, wird konfiguriert.
 			 */
 			VerticalPanel vp = new VerticalPanel();
-			Label label = new Label("Tragen Sie im Formular Vor- und Nachname des Kontakts, sowie dessen Geschlecht ein und klicken Sie anschließend auf Kontaktstamm anlegen.");
+			Label label = new Label("Tragen Sie im Formular die Daten des Kontakts ein und klicken Sie anschließend auf \"Änderungen speichern\".");
 			Button ok = new Button("Ok");
 			
 			vp.add(label);
@@ -1064,29 +1063,29 @@ public class ContactForm extends VerticalPanel {
 				}
 			});
 			
-			/*
-			 * Mit Klick auf den neu entstandenen Button wird der Kontaktstamm im System angelegt. Anschließend wird der Kontakt selektiert.
-			 */
-			addContactButton.addClickHandler(new ClickHandler() {
-				public void onClick(ClickEvent event){
-					editorAdministration.createContact(firstnameTextBox.getText(),
-							lastnameTextBox.getText(), sexListBox.getValue(0).toString(), new AsyncCallback<Contact>() {
-						
-						public void onFailure(Throwable caught) {
-							Window.alert("Fehler beim Kontakt anlegen!");
-							
-						}
-						
-						
-						public void onSuccess(Contact result) {
-							clctvm.addContactOfContactList(clctvm.getMyContactsContactList(), result);
-							Window.alert("Kontakt wurde erfolgreich angelegt.");
-							
-						}
-					});
-				}
-			});		
-	
+//			/*
+//			 * Mit Klick auf den neu entstandenen Button wird der Kontaktstamm im System angelegt. Anschließend wird der Kontakt selektiert.
+//			 */
+//			addContactButton.addClickHandler(new ClickHandler() {
+//				public void onClick(ClickEvent event){
+//					editorAdministration.createContact(firstnameTextBox.getText(),
+//							lastnameTextBox.getText(), sexListBox.getValue(0).toString(), new AsyncCallback<Contact>() {
+//						
+//						public void onFailure(Throwable caught) {
+//							Window.alert("Fehler beim Kontakt anlegen!");
+//							
+//						}
+//						
+//						
+//						public void onSuccess(Contact result) {
+//							clctvm.addContactOfContactList(clctvm.getMyContactsContactList(), result);
+//							Window.alert("Kontakt wurde erfolgreich angelegt.");
+//							
+//						}
+//					});
+//				}
+//			});		
+//	
 		}
 	}
 	
@@ -1151,12 +1150,57 @@ public class ContactForm extends VerticalPanel {
 	 * @author JanNoller
 	 */
 	private class SaveChangesClickHandler implements ClickHandler{
-
+		Contact newContact = null;
+		
 		@Override
 		public void onClick(ClickEvent event) {
 			
 			if (contactToDisplay == null) {
-				Window.alert("kein Kontakt ausgewählt");
+				if(firstnameTextBox.getText() == "" && lastnameTextBox.getText() == "") {
+					Window.alert("kein Kontakt ausgewählt");
+				}else {
+					if(!checkValue(firstnameTextBox) || !checkValue(lastnameTextBox) ) {
+						firstnameTextBox.setText("");
+						firstnameTextBox.setText("");
+						Window.alert("Ihr Kontakt konnte nicht angelegt werden, bitte versuchen Sie es erneut.");
+						
+					}else if (checkValue(firstnameTextBox) && checkValue(lastnameTextBox) ) {
+						
+						editorAdministration.createContact(firstnameTextBox.getText(), lastnameTextBox.getText(), sexListBox.getSelectedItemText(), currentUser, new AsyncCallback<Contact>(){
+							public void onFailure(Throwable t) {
+								Window.alert("Fehler im Kontakt anlegen");
+							}
+							public void onSuccess(Contact result) {
+								newContact= result;
+								Window.alert("Kontakt erfolgreich angelegt.");
+								clctvm.addContactOfContactList(clctvm.getMyContactsContactList(), result);
+							}
+						});
+						
+					
+						for (final ValueTextBox vtb : allValueTextBoxes) {
+							if ((!vtb.equals(firstnameTextBox) || !vtb.equals(lastnameTextBox)) && vtb.getText() != "") {
+								editorAdministration.createValue(newContact, 
+										((ValueTable) ((ValueDisplay) vtb.getParent()).getParent()).getPid(), vtb.getText(), new AsyncCallback<Value>() {
+									public void onFailure(Throwable t) {
+										Window.alert("Fehler beim Anlegen einer Ausprägung");
+										
+									}
+									public void onSuccess(Value result) {
+										vtb.setValue(result);
+										//geht final hier?
+									}
+								});
+							}
+							
+							
+						}
+						
+					}
+					
+					
+				}
+					
 			}
 			else {
 				for(ValueTextBox vtb : allValueTextBoxes) {
@@ -1177,10 +1221,11 @@ public class ContactForm extends VerticalPanel {
 					}
 					
 					/*
-					 * Wenn in der ValueTextBox keine Ausprägung gesetzt ist, muss es sich um die firstnameTextBox oder lastnameTextBox handeln.
-					 * Es handelt sich also um eine Veränderung am Kontaktstamm und demzufolge wird die Methode editContact aufgerufen.
+					 * Wenn es sich bei der ValueTextBox um die firstnameTextBox oder lastnameTextBox handelt, wurde eine Veränderung am Kontaktstamm 
+					 * vorgenommen und demzufolge wird die Methode editContact aufgerufen.
 					 */
-					else if(vtb.getIsChanged() && vtb.getTextBoxValue() == null){
+					else if(vtb.getIsChanged() && (vtb.getTextBoxValue().equals(firstnameTextBox) ||
+								vtb.getTextBoxValue().equals(lastnameTextBox))){
 						editorAdministration.editContact(contactToDisplay.getId(), firstnameTextBox.getText(), lastnameTextBox.getText(), 
 							contactToDisplay.getSex(), new AsyncCallback<Contact>() {
 	
@@ -1238,7 +1283,7 @@ public class ContactForm extends VerticalPanel {
 		        db.add(panel);
 		    	db.show();
 	
-		        editorAdministration.getAllContactListsOfActiveUser(new AsyncCallback<Vector<ContactList>>() {
+		        editorAdministration.getAllContactListsOfActiveUser(currentUser, new AsyncCallback<Vector<ContactList>>() {
 		        	
 		        	public void onFailure(Throwable t) {	
 		        	}
@@ -1400,9 +1445,22 @@ public class ContactForm extends VerticalPanel {
 					return false;
 				}
 			case "Homepage": 
-				//TODO: 
+				if (text.matches("(http:\\/\\/|https:\\/\\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[a-z]{3}.?([a-z]+)?")) {
+					return true;
+				}
+				else {
+					Window.alert("Ungültige Homepage!");
+					return false;
+				}
 				
 			case "Arbeitsplatz":
+				if (text.matches("[\\w|\\s]*")) {
+					return true;
+				}
+				else {
+					Window.alert("Ungültige Zeichen im Arbeitgebernamen!");
+					return false;
+				}
 				
 			default: 
 				Window.alert("Switch case hat nicht ausgelöst!");
@@ -1765,7 +1823,9 @@ public class ContactForm extends VerticalPanel {
 		 */
 		}else {
 			firstnameTextBox.getElement().setPropertyString("placeholder", "Vorname...");
+			firstnameTextBox.setText("");
 			lastnameTextBox.getElement().setPropertyString("placeholder", "Nachname...");
+			firstnameTextBox.setText("");
 			((ValueDisplay) contactTable.getWidget(3,3)).getValueTextBox().getElement().setPropertyString("placeholder", "Geburtsdatum...");			
 			streetTextBox.getElement().setPropertyString("placeholder", "Straße...");
 			houseNrTextBox.getElement().setPropertyString("placeholder", "Hausnummer...");

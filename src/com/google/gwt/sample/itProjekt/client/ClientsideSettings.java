@@ -8,6 +8,8 @@ import com.google.gwt.sample.itProjekt.shared.ReportGenerator;
 import com.google.gwt.sample.itProjekt.shared.ReportGeneratorAsync;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+import com.google.gwt.sample.itProjekt.shared.bo.User;
+
 
 
 public class ClientsideSettings {
@@ -16,6 +18,8 @@ public class ClientsideSettings {
 	
 	private static EditorAdministrationAsync editorAdministration = null;
 	private static ReportGeneratorAsync reportGenerator = null;
+	private static User user = null;
+	
 
 	
 	
@@ -44,4 +48,12 @@ public class ClientsideSettings {
 	    return reportGenerator;
 	  }
 
+	public static void setUser(User u) {
+		user = u;
+	}
+	
+	public static User getUser() {
+		return user;	
+		
+	}
 }

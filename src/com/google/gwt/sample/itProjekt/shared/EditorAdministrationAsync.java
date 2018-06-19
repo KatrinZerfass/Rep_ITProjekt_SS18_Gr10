@@ -2,6 +2,7 @@ package com.google.gwt.sample.itProjekt.shared;
 
 import java.util.Vector;
 
+import com.google.gwt.sample.itProjekt.shared.bo.BusinessObject;
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
 import com.google.gwt.sample.itProjekt.shared.bo.Permission;
@@ -14,9 +15,9 @@ public interface EditorAdministrationAsync {
 
 	void addContactToContactList(ContactList contactlist, Contact contact, AsyncCallback<ContactList> callback);
 
-	void createContact(String firstname, String lastname, String sex, AsyncCallback<Contact> callback);
+	void createContact(String firstname, String lastname, String sex, User user, AsyncCallback<Contact> callback);
 
-	void createContactList(String name, AsyncCallback<ContactList> callback);
+	void createContactList(String name, User user, AsyncCallback<ContactList> callback);
 
 	void createUser(String email, AsyncCallback<User> callback);
 
@@ -37,9 +38,9 @@ public interface EditorAdministrationAsync {
 
 	void getAllContactListsOf(String email, AsyncCallback<Vector<ContactList>> callback);
 
-	void getAllContactsOf(ContactList contactlist, AsyncCallback<Vector<Contact>> callback);
+	void getAllContactsOf(ContactList contactlist, User user, AsyncCallback<Vector<Contact>> callback);
 
-	void getAllContactsOfActiveUser(AsyncCallback<Vector<Contact>> callback);
+	void getAllContactsOfActiveUser(User user, AsyncCallback<Vector<Contact>> callback);
 
 	void getAllContactsWith(Value value, AsyncCallback<Vector<Contact>> callback);
 
@@ -49,23 +50,21 @@ public interface EditorAdministrationAsync {
 
 	void getContact(int id, AsyncCallback<Contact> callback);
 
-	void getUser(AsyncCallback<User> callback);
-
 	void getUserInformation(String email, AsyncCallback<User> callback);
 
 	void init(AsyncCallback<Void> callback);
 
 	void removeContactFromContactList(ContactList contactlist, Contact contact, AsyncCallback<ContactList> callback);
 
-	void setUser(User u, AsyncCallback<Void> callback);
-
 	void shareContact(Contact contact, String email, AsyncCallback<Permission> callback);
 
 	void shareContactList(ContactList contactlist, String email, AsyncCallback<Permission> callback);
 
-	void getAllContactListsOfActiveUser(AsyncCallback<Vector<ContactList>> callback);
+	void getAllContactListsOfActiveUser(User user, AsyncCallback<Vector<ContactList>> callback);
 
 	void getAllValuesOf(Contact contact, AsyncCallback<Vector<Value>> callback);
 
 	void getAllContactListsWith(Contact contact, AsyncCallback<Vector<ContactList>> callback);
+
+	void deletePermission(User user, BusinessObject bo, AsyncCallback<Void> callback);
 }

@@ -10,17 +10,13 @@ public interface EditorAdministration extends RemoteService{
 	
 	public void init() throws IllegalArgumentException;
 	
-	public User getUser() throws IllegalArgumentException;
-	
-	public void setUser(User u) throws IllegalArgumentException;
-	
 	public User getUserInformation (String email) throws IllegalArgumentException;
 	
 	public User createUser(String email) throws IllegalArgumentException;
 	
-	public Vector<Contact> getAllContactsOfActiveUser() throws IllegalArgumentException;
+	public Vector<Contact> getAllContactsOfActiveUser(User user) throws IllegalArgumentException;
 	
-	public Vector<ContactList> getAllContactListsOfActiveUser() throws IllegalArgumentException;
+	public Vector<ContactList> getAllContactListsOfActiveUser(User user) throws IllegalArgumentException;
 	
 	public Vector<ContactList> getAllContactListsOf(String email) throws IllegalArgumentException;
 	
@@ -28,7 +24,7 @@ public interface EditorAdministration extends RemoteService{
 	
 	public Vector<Contact> getAllSharedContactsWith(String email) throws IllegalArgumentException;
 	
-	public Vector<Contact> getAllContactsOf(ContactList contactlist) throws IllegalArgumentException;
+	public Vector<Contact> getAllContactsOf(ContactList contactlist, User user) throws IllegalArgumentException;
 	
 	public Vector<Contact> getAllContactsWith(Value value) throws IllegalArgumentException;
 	
@@ -36,7 +32,7 @@ public interface EditorAdministration extends RemoteService{
 	
 	public Contact getContact(int id) throws IllegalArgumentException;
 	
-	public Contact createContact(String firstname, String lastname, String sex) throws IllegalArgumentException;
+	public Contact createContact(String firstname, String lastname, String sex, User user) throws IllegalArgumentException;
 	
 	public Contact editContact(int id, String firstname, String lastname, String sex) throws IllegalArgumentException;
 	
@@ -44,7 +40,7 @@ public interface EditorAdministration extends RemoteService{
 	
 	public void deleteContact(int id) throws IllegalArgumentException;
 	
-	public ContactList createContactList(String name) throws IllegalArgumentException;
+	public ContactList createContactList(String name, User user) throws IllegalArgumentException;
 	
 	public ContactList editContactList(int id, String name) throws IllegalArgumentException;
 	
@@ -63,5 +59,7 @@ public interface EditorAdministration extends RemoteService{
 	Value editValue(Contact contact, int propertyId, Value value, String content, boolean isshared);
 	
 	public void deleteValue(Value value) throws IllegalArgumentException;
+	
+	public void deletePermission(User user, BusinessObject bo) throws IllegalArgumentException;
 	
 }

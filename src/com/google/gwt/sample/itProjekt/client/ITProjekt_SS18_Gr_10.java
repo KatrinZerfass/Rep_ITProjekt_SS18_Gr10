@@ -80,7 +80,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		
 		private String input;
 		
-		Label label;
+		Label dialogBoxLabel = new Label();
 		
         private TextBox tb = new TextBox();
 		
@@ -89,6 +89,9 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		 * ?? was macht er ??
 		 */
 		public InputDialogBox() {
+			
+			Window.alert("InputDialogBox instanziert");
+			
 			setText("Eingabe");
 			setAnimationEnabled(true);
 			setGlassEnabled(true);
@@ -101,18 +104,19 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	            	InputDialogBox.this.hide();
 	            }
 	        });
-			
+	        
 			VerticalPanel panel = new VerticalPanel();
 			
 	        panel.setHeight("100");
 	        panel.setWidth("300");
 	        panel.setSpacing(10);
 	        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
-	        panel.add(label);
+	        panel.add(dialogBoxLabel);
 	        panel.add(tb);
 	        panel.add(ok);
 
 	        setWidget(panel);
+	        
 		}
 		
 		/**
@@ -138,8 +142,8 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		 *
 		 * @param labelText der Text des Labels.
 		 */
-		public void setLabel (String labelText) {
-			this.label = new Label(labelText);
+		public void setdialogBoxLabel (String labelText) {
+			this.dialogBoxLabel.setText(labelText);
 		}
 		
 		/**
@@ -147,8 +151,8 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		 *
 		 * @return the label
 		 */
-		public Label getlabel () {
-			return this.label;
+		public Label getdialogBoxLabel () {
+			return this.dialogBoxLabel;
 		}
 	}
 
@@ -190,6 +194,10 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	    	
 		if(editorAdministration == null) {
 			editorAdministration = ClientsideSettings.getEditorAdministration();
+	    }
+		
+		if(user == null) {
+			user = ClientsideSettings.getUser();
 	    }
 	    
 	    
@@ -338,9 +346,10 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		
 		public void onClick(ClickEvent event) {
 			inputDB = new InputDialogBox();
+			inputDB.setdialogBoxLabel("Bitte geben Sie den Namen der neuen Kontaktliste an.");
 			inputDB.show();
-			inputDB.setLabel("Bitte geben Sie den Namen der neuen Kontaktliste an.");
-			editorAdministration.createContactList(inputDB.getInput(), new AsyncCallback<ContactList>() {
+			
+			editorAdministration.createContactList(inputDB.getInput(), user, new AsyncCallback<ContactList>() {
 				public void onFailure(Throwable arg0) {
 					Window.alert("Fehler beim Erstellen der Kontaktliste!");
 				}
@@ -374,6 +383,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 			});
 		}
 	}
+
 	
 	/**
 	 * Die innere Klasse ShareContactListClickHandler. 
@@ -387,7 +397,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		
 		public void onClick(ClickEvent event) {
 			inputDB = new InputDialogBox();
-			inputDB.setLabel("Bitte geben Sie die Email-Adresse des Nutzers ein mit dem Sie die Kontaktliste teilen möchten.");
+			inputDB.setdialogBoxLabel("Bitte geben Sie die Email-Adresse des Nutzers ein mit dem Sie die Kontaktliste teilen möchten.");
 			inputDB.show();
 			
 			editorAdministration.shareContactList(clctvm.getSelectedContactList(), inputDB.getInput(), new AsyncCallback<Permission>() {
