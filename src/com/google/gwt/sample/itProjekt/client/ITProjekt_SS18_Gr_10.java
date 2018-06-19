@@ -55,9 +55,12 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	private Anchor signInLink = new Anchor("Sign In");
 	private Anchor signOutLink = new Anchor("Sign Out");
 	
+	User user = null;
+	
 	ContactListContactTreeViewModel clctvm = new ContactListContactTreeViewModel();
 
 	EditorAdministrationAsync editorAdministration = null;
+	
 	
 	public class InputDialogBox extends DialogBox{
 		
@@ -116,7 +119,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		  
 		  
 		 /* 
-		  * Login Status des Benutzers wird geprüft. (Wird erst zu einem späteren Zeitpunkt implementiert) 
+		  * Login Status des Benutzers wird geprüft. 
 		  */
 	    
 		LoginServiceAsync loginService = GWT.create(LoginService.class);
@@ -155,37 +158,20 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	    editorAdministration.getUserInformation(loginInfo.getEmailAddress(), new AsyncCallback<User>() {
 			
 	    	public void onFailure(Throwable caught) {
-				editorAdministration.createUser(loginInfo.getEmailAddress(), new AsyncCallback<User>() {
-    				public void onFailure(Throwable caught) {
-					}
-    				public void onSuccess(User result) {
-    					editorAdministration.setUser(result, new AsyncCallback<Void>() {
-    						public void onFailure(Throwable caught) {
-    						}
-    						public void onSuccess(Void result) {
-    						}
-    			 
-				        });
-			        }
-    		    });
-				
+	    		Window.alert("AsyncCallback fehlgeschlagen");			
 			}
 
-			
 			public void onSuccess(User result) {
-				editorAdministration.setUser(result, new AsyncCallback<Void>() {
-					public void onFailure(Throwable caught) {
-					}
-					public void onSuccess(Void result) {
-					}
-			
-		        });
-			}    		
+				
+				Window.alert("User Objekt wurde übergeben");
+				user = result;
+				
+			}
+			   		
 	    });
 
 	    		   		    		    			
 	      
-		
 		signOutLink.setHref(loginInfo.getLogoutUrl());
 		RootPanel.get("Login").add(signOutLink);
 		
