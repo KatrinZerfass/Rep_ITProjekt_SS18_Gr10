@@ -270,7 +270,7 @@ Connection con = DBConnection.connection();
 		 * Die Werte aus der T_Contact speichern wir in einem Contact Objekt ab und geben den Vector zurück
 		 *
 		 */
-		public Vector <Contact> getAllContacts(ContactList contactlist){
+		public Vector <Contact> getAllContacts(ContactList contactlist, User u){
 			Connection con = DBConnection.connection();
 			
 			Vector<Contact> result = new Vector<Contact>();
@@ -284,7 +284,7 @@ Connection con = DBConnection.connection();
 				
 				while (rs.next()){
 										
-					ResultSet rs2 = stmt2.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID FROM T_Contact WHERE C_ID =" + rs.getInt("C_ID") + " ORDER BY C_ID");
+					ResultSet rs2 = stmt2.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID FROM T_Contact WHERE C_ID =" + rs.getInt("C_ID") + "AND U_ID=" +u.getId()+ " ORDER BY C_ID");
 					Contact c = new Contact();
 					c.setId(rs2.getInt("C_ID"));
 					c.setFirstname(rs2.getString("firstName"));
