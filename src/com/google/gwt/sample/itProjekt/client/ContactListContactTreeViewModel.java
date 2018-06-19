@@ -29,6 +29,7 @@ import java.util.Vector;
 public class ContactListContactTreeViewModel implements TreeViewModel{
 	
 	private EditorAdministrationAsync editorAdministration = null;
+	private User user = null;
 	
 	private ContactForm contactForm =null;
 
@@ -97,6 +98,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	 */
 	public ContactListContactTreeViewModel() {
 		editorAdministration= ClientsideSettings.getEditorAdministration();
+		user = ClientsideSettings.getUser();
 		boKeyProvider = new BusinessObjectKeyProvider();
 		selectionModel = new SingleSelectionModel<BusinessObject>(boKeyProvider);
 		selectionModel.addSelectionChangeHandler(new SelectionChangeEventHandler());
@@ -238,7 +240,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 			final ListDataProvider<Contact> contactsProvider = new ListDataProvider<Contact>();
 			contactDataProviders.put((ContactList) value, contactsProvider);
 	
-			editorAdministration.getAllContactsOf((ContactList) value,
+			editorAdministration.getAllContactsOf((ContactList) value, user,
 				new AsyncCallback<Vector<Contact>>() {
 					public void onFailure(Throwable t) {
 					}
