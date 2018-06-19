@@ -325,32 +325,32 @@ public class ContactForm extends VerticalPanel {
 			this.addClickHandler(new ClickHandler() {
 				
 				public void onClick (ClickEvent event) {
-				//	if(contactToDisplay != null) {
+					if(contactToDisplay != null) {
 						addValuePopUp(propertyId);	
 					/*
 					 * Eigentlich braucht man die Zeilen bei else jetzt gar nimmer?!
 					 */
-//					}else { 
-//						switch(propertyId) {
-//						case 1: ((ValueTable) contactTable.getWidget(row, 1)).setWidget(((ValueTable) contactTable.getWidget(row, 1))
-//									.getRowCount(),0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
-//								break;
-//						
-//						case 2: ((ValueTable) contactTable.getWidget(row, 1)).setWidget(((ValueTable) contactTable.getWidget(row, 1))
-//									.getRowCount(),0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
-//								break;
-//						case 3: ((ValueTable) contactTable.getWidget(row, 1)).setWidget(((ValueTable) contactTable.getWidget(row, 1))
-//									.getRowCount(),0, new ValueDisplay(new ValueTextBox("Email")));
-//								break;
-//						case 5: ((ValueTable) contactTable.getWidget(row, 1)).setWidget(((ValueTable) contactTable.getWidget(row, 1))
-//									.getRowCount(),0, new ValueDisplay(new ValueTextBox("Arbeitsplatz")));
-//								break;
-//						case 10: ((ValueTable) contactTable.getWidget(row, 1)).setWidget(((ValueTable) contactTable.getWidget(row, 1))
-//									.getRowCount(),0, new ValueDisplay(new ValueTextBox("Homepage")));
-//								break;
-//					
-//						}
-//					}
+					}else { 
+						switch(propertyId) {
+						case 1: ((ValueTable) contactTable.getWidget(row, 1)).setWidget(((ValueTable) contactTable.getWidget(row, 1))
+									.getRowCount(),0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
+								break;
+						
+						case 2: ((ValueTable) contactTable.getWidget(row, 1)).setWidget(((ValueTable) contactTable.getWidget(row, 1))
+									.getRowCount(),0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
+								break;
+						case 3: ((ValueTable) contactTable.getWidget(row, 1)).setWidget(((ValueTable) contactTable.getWidget(row, 1))
+									.getRowCount(),0, new ValueDisplay(new ValueTextBox("Email")));
+								break;
+						case 5: ((ValueTable) contactTable.getWidget(row, 1)).setWidget(((ValueTable) contactTable.getWidget(row, 1))
+									.getRowCount(),0, new ValueDisplay(new ValueTextBox("Arbeitsplatz")));
+								break;
+						case 10: ((ValueTable) contactTable.getWidget(row, 1)).setWidget(((ValueTable) contactTable.getWidget(row, 1))
+									.getRowCount(),0, new ValueDisplay(new ValueTextBox("Homepage")));
+								break;
+					
+						}
+					}
 				
 				}
 			});
@@ -1156,7 +1156,29 @@ public class ContactForm extends VerticalPanel {
 		public void onClick(ClickEvent event) {
 			
 			if (contactToDisplay == null) {
-				Window.alert("kein Kontakt ausgewählt");
+				if(firstnameTextBox.getText() == "" && lastnameTextBox.getText() == "") {
+					Window.alert("kein Kontakt ausgewählt");
+				}else {
+					if(!checkValue(firstnameTextBox) || !checkValue(lastnameTextBox) ) {
+						firstnameTextBox.setText("");
+						firstnameTextBox.setText("");
+						Window.alert("Ihr Kontakt konnte nicht angelegt werden, bitte versuchen Sie es erneut.");
+						
+					}else if (checkValue(firstnameTextBox) && checkValue(lastnameTextBox) ) {
+						editorAdministration.createContact(firstnameTextBox.getText(), lastnameTextBox.getText(), sexListBox.getSelectedItemText(), new AsyncCallback<Contact>(){
+							public void onFailure(Throwable t) {
+								Window.alert("Fehler im Kontakt anlegen");
+							}
+							public void onSuccess(Contact result) {
+								Window.alert("Kontakt erfolgreich angelegt.");
+								clctvm.addContactOfContactList(clctvm.getMyContactsContactList(), result);
+							}
+						});
+					}
+					
+					
+				}
+					
 			}
 			else {
 				for(ValueTextBox vtb : allValueTextBoxes) {
@@ -1765,7 +1787,9 @@ public class ContactForm extends VerticalPanel {
 		 */
 		}else {
 			firstnameTextBox.getElement().setPropertyString("placeholder", "Vorname...");
+			firstnameTextBox.setText("");
 			lastnameTextBox.getElement().setPropertyString("placeholder", "Nachname...");
+			firstnameTextBox.setText("");
 			((ValueDisplay) contactTable.getWidget(3,3)).getValueTextBox().getElement().setPropertyString("placeholder", "Geburtsdatum...");			
 			streetTextBox.getElement().setPropertyString("placeholder", "Straße...");
 			houseNrTextBox.getElement().setPropertyString("placeholder", "Hausnummer...");
