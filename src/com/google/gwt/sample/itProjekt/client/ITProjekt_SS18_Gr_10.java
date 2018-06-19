@@ -195,6 +195,10 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		if(editorAdministration == null) {
 			editorAdministration = ClientsideSettings.getEditorAdministration();
 	    }
+		
+		if(user == null) {
+			user = ClientsideSettings.getUser();
+	    }
 	    
 	    
 	    // Anlegen des User Objekts 
@@ -345,7 +349,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 			inputDB.setdialogBoxLabel("Bitte geben Sie den Namen der neuen Kontaktliste an.");
 			inputDB.show();
 			
-			editorAdministration.createContactList(inputDB.getInput(), new AsyncCallback<ContactList>() {
+			editorAdministration.createContactList(inputDB.getInput(), user, new AsyncCallback<ContactList>() {
 				public void onFailure(Throwable arg0) {
 					Window.alert("Fehler beim Erstellen der Kontaktliste!");
 				}

@@ -12,8 +12,6 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	/**
 	 * 
 	 */
-
-	private User user = null;
 	
 	private ContactListMapper clMapper;
 	private ContactMapper cMapper;
@@ -35,26 +33,16 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		
 	}
 	
-	@Override
-	public User getUser() throws IllegalArgumentException {
-
-		return this.user;
-	}
-
-	@Override
-	public void setUser(User u) throws IllegalArgumentException {
-		
-		this.user = u;
-	}
 
 	public User getUserInformation (String email) throws IllegalArgumentException{
-		this.user = uMapper.findByEMail(email);
-		
+	
 		//Wenn der User noch nicht in der Datenbank existiert, wird ein neuer User angelegt. 
-		if(user == null){
-			user = createUser(email);	
+		if(uMapper.findByEMail(email) == null){
+			return createUser(email);	
 		}
-		return user;
+		else{
+			return uMapper.findByEMail(email);
+		}
 	}
 	
 	@Override
@@ -67,17 +55,17 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		return uMapper.insert(newuser);
 	}
 	
-	public Vector<Contact> getAllContactsOfActiveUser() throws IllegalArgumentException {
+	public Vector<Contact> getAllContactsOfActiveUser(User user) throws IllegalArgumentException {
 		
-		Vector<Contact> result = cMapper.findAllByUID(this.user);
-		result.addAll(pmMapper.getAllContactsByUID(this.user));
+		Vector<Contact> result = cMapper.findAllByUID(user);
+		result.addAll(pmMapper.getAllContactsByUID(user));
 		
 		return result;
 	}
 	
-	public Vector<ContactList> getAllContactListsOfActiveUser() throws IllegalArgumentException {
+	public Vector<ContactList> getAllContactListsOfActiveUser(User user) throws IllegalArgumentException {
 		
-		return clMapper.findAllByUID(this.user);
+		return clMapper.findAllByUID(user);
 	}
 
 	@Override
@@ -101,9 +89,9 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	}
 
 	@Override
-	public Vector<Contact> getAllContactsOf(ContactList contactlist) throws IllegalArgumentException {
+	public Vector<Contact> getAllContactsOf(ContactList contactlist, User user) throws IllegalArgumentException {
 
-		return clMapper.getAllContacts(contactlist);
+		return clMapper.getAllContacts(contactlist, user);
 	}
 
 	@Override
@@ -122,14 +110,14 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 
 
 	@Override
-	public Contact createContact(String firstname, String lastname, String sex) throws IllegalArgumentException {
+	public Contact createContact(String firstname, String lastname, String sex, User user) throws IllegalArgumentException {
 
 		Contact newcontact = new Contact();
 		newcontact.setFirstname(firstname);
 		newcontact.setLastname(lastname);
 		newcontact.setSex(sex);
 		
-		return cMapper.insert(newcontact, this.user);
+		return cMapper.insert(newcontact, user);
 	}
 
 	@Override
@@ -165,12 +153,12 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	}
 
 	@Override
-	public ContactList createContactList(String name) throws IllegalArgumentException {
+	public ContactList createContactList(String name, User user) throws IllegalArgumentException {
 
 		ContactList newcontactlist = new ContactList();
 		newcontactlist.setName(name);
 		
-		return clMapper.insert(newcontactlist, this.user);
+		return clMapper.insert(newcontactlist, user);
 	}
 
 	@Override
@@ -256,5 +244,13 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	@Override
 	public Vector<ContactList> getAllContactListsWith(Contact contact) throws IllegalArgumentException {
 		return clMapper.findAllByCID(contact);
+	}
+
+
+	@Override
+	public void deletePermission(User user, BusinessObject bo) throws IllegalArgumentException {
+		Permission permission = new Permission();
+		permission.setParticipant(user);
+		
 	}
 }

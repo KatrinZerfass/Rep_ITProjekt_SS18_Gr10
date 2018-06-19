@@ -832,14 +832,7 @@ public class ContactForm extends VerticalPanel {
 		 */
 		
 		
-		editorAdministration.getUser(new AsyncCallback<User>() {
-			public void onFailure(Throwable caught) {
-				System.out.println("Kein User ist angemeldet");
-			}
-			public void onSuccess(User result) {
-				currentUser = result;
-			}		
-		});
+		currentUser = ClientsideSettings.getUser();
 		
 		
 		this.add(contactTable);
@@ -1173,7 +1166,7 @@ public class ContactForm extends VerticalPanel {
 						
 					}else if (checkValue(firstnameTextBox) && checkValue(lastnameTextBox) ) {
 						
-						editorAdministration.createContact(firstnameTextBox.getText(), lastnameTextBox.getText(), sexListBox.getSelectedItemText(), new AsyncCallback<Contact>(){
+						editorAdministration.createContact(firstnameTextBox.getText(), lastnameTextBox.getText(), sexListBox.getSelectedItemText(), currentUser, new AsyncCallback<Contact>(){
 							public void onFailure(Throwable t) {
 								Window.alert("Fehler im Kontakt anlegen");
 							}
@@ -1290,7 +1283,7 @@ public class ContactForm extends VerticalPanel {
 		        db.add(panel);
 		    	db.show();
 	
-		        editorAdministration.getAllContactListsOfActiveUser(new AsyncCallback<Vector<ContactList>>() {
+		        editorAdministration.getAllContactListsOfActiveUser(currentUser, new AsyncCallback<Vector<ContactList>>() {
 		        	
 		        	public void onFailure(Throwable t) {	
 		        	}
