@@ -4,14 +4,9 @@
 }
 
 
-#App{
-	width: 90%;
-	height: 100%;
-	margin: 0 auto;
-}
-
 div#Header{
-	width: 100%;
+	width: 90%;
+	margin: 0 auto;
 	min-height: 4em;
 
 }
@@ -24,9 +19,6 @@ div#SystemName {
    	font-weight: bold;
    	color: #00868B;
     background-color: white ;
-  
-	
-	
 }
 
 div#Login {
@@ -38,16 +30,23 @@ div#Login {
    
 }
 
+div#App{
+	width: 90%;
+	min-height: 33em;
+	height: 100%;
+	margin: 0 auto;
+	border: 3px solid #00868B;
+}
+
 div#Navigator {
 
     float: left;
-    clear: left;
-    min-width: 40%;
+    clear: left; 
+    width: 35em;
     height: 25em;
+    padding: 5px;
     background-color: #b3f5d4;
-    border-left: 1px solid #00868B;
-    border-top: 1px solid #00868B;
-    border-right: 1px solid #00868B;
+    border-right: 3px solid #00868B;
 
 }
 
@@ -55,24 +54,37 @@ div#Contactlist{
 
 	float: left;	
 	clear: left;
-	width: 40%;
-	height: 7.95em;
+	width: 35em;
+	height: 6.4em;
 	background-color: #b3f5d4;
-	border: 1px solid #00868B;
+	padding: 5px;
+	border-top: 1px solid #00868B;
+	border-right: 3px solid #00868B;
 	
 }
 
 
 div#ContactForm {
-	
-    width: 59.5%;
-   	max-height: 35em; 
-   	overflow: scroll;
+	margin: 0em 8em 0em 35em;
+	height: 100%;
+   	overflow: auto;
     background: white;
-    border-right: 1px solid #00868B;
-    border-top: 1px solid #00868B;
-  	border-bottom: 1px solid #00868B;
+	display: flex;
+  	align-items: center;
+  	justify-content: center;
     
+}
+
+div#ButtonsPanel{
+	margin-right: 5px;
+	float: right;
+	clear: right;
+	width: 8em;
+	height: 33em;
+	display: flex;
+  	align-items: right;
+  	justify-content: right;
+  	border-left: 3px solid #00868B;
 }
 
 div#Trailer {
@@ -80,9 +92,9 @@ div#Trailer {
 	width: 100%;
 	height: 2em;
     clear: both;
-    border-top-color: #00868B;
-    border-top-style: solid;
-    border-top-width: 1px;
+/*     border-top-color: #00868B; */
+/*     border-top-style: solid; */
+/*     border-top-width: 1px; */
     color: #00868B;
     text-align: center;
     padding-top: 1em;
@@ -112,9 +124,13 @@ div#Trailer {
 }
 
 
-.buttonPanel .gwt-Button{
-	margin: 2px 10px;
+.buttonsPanel{
+/* 	border: 1px solid black; */
+}
+.buttonsPanel .gwt-Button{
+	margin: 5px 5px 5px 0px;
 	border: 1px solid black;
+	width: 90px;
 }
 
 

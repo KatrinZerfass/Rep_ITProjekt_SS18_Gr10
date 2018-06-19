@@ -231,9 +231,10 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		 * Das Div "ContactForm" beinhaltet eine Instanz von ContactForm
 		 */
 		ContactForm cf = new ContactForm();
-		VerticalPanel contactPanel = new VerticalPanel();
-		contactPanel.add(cf);
-		RootPanel.get("ContactForm").add(contactPanel);	
+		RootPanel.get("ContactForm").add(cf);	
+		
+		VerticalPanel buttonsPanel = cf.getButtonsPanel();
+		RootPanel.get("ButtonsPanel").add(buttonsPanel);
 		
 		
 		/*
