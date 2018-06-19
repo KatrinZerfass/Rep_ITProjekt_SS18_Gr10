@@ -5,7 +5,7 @@ import java.util.Vector;
 
 // 
 /**
- *  Die Klasse Row, Datenstruktur für Report Objekt.
+ *  Die Klasse Row, Datenstruktur fï¿½r Report Objekt.
  *  @author Anna-MariaGmeiner
  *  @see Column 
  */
@@ -15,10 +15,10 @@ public class Row implements Serializable{
 	private static final long serialVersionUID=1L;
 	
 	/** The columns. */
-	private Vector<Column> columns;
+	private Vector<Column> columns=new Vector<Column>();
 	
 	/**
-	 * Hinzufügen einer Spalte.
+	 * Hinzufï¿½gen einer Spalte.
 	 *
 	 * @param c the c
 	 */
@@ -36,7 +36,7 @@ public class Row implements Serializable{
 	}
 	
 	/**
-	 * Getter für die Spalten.
+	 * Getter fï¿½r die Spalten.
 	 *
 	 * @return the columns
 	 */
@@ -45,7 +45,7 @@ public class Row implements Serializable{
 	}
 	
 	/**
-	 * Getter für die Anzahl der Spalten.
+	 * Getter fï¿½r die Anzahl der Spalten.
 	 *
 	 * @return Anzahl columns
 	 */
@@ -54,7 +54,7 @@ public class Row implements Serializable{
 	}
 	
 	/**
-	 * Getter für bestimmte Spalte mit index i.
+	 * Getter fï¿½r bestimmte Spalte mit index i.
 	 *
 	 * @param i the i
 	 * @return the column at
