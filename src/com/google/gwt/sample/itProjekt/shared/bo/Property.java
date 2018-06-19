@@ -1,7 +1,7 @@
 package com.google.gwt.sample.itProjekt.shared.bo;
 
 /**
- * Die Klasse Property, Datenstruktur für die Eigenschaften eines Kontakts.
+ * Die Klasse Property, Datenstruktur fï¿½r die Eigenschaften eines Kontakts.
  * @author JanNoller
  * 
  */
@@ -9,9 +9,11 @@ public class Property extends BusinessObject {
 
 	/** Die Art der Eigenschaft (Email-Adresse, Telefonnummer, etc.). */
 	private String type;
+	
+	private int contactID;
 
 	/**
-	 * Getter für die Eigenschaftsart.
+	 * Getter fï¿½r die Eigenschaftsart.
 	 *
 	 * @return die Eigenschaftsart
 	 */
@@ -20,11 +22,19 @@ public class Property extends BusinessObject {
 	}
 
 	/**
-	 * Setter für die Eigenschaftsart.
+	 * Setter fï¿½r die Eigenschaftsart.
 	 *
 	 * @param type die neue Eigenschaftsart
 	 */
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public int getContactID() {
+		return contactID;
+	}
+
+	public void setContactID(int contactID) {
+		this.contactID = contactID;
 	}
 }
