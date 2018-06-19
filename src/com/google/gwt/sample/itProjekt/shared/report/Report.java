@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.Vector;
 
 /**
- * Die abstrakte Report Klasse, welche als Basis für die einzelnen statischen Reports ist.
+ * Die abstrakte Report Klasse, welche als Basis fï¿½r die einzelnen statischen Reports ist.
  * @author Anna-MariaGmeiner
  */
 public abstract class Report implements Serializable {
@@ -27,7 +27,7 @@ public abstract class Report implements Serializable {
 	private Paragraph headerData;
 	
 	/** Die Variable "table" mit allen enthaltenen Reihen. */
-	private Vector<Row> table;
+	private Vector<Row> table = new Vector<Row>();
 	
 	/** The content. */
 	private Paragraph content;
@@ -42,7 +42,7 @@ public abstract class Report implements Serializable {
 	}
 	
 	/**
-	 * Getter für den Inhalt.
+	 * Getter fï¿½r den Inhalt.
 	 *
 	 * @return the content
 	 */
@@ -51,7 +51,7 @@ public abstract class Report implements Serializable {
 	}
 	
 	/**
-	 * Setter für die Kopfdaten header data.
+	 * Setter fï¿½r die Kopfdaten header data.
 	 *
 	 * @param headerData the new header data
 	 */
@@ -60,7 +60,7 @@ public abstract class Report implements Serializable {
 	}
 	
 	/**
-	 * Getter für die Kopfdaten header data.
+	 * Getter fï¿½r die Kopfdaten header data.
 	 *
 	 * @return the header data
 	 */
@@ -105,12 +105,12 @@ public abstract class Report implements Serializable {
 	}
 	
 	/**
-	 * Hinzufügen von Spalten zum Report.
+	 * Hinzufï¿½gen von Spalten zum Report.
 	 *
 	 * @param r the r
 	 */
 	public void addRow(Row r) {
-		this.table.addElement(r);
+		table.addElement(r);
 	}
 	
 	/**

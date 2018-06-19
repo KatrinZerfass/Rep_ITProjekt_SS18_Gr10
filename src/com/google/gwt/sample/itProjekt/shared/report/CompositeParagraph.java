@@ -14,11 +14,11 @@ public class CompositeParagraph extends Paragraph implements Serializable {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID= 1L;
 	
-	/** Der Vector subParagraph, der nur SimpleParagraphs enthält . */
-	private Vector<SimpleParagraph> subParagraph;
+	/** Der Vector subParagraph, der nur SimpleParagraphs enthï¿½lt . */
+	private Vector<SimpleParagraph> subParagraph =new Vector<SimpleParagraph>();
 	
 	/**
-	 * Hinzufügen eines SimpleParagraphs zu subParagraph.
+	 * Hinzufï¿½gen eines SimpleParagraphs zu subParagraph.
 	 *
 	 * @param s the s
 	 */
@@ -60,22 +60,22 @@ public class CompositeParagraph extends Paragraph implements Serializable {
 @Override
 	public String toString() {
 	/**
-	 * Anlegen einesStringbuffers für Umwandeln der SubParagrahen in Simple Paragraphen.
+	 * Anlegen einesStringbuffers fï¿½r Umwandeln der SubParagrahen in Simple Paragraphen.
 	 */
 		StringBuffer result = new StringBuffer();
 
-	    // Schleife über alle Unterabschnitte
+	    // Schleife ï¿½ber alle Unterabschnitte
 	    for (int i = 0; i < this.subParagraph.size(); i++) {
 	      SimpleParagraph p = this.subParagraph.elementAt(i);
 
 	      /*
-	       * den jew. Unterabschnitt in einen String wandeln und an den Buffer hängen.
+	       * den jew. Unterabschnitt in einen String wandeln und an den Buffer hï¿½ngen.
 	       */
 	      result.append(p.toString() + "\n");
 	    }
 
 	    /*
-	     * Gibt Result als String zurück.
+	     * Gibt Result als String zurï¿½ck.
 	     */
 	    return result.toString();
 	  }	
