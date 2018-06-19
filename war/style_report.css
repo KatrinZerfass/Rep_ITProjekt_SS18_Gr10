@@ -15,9 +15,6 @@ h1{
 	font-size: 2em;
 }
 
-div{
-	position:absolute;
-}
 
 #header{
 	width:40%;
@@ -39,4 +36,30 @@ div{
 	width:100%;
 	height:auto;
 	top: 60%;
+}
+
+
+.gwt-Label{
+width: 1150px;
+}
+
+body, table td, select, button {
+    font-family: 'Lato', sans-serif;
+    }
+    
+.gwt-TextBox{
+	margin: 0% 15%;
+}
+
+.gwt-Button{
+	padding: 2%;
+	margin: 0 5% 0 0;
+}
+
+input[type=text] {
+    background-color: white;
+    background-image: url('searchicon.png');
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    padding-left: 40px;
 }

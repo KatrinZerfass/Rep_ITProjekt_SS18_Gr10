@@ -16,6 +16,7 @@ import com.google.gwt.sample.itProjekt.shared.report.HTMLReportWriter;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -34,6 +35,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	//Relevante Attribute für LoginService
 	private ReportGeneratorAsync reportGenerator=null;
 	
+	static final int REFRESH_INTERVAL = 5000;
 	private LoginInfo loginInfo = null;
 	private VerticalPanel loginPanel = new VerticalPanel();
 	private Label loginLabel = new Label(
@@ -43,7 +45,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	
 	
 	VerticalPanel mainPanel = new VerticalPanel ();
-	VerticalPanel logout=new VerticalPanel();
+	HorizontalPanel searchPanel=new HorizontalPanel();
 	HorizontalPanel addPanel = new HorizontalPanel();
 	
 	
@@ -51,7 +53,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	/*
 	 * Die notwendigen Buttons für den Navigationsteil 
 	 */
-	Label userLabel = new Label("User: ");
+	Label userLabel = new Label();
 	TextBox userTextBox = new TextBox();
 	Button allContactsOfUserButton = new Button("Alle Kontakte eines Nutzers");
 	Button allSharedContactsOfUserButton = new Button("Alle geteilten Kontakte eines Nutzers");
@@ -59,13 +61,9 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	
 	public void onModuleLoad() {
 		
-		if(reportGenerator ==null) {
-			reportGenerator=ClientsideSettings.getReportGenerator();
-			
-		}
+		reportGenerator=ClientsideSettings.getReportGenerator();
+
 	
-		
-			
 		LoginServiceAsync loginService = GWT.create(LoginService.class);
 	    loginService.login(GWT.getHostPageBaseURL(), new AsyncCallback<LoginInfo>() {
 	    	public void onFailure(Throwable error) {
@@ -90,28 +88,53 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			allContactsOfUserButton.addClickHandler(new ClickHandler() {
 		         @Override
 		         public void onClick(ClickEvent event) {
-					 ClientsideSettings.getEditorAdministration().getUserInformation(userTextBox.getText(), new AsyncCallback<User>() {
-	        			 public void onFailure(Throwable caught) {
-	        				 
-	        			 }
-	    				 public void onSuccess(User result) {
-	     					 reportGenerator.generateAllContactsOfUserReport(result, new AsyncCallback<AllContactsOfUserReport>() {
-	    						 public void onFailure(Throwable caught) {
-	    							 
-	    						 }
-	    						 public void onSuccess(AllContactsOfUserReport result) {
-	    							 if (result != null) {
-	    								 HTMLReportWriter writer=new HTMLReportWriter();
-	    								 writer.process(result);
-	    								 RootPanel.get("reporttext").clear();
-	    								 RootPanel.get("reporttext").add(new HTML(writer.getReportText()));	
-	    							 }
-	    						}
-	    					 });
-	        			}
-		        	 });
+		        	 User u=new User();
+		        	 u.setEmail("test@test.de");
+		        	 u.setId(12345);
+		        	 reportGenerator.generateAllContactsOfUserReport(u, new AsyncCallback<AllContactsOfUserReport>() {
+						 public void onFailure(Throwable caught) {
+							 DialogBox dBox = new DialogBox();
+							 Label label = new Label(caught.getMessage());
+							 dBox.add(label);
+							 dBox.center();
+							 dBox.setAutoHideEnabled(true);
+							 dBox.show();
+							 mainPanel.add(dBox);
+
+						 }
+						 public void onSuccess(AllContactsOfUserReport result) {
+							 if (result != null) {
+								 HTMLReportWriter writer=new HTMLReportWriter();
+								 writer.process(result);
+								 RootPanel.get("reporttext").clear();
+								 RootPanel.get("reporttext").add(new HTML(writer.getReportText()));	
+							 }
+						}
+					 });
+		        	 
+//		        	 ClientsideSettings.getEditorAdministration().getUserInformation(userTextBox.getText(), new AsyncCallback<User>() {
+//	        			 public void onFailure(Throwable caught) {
+//	        				 
+//	        			 }
+//	    				 public void onSuccess(User result) {
+//	     					 reportGenerator.generateAllContactsOfUserReport(result, new AsyncCallback<AllContactsOfUserReport>() {
+//	    						 public void onFailure(Throwable caught) {
+//	    							 
+//	    						 }
+//	    						 public void onSuccess(AllContactsOfUserReport result) {
+//	    							 if (result != null) {
+//	    								 HTMLReportWriter writer=new HTMLReportWriter();
+//	    								 writer.process(result);
+//	    								 RootPanel.get("reporttext").clear();
+//	    								 RootPanel.get("reporttext").add(new HTML(writer.getReportText()));	
+//	    							 }
+//	    						}
+//	    					 });
+//	        			}
+//		        	 });
 		         }	 
 			});
+	 
 			
 			allSharedContactsOfUserButton.addClickHandler(new ClickHandler() {
 				@Override
@@ -123,6 +146,14 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	    				 public void onSuccess(User result) {
 		   					 reportGenerator.generateAllSharedContactsOfUserReport(result, new AsyncCallback<AllSharedContactsOfUserReport>() {
 		   						 public void onFailure(Throwable caught) {
+		   							DialogBox dBox = new DialogBox();
+
+									Label label = new Label(
+											"Es existieren leider keine geteilten Kontakte.");
+									dBox.add(label);
+									dBox.center();
+									dBox.setAutoHideEnabled(true);
+									dBox.show();
 		   						 }
 		   						 public void onSuccess(AllSharedContactsOfUserReport result) {
 		   						 }
@@ -139,27 +170,36 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 					v.setContent(userTextBox.getText());
 					 reportGenerator.generateAllContactsWithValueReport(v, new AsyncCallback<AllContactsWithValueReport>() {
 						 public void onFailure(Throwable caught) {
-							 
+							DialogBox dBox = new DialogBox();
+							Label label = new Label("Es existieren leider keine passenden Kontakte mit der angegebenen Ausprägung.");
+							dBox.add(label);
+							dBox.center();
+							dBox.setAutoHideEnabled(true);
+							dBox.show();
+							mainPanel.add(dBox);
 						 }
 						 public void onSuccess(AllContactsWithValueReport result) {
-							 HTMLReportWriter writer=new HTMLReportWriter();
-							 writer.process(result);
-							 RootPanel.get("reporttext").clear();
-							 RootPanel.get("reporttext").add(new HTML(writer.getReportText()));
+							 if (result!=null) {
+								 HTMLReportWriter writer=new HTMLReportWriter();
+							 	 writer.process(result);
+								 RootPanel.get("reporttext").clear();
+								 RootPanel.get("reporttext").add(new HTML(writer.getReportText()));
+							 }
 						 }
 					 });
 	   			}
 			});
 			
-			addPanel.add(userLabel);
-			addPanel.add(userTextBox);
 			addPanel.add(allContactsOfUserButton);
 			addPanel.add(allContactsWithValueButton);
 			addPanel.add(allSharedContactsOfUserButton);
 			
-			logout.add(signOutLink);
+			mainPanel.add(signOutLink);
+			searchPanel.add(userLabel);
+			searchPanel.add(userTextBox);
+
+			mainPanel.add(searchPanel);
 			mainPanel.add(addPanel);
-			RootPanel.get("report").add(logout);
 			RootPanel.get("report").add(mainPanel);
 			  
 		  }

@@ -61,10 +61,10 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
  */
 @Override	
 	public AllContactsOfUserReport generateAllContactsOfUserReport(User u) throws IllegalArgumentException {
-		if(this.getEditorAdministration()==null) {
-			return null;
-		} 
-		else {
+//		if(this.getEditorAdministration()==null) {
+//			return null;
+//		} 
+//		else {
 			AllContactsOfUserReport report = new AllContactsOfUserReport();
 			
 			report.setTitle("Alle Kontakte des Nutzers");
@@ -72,7 +72,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			
 			CompositeParagraph header=new CompositeParagraph();
 			
-			header.addSubParagraph(new SimpleParagraph("Nutzer: test@gmail.com"));
+			header.addSubParagraph(new SimpleParagraph("Nutzer: test@test.de"));
 			header.addSubParagraph(new SimpleParagraph("Nutzer-ID: 1234" ));
 			
 			report.setHeaderData(header);
@@ -91,13 +91,13 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			
 			Contact con=new Contact();
 			con.setFirstname("Josef");
-			con.setLastname("Hügel");
+			con.setLastname("Hï¿½gel");
 			con.setSex("male");
 			con.setId(1234);
 			Contact con1=new Contact();
 			con1.setFirstname("Heidi");
 			con1.setId(1234);
-			con1.setLastname("Almödi");
+			con1.setLastname("Almï¿½di");
 			con1.setSex("female");
 			Vector<Contact> allContacts= new Vector<Contact>();
 			allContacts.addElement(con1);
@@ -114,7 +114,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			}
 			return report;
 		}
-	}
+//	}
 	
 /* (non-Javadoc)
  * @see com.google.gwt.sample.itProjekt.shared.ReportGenerator#generateAllSharedContactsOfUserReport(com.google.gwt.sample.itProjekt.shared.bo.User)
@@ -171,10 +171,10 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	else {
 		AllContactsWithValueReport report = new AllContactsWithValueReport();
 		
-		report.setTitle("Alle Kontakte mit der Ausprägung");
+		report.setTitle("Alle Kontakte mit der Ausprï¿½gung");
 		report.setCreated(new Date());
 			
-		report.setHeaderData(new SimpleParagraph("Gesuchte Ausprägung: " + v.getContent()));
+		report.setHeaderData(new SimpleParagraph("Gesuchte Ausprï¿½gung: " + v.getContent()));
 		
 		Row headline = new Row();
 		

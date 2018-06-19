@@ -20,8 +20,8 @@
 
   <servlet-mapping>
 		<servlet-name>reportGeneratorServlet</servlet-name>
-		<url-pattern>/itprojekt_ss18_gr_10_report/reportgenerator</url-pattern>
 		<url-pattern>/itprojekt_ss18_gr_10/reportgenerator</url-pattern>
+		<url-pattern>/itprojekt_ss18_gr_10_report/reportgenerator</url-pattern>
   </servlet-mapping>
   
   <servlet>
@@ -31,8 +31,8 @@
 
   <servlet-mapping>
 		<servlet-name>editorAdministrationServlet</servlet-name>
-		<url-pattern>/itprojekt_ss18_gr_10/editorAdministration</url-pattern>
-		<url-pattern>/itprojekt_ss18_gr_10_report/editorAdministration</url-pattern>
+		<url-pattern>/itprojekt_ss18_gr_10/editoradministration</url-pattern>
+		<url-pattern>/itprojekt_ss18_gr_10_report/editoradministration</url-pattern>
   </servlet-mapping>
   
   

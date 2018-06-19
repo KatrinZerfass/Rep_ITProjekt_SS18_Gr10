@@ -2,12 +2,11 @@ package com.google.gwt.sample.itProjekt.client;
 
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-
 import com.google.gwt.sample.itProjekt.shared.EditorAdministration;
 import com.google.gwt.sample.itProjekt.shared.EditorAdministrationAsync;
 import com.google.gwt.sample.itProjekt.shared.ReportGenerator;
 import com.google.gwt.sample.itProjekt.shared.ReportGeneratorAsync;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
 
