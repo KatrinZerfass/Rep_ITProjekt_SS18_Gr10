@@ -40,20 +40,20 @@ public class HTMLReportWriter extends ReportWriter{
 		
 		StringBuffer result=new StringBuffer();
 		
-		result.append("H1>" + r.getTitle() + "</H1>");
-		result.append("<table><tr>");
+		result.append("<H1>" + r.getTitle() + "</H1>");
+		result.append("<table class=\"infotable\"><tr>");
 		result.append("<td valign=\"top\"><b>" + p2HTML(r.getHeaderData()) + "</b></td>");
-		result.append("<tr><tr><td></td><td>" + r.getCreated().toString()+ "</td></tr></table>");
+		result.append("<tr></tr><td>" + r.getCreated().toString()+ "</td></tr><tr></tr></table>");
 		
 		Vector<Row> rows=r.getRows();
 		result.append("<table>");
 		
-		for (int i=0; i<rows.size();i++) {
+		for (int i=0; i < rows.size();i++) {
 			Row row=rows.elementAt(i);
-			result.append("tr>");
+			result.append("<tr>");
 			for(int k=0; k<row.getNumColumns();k++) {
 				if (i==0) {
-					result.append("<td style=\"background:#222222;font-weight:bold\">" + row.getColumnAt(k)
+					result.append("<td class=\"columnhead\">" + row.getColumnAt(k)
 		              + "</td>");
 				}
 				else {

@@ -16,7 +16,6 @@ import com.google.gwt.sample.itProjekt.shared.report.CompositeParagraph;
 import com.google.gwt.sample.itProjekt.shared.report.Row;
 import com.google.gwt.sample.itProjekt.shared.report.SimpleParagraph;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.google.gwt.user.client.rpc.IsSerializable;
 
 
 // 
@@ -103,19 +102,19 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 //			allContacts.addAll(this.admin.getAllSharedContactsWith(u));
 			
 			Contact con=new Contact();
-			con.setFirstname("Josef");
-			con.setLastname("Hï¿½gel");
-			con.setSex("male");
+			con.setFirstname("Biene");
+			con.setLastname("Maya");
+			con.setSex("female");
 			con.setId(1234);
 			Contact con1=new Contact();
 			con1.setFirstname("Heidi");
 			con1.setId(1234);
-			con1.setLastname("Almï¿½di");
+			con1.setLastname("Almödi");
 			con1.setSex("female");
 			Vector<Contact> allContacts= new Vector<Contact>();
 			System.out.println("9");
-			allContacts.addElement(con1);
 			allContacts.addElement(con);
+			allContacts.addElement(con1);
 			System.out.println("10");
 			
 			for (Contact c: allContacts) {
@@ -187,10 +186,10 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	else {
 		AllContactsWithValueReport report = new AllContactsWithValueReport();
 		
-		report.setTitle("Alle Kontakte mit der Ausprï¿½gung");
+		report.setTitle("Alle Kontakte mit der Ausprägung");
 		report.setCreated(new Date());
 			
-		report.setHeaderData(new SimpleParagraph("Gesuchte Ausprï¿½gung: " + v.getContent()));
+		report.setHeaderData(new SimpleParagraph("Gesuchte Ausprägung: " + v.getContent()));
 		
 		Row headline = new Row();
 		
