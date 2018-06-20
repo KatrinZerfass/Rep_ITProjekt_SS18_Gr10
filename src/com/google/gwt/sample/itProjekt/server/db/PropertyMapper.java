@@ -57,6 +57,16 @@ public Property findByID(Property property){
 	}
 	return null;
 }
+
+/**
+ * FindAll.
+ *
+ * Gibt alle Property Objekte zurück welche mit P_ID, type und C_ID befüllt sind
+ * Hierfür holen wir die Attribute aus der T_Property Tabelle und speichern diese in einem Property Objekt ab und fügen diese dem Vector hinzu
+ * Am Ende geben wir diesen Vector zurück
+ *
+ */
+
 public Vector<Property> findAll(){
 Connection con = DBConnection.connection();
 Vector<Property> result = new Vector<Property>();
@@ -78,14 +88,24 @@ Vector<Property> result = new Vector<Property>();
 		}
 		return result;
 	}
-public Vector<Property> findAllByCID(Contact c){
+
+/**
+ * FindAllByCID.
+ * 
+ * Findet alle P_ID, type und C_ID wo die C_ID der ID des übergebenen Objekte entspricht
+ * Befüllt das Property Objekt mit den Attributen und fügt dieses Objekt dem Vector hinzu
+ * Gibt ein Vector voller Property Objekte zurück
+ *
+ */
+
+public Vector<Property> findAllByCID(Contact contact){
 Connection con = DBConnection.connection();
 Vector<Property> result = new Vector<Property>();
 		
 		try{
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT P_ID, type, C_ID FROM T_Property WHERE C_ID=" 
-			+ c.getId()
+			+ contact.getId()
 			+" ORDER BY P_ID");
 			
 			while (rs.next()){
@@ -101,6 +121,18 @@ Vector<Property> result = new Vector<Property>();
 		}
 		return result;
 	}
+
+/**
+ * FindAllDefault.
+ *
+ * Gibt alle Proeprty Objekte zurück die mit den Default Werten befüllt sind
+ * Hierfür sind alle Default Property Werte mit der C_ID von 20000000 verknüpft
+ * Alle Attribute die zu dieser C_ID von 20000000 gehören holen wir aus der T_Property Tabelle (P_ID, type und C_ID)
+ * und speichern diese in einem Property Objekt ab und fügen diese dem Vector hinzu
+ * Am Ende geben wir diesen Vector zurück
+ *
+ */
+
 public Vector<Property> findAllDefault(){
 Connection con = DBConnection.connection();
 Vector<Property> result = new Vector<Property>();
@@ -122,7 +154,18 @@ Vector<Property> result = new Vector<Property>();
 		}
 		return result;
 	}
-public Property insert(Property p, Contact c){
+
+/**
+ * Insert.
+ *
+ * Sucht nach der höchsten P_ID um diese um eins zu erhöhen und als neue P_ID zu nutzen
+ * Befüllt T_Property mit P_ID, type und C_ID
+ * Eine Property wird zum Schluss zurückgegeben
+ *
+ */
+
+
+public Property insert(Property property, Contact contact){
 	Connection con = DBConnection.connection();
 	
 	try{
@@ -130,49 +173,66 @@ public Property insert(Property p, Contact c){
 		ResultSet rs = stmt.executeQuery("SELECT MAX(P_ID) AS maxpid FROM T_Property");
 		if (rs.next()){
 			
-			p.setId(rs.getInt("maxpid")+1);
+			property.setId(rs.getInt("maxpid")+1);
 			Statement stmt2 = con.createStatement();
 			stmt2.executeUpdate("INSERT INTO T_Property (P_ID, type, C_ID)"
 			+ " VALUES ("
-			+ p.getId() 
+			+ property.getId() 
 			+ ", '" 
-			+ p.getType() 
+			+ property.getType() 
 			+ "', " 
-			+ c.getId() 
+			+ contact.getId() 
 			+ ")") ;
 					
-			return p;	
+			return property;	
 			
 		}
 	}
 	catch (SQLException e2){
 		e2.printStackTrace();
-		return p;
+		return property;
 	}
-	return p;}
-public Property update(Property p){
+	return property;}
+
+/**
+ * Update.
+ *
+ * Update von Veränderungen falls sich type ändert
+ * Gibt ein Property zurück
+ * 
+ */
+
+public Property update(Property property){
 	Connection con = DBConnection.connection();
 	
 	try{
 		Statement stmt = con.createStatement();
 		stmt.executeUpdate("UPDATE T_Property SET type ='"
-		+ p.getType()
+		+ property.getType()
 		+ "', "
-		+ "WHERE P_ID =" + p.getId());
+		+ "WHERE P_ID =" + property.getId());
 	}
 
 catch (SQLException e2){
 	e2.printStackTrace();
-	return p;
+	return property;
 }
-return p;}
-public void delete (Property p){
+return property;}
+
+/**
+ * Delete.
+ *
+ * Entfernt alles aus T_Property wo die P_ID der ID des übergebenen Objekts entspricht
+ * 
+ */
+
+public void delete (Property property){
 	Connection con = DBConnection.connection();
 				
 				try{
 					
 					Statement stmt = con.createStatement();
-					stmt.executeUpdate("DELETE FROM T_Property WHERE P_ID =" + p.getId());
+					stmt.executeUpdate("DELETE FROM T_Property WHERE P_ID =" + property.getId());
 				}
 			
 			catch (SQLException e2){
