@@ -38,7 +38,8 @@
   
   
   <welcome-file-list>
- 	<welcome-file>ITProjekt_SS18_Gr_10.html</welcome-file>
+    <welcome-file>ITProjekt_SS18_Gr_10_Startseite.html</welcome-file>
+    <welcome-file>ITProjekt_SS18_Gr_10.html</welcome-file>
     <welcome-file>ITProjekt_SS18_Gr_10_Report.html</welcome-file>
    </welcome-file-list>
 

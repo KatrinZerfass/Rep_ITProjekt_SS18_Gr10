@@ -178,7 +178,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		  */
 	    
 		LoginServiceAsync loginService = GWT.create(LoginService.class);
-	    loginService.login(GWT.getHostPageBaseURL(), new AsyncCallback<LoginInfo>() {
+	    loginService.login("https://it-projekt-gruppe-10-203610.appspot.com/ITProjekt_SS18_Gr_10.html", new AsyncCallback<LoginInfo>() {
 	    public void onFailure(Throwable error) {
 	    }
 
