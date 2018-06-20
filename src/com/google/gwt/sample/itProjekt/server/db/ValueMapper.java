@@ -43,7 +43,7 @@ public class ValueMapper {
 				
 				try{
 					Statement stmt = con.createStatement();
-					ResultSet rs = stmt.executeQuery("SELECT DISTINCT V_ID, value, P_ID, isShared FROM T_Value WHERE value='" + value.getContent()+ "' ORDER BY V_ID");
+					ResultSet rs = stmt.executeQuery("SELECT DISTINCT V_ID, value, P_ID, isShared FROM T_Value WHERE value LIKE'%" + value.getContent()+ "%' ORDER BY V_ID");
 					
 					while (rs.next()){
 						Value v = new Value();
@@ -75,7 +75,7 @@ public class ValueMapper {
 				
 				try{
 					Statement stmt = con.createStatement();
-					ResultSet rs = stmt.executeQuery("SELECT DISTINCT C_ID FROM T_Value WHERE value='" + value.getContent()+ "' ORDER BY C_ID");
+					ResultSet rs = stmt.executeQuery("SELECT DISTINCT C_ID FROM T_Value WHERE value LIKE '%" + value.getContent()+ "%' ORDER BY C_ID");
 					
 					while (rs.next()){
 						Contact c = new Contact();
