@@ -2,6 +2,7 @@ package com.google.gwt.sample.itProjekt.shared.report;
 
 import java.io.Serializable;
 
+
 // 
 /**
  * Die Klasse SimpleParagraph, welche reinen Text enthält.
@@ -22,6 +23,9 @@ public class SimpleParagraph extends Paragraph implements Serializable {
 	 */
 	public SimpleParagraph(String text) {
 		this.text=text;
+	}
+	public SimpleParagraph() {
+		
 	}
 	
 	/**

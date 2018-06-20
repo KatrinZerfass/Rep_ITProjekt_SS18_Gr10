@@ -16,6 +16,7 @@ import com.google.gwt.sample.itProjekt.shared.report.CompositeParagraph;
 import com.google.gwt.sample.itProjekt.shared.report.Row;
 import com.google.gwt.sample.itProjekt.shared.report.SimpleParagraph;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
 
 // 
@@ -69,22 +70,34 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			
 			report.setTitle("Alle Kontakte des Nutzers");
 			report.setCreated(new Date());
-			
+			System.out.println("1");
 			CompositeParagraph header=new CompositeParagraph();
+			System.out.println("2");
+			System.out.println(u.getEmail());
+			SimpleParagraph sp = new SimpleParagraph(u.getEmail());
+			System.out.println(sp.getText());
+			System.out.println("3");
 			
-			header.addSubParagraph(new SimpleParagraph("Nutzer: test@test.de"));
-			header.addSubParagraph(new SimpleParagraph("Nutzer-ID: 1234" ));
+			header.addSubParagraph(sp);
+			System.out.println(header.getParagraphAt(0).getText());
+			System.out.println("4");
+			
 			
 			report.setHeaderData(header);
+			System.out.println(report.getHeaderData().toString());
+			System.out.println("5");
 			
 			Row headline = new Row();
+			System.out.println("6");
 			
 			headline.addColumn(new Column ("Kontakt-ID"));
 			headline.addColumn(new Column("Vorname"));
 			headline.addColumn(new Column("Nachname"));
 			headline.addColumn(new Column("Geschlecht"));
+			System.out.println("7");
 			
 			report.addRow(headline);
+			System.out.println("8");
 
 //			Vector<Contact> allContacts=this.admin.getAllOwnedContactsOf(u);
 //			allContacts.addAll(this.admin.getAllSharedContactsWith(u));
@@ -100,9 +113,10 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			con1.setLastname("Alm�di");
 			con1.setSex("female");
 			Vector<Contact> allContacts= new Vector<Contact>();
+			System.out.println("9");
 			allContacts.addElement(con1);
 			allContacts.addElement(con);
-			
+			System.out.println("10");
 			
 			for (Contact c: allContacts) {
 				Row contactRow=new Row();
@@ -111,7 +125,9 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
 				contactRow.addColumn(new Column(String.valueOf(c.getSex())));
 				report.addRow(contactRow);
+				System.out.println("11");
 			}
+			System.out.println("12");
 			return report;
 		}
 //	}
