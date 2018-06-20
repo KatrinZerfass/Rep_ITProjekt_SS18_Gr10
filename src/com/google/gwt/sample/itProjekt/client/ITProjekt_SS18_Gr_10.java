@@ -439,12 +439,26 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		
 		Vector<Contact> nameResults = new Vector<Contact>();
 		Vector<Contact> valueResults = new Vector<Contact>();
+		Vector<Contact> allContactsOfUser = new Vector<Contact>();
 		
 		ContactList nameResultsCL = new ContactList();
 		ContactList valueResultsCL = new ContactList();
 		
+		
+		
 		@Override
 		public void onClick(ClickEvent arg0) {
+			
+			editorAdministration.getAllContactsOfActiveUser(user, new AsyncCallback<Vector<Contact>>() {
+				@Override
+				public void onFailure(Throwable arg0) {
+					Window.alert("Fehler beim Füllen des allContactsOfUser Vectors!");
+				}
+				@Override
+				public void onSuccess(Vector<Contact> arg0) {
+					allContactsOfUser = arg0;
+				}
+			});
 			
 			nameResultsCL.setName("Suchergebnis im Namen");
 			valueResultsCL.setName("Suchergebnis in den Eigenschaften");
@@ -478,15 +492,19 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 			clctvm.addContactList(valueResultsCL);
 			if (nameResults.size() > 0) {
 				for (Contact c : nameResults) {
-					clctvm.addContactOfContactList(nameResultsCL, c);
+					if (allContactsOfUser.contains(c)) {
+						clctvm.addContactOfContactList(nameResultsCL, c);
+					}
 				}
 			}
 			if (valueResults.size() > 0) {
 				for (Contact c : valueResults) {
-					clctvm.addContactOfContactList(valueResultsCL, c);
+					if (allContactsOfUser.contains(c)) {
+						clctvm.addContactOfContactList(valueResultsCL, c);
+					}
 				}
 			}
-			else {
+			if (nameResults.size() == 0 && valueResults.size() == 0) {
 				Window.alert("Kein Suchergebnis!");
 			}
 		}

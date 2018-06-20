@@ -280,4 +280,11 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		
 		return pMapper.findByID(property);
 	}
+
+
+	@Override
+	public Vector<Value> getAllSharedValuesOfContact(Contact contact) throws IllegalArgumentException {
+		// TODO warten auf getAllShared...
+		return vMapper.getAllValueByCID(contact);
+	}
 }

@@ -2,6 +2,8 @@ package com.google.gwt.sample.itProjekt.client;
 
 import java.util.Vector;
 
+import org.omg.CORBA.Current;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -1064,17 +1066,31 @@ public class ContactForm extends VerticalPanel {
 				Window.alert("kein Kontakt ausgewählt");
 			}
 			else {	
-				//TODO: unterscheiden zwischen Eigentümer und Teilhaber!
-				clearContactForm();
-				editorAdministration.deleteContact(contactToDisplay.getId(), new AsyncCallback<Void>() {
-					public void onFailure(Throwable arg0) {
-						Window.alert("Fehler beim löschen des Kontakts!");
-					}
-					public void onSuccess(Void arg0) {
-						Window.alert("Kontakt erfolgreich gelöscht.");
-					}
-				});
-			clctvm.removeContactOfContactList(clctvm.getSelectedContactList(), contactToDisplay);
+				if (clctvm.getSelectedContact().getOwner() == currentUser.getId()) {
+					clearContactForm();
+					editorAdministration.deleteContact(contactToDisplay.getId(), new AsyncCallback<Void>() {
+						public void onFailure(Throwable arg0) {
+							Window.alert("Fehler beim Löschen des Kontakts!");
+						}
+						public void onSuccess(Void arg0) {
+							Window.alert("Kontakt erfolgreich gelöscht.");
+						}
+					});
+					clctvm.removeContactOfContactList(clctvm.getSelectedContactList(), contactToDisplay);
+				}
+				else {
+					clearContactForm();
+					editorAdministration.deletePermission(currentUser, contactToDisplay, new AsyncCallback<Void>() {
+						@Override
+						public void onFailure(Throwable arg0) {
+							Window.alert("Fehler beim Löschen der Permission!");	
+						}
+						@Override
+						public void onSuccess(Void arg0) {
+							Window.alert("Kontakt erfolgreich entfernt.");
+						}
+					});
+				}
 			}
 		}
 	}
