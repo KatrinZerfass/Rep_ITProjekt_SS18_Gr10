@@ -1066,9 +1066,9 @@ public class ContactForm extends VerticalPanel {
 						}
 						public void onSuccess(Void arg0) {
 							Window.alert("Kontakt erfolgreich gelöscht.");
+							clctvm.removeContactOfContactList(clctvm.getSelectedContactList(), contactToDisplay);
 						}
 					});
-					clctvm.removeContactOfContactList(clctvm.getSelectedContactList(), contactToDisplay);
 				}
 				else {
 					clearContactForm();
@@ -1277,11 +1277,22 @@ public class ContactForm extends VerticalPanel {
 	/**
 	 * Die innere Klasse RemoveContactFromContactListClickHandler.
 	 * 
-	 * @author ??
+	 * @author JanNoller
 	 */
 	private class RemoveContactFromContactListClickHandler implements ClickHandler{
 		public void onClick(ClickEvent event) {
-			
+			clearContactForm();
+			editorAdministration.removeContactFromContactList(clctvm.getSelectedContactList(), contactToDisplay, new AsyncCallback<ContactList>() {
+				@Override
+				public void onFailure(Throwable arg0) {	
+					Window.alert("Fehler beim entfernen des Kontakts aus der Kontaktliste!");
+				}
+				@Override
+				public void onSuccess(ContactList arg0) {
+					Window.alert("Kontakt erfolgreich aus Kontaktliste entfernt.");
+					clctvm.removeContactOfContactList(arg0, contactToDisplay);
+				}
+			});
 		}
 	}
 	
