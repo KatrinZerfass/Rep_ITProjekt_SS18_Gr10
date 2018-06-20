@@ -9,6 +9,7 @@ import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
 import com.google.gwt.sample.itProjekt.shared.bo.Permission;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
+import com.google.gwt.sample.itProjekt.shared.bo.Value;
 
 import java.util.Vector;
 
@@ -60,7 +61,16 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	
 	User user = null;
 	EditorAdministrationAsync editorAdministration = null;
-
+	
+	
+	// aus der loadApplication kopiert
+	VerticalPanel searchPanel = new VerticalPanel();
+	Label searchLabel = new Label();
+	HorizontalPanel searchBox = new HorizontalPanel();
+	TextBox searchTextBox = new TextBox();
+	PushButton searchButton = new PushButton();
+	Image searchButtonImg = new Image("searchButton.png");
+	
 	/** Das referenzierte ContactListContactTreeViewModel-Objekt */
 
 	ContactListContactTreeViewModel clctvm = new ContactListContactTreeViewModel();
@@ -196,28 +206,27 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 			editorAdministration = ClientsideSettings.getEditorAdministration();
 	    }
 		
-		if(user == null) {
-			user = ClientsideSettings.getUser();
-	    }
 	    
 	    
-	    // Anlegen des User Objekts 
+	    // Anlegen des User Objekts & Abspeichern in einer lokalen Variabel
 	    
-	    editorAdministration.getUserInformation(loginInfo.getEmailAddress(), new AsyncCallback<User>() {
-			
-	    	public void onFailure(Throwable caught) {
-	    		Window.alert("AsyncCallback fehlgeschlagen");			
-			}
-
-			public void onSuccess(User result) {
-				
-				Window.alert("User Objekt wurde übergeben");
-				user = result;
-				
-			}
-			   		
-	    });
-	    				
+//	    editorAdministration.getUserInformation(loginInfo.getEmailAddress(), new AsyncCallback<User>() {
+//			
+//	    	public void onFailure(Throwable caught) {
+//	    		Window.alert("AsyncCallback fehlgeschlagen");			
+//			}
+//
+//			public void onSuccess(User result) {
+//				ClientsideSettings.setUser(result);
+//				if (user ==null) {
+//					user = ClientsideSettings.getUser();
+//				}
+//				Window.alert("User Objekt wurde übergeben");
+//				
+//			}
+//			   		
+//	    });
+//	    				
 		
 		/*
 		 * Im Folgenden wird das GUI aufgebaut
@@ -231,7 +240,8 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		 * Das Div "ContactForm" beinhaltet eine Instanz von ContactForm
 		 */
 		ContactForm cf = new ContactForm();
-		RootPanel.get("ContactForm").add(cf);	
+		RootPanel.get("ContactForm").add(cf);
+	
 		
 		VerticalPanel buttonsPanel = cf.getButtonsPanel();
 		RootPanel.get("ButtonsPanel").add(buttonsPanel);
@@ -263,19 +273,22 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		
 		clButtonsAndSearchPanel.add(contactListButtonsPanel);
 	
-		
-		//Das Suchfeld
 		VerticalPanel searchPanel = new VerticalPanel();
-		
 		Label searchLabel = new Label();
-		searchLabel.setText("Durchsuchen Sie Ihre Kontaktlisten nach bestimmten Ausprägungen: ");
-		searchLabel.setWidth("240px");
-		searchPanel.add(searchLabel);
-		
 		HorizontalPanel searchBox = new HorizontalPanel();
 		TextBox searchTextBox = new TextBox();
 		PushButton searchButton = new PushButton();
 		Image searchButtonImg = new Image("searchButton.png");
+		
+		//Das Suchfeld
+		
+		SearchButtonClickHandler SearchButtonHandler = new SearchButtonClickHandler();
+		searchButton.addClickHandler(SearchButtonHandler);
+		searchLabel.setText("Durchsuchen Sie Ihre Kontaktlisten nach bestimmten Ausprägungen: ");
+		searchLabel.setWidth("240px");
+		searchPanel.add(searchLabel);
+		
+		
 		searchButtonImg.setPixelSize(17, 17);
 		searchButton.getUpFace().setImage(searchButtonImg);
 		
@@ -302,7 +315,9 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		mccl.setName("Meine Kontakte");
 //		mccl.setOwner();
 //		mccl.setId();
+		
 		clctvm.setMyContactsContactList(mccl);
+		Window.alert("Hey Dude!");
 
 		/*
 		 * Das div "Navigator" beinhaltet eine Instanz eines CellBrowswers
@@ -413,6 +428,69 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 					Window.alert("Kontaktliste erfolgreich geteilt.");
 				}
 			});
+		}
+	}
+	
+	/**
+	 * Die innere Klasse SearchButtonClickHandler. 
+	 * Eine Instanz von ihr wird beim Klick auf den searchButton aufgerufen.
+	 * 
+	 * @author JanNoller
+	 */
+	private class SearchButtonClickHandler implements ClickHandler {
+		
+		Vector<Contact> nameResults = new Vector<Contact>();
+		Vector<Contact> valueResults = new Vector<Contact>();
+		
+		ContactList nameResultsCL = new ContactList();
+		ContactList valueResultsCL = new ContactList();
+		
+		@Override
+		public void onClick(ClickEvent arg0) {
+			
+			nameResultsCL.setName("Suchergebnis im Namen");
+			valueResultsCL.setName("Suchergebnis in den Eigenschaften");
+			
+			clctvm.removeContactList(nameResultsCL);
+			clctvm.removeContactList(valueResultsCL);
+			
+			editorAdministration.getAllContactsWith(searchTextBox.getText(), new AsyncCallback<Vector<Contact>>() {
+				@Override
+				public void onFailure(Throwable arg0) {
+					Window.alert("Fehler beim Suchen der Kontakte nach Namen im cMapper!");
+				}
+				@Override
+				public void onSuccess(Vector<Contact> arg0) {
+					nameResults = arg0;
+				}
+			});
+			
+			editorAdministration.getAllContactsBy(searchTextBox.getText(), new AsyncCallback<Vector<Contact>>() {
+				@Override
+				public void onFailure(Throwable arg0) {
+					Window.alert("Fehler beim Suchen der Kontakte nach Value im vMapper!");	
+				}
+				@Override
+				public void onSuccess(Vector<Contact> arg0) {
+					valueResults = arg0;
+				}
+			});
+			
+			clctvm.addContactList(nameResultsCL);
+			clctvm.addContactList(valueResultsCL);
+			if (nameResults.size() > 0) {
+				for (Contact c : nameResults) {
+					clctvm.addContactOfContactList(nameResultsCL, c);
+				}
+			}
+			if (valueResults.size() > 0) {
+				for (Contact c : valueResults) {
+					clctvm.addContactOfContactList(valueResultsCL, c);
+				}
+			}
+			else {
+				Window.alert("Kein Suchergebnis!");
+			}
 		}
 	}
 }	 
