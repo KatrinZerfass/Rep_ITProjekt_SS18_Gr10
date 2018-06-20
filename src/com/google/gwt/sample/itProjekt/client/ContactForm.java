@@ -2,6 +2,8 @@ package com.google.gwt.sample.itProjekt.client;
 
 import java.util.Vector;
 
+import org.omg.CORBA.Current;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -11,6 +13,7 @@ import com.google.gwt.sample.itProjekt.shared.EditorAdministrationAsync;
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
 import com.google.gwt.sample.itProjekt.shared.bo.Permission;
+import com.google.gwt.sample.itProjekt.shared.bo.Property;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
 import com.google.gwt.sample.itProjekt.shared.bo.Value;
 import com.google.gwt.user.client.Window;
@@ -47,7 +50,13 @@ public class ContactForm extends VerticalPanel {
 	Contact contactToDisplay = null;
 	
 	/**Alle Ausprägungen des anzuzeigenden Kontakts*/
-	Vector<Value> allValuesOfContact = null;
+	Vector<Value> allValuesOfContact = new Vector<Value>();
+	
+	/**Alle vordefinierten Eigenschaften des Systems*/
+	Vector<Property> allPredefinedProperties = new Vector<Property>();
+	
+	/**Alle von einem Nutzer neu hinzugefügten Eigenschaften*/
+	Vector<Property> allNewPropertiesOfContact = new Vector<Property>();
 	
 	/**Ein Vector, in dem alle im Kontaktformular instantiierten ValueTextBoxes gespeichert werden. */
 	Vector<ValueTextBox> allValueTextBoxes = new Vector<ValueTextBox>();
@@ -72,6 +81,9 @@ public class ContactForm extends VerticalPanel {
 	ValueTextBox houseNrTextBox = new ValueTextBox("Hausnummer");
 	ValueTextBox plzTextBox = new ValueTextBox("PLZ");
 	ValueTextBox cityTextBox = new ValueTextBox("Stadt");
+	
+	/**Listbox für das Hinzufügen neuer Eigenschaften */
+	ListBox newPropertyListBox = new ListBox();
 	
 	/**Der aktuell angemeldete Nutzer wird lokal zwischengespeichert.*/
 	User currentUser = null;
@@ -839,6 +851,18 @@ public class ContactForm extends VerticalPanel {
 	
 		this.add(contactTable);
 		
+		editorAdministration.getAllPredefinedPropertiesOf(new AsyncCallback<Vector<Property>>(){
+			public void onFailure(Throwable t) {
+				
+			}
+			
+			public void onSuccess(Vector<Property> properties) {
+				for (Property p : properties){
+					allPredefinedProperties.add(p);
+				}
+			}
+		});
+		
 		
 		
 		//Zeile 0 und 1 der Tabelle contactTable sind leer
@@ -879,17 +903,22 @@ public class ContactForm extends VerticalPanel {
 		
 	
 		Label newPropertyLabel = new Label("Eigenschaft hinzufügen: ");
-		ListBox newPropertyListBox = new ListBox();
+		newPropertyListBox = new ListBox();
 		Button addNewPropertyButton = new Button("Hinzufügen");
 		
-		newPropertyListBox.addItem("Private Telefonnummer");
-		newPropertyListBox.addItem("Anschrift");
-		newPropertyListBox.addItem("Geschäftliche Telefonnummer");
-		newPropertyListBox.addItem("e-Mail-Adresse");
-		newPropertyListBox.addItem("Homepage");
-		newPropertyListBox.addItem("Arbeitsstelle");
-		newPropertyListBox.addItem("Sonstiges");
-		//bzw. auch aus Datenbank mit ner Abfrage raus!
+		
+		for (Property p : allPredefinedProperties) {
+			newPropertyListBox.insertItem(p.getType(), p.getId());
+		}
+		
+//		newPropertyListBox.addItem("Private Telefonnummer");
+//		newPropertyListBox.addItem("Anschrift");
+//		newPropertyListBox.addItem("Geschäftliche Telefonnummer");
+//		newPropertyListBox.addItem("e-Mail-Adresse");
+//		newPropertyListBox.addItem("Homepage");
+//		newPropertyListBox.addItem("Arbeitsstelle");
+		newPropertyListBox.insertItem("Sonstiges", newPropertyListBox.getItemCount());
+		
 		
 		newPropertyPanel.add(newPropertyLabel);
 		newPropertyPanel.add(newPropertyListBox);
@@ -936,7 +965,7 @@ public class ContactForm extends VerticalPanel {
 		
 		removeContactFromContactListButton.addClickHandler(new RemoveContactFromContactListClickHandler());
 			
-	//	addNewPropertyButton.addClickHandler(new ClickHandler());
+		addNewPropertyButton.addClickHandler(new NewPropertyClickHandler());
 	
 	} //Ende von onLoad()
 	
@@ -1056,17 +1085,31 @@ public class ContactForm extends VerticalPanel {
 				Window.alert("kein Kontakt ausgewählt");
 			}
 			else {	
-				//TODO: unterscheiden zwischen Eigentümer und Teilhaber!
-				clearContactForm();
-				editorAdministration.deleteContact(contactToDisplay.getId(), new AsyncCallback<Void>() {
-					public void onFailure(Throwable arg0) {
-						Window.alert("Fehler beim löschen des Kontakts!");
-					}
-					public void onSuccess(Void arg0) {
-						Window.alert("Kontakt erfolgreich gelöscht.");
-					}
-				});
-			clctvm.removeContactOfContactList(clctvm.getSelectedContactList(), contactToDisplay);
+				if (clctvm.getSelectedContact().getOwner() == currentUser.getId()) {
+					clearContactForm();
+					editorAdministration.deleteContact(contactToDisplay.getId(), new AsyncCallback<Void>() {
+						public void onFailure(Throwable arg0) {
+							Window.alert("Fehler beim Löschen des Kontakts!");
+						}
+						public void onSuccess(Void arg0) {
+							Window.alert("Kontakt erfolgreich gelöscht.");
+							clctvm.removeContactOfContactList(clctvm.getSelectedContactList(), contactToDisplay);
+						}
+					});
+				}
+				else {
+					clearContactForm();
+					editorAdministration.deletePermission(currentUser, contactToDisplay, new AsyncCallback<Void>() {
+						@Override
+						public void onFailure(Throwable arg0) {
+							Window.alert("Fehler beim Löschen der Permission!");	
+						}
+						@Override
+						public void onSuccess(Void arg0) {
+							Window.alert("Kontakt erfolgreich entfernt.");
+						}
+					});
+				}
 			}
 		}
 	}
@@ -1261,10 +1304,69 @@ public class ContactForm extends VerticalPanel {
 	/**
 	 * Die innere Klasse RemoveContactFromContactListClickHandler.
 	 * 
-	 * @author ??
+	 * @author JanNoller
 	 */
 	private class RemoveContactFromContactListClickHandler implements ClickHandler{
 		public void onClick(ClickEvent event) {
+			clearContactForm();
+			editorAdministration.removeContactFromContactList(clctvm.getSelectedContactList(), contactToDisplay, new AsyncCallback<ContactList>() {
+				@Override
+				public void onFailure(Throwable arg0) {	
+					Window.alert("Fehler beim entfernen des Kontakts aus der Kontaktliste!");
+				}
+				@Override
+				public void onSuccess(ContactList arg0) {
+					Window.alert("Kontakt erfolgreich aus Kontaktliste entfernt.");
+					clctvm.removeContactOfContactList(arg0, contactToDisplay);
+				}
+			});
+		}
+	}
+	
+	private class NewPropertyClickHandler implements ClickHandler{
+		DialogBox db = new DialogBox();
+		TextBox newPropertyTextBox = new TextBox();
+		int pid;
+		String ptype;
+		
+		public void onClick(ClickEvent event) {
+			pid = newPropertyListBox.getSelectedIndex();
+			ptype = newPropertyListBox.getSelectedItemText();
+			
+			if(pid ==100) {	
+				db.show();
+				VerticalPanel dbPanel = new VerticalPanel();
+				db.setTitle("Neue Eigenschaft hinzufügen");
+				
+				Button addPropertyButton = new Button("Eigenschaft anlegen");
+				dbPanel.add(newPropertyTextBox);
+				dbPanel.add(addPropertyButton);
+				db.add(dbPanel);
+				
+				addPropertyButton.addClickHandler(new ClickHandler(){
+					public void onClick(ClickEvent event) {
+						db.hide();
+						editorAdministration.createProperty(contactToDisplay, newPropertyTextBox.getText(), new AsyncCallback<Property>() {
+							public void onFailure (Throwable t) {
+								
+							}
+							
+							public void onSuccess(Property result) {
+								ptype = result.getType();
+								pid = result.getId();
+							}
+						
+						});
+					}
+				});
+			}
+			
+			contactTable.setWidget(contactTable.getRowCount(), 0, new ValuePanel(pid, contactTable.getRowCount(), ptype + ": "));
+			contactTable.getFlexCellFormatter().setVerticalAlignment(6, 0, ALIGN_TOP);
+			
+			
+			contactTable.getFlexCellFormatter().setColSpan(contactTable.getRowCount(), 1, 3);
+			contactTable.setWidget(contactTable.getRowCount(), 1, new ValueTable(pid));
 			
 		}
 	}
@@ -1293,7 +1395,7 @@ public class ContactForm extends VerticalPanel {
 	 * @return true= Eingabe passt oder false= Eingabe passt nicht
 	 * @author JanNoller
 	 */
-	private boolean checkValue (ValueTextBox vtb) {
+	public boolean checkValue (ValueTextBox vtb) {
 		
 		String identifier = vtb.getIdentifier();
 		String text = vtb.getText().toLowerCase().trim();
@@ -1473,6 +1575,7 @@ public class ContactForm extends VerticalPanel {
 				}
 			});
 			
+			
 			/*
 			 * Vor und Nachname des Kontakts werden gesetzt und die TextBoxen dem Vector aller ValueTextBoxen hinzugefügt.
 			 */
@@ -1584,10 +1687,7 @@ public class ContactForm extends VerticalPanel {
 							if(vt.getValueDisplay(0) == null) {
 								vt.setWidget(0, 0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
 								vt.getValueDisplay(0).setValue(allValuesOfContact.get(i));
-//							}
-//							if(vt.getValueDisplay(0).getValue() == null){
-//								vt.getValueDisplay(0).setValue(allValuesOfContact.get(i));
-//							
+							
 								if(compareUser()) {
 									vt.getValueDisplay(0).enableButtons();
 									vp.getAddValueButton().setEnabled(true);
@@ -1801,10 +1901,20 @@ public class ContactForm extends VerticalPanel {
 					default: 
 						if (pid > 10){
 							int r = contactTable.getRowCount();
+						
+							editorAdministration.getPropertyOfValue(allValuesOfContact.get(i), new AsyncCallback<Property>() {
+								public void onFailure (Throwable t) {
+									
+								}
+								
+								public void onSuccess(Property result) {
+									allNewPropertiesOfContact.add(result);
+									
+								}
+							});
 							
-							//editorAdministration.getPropertyOfValue();
 							
-							contactTable.setWidget(r, 0, new ValuePanel(pid, r, "property.getName "));
+							contactTable.setWidget(r, 0, new ValuePanel(pid, r, allNewPropertiesOfContact.get(i).getType() + ": "));
 							contactTable.getFlexCellFormatter().setVerticalAlignment(r, 0, ALIGN_TOP);
 							vp = (ValuePanel) contactTable.getWidget(r, 0); 
 							

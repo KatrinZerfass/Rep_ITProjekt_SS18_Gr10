@@ -11,14 +11,14 @@ import com.google.gwt.sample.itProjekt.shared.bo.User;
 
 public class UserMapper {
 	
-	/** Konstruktor für den UserMapper (Singleton) */
+	/** Konstruktor fï¿½r den UserMapper (Singleton) */
 	//static weil Singleton. Einzige Instanz dieser Klasse
 	private static UserMapper  usermapper = null;
 	
 	/**
 	 * UserMapper.
 	 *
-	 *Falls noch kein UserMapper existiert erstellt er ein neuen UserMapper und gibt ihn zurück
+	 *Falls noch kein UserMapper existiert erstellt er ein neuen UserMapper und gibt ihn zurï¿½ck
 	 * 
 	 */
 	public static UserMapper userMapper() {
@@ -32,7 +32,7 @@ public class UserMapper {
 	/**
 	 * FindByID.
 	 * 
-	 * Findet User durch eine U_ID und speichert die dazugehörigen Werte (U_ID und email) in einem User Objekt ab und gibt dieses wieder
+	 * Findet User durch eine U_ID und speichert die dazugehï¿½rigen Werte (U_ID und email) in einem User Objekt ab und gibt dieses wieder
 	 * 
 	 */
 	public User findByID(int uid){
@@ -62,7 +62,7 @@ public class UserMapper {
 	/**
 	 * FindByEMail.
 	 *
-	 * Findet User durch eine EMail und speichert die dazugehörigen Werte (U_ID und eMail) in einem User Objekt ab 
+	 * Findet User durch eine EMail und speichert die dazugehï¿½rigen Werte (U_ID und eMail) in einem User Objekt ab 
 	 * und speichert dieses Objekt im Vector ab und gibt diesen wieder
 	 *  
 	 */
@@ -91,9 +91,9 @@ public class UserMapper {
 	/**
 	 * FindAll.
 	 *
-	 *Gibt alle User Objekte zurück welche mit U_ID und eMail befüllt sind
-	 *Hierfür holen wir U_ID und eMail aus der T_User Tabelle und speichern diese in einem User Objekt ab und fügen diese dem Vector hinzu
-	 *Diesen Vector befüllt mit User geben wir zurück
+	 *Gibt alle User Objekte zurï¿½ck welche mit U_ID und eMail befï¿½llt sind
+	 *Hierfï¿½r holen wir U_ID und eMail aus der T_User Tabelle und speichern diese in einem User Objekt ab und fï¿½gen diese dem Vector hinzu
+	 *Diesen Vector befï¿½llt mit User geben wir zurï¿½ck
 	 *
 	 */
 	public Vector<User> findAll(){
@@ -119,9 +119,9 @@ public class UserMapper {
 	/**
 	 * Insert.
 	 *
-	 *Sucht nach der höchsten U_ID um diese um eins zu erhöhen und als neue U_ID zu nutzen
-	 *Befüllt T_User mit U_ID und eMail
-	 *Ein value wird zurückgegeben
+	 *Sucht nach der hï¿½chsten U_ID um diese um eins zu erhï¿½hen und als neue U_ID zu nutzen
+	 *Befï¿½llt T_User mit U_ID und eMail
+	 *Ein value wird zurï¿½ckgegeben
 	 */
 	public User insert(User user){
 		Connection con = DBConnection.connection();
@@ -153,8 +153,8 @@ public class UserMapper {
 	/**
 	 * Update.
 	 *
-	 * Update von Veränderungen falls sich die eMail ändert
-	 * Gibt ein User zurück
+	 * Update von Verï¿½nderungen falls sich die eMail ï¿½ndert
+	 * Gibt ein User zurï¿½ck
 	 */
 	public User update(User user){
 		Connection con = DBConnection.connection();
@@ -176,7 +176,7 @@ public class UserMapper {
 	/**
 	 * Delete.
 	 *
-	 * Entfernt alles aus T_User wo die U_ID der ID des übergebenen Objekts entspricht
+	 * Entfernt alles aus T_User wo die U_ID der ID des ï¿½bergebenen Objekts entspricht
 	 *
 	 */
 	public void delete (User user){

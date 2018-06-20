@@ -3,7 +3,7 @@ package com.google.gwt.sample.itProjekt.shared.bo;
 import java.io.Serializable;
 
 /**
- * Basisklasse für alle Business Objekte.
+ * Basisklasse fï¿½r alle Business Objekte.
  * @author JanNoller
  *
  */
@@ -11,7 +11,7 @@ import java.io.Serializable;
 public abstract class BusinessObject implements Serializable {
 	
 	/**
-	 * Eindeutige Identifikationsnummer einer Instanz dieser Klasse und Möglichkeit zur Indetifizierung, 
+	 * Eindeutige Identifikationsnummer einer Instanz dieser Klasse und Mï¿½glichkeit zur Indetifizierung, 
 	 * welche Rolle dieses Objekt in der DB hat.
 	 */
 	
@@ -37,7 +37,7 @@ public abstract class BusinessObject implements Serializable {
 	*/
 	
 	/**
-	 * Setter für die ID.
+	 * Setter fï¿½r die ID.
 	 *
 	 * @param new_id die neue ID des BO
 	 */
@@ -47,7 +47,7 @@ public abstract class BusinessObject implements Serializable {
 	}
 	
 	/**
-	 * Getter für die ID.
+	 * Getter fï¿½r die ID.
 	 *
 	 * @return id
 	 */
@@ -57,7 +57,7 @@ public abstract class BusinessObject implements Serializable {
 	}
 	
 	/**
-	 * Überprüft die inhaltliche Gleicheit zweier BusinessObject Objekte (die ID).
+	 * ï¿½berprï¿½ft die inhaltliche Gleicheit zweier BusinessObject Objekte (die ID).
 	 *
 	 * @param object das zu vergleichende Objekt
 	 * @return true, wenn inhaltlich gleich

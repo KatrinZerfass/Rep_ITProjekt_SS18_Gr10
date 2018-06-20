@@ -278,9 +278,9 @@ Connection con = DBConnection.connection();
 		/**
 		 * getAllValueByCID.
 		 *
-		 *Befüllt ein Vector mit Value welche eine bestimmter Contact hat und gibt diesen Vactor zurück
-		 *Hierfür suchen wir nach V_ID und value in der T_Value Tabelle wo die C_ID der ID des übergebenen Objekts entspricht
-		 *Wir befüllen diese Daten in ein Value Objekt welches wir dem Vector hinzufügen
+		 * Befüllt ein Vector mit Value welche eine bestimmter Contact hat und gibt diesen Vactor zurück
+		 * Hierfür suchen wir nach V_ID, value, P_ID und isShared in der T_Value Tabelle wo die C_ID der ID des übergebenen Objekts entspricht
+		 * Wir befüllen diese Daten in ein Value Objekt welches wir dem Vector hinzufügen
 		 *
 		 */
 		public Vector <Value> getAllValueByCID (Contact contact){
@@ -309,6 +309,52 @@ Connection con = DBConnection.connection();
 			return result;
 			
 }
+		
+		/**
+		 * getAllSharedValueByCID.
+		 *
+		 * Befüllt ein Vector mit Value welche eine bestimmter Contact hat und geteilt ist und gibt diesen Vactor zurück
+		 * Hierfür suchen wir nach V_ID, value, P_ID und isShared in der T_Value Tabelle wo die C_ID der ID des übergebenen Objekts entspricht und isShared 1 (TRUE) entspricht
+		 * Wir befüllen diese Daten in ein Value Objekt welches wir dem Vector hinzufügen
+		 *
+		 */
+		
+		public Vector <Value> getAllSharedValueByCID (Contact contact){
+			Connection con = DBConnection.connection();
+			Vector <Value> result = new Vector <Value>();
+			
+			try{
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT V_ID, value, P_ID, isShared FROM T_Value WHERE C_ID ="+ contact.getId()+ " AND  isShared=" + 1 +  " ORDER BY C_ID");
+
+				while (rs.next()){
+					Value v = new Value();
+					v.setId(rs.getInt("V_ID"));
+					v.setContent(rs.getString("value"));
+					v.setPropertyid(rs.getInt("P_ID"));
+					v.setIsShared(rs.getBoolean("isShared"));
+
+					result.addElement(v);
+				}
+				
+			}
+			catch (SQLException e2){
+				e2.printStackTrace();
+				return result;
+			}
+			return result;
+			
+		}
+		
+		/**
+		 * FindAllByPID.
+		 * 
+		 * Findet alle V_ID, value, P_ID und isShared wo die P_ID und die C_ID der ID der beiden übergebenen Objekte entspricht
+		 * Befüllt das Value Objekt mit den Attributen und fügt dieses Objekt dem Vector hinzu
+		 * Gibt ein Vector voller Value Objekte zurück
+		 *
+		 */
+		
 		public Vector<Value> findAllByPID(Property p, Contact c){
 			Connection con = DBConnection.connection();
 			Vector<Value> result = new Vector<Value>();

@@ -23,6 +23,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.Window;
 
 /*
  *  Entry-Point-Klasse des Report Generators.
@@ -90,9 +91,10 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 		         public void onClick(ClickEvent event) {
 		        	 User u=new User();
 		        	 u.setEmail("test@test.de");
-		        	 u.setId(12345);
+		        	 u.setId(12345678);
 		        	 reportGenerator.generateAllContactsOfUserReport(u, new AsyncCallback<AllContactsOfUserReport>() {
 						 public void onFailure(Throwable caught) {
+							 Window.alert("fail");
 							 DialogBox dBox = new DialogBox();
 							 Label label = new Label(caught.getMessage());
 							 dBox.add(label);
@@ -104,6 +106,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 						 }
 						 public void onSuccess(AllContactsOfUserReport result) {
 							 if (result != null) {
+								 Window.alert("l‰uft");
 								 HTMLReportWriter writer=new HTMLReportWriter();
 								 writer.process(result);
 								 RootPanel.get("reporttext").clear();
@@ -141,11 +144,14 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 				public void onClick(ClickEvent event) {
 					 ClientsideSettings.getEditorAdministration().getUserInformation(userTextBox.getText(), new AsyncCallback<User>() {
 	        			 public void onFailure(Throwable caught) {
+	        				 Window.alert("fail");
 	        				 
 	        			 }
 	    				 public void onSuccess(User result) {
+	    					 Window.alert("l‰uft");
 		   					 reportGenerator.generateAllSharedContactsOfUserReport(result, new AsyncCallback<AllSharedContactsOfUserReport>() {
 		   						 public void onFailure(Throwable caught) {
+		   							Window.alert("failed");
 		   							DialogBox dBox = new DialogBox();
 
 									Label label = new Label(
@@ -156,6 +162,13 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 									dBox.show();
 		   						 }
 		   						 public void onSuccess(AllSharedContactsOfUserReport result) {
+		   							Window.alert("l‰uft");
+		   								if(result!=null){
+		   	   	    						 HTMLReportWriter writer=new HTMLReportWriter();
+	   	    								 writer.process(result);
+	   	    								 RootPanel.get("reporttext").clear();
+	   	    								 RootPanel.get("reporttext").add(new HTML(writer.getReportText()));	
+	   	    							 }		   							
 		   						 }
 		   					 });
 	   				 	}
@@ -170,6 +183,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 					v.setContent(userTextBox.getText());
 					 reportGenerator.generateAllContactsWithValueReport(v, new AsyncCallback<AllContactsWithValueReport>() {
 						 public void onFailure(Throwable caught) {
+							 Window.alert("fail");
 							DialogBox dBox = new DialogBox();
 							Label label = new Label("Es existieren leider keine passenden Kontakte mit der angegebenen Auspr√§gung.");
 							dBox.add(label);
@@ -179,6 +193,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 							mainPanel.add(dBox);
 						 }
 						 public void onSuccess(AllContactsWithValueReport result) {
+							 Window.alert("l‰uft");
 							 if (result!=null) {
 								 HTMLReportWriter writer=new HTMLReportWriter();
 							 	 writer.process(result);

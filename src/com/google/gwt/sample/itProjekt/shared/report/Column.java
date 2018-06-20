@@ -8,6 +8,8 @@ package com.google.gwt.sample.itProjekt.shared.report;
 
 import java.io.Serializable;
 
+
+
 public class Column implements Serializable {
 	
 	/** The Constant serialVersionUID. */
@@ -24,7 +26,9 @@ public class Column implements Serializable {
 	public Column(String v) {
 		this.value=v;
 	}
-	
+	public Column() {
+		
+	}
 	/**
 	 * Setter für die Variable value.
 	 *
