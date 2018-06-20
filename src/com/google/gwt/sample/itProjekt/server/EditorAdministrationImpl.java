@@ -253,4 +253,31 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		permission.setParticipant(user);
 		
 	}
+
+
+	@Override
+	public Vector<Contact> getAllContactsBy(String content) throws IllegalArgumentException {
+		
+		Value value = new Value();
+		value.setContent(content);
+		
+		return vMapper.findAllContactsByValue(value);
+	}
+
+
+	@Override
+	public Vector<Contact> getAllContactsWith(String name) throws IllegalArgumentException {
+	
+		return cMapper.findAllByName(name);
+	}
+
+
+	@Override
+	public Property getPropertyOfValue(Value value) throws IllegalArgumentException {
+		
+		Property property = new Property();
+		property.setId(value.getId());
+		
+		return pMapper.findByID(property);
+	}
 }

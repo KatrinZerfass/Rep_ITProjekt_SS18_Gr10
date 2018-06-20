@@ -62,4 +62,9 @@ public interface EditorAdministration extends RemoteService{
 	
 	public void deletePermission(User user, BusinessObject bo) throws IllegalArgumentException;
 	
+	public Vector<Contact> getAllContactsBy(String content) throws IllegalArgumentException;
+	
+	public Vector<Contact> getAllContactsWith(String name) throws IllegalArgumentException;
+	
+	public Property getPropertyOfValue(Value value) throws IllegalArgumentException;
 }

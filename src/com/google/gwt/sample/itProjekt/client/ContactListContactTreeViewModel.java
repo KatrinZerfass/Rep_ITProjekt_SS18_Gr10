@@ -178,8 +178,10 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	
 	
 	public void removeContactList(ContactList cl) {
-		contactListDataProvider.getList().remove(cl);
-		contactDataProviders.remove(cl);
+		if (contactListDataProvider.getList().contains(cl)) {
+			contactListDataProvider.getList().remove(cl);
+			contactDataProviders.remove(cl);
+		}
 	}
 	
 	
