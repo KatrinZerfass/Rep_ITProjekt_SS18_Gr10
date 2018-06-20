@@ -50,6 +50,9 @@ public class ContactForm extends VerticalPanel {
 	/**Alle Ausprägungen des anzuzeigenden Kontakts*/
 	Vector<Value> allValuesOfContact = new Vector<Value>();
 	
+	/**Alle vordefinierten Eigenschaften des Systems*/
+	Vector<Property> allPredefinedProperties = new Vector<Property>();
+	
 	/**Alle von einem Nutzer neu hinzugefügten Eigenschaften*/
 	Vector<Property> allNewPropertiesOfContact = new Vector<Property>();
 	
@@ -76,6 +79,9 @@ public class ContactForm extends VerticalPanel {
 	ValueTextBox houseNrTextBox = new ValueTextBox("Hausnummer");
 	ValueTextBox plzTextBox = new ValueTextBox("PLZ");
 	ValueTextBox cityTextBox = new ValueTextBox("Stadt");
+	
+	/**Listbox für das Hinzufügen neuer Eigenschaften */
+	ListBox newPropertyListBox = new ListBox();
 	
 	/**Der aktuell angemeldete Nutzer wird lokal zwischengespeichert.*/
 	User currentUser = null;
@@ -843,6 +849,18 @@ public class ContactForm extends VerticalPanel {
 	
 		this.add(contactTable);
 		
+		editorAdministration.getAllPredefinedPropertiesOf(AsyncCallback<Vector<Property>>(){
+			public void onFailure(Throwable t) {
+				
+			}
+			
+			public void onSuccess(Vector<Property> properties) {
+				(for Property p : properties){
+					allPredefinedProperties.add(p);
+				}
+			}
+		});
+		
 		
 		
 		//Zeile 0 und 1 der Tabelle contactTable sind leer
@@ -883,17 +901,22 @@ public class ContactForm extends VerticalPanel {
 		
 	
 		Label newPropertyLabel = new Label("Eigenschaft hinzufügen: ");
-		ListBox newPropertyListBox = new ListBox();
+		newPropertyListBox = new ListBox();
 		Button addNewPropertyButton = new Button("Hinzufügen");
 		
-		newPropertyListBox.addItem("Private Telefonnummer");
-		newPropertyListBox.addItem("Anschrift");
-		newPropertyListBox.addItem("Geschäftliche Telefonnummer");
-		newPropertyListBox.addItem("e-Mail-Adresse");
-		newPropertyListBox.addItem("Homepage");
-		newPropertyListBox.addItem("Arbeitsstelle");
-		newPropertyListBox.addItem("Sonstiges");
-		//bzw. auch aus Datenbank mit ner Abfrage raus!
+		
+		for (Property p : allPredefinedProperties) {
+			newPropertyListBox.insertItem(p.getType(), p.getId());
+		}
+		
+//		newPropertyListBox.addItem("Private Telefonnummer");
+//		newPropertyListBox.addItem("Anschrift");
+//		newPropertyListBox.addItem("Geschäftliche Telefonnummer");
+//		newPropertyListBox.addItem("e-Mail-Adresse");
+//		newPropertyListBox.addItem("Homepage");
+//		newPropertyListBox.addItem("Arbeitsstelle");
+		newPropertyListBox.insertItem("Sonstiges", newPropertyListBox.getItemCount());
+		
 		
 		newPropertyPanel.add(newPropertyLabel);
 		newPropertyPanel.add(newPropertyListBox);
@@ -940,7 +963,7 @@ public class ContactForm extends VerticalPanel {
 		
 		removeContactFromContactListButton.addClickHandler(new RemoveContactFromContactListClickHandler());
 			
-	//	addNewPropertyButton.addClickHandler(new ClickHandler());
+		addNewPropertyButton.addClickHandler(new NewPropertyClickHandler());
 	
 	} //Ende von onLoad()
 	
@@ -1273,6 +1296,54 @@ public class ContactForm extends VerticalPanel {
 		}
 	}
 	
+	private class NewPropertyClickHandler implements ClickHandler{
+		DialogBox db = new DialogBox();
+		TextBox newPropertyTextBox = new TextBox();
+		int pid;
+		String ptype;
+		
+		public void onClick(ClickEvent event) {
+			pid = newPropertyListBox.getSelectedIndex();
+			ptype = newPropertyListBox.getSelectedItemText();
+			
+			if(pid ==100) {	
+				db.show();
+				VerticalPanel dbPanel = new VerticalPanel();
+				db.setTitle("Neue Eigenschaft hinzufügen");
+				
+				Button addPropertyButton = new Button("Eigenschaft anlegen");
+				dbPanel.add(newPropertyTextBox);
+				dbPanel.add(addPropertyButton);
+				db.add(dbPanel);
+				
+				addPropertyButton.addClickHandler(new ClickHandler(){
+					public void onClick(ClickEvent event) {
+						db.hide();
+						editorAdministration.createProperty(contactToDisplay, newPropertyTextBox.getText(), new AsyncCallback<Property>() {
+							public void onFailure (Throwable t) {
+								
+							}
+							
+							public void onSuccess(Property result) {
+								ptype = result.getType();
+								pid = result.getId();
+							}
+						
+						});
+					}
+				});
+			}
+			
+			contactTable.setWidget(contactTable.getRowCount(), 0, new ValuePanel(pid, contactTable.getRowCount(), ptype + ": "));
+			contactTable.getFlexCellFormatter().setVerticalAlignment(6, 0, ALIGN_TOP);
+			
+			
+			contactTable.getFlexCellFormatter().setColSpan(contactTable.getRowCount(), 1, 3);
+			contactTable.setWidget(contactTable.getRowCount(), 1, new ValueTable(pid));
+			
+		}
+	}
+	
 	/**
 	 * Die Methode compareUser() vergleicht den aktuell angemeldeten Nutzer mit dem Eigentümer des Kontakts.
 	 * 
@@ -1297,7 +1368,7 @@ public class ContactForm extends VerticalPanel {
 	 * @return true= Eingabe passt oder false= Eingabe passt nicht
 	 * @author JanNoller
 	 */
-	private boolean checkValue (ValueTextBox vtb) {
+	public boolean checkValue (ValueTextBox vtb) {
 		
 		String identifier = vtb.getIdentifier();
 		String text = vtb.getText().toLowerCase().trim();
@@ -1589,10 +1660,7 @@ public class ContactForm extends VerticalPanel {
 							if(vt.getValueDisplay(0) == null) {
 								vt.setWidget(0, 0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
 								vt.getValueDisplay(0).setValue(allValuesOfContact.get(i));
-//							}
-//							if(vt.getValueDisplay(0).getValue() == null){
-//								vt.getValueDisplay(0).setValue(allValuesOfContact.get(i));
-//							
+							
 								if(compareUser()) {
 									vt.getValueDisplay(0).enableButtons();
 									vp.getAddValueButton().setEnabled(true);
@@ -1806,10 +1874,7 @@ public class ContactForm extends VerticalPanel {
 					default: 
 						if (pid > 10){
 							int r = contactTable.getRowCount();
-							
-							final Property prop;
-							
-							
+						
 							editorAdministration.getPropertyOfValue(allValuesOfContact.get(i), new AsyncCallback<Property>() {
 								public void onFailure (Throwable t) {
 									
