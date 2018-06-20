@@ -282,6 +282,30 @@ Connection con = DBConnection.connection();
 			
 		}
 		
+		public Vector<Contact> findAllByName(String name){
+			Connection con = DBConnection.connection();
+			Vector<Contact> result = new Vector<Contact>();
+			
+			try{
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID FROM T_Contact WHERE firstName LIKE'%" +name+ "%' OR lastName LIKE'%" + name+ "%' ORDER BY C_ID");
+				while (rs.next()){
+					Contact c = new Contact();
+					c.setId(rs.getInt("C_ID"));
+					c.setFirstname(rs.getString("firstName"));
+					c.setLastname(rs.getString("lastName"));
+					c.setSex(rs.getString("gender"));
+					c.setOwner(rs.getInt("U_ID"));
+					result.addElement(c);	
+				}
+			}
+			catch (SQLException e2){
+				e2.printStackTrace();
+				return result;
+			}
+			return result;
+		}
+		
 	
 	
 	}

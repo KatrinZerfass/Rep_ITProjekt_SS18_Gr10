@@ -309,6 +309,29 @@ Connection con = DBConnection.connection();
 			return result;
 			
 }
+		public Vector<Value> findAllByPID(Property p, Contact c){
+			Connection con = DBConnection.connection();
+			Vector<Value> result = new Vector<Value>();
+					
+					try{
+						Statement stmt = con.createStatement();
+						ResultSet rs = stmt.executeQuery("SELECT DISTINCT V_ID, value, P_ID, isShared FROM T_Value WHERE P_ID=" + p.getId()+ " AND C_ID=" + c.getId() + " ORDER BY V_ID");
+						
+						while (rs.next()){
+							Value v = new Value();
+							v.setId(rs.getInt("V_ID"));
+							v.setContent(rs.getString("value"));
+							v.setPropertyid(rs.getInt("P_ID"));
+							v.setIsShared(rs.getBoolean("isShared"));
+							
+							
+							result.addElement(v);
+						}		
+					}catch(SQLException e2){
+						e2.printStackTrace();
+					}
+					return result;
+				}
 		
 	
 }
