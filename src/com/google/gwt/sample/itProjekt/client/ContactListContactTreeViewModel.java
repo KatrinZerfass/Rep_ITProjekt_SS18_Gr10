@@ -37,7 +37,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	private Contact selectedContact = null;
 	
 	/** Default-Kontaktliste. Taucht bei jedem Benutzer auf und beinhaltet alle seine Kontakte.*/
-	private ContactList myContactsContactList = null; 
+	private ContactList myContactsContactList = new ContactList(); 
 	
 	/** Im contactListDataProvider befindet sich eine Liste aller Kontaktlisten */
 	private ListDataProvider<ContactList> contactListDataProvider = null;
@@ -148,7 +148,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	public void setMyContactsContactList(ContactList cl) {
 		myContactsContactList = cl;
 
-		setSelectedContactList(myContactsContactList);
+		this.setSelectedContactList(myContactsContactList);
 	
 	}
 	

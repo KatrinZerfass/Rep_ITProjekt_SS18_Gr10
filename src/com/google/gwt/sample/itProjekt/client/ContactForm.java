@@ -54,14 +54,9 @@ public class ContactForm extends VerticalPanel {
 	/**Ein Vector, in dem alle im Kontaktformular instantiierten ValueTextBoxes gespeichert werden. */
 	Vector<ValueTextBox> allValueTextBoxes = new Vector<ValueTextBox>();
 	
-	/**Allumfassendes Panel zur Aufteilung von Formular und Buttons */
-	HorizontalPanel displayPanel = new HorizontalPanel();
-	
 	/** Allumfassende Tabelle zur Darstellung von Kontakten */
 	FlexTable contactTable = new FlexTable();
-	
-	VerticalPanel contactForm = new VerticalPanel();
-	
+
 	HorizontalPanel newPropertyPanel = new HorizontalPanel();
 	
 	VerticalPanel buttonsPanel = new VerticalPanel();
@@ -843,12 +838,8 @@ public class ContactForm extends VerticalPanel {
 		
 		
 		currentUser = ClientsideSettings.getUser();
-		
-		displayPanel.add(contactForm);
-		contactForm.add(contactTable);
-		contactForm.add(newPropertyPanel);
-		displayPanel.add(buttonsPanel);
-		this.add(displayPanel);
+	
+		this.add(contactTable);
 		
 		
 		
@@ -948,6 +939,7 @@ public class ContactForm extends VerticalPanel {
 		removeContactFromContactListButton.addClickHandler(new RemoveContactFromContactListClickHandler());
 			
 	//	addNewPropertyButton.addClickHandler(new ClickHandler());
+	
 	} //Ende von onLoad()
 	
 	
@@ -1444,26 +1436,29 @@ public class ContactForm extends VerticalPanel {
 	 */
 	public void setSelected(Contact c) {
 		
-		for (int i = 4; i < contactTable.getRowCount(); i++) {
-			for (int a =0; a<=1; a++) {
-				contactTable.removeCell(i, a);
-			}
-		}
 		
-		/*
-		 * Bei jedem neuen Aufruf von setSelected werden die ausgefüllten ValueTextBoxen geleert und aus dem Vector alle TextBoxen entfernt.
-		 */
-		for(ValueTextBox vtb : allValueTextBoxes) {
-			Value v = null;
-			vtb.setValue(v);
-		}
-		this.allValueTextBoxes = null;
-		
-	
 		/*
 		 * Wenn setSelected mit einem bestimmten Kontakt-Objekt aufgerufen wird, wird dieser im Folgenden im Kontaktformular angezeigt.
 		 */
 		if (c != null){
+			
+			for (int i = 4; i < contactTable.getRowCount(); i++) {
+				for (int a =0; a<=4; a++) {
+					contactTable.removeCell(i, a);
+				}
+			}
+			
+			/*
+			 * Bei jedem neuen Aufruf von setSelected werden die ausgefüllten ValueTextBoxen geleert und aus dem Vector alle TextBoxen entfernt.
+			 */
+			for(ValueTextBox vtb : allValueTextBoxes) {
+				Value v = null;
+				vtb.setValue(v);
+			}
+			
+			this.allValueTextBoxes = null;
+			
+		
 			contactToDisplay = c;
 			
 			/*
@@ -1880,15 +1875,15 @@ public class ContactForm extends VerticalPanel {
 			lastnameTextBox.getElement().setPropertyString("placeholder", "Nachname...");
 			firstnameTextBox.setText("");
 			((ValueDisplay) contactTable.getWidget(3,3)).getValueTextBox().getElement().setPropertyString("placeholder", "Geburtsdatum...");			
-			streetTextBox.getElement().setPropertyString("placeholder", "Straße...");
-			houseNrTextBox.getElement().setPropertyString("placeholder", "Hausnummer...");
-			plzTextBox.getElement().setPropertyString("placeholder", "PLZ...");
-			cityTextBox.getElement().setPropertyString("placeholder", "Wohnort...");
-			((ValueTable) contactTable.getWidget(5, 1)).getValueDisplay(0).getValueTextBox().getElement().setPropertyString("placeholder", "Private Nummer...");		
-			((ValueTable) contactTable.getWidget(6, 1)).getValueDisplay(0).getValueTextBox().getElement().setPropertyString("placeholder", "Geschäftl. Nummer...");
-			((ValueTable) contactTable.getWidget(7, 1)).getValueDisplay(0).getValueTextBox().getElement().setPropertyString("placeholder", "e-Mail-Adresse...");
-			((ValueTable) contactTable.getWidget(8, 1)).getValueDisplay(0).getValueTextBox().getElement().setPropertyString("placeholder", "Homepage...");
-			((ValueTable) contactTable.getWidget(9, 1)).getValueDisplay(0).getValueTextBox().getElement().setPropertyString("placeholder", "Arbeitsstelle...");
+//			streetTextBox.getElement().setPropertyString("placeholder", "Straße...");
+//			houseNrTextBox.getElement().setPropertyString("placeholder", "Hausnummer...");
+//			plzTextBox.getElement().setPropertyString("placeholder", "PLZ...");
+//			cityTextBox.getElement().setPropertyString("placeholder", "Wohnort...");
+//			((ValueTable) contactTable.getWidget(5, 1)).getValueDisplay(0).getValueTextBox().getElement().setPropertyString("placeholder", "Private Nummer...");		
+//			((ValueTable) contactTable.getWidget(6, 1)).getValueDisplay(0).getValueTextBox().getElement().setPropertyString("placeholder", "Geschäftl. Nummer...");
+//			((ValueTable) contactTable.getWidget(7, 1)).getValueDisplay(0).getValueTextBox().getElement().setPropertyString("placeholder", "e-Mail-Adresse...");
+//			((ValueTable) contactTable.getWidget(8, 1)).getValueDisplay(0).getValueTextBox().getElement().setPropertyString("placeholder", "Homepage...");
+//			((ValueTable) contactTable.getWidget(9, 1)).getValueDisplay(0).getValueTextBox().getElement().setPropertyString("placeholder", "Arbeitsstelle...");
 		}
 				
 	}

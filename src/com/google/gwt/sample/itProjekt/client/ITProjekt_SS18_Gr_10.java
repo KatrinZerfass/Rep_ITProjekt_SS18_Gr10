@@ -206,28 +206,27 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 			editorAdministration = ClientsideSettings.getEditorAdministration();
 	    }
 		
-		if(user == null) {
-			user = ClientsideSettings.getUser();
-	    }
 	    
 	    
-	    // Anlegen des User Objekts 
+	    // Anlegen des User Objekts & Abspeichern in einer lokalen Variabel
 	    
-	    editorAdministration.getUserInformation(loginInfo.getEmailAddress(), new AsyncCallback<User>() {
-			
-	    	public void onFailure(Throwable caught) {
-	    		Window.alert("AsyncCallback fehlgeschlagen");			
-			}
-
-			public void onSuccess(User result) {
-				
-				Window.alert("User Objekt wurde übergeben");
-				user = result;
-				
-			}
-			   		
-	    });
-	    				
+//	    editorAdministration.getUserInformation(loginInfo.getEmailAddress(), new AsyncCallback<User>() {
+//			
+//	    	public void onFailure(Throwable caught) {
+//	    		Window.alert("AsyncCallback fehlgeschlagen");			
+//			}
+//
+//			public void onSuccess(User result) {
+//				ClientsideSettings.setUser(result);
+//				if (user ==null) {
+//					user = ClientsideSettings.getUser();
+//				}
+//				Window.alert("User Objekt wurde übergeben");
+//				
+//			}
+//			   		
+//	    });
+//	    				
 		
 		/*
 		 * Im Folgenden wird das GUI aufgebaut
@@ -241,7 +240,8 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		 * Das Div "ContactForm" beinhaltet eine Instanz von ContactForm
 		 */
 		ContactForm cf = new ContactForm();
-		RootPanel.get("ContactForm").add(cf);	
+		RootPanel.get("ContactForm").add(cf);
+	
 		
 		VerticalPanel buttonsPanel = cf.getButtonsPanel();
 		RootPanel.get("ButtonsPanel").add(buttonsPanel);
@@ -315,7 +315,9 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		mccl.setName("Meine Kontakte");
 //		mccl.setOwner();
 //		mccl.setId();
+		
 		clctvm.setMyContactsContactList(mccl);
+		Window.alert("Hey Dude!");
 
 		/*
 		 * Das div "Navigator" beinhaltet eine Instanz eines CellBrowswers
