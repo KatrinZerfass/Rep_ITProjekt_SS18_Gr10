@@ -11,6 +11,7 @@ import com.google.gwt.sample.itProjekt.shared.EditorAdministrationAsync;
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
 import com.google.gwt.sample.itProjekt.shared.bo.Permission;
+import com.google.gwt.sample.itProjekt.shared.bo.Property;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
 import com.google.gwt.sample.itProjekt.shared.bo.Value;
 import com.google.gwt.user.client.Window;
@@ -47,7 +48,10 @@ public class ContactForm extends VerticalPanel {
 	Contact contactToDisplay = null;
 	
 	/**Alle Ausprägungen des anzuzeigenden Kontakts*/
-	Vector<Value> allValuesOfContact = null;
+	Vector<Value> allValuesOfContact = new Vector<Value>();
+	
+	/**Alle von einem Nutzer neu hinzugefügten Eigenschaften*/
+	Vector<Property> allNewPropertiesOfContact = new Vector<Property>();
 	
 	/**Ein Vector, in dem alle im Kontaktformular instantiierten ValueTextBoxes gespeichert werden. */
 	Vector<ValueTextBox> allValueTextBoxes = new Vector<ValueTextBox>();
@@ -1473,6 +1477,7 @@ public class ContactForm extends VerticalPanel {
 				}
 			});
 			
+			
 			/*
 			 * Vor und Nachname des Kontakts werden gesetzt und die TextBoxen dem Vector aller ValueTextBoxen hinzugefügt.
 			 */
@@ -1802,9 +1807,22 @@ public class ContactForm extends VerticalPanel {
 						if (pid > 10){
 							int r = contactTable.getRowCount();
 							
-							//editorAdministration.getPropertyOfValue();
+							final Property prop;
 							
-							contactTable.setWidget(r, 0, new ValuePanel(pid, r, "property.getName "));
+							
+							editorAdministration.getPropertyOfValue(allValuesOfContact.get(i), new AsyncCallback<Property>() {
+								public void onFailure (Throwable t) {
+									
+								}
+								
+								public void onSuccess(Property result) {
+									allNewPropertiesOfContact.add(result);
+									
+								}
+							});
+							
+							
+							contactTable.setWidget(r, 0, new ValuePanel(pid, r, allNewPropertiesOfContact.get(i).getType() + ": "));
 							contactTable.getFlexCellFormatter().setVerticalAlignment(r, 0, ALIGN_TOP);
 							vp = (ValuePanel) contactTable.getWidget(r, 0); 
 							
