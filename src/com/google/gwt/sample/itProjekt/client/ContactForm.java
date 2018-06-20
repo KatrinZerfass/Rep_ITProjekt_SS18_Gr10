@@ -851,13 +851,13 @@ public class ContactForm extends VerticalPanel {
 	
 		this.add(contactTable);
 		
-		editorAdministration.getAllPredefinedPropertiesOf(AsyncCallback<Vector<Property>>(){
+		editorAdministration.getAllPredefinedPropertiesOf(new AsyncCallback<Vector<Property>>(){
 			public void onFailure(Throwable t) {
 				
 			}
 			
 			public void onSuccess(Vector<Property> properties) {
-				(for Property p : properties){
+				for (Property p : properties){
 					allPredefinedProperties.add(p);
 				}
 			}

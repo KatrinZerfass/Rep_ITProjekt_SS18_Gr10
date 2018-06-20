@@ -290,7 +290,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 
 
 	@Override
-	public Vector<Property> getAllPredefindedPropertiesOf() throws IllegalArgumentException {
+	public Vector<Property> getAllPredefinedPropertiesOf() throws IllegalArgumentException {
 		
 		return pMapper.findAllDefault();
 	}

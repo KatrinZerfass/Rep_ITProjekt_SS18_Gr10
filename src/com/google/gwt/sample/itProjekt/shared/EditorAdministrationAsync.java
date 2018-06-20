@@ -76,7 +76,7 @@ public interface EditorAdministrationAsync {
 
 	void getAllSharedValuesOfContact(Contact contact, AsyncCallback<Vector<Value>> callback);
 
-	void getAllPredefindedPropertiesOf(AsyncCallback<Vector<Property>> callback);
+	void getAllPredefinedPropertiesOf(AsyncCallback<Vector<Property>> callback);
 
 	void createProperty(Contact contact, String type, AsyncCallback<Property> callback);
 }
