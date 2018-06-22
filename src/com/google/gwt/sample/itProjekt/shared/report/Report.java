@@ -1,7 +1,3 @@
-/*
- * 
- */
-
 package com.google.gwt.sample.itProjekt.shared.report;
 
 import java.io.Serializable;
@@ -28,7 +24,7 @@ public abstract class Report implements Serializable {
 	
 	/** Die Variable "table" mit allen enthaltenen Reihen. */
 	private Vector<Row> table = new Vector<Row>();
-
+	
 	/** The content. */
 	private Paragraph content;
 	
@@ -109,7 +105,6 @@ public abstract class Report implements Serializable {
 	 *
 	 * @param r the r
 	 */
-	
 	public void addRow(Row r) {
 		table.addElement(r);
 	}
@@ -131,5 +126,4 @@ public abstract class Report implements Serializable {
 	public Vector<Row> getRows(){
 		return this.table;
 	}
-	
 }

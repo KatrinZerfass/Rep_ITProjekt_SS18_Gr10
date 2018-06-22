@@ -119,7 +119,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			Contact con1=new Contact();
 			con1.setFirstname("Heidi");
 			con1.setId(1234);
-			con1.setLastname("Almˆdi");
+			con1.setLastname("Alm√∂di");
 			con1.setSex("female");
 			Vector<Contact> allContacts= new Vector<Contact>();
 			System.out.println("9");
@@ -196,10 +196,10 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	else {
 		AllContactsWithValueReport report = new AllContactsWithValueReport();
 		
-		report.setTitle("Alle Kontakte mit der Auspr‰gung");
+		report.setTitle("Alle Kontakte mit der Auspr√§gung");
 		report.setCreated(new Date());
 			
-		report.setHeaderData(new SimpleParagraph("Gesuchte Auspr‰gung: " + v.getContent()));
+		report.setHeaderData(new SimpleParagraph("Gesuchte Auspr√§gung: " + v.getContent()));
 		
 		Row headline = new Row();
 		

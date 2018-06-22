@@ -40,7 +40,6 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	private VerticalPanel loginPanel = new VerticalPanel();
 	private Label loginLabel = new Label(
 	      "Please sign in to your Google Account to access the application.");
-	
 	private Anchor signInLink = new Anchor("Sign In");
 	private Anchor signOutLink = new Anchor("Sign Out");
 	
