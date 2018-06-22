@@ -1118,16 +1118,25 @@ public class ContactForm extends VerticalPanel {
 						Window.alert("Ihr Kontakt konnte nicht angelegt werden, bitte versuchen Sie es erneut.");
 						
 					}else if (checkValue(firstnameTextBox) && checkValue(lastnameTextBox) ) {
-						String sex = null;
+						String sex = "o";
 						switch(sexListBox.getSelectedItemText()) {
-							case "männlich": sex = "m";
-							case "weiblich": sex = "f";
-							case "Sonstiges": sex = "o";
+							case "männlich": 
+								sex = "m";
+								break;
+							case "weiblich": 
+								sex = "f";
+								break;
+							case "Sonstiges": 
+								sex = "o";
+								break;
 						}
-						
+						Window.alert(sex);
+						Window.alert("Vorname: " + firstnameTextBox.getText() + "Nachname: " + lastnameTextBox.getText());
+						Window.alert(currentUser.getEmail());
 						editorAdministration.createContact(firstnameTextBox.getText(), lastnameTextBox.getText(), sex, currentUser, new AsyncCallback<Contact>(){
 							public void onFailure(Throwable t) {
 								Window.alert("Fehler im Kontakt anlegen");
+								
 							}
 							public void onSuccess(Contact result) {
 								newContact= result;
@@ -1137,23 +1146,23 @@ public class ContactForm extends VerticalPanel {
 						});
 						
 					
-						for (final ValueTextBox vtb : allValueTextBoxes) {
-							if ((!vtb.equals(firstnameTextBox) || !vtb.equals(lastnameTextBox)) && vtb.getText() != "") {
-								editorAdministration.createValue(newContact, 
-										((ValueTable) ((ValueDisplay) vtb.getParent()).getParent()).getPid(), vtb.getText(), new AsyncCallback<Value>() {
-									public void onFailure(Throwable t) {
-										Window.alert("Fehler beim Anlegen einer Ausprägung");
-										
-									}
-									public void onSuccess(Value result) {
-										vtb.setValue(result);
-										//geht final hier?
-									}
-								});
-							}
-							
-							
-						}
+//						for (final ValueTextBox vtb : allValueTextBoxes) {
+//							if ((!vtb.equals(firstnameTextBox) || !vtb.equals(lastnameTextBox)) && vtb.getText() != "") {
+//								editorAdministration.createValue(newContact, 
+//										((ValueTable) ((ValueDisplay) vtb.getParent()).getParent()).getPid(), vtb.getText(), new AsyncCallback<Value>() {
+//									public void onFailure(Throwable t) {
+//										Window.alert("Fehler beim Anlegen einer Ausprägung");
+//										
+//									}
+//									public void onSuccess(Value result) {
+//										vtb.setValue(result);
+//										//geht final hier?
+//									}
+//								});
+//							}
+//							
+//							
+//						}
 						
 					}
 					
