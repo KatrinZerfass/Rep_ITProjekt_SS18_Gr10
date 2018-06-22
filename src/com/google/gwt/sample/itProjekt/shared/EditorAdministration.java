@@ -73,4 +73,8 @@ public interface EditorAdministration extends RemoteService{
 	public Vector<Property> getAllPredefinedPropertiesOf() throws IllegalArgumentException;
 	
 	public Property createProperty(Contact contact, String type) throws IllegalArgumentException;
+	
+	public Property getPropertyByType(String type) throws IllegalArgumentException;
+	
+	public Vector<User> getAllUsers() throws IllegalArgumentException;
 }

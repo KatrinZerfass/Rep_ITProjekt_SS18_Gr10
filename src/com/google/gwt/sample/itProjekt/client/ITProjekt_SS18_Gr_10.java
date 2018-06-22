@@ -93,6 +93,8 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		Label dialogBoxLabel = new Label();
 		
         private TextBox tb = new TextBox();
+        
+        Button ok = new Button("OK");
 		
 		/**
 		 * Der Konstruktor von InputDialogBox
@@ -106,14 +108,14 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 			setAnimationEnabled(true);
 			setGlassEnabled(true);
 			
-			Button ok = new Button("OK");
-	        ok.addClickHandler(new ClickHandler() {
-	        	public void onClick(ClickEvent event) {
-	        		input = tb.getText();
-	        		
-	            	InputDialogBox.this.hide();
-	            }
-	        });
+			
+//	        ok.addClickHandler(new ClickHandler() {
+//	        	public void onClick(ClickEvent event) {
+//	        		input = tb.getText();
+//	        		
+//	            	InputDialogBox.this.hide();
+//	            }
+//	        });
 	        
 			VerticalPanel panel = new VerticalPanel();
 			
@@ -127,6 +129,16 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 
 	        setWidget(panel);
 	        
+	        
+	        	
+	        }
+		
+		public Button getOKButton() {
+				return this.ok;
+			}
+		
+		public void setOKButton(Button b) {
+			this.ok = b;
 		}
 		
 		/**
@@ -146,6 +158,15 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		public void setInput(String input) {
 			this.input = input;
 		}
+
+		/**
+		 * Gets the label.
+		 *
+		 * @return the label
+		 */
+		public Label getdialogBoxLabel () {
+			return this.dialogBoxLabel;
+		}
 		
 		/**
 		 * Setter des Labels.
@@ -156,13 +177,12 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 			this.dialogBoxLabel.setText(labelText);
 		}
 		
-		/**
-		 * Gets the label.
-		 *
-		 * @return the label
-		 */
-		public Label getdialogBoxLabel () {
-			return this.dialogBoxLabel;
+		public TextBox getTextBox() {
+			return this.tb;
+		}
+		
+		public void setTextBox(TextBox tb) {
+			this.tb = tb;
 		}
 	}
 
@@ -367,13 +387,21 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 			inputDB.setdialogBoxLabel("Bitte geben Sie den Namen der neuen Kontaktliste an.");
 			inputDB.show();
 			
-			editorAdministration.createContactList(inputDB.getInput(), user, new AsyncCallback<ContactList>() {
-				public void onFailure(Throwable arg0) {
-					Window.alert("Fehler beim Erstellen der Kontaktliste!");
-				}
-				public void onSuccess(ContactList arg0) {
-					Window.alert("Kontaktliste erfolgreich erstellt.");
-					clctvm.addContactList(arg0);
+			inputDB.getOKButton().addClickHandler(new ClickHandler() {
+				
+				@Override
+				public void onClick(ClickEvent arg0) {
+					editorAdministration.createContactList(inputDB.getTextBox().getText(), user, new AsyncCallback<ContactList>() {
+						public void onFailure(Throwable arg0) {
+							Window.alert("Fehler beim Erstellen der Kontaktliste!");
+							inputDB.hide();
+						}
+						public void onSuccess(ContactList arg0) {
+							Window.alert("Kontaktliste erfolgreich erstellt.");
+							clctvm.addContactList(arg0);
+							inputDB.hide();
+						}
+					});
 				}
 			});
 		}
@@ -386,19 +414,35 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	 * @author JanNoller
 	 */
 	private class DeleteContactListClickHandler implements ClickHandler {
-
 		
 		public void onClick(ClickEvent event) {
-			editorAdministration.deleteContactList(clctvm.getSelectedContactList(), new AsyncCallback<Void>() {
-				@Override
-				public void onFailure(Throwable arg0) {
-					Window.alert("Fehler beim löschen der Kontaktliste!");
-				}
-				@Override
-				public void onSuccess(Void arg0) {
-					Window.alert("Kontaktliste erfolgreich gelöscht.");	
-				}
-			});
+			
+			if(clctvm.getSelectedContactList().getOwner() == user.getId()) {
+				editorAdministration.deleteContactList(clctvm.getSelectedContactList(), new AsyncCallback<Void>() {
+					@Override
+					public void onFailure(Throwable arg0) {
+						Window.alert("Fehler beim löschen der Kontaktliste!");
+					}
+					@Override
+					public void onSuccess(Void arg0) {
+						Window.alert("Kontaktliste erfolgreich gelöscht.");	
+					}
+				});
+				clctvm.removeContactList(clctvm.getSelectedContactList());
+				clctvm.setSelectedContactList(clctvm.getMyContactsContactList());
+			}
+			else {
+				editorAdministration.deletePermission(user, clctvm.getSelectedContactList(), new AsyncCallback<Void>() {
+					@Override
+					public void onFailure(Throwable arg0) {
+						Window.alert("Fehler beim entfernen der Kontaktliste!");
+					}
+					@Override
+					public void onSuccess(Void arg0) {
+						Window.alert("Kontaktliste erfolgreich entfernt.");
+					}
+				});
+			}
 		}
 	}
 
@@ -413,19 +457,59 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	
 		InputDialogBox inputDB;
 		
+		Vector<User> allUsers = new Vector<User>();
+		User shareUser = new User();
+		
 		public void onClick(ClickEvent event) {
 			inputDB = new InputDialogBox();
 			inputDB.setdialogBoxLabel("Bitte geben Sie die Email-Adresse des Nutzers ein mit dem Sie die Kontaktliste teilen möchten.");
 			inputDB.show();
 			
-			editorAdministration.shareContactList(clctvm.getSelectedContactList(), inputDB.getInput(), new AsyncCallback<Permission>() {
+			editorAdministration.getAllUsers(new AsyncCallback<Vector<User>>() {
 				@Override
 				public void onFailure(Throwable arg0) {
-					Window.alert("Fehler beim Teilen der Kontaktliste!");
+					Window.alert("Fehler beim holen der User aus der Datenbank im ShareContactListClickHandler!");
 				}
 				@Override
-				public void onSuccess(Permission arg0) {
-					Window.alert("Kontaktliste erfolgreich geteilt.");
+				public void onSuccess(Vector<User> arg0) {
+					allUsers = arg0;
+				}
+			});
+			
+			inputDB.getOKButton().addClickHandler(new ClickHandler() {
+				
+				@Override
+				public void onClick(ClickEvent arg0) {
+					
+					editorAdministration.getUserInformation(inputDB.getTextBox().getText(), new AsyncCallback<User>() {
+						@Override
+						public void onFailure(Throwable arg0) {
+							Window.alert("Fehler beim holen des Users für das teilen der Kontaktliste!");
+						}
+						@Override
+						public void onSuccess(User arg0) {
+							shareUser = arg0;
+						}
+					});
+					
+					if(allUsers.contains(shareUser) && shareUser != user) {
+						editorAdministration.shareContactList(clctvm.getSelectedContactList(), inputDB.getTextBox().getText(), new AsyncCallback<Permission>() {
+							@Override
+							public void onFailure(Throwable arg0) {
+								Window.alert("Fehler beim Teilen der Kontaktliste!");
+								inputDB.hide();
+							}
+							@Override
+							public void onSuccess(Permission arg0) {
+								Window.alert("Kontaktliste erfolgreich geteilt.");
+								inputDB.hide();
+							}
+						});
+					}
+					else {
+						Window.alert("Ungültiger Benutzer!");
+						inputDB.hide();
+					}
 				}
 			});
 		}
@@ -445,7 +529,6 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		
 		ContactList nameResultsCL = new ContactList();
 		ContactList valueResultsCL = new ContactList();
-		
 		
 		
 		@Override

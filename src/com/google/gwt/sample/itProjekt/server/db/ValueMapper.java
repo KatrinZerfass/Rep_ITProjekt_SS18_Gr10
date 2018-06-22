@@ -192,20 +192,61 @@ public class ValueMapper {
 		 *Entfernt alles aus T_Value wo die V_ID der ID des übergebenen Objekts entspricht
 		 * 
 		 */
+		//TODO kommentar ergänzen
 		public void delete (Value value){
-Connection con = DBConnection.connection();
+			Connection con = DBConnection.connection();
 			
 			try{
 				
 				Statement stmt = con.createStatement();
-				stmt.executeUpdate("DELETE FROM T_Value WHERE V_ID =" +value.getId());
+				
+				stmt.executeUpdate("DELETE FROM T_Value WHERE V_ID =" + value.getId());
+				
+				Property p = new Property();
+				Contact c = new Contact();
+				
+				p.setId(value.getPropertyid());
+				c.setId(ValueMapper.valueMapper().findContactByVID(value).getId());
+				
+				
+				if(ValueMapper.valueMapper().findAllByPID(p,c).size() < 1 && ValueMapper.valueMapper().findContactByVID(value).getId() != 20000000 ){
+					
+					PropertyMapper.propertyMapper().delete(p);
+				}
+				
+				
 			}
+			
+			
 		
 		catch (SQLException e2){
 			e2.printStackTrace();
 			
 		}
 }
+		
+		
+		public Contact findContactByVID(Value value){
+			
+			Connection con = DBConnection.connection();
+			
+			try{
+				Statement stmt = con.createStatement();
+				ResultSet rs= stmt.executeQuery("SELECT C_ID FROM T_Value WHERE V_ID=" + value.getId() + " ORDER BY V_ID");
+				
+				if(rs.next()){
+					Contact c = new Contact();
+					c.setId(rs.getInt("C_ID"));
+					
+					return c;	
+				}
+			}
+			catch (SQLException e2){
+				e2.printStackTrace();
+				return null;
+			}
+			return null;
+		}
 		
 		/**
 		 * getAllContactsByPID.
