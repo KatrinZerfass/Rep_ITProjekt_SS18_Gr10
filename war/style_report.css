@@ -50,7 +50,6 @@ h1 {
 
 #report {
 	position: absolute;
-	top: 160px;
 }
 
 #reporttext {
@@ -83,7 +82,7 @@ h1 {
 	position: absolute;
 	width: 100%;
 	height: auto;
-	top: 60%;
+	top: 30%;
 }
 
 .infotable {
