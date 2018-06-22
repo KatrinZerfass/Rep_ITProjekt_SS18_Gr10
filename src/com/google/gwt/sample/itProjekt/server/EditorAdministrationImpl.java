@@ -304,4 +304,21 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		
 		return pMapper.insert(newProperty, contact);
 	}
+
+
+	@Override
+	public Property getPropertyByType(String type) throws IllegalArgumentException {
+		
+		Property property = new Property();
+		property.setType(type);
+		
+		return pMapper.findByType(property);
+	}
+
+
+	@Override
+	public Vector<User> getAllUsers() throws IllegalArgumentException {
+
+		return uMapper.findAll();
+	}
 }

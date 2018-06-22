@@ -79,4 +79,8 @@ public interface EditorAdministrationAsync {
 	void getAllPredefinedPropertiesOf(AsyncCallback<Vector<Property>> callback);
 
 	void createProperty(Contact contact, String type, AsyncCallback<Property> callback);
+
+	void getAllUsers(AsyncCallback<Vector<User>> callback);
+
+	void getPropertyByType(String type, AsyncCallback<Property> callback);
 }
