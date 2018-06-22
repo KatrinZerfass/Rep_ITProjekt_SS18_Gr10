@@ -6,6 +6,7 @@ import com.google.gwt.sample.itProjekt.shared.EditorAdministration;
 import com.google.gwt.sample.itProjekt.server.EditorAdministrationImpl;
 import com.google.gwt.sample.itProjekt.shared.ReportGenerator;
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
+import com.google.gwt.sample.itProjekt.shared.bo.Property;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
 import com.google.gwt.sample.itProjekt.shared.bo.Value;
 import com.google.gwt.sample.itProjekt.shared.report.AllContactsOfUserReport;
@@ -86,6 +87,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			report.setHeaderData(header);
 
 			Row headline = new Row();
+			Row propertyheadline=new Row();
 			
 			headline.addColumn(new Column ("Kontakt-ID"));
 			headline.addColumn(new Column("Vorname"));
@@ -96,8 +98,11 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 			Vector<Contact> allContacts=this.admin.getAllOwnedContactsOf(u.getEmail());
 			allContacts.addAll(this.admin.getAllSharedContactsWith(u.getEmail()));
+			
+			
 				
 			for (Contact c: allContacts) {
+				Vector<Value> allValues=this.admin.getAllValuesOf(c);
 				Row contactRow=new Row();
 				contactRow.addColumn(new Column(String.valueOf(c.getId())));
 				contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
@@ -111,6 +116,14 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 					contactRow.addColumn(new Column("sonstige"));
 				}
 				report.addRow(contactRow);
+				propertyheadline.addColumn(new Column("Eigenschaft"));
+				propertyheadline.addColumn(new Column("Ausprägung"));
+				for (Value v: allValues){
+					Property p=this.admin.getPropertyOfValue(v);
+					Row valueRow=new Row();
+					valueRow.addColumn(new Column(p.getType()));
+					valueRow.addColumn(new Column(v.getContent()));
+				}
 				
 			}
 			return report;
@@ -139,7 +152,8 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		report.setHeaderData(header);
 		
 		Row headline = new Row();
-		
+		Row propertyheadline=new Row();
+
 		headline.addColumn(new Column ("Kontakt-ID"));
 		headline.addColumn(new Column("Vorname"));
 		headline.addColumn(new Column("Nachname"));
@@ -150,12 +164,21 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		Vector<Contact> allContacts=this.admin.getAllSharedContactsWith(u.getEmail());
 		
 		for (Contact c: allContacts) {
+			Vector<Value> allValues=this.admin.getAllValuesOf(c);
 			Row contactRow=new Row();
 			contactRow.addColumn(new Column(String.valueOf(c.getId())));
 			contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 			contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
 			contactRow.addColumn(new Column(String.valueOf(c.getSex())));
 			report.addRow(contactRow);
+			propertyheadline.addColumn(new Column("Eigenschaft"));
+			propertyheadline.addColumn(new Column("Ausprägung"));
+			for (Value v: allValues){
+				Property p=this.admin.getPropertyOfValue(v);
+				Row valueRow=new Row();
+				valueRow.addColumn(new Column(p.getType()));
+				valueRow.addColumn(new Column(v.getContent()));
+			}
 		}
 		return report;
 	}
@@ -178,7 +201,8 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		report.setHeaderData(new SimpleParagraph("Gesuchte Ausprägung: " + v.getContent()));
 		
 		Row headline = new Row();
-		
+		Row propertyheadline=new Row();
+
 		headline.addColumn(new Column ("Kontakt-ID"));
 		headline.addColumn(new Column("Vorname"));
 		headline.addColumn(new Column("Nachname"));
@@ -189,12 +213,21 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		Vector<Contact> allContacts=this.admin.getAllContactsWith(v);
 		
 		for (Contact c: allContacts) {
+			Vector<Value> allValues=this.admin.getAllValuesOf(c);
 			Row contactRow=new Row();
 			contactRow.addColumn(new Column(String.valueOf(c.getId())));
 			contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 			contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
 			contactRow.addColumn(new Column(String.valueOf(c.getSex())));
 			report.addRow(contactRow);
+			propertyheadline.addColumn(new Column("Eigenschaft"));
+			propertyheadline.addColumn(new Column("Ausprägung"));
+			for (Value val: allValues){
+				Property p=this.admin.getPropertyOfValue(val);
+				Row valueRow=new Row();
+				valueRow.addColumn(new Column(p.getType()));
+				valueRow.addColumn(new Column(val.getContent()));
+			}
 		}
 		return report;
 	}
