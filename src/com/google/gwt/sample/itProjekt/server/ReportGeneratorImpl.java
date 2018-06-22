@@ -6,6 +6,7 @@ import com.google.gwt.sample.itProjekt.shared.EditorAdministration;
 import com.google.gwt.sample.itProjekt.server.EditorAdministrationImpl;
 import com.google.gwt.sample.itProjekt.shared.ReportGenerator;
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
+import com.google.gwt.sample.itProjekt.shared.bo.Property;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
 import com.google.gwt.sample.itProjekt.shared.bo.Value;
 import com.google.gwt.sample.itProjekt.shared.report.AllContactsOfUserReport;
@@ -70,76 +71,71 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
  * @see com.google.gwt.sample.itProjekt.shared.ReportGenerator#generateAllContactsOfUserReport(com.google.gwt.sample.itProjekt.shared.bo.User)
  */
 @Override	
-	public AllContactsOfUserReport generateAllContactsOfUserReport(User u) throws IllegalArgumentException {
-//		if(this.getEditorAdministration()==null) {
-//			return null;
-//		} 
-//		else {
+	public AllContactsOfUserReport generateAllContactsOfUserReport(User u) {
+		if(this.getEditorAdministration()==null) {
+			return null;
+		} 
+		else {
 			AllContactsOfUserReport report = new AllContactsOfUserReport();
 			
 			report.setTitle("Alle Kontakte des Nutzers");
 			report.setCreated(new Date());
-			System.out.println("1");
 			CompositeParagraph header=new CompositeParagraph();
-			System.out.println("2");
-			System.out.println(u.getEmail());
 			SimpleParagraph sp = new SimpleParagraph(u.getEmail());
-			System.out.println(sp.getText());
-			System.out.println("3");
-			
 			header.addSubParagraph(sp);
-			System.out.println(header.getParagraphAt(0).getText());
-			System.out.println("4");
-			
 			
 			report.setHeaderData(header);
-			System.out.println(report.getHeaderData().toString());
-			System.out.println("5");
-			
+
 			Row headline = new Row();
-			System.out.println("6");
+			Row propertyheadline=new Row();
+			propertyheadline.addColumn(new Column("Eigenschaft"));
+			propertyheadline.addColumn(new Column("Ausprägung"));
 			
 			headline.addColumn(new Column ("Kontakt-ID"));
 			headline.addColumn(new Column("Vorname"));
 			headline.addColumn(new Column("Nachname"));
 			headline.addColumn(new Column("Geschlecht"));
-			System.out.println("7");
 			
 			report.addRow(headline);
-			System.out.println("8");
 
-//			Vector<Contact> allContacts=this.admin.getAllOwnedContactsOf(u);
-//			allContacts.addAll(this.admin.getAllSharedContactsWith(u));
+			Vector<Contact> allContacts=this.admin.getAllOwnedContactsOf(u.getEmail());
+			allContacts.addAll(this.admin.getAllSharedContactsWith(u.getEmail()));
 			
-			Contact con=new Contact();
-			con.setFirstname("Biene");
-			con.setLastname("Maya");
-			con.setSex("female");
-			con.setId(1234);
-			Contact con1=new Contact();
-			con1.setFirstname("Heidi");
-			con1.setId(1234);
-			con1.setLastname("Almödi");
-			con1.setSex("female");
-			Vector<Contact> allContacts= new Vector<Contact>();
-			System.out.println("9");
-			allContacts.addElement(con);
-			allContacts.addElement(con1);
-			System.out.println("10");
-			
+	
 			for (Contact c: allContacts) {
+				Vector<Value> allValues=this.admin.getAllValuesOf(c);
+				System.out.println(allValues.toString());
 				Row contactRow=new Row();
 				contactRow.addColumn(new Column(String.valueOf(c.getId())));
 				contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 				contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
-				contactRow.addColumn(new Column(String.valueOf(c.getSex())));
+				switch(c.getSex()){
+					case "f":
+					contactRow.addColumn(new Column("weiblich"));
+					break;
+					case "m":
+					contactRow.addColumn(new Column("männlich"));
+					break;
+					case "o":
+					contactRow.addColumn(new Column("sonstige"));
+					break;
+				}
 				report.addRow(contactRow);
-				System.out.println("11");
+				if(allValues!=null){
+					report.addRow(propertyheadline);
+					for (Value v: allValues){
+						Property p=this.admin.getPropertyOfValue(v);
+						Row valueRow=new Row();
+						valueRow.addColumn(new Column(p.getType()));
+						valueRow.addColumn(new Column(v.getContent()));
+						report.addRow(valueRow);
+					}
+				}
+				
 			}
-			System.out.println("12");
 			return report;
 		}
-//	}
+	}
 	
 /* (non-Javadoc)
  * @see com.google.gwt.sample.itProjekt.shared.ReportGenerator#generateAllSharedContactsOfUserReport(com.google.gwt.sample.itProjekt.shared.bo.User)
@@ -163,23 +159,49 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		report.setHeaderData(header);
 		
 		Row headline = new Row();
-		
+		Row propertyheadline=new Row();
+
 		headline.addColumn(new Column ("Kontakt-ID"));
 		headline.addColumn(new Column("Vorname"));
 		headline.addColumn(new Column("Nachname"));
 		headline.addColumn(new Column("Geschlecht"));
+
+		propertyheadline.addColumn(new Column("Eigenschaft"));
+		propertyheadline.addColumn(new Column("Ausprägung"));
 		
 		report.addRow(headline);
 
 		Vector<Contact> allContacts=this.admin.getAllSharedContactsWith(u.getEmail());
 		
 		for (Contact c: allContacts) {
+			Vector<Value> allValues=this.admin.getAllValuesOf(c);
 			Row contactRow=new Row();
 			contactRow.addColumn(new Column(String.valueOf(c.getId())));
 			contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 			contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
-			contactRow.addColumn(new Column(String.valueOf(c.getSex())));
+			switch (c.getSex()){
+			case "f":
+			contactRow.addColumn(new Column("weiblich"));
+			break;
+			case "m":
+			contactRow.addColumn(new Column("männlich"));
+			break;
+			case "o":
+			contactRow.addColumn(new Column("sonstige"));
+			break;
+			}
+		
 			report.addRow(contactRow);
+			if(allValues!=null){
+			report.addRow(propertyheadline);
+			for (Value v: allValues){
+				Property p=this.admin.getPropertyOfValue(v);
+				Row valueRow=new Row();
+				valueRow.addColumn(new Column(p.getType()));
+				valueRow.addColumn(new Column(v.getContent()));
+				report.addRow(valueRow);
+				}
+			}
 		}
 		return report;
 	}
@@ -202,23 +224,48 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		report.setHeaderData(new SimpleParagraph("Gesuchte Ausprägung: " + v.getContent()));
 		
 		Row headline = new Row();
-		
+		Row propertyheadline=new Row();
+
 		headline.addColumn(new Column ("Kontakt-ID"));
 		headline.addColumn(new Column("Vorname"));
 		headline.addColumn(new Column("Nachname"));
 		headline.addColumn(new Column("Geschlecht"));
+		
+		propertyheadline.addColumn(new Column("Eigenschaft"));
+		propertyheadline.addColumn(new Column("Ausprägung"));
 		
 		report.addRow(headline);
 
 		Vector<Contact> allContacts=this.admin.getAllContactsWith(v);
 		
 		for (Contact c: allContacts) {
+			Vector<Value> allValues=this.admin.getAllValuesOf(c);
 			Row contactRow=new Row();
 			contactRow.addColumn(new Column(String.valueOf(c.getId())));
 			contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 			contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
-			contactRow.addColumn(new Column(String.valueOf(c.getSex())));
+			switch (c.getSex()){
+				case "f":
+				contactRow.addColumn(new Column("weiblich"));
+				break;
+				case "m":
+				contactRow.addColumn(new Column("männlich"));
+				break;
+				case "o":
+				contactRow.addColumn(new Column("sonstige"));
+				break;
+			}
 			report.addRow(contactRow);
+			if(allValues!=null){
+			report.addRow(propertyheadline);
+			for (Value val: allValues){
+				Property p=this.admin.getPropertyOfValue(val);
+				Row valueRow=new Row();
+				valueRow.addColumn(new Column(p.getType()));
+				valueRow.addColumn(new Column(val.getContent()));
+				report.addRow(valueRow);
+				}
+			}
 		}
 		return report;
 	}

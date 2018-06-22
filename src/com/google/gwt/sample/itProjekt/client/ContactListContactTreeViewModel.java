@@ -163,7 +163,6 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	 * @param cl die neue Kontaktliste
 	 */
 	public void addContactList(ContactList cl) {
-		contactListDataProvider = new ListDataProvider<ContactList>();
 		contactListDataProvider.getList().add(cl);
 		
 		//nachfolgende Zeile steht nirgends bei R&T ?!
@@ -178,7 +177,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	
 	
 	public void removeContactList(ContactList cl) {
-		if (contactListDataProvider.getList().contains(cl)) {
+		if (contactListDataProvider.getList().contains(cl) && cl != null && !cl.equals(myContactsContactList)) {
 			contactListDataProvider.getList().remove(cl);
 			contactDataProviders.remove(cl);
 		}

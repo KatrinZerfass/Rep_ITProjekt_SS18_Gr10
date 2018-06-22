@@ -54,7 +54,7 @@ h1 {
 
 #reporttext {
 	position: absolute;
-	top: 260px;
+	top: 100px;
 	background-color: #8080801a;
 	width: 100%;
 	padding: 0px 58px 50px;
@@ -90,13 +90,12 @@ h1 {
 }
 
 .columnhead {
-	background: #18a191;
+	background: #00868b;
 	padding: 3px 10px;
 	color: white;
 }
 
 .gwt-Label {
-	width: 60px;
 	padding: 11px 0px;
 }
 
