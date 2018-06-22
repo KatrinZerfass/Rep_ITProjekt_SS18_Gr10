@@ -9,20 +9,21 @@ import java.util.Vector;
 
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
+import com.google.gwt.user.client.Window;
 
 /**
  * The Class ContactMapper.
  */
 public class ContactMapper {
 	
-	/** Konstruktor für den ContactMapper (Singleton) */
+	/** Konstruktor fï¿½r den ContactMapper (Singleton) */
 	//static weil Singleton. Einzige Instanz dieser Klasse
 	private static ContactMapper  contactmapper = null;
 	
 	/**
 	 * ContactMapper.
 	 *
-	 *Falls noch kein ContactMapper existiert erstellt er ein neuen ContactMapper und gibt ihn zurück
+	 *Falls noch kein ContactMapper existiert erstellt er ein neuen ContactMapper und gibt ihn zurï¿½ck
 	 * 
 	 */
 	public static ContactMapper contactMapper() {
@@ -35,7 +36,7 @@ public class ContactMapper {
 	/**
 	 * FindByID.
 	 *
-	 * Findet Contacts durch eine C_ID und speichert die dazugehörigen Werte (C_ID, firstName, lastName, gender und U_ID) in einem COntact Objekt ab und gibt dieses wieder
+	 * Findet Contacts durch eine C_ID und speichert die dazugehï¿½rigen Werte (C_ID, firstName, lastName, gender und U_ID) in einem COntact Objekt ab und gibt dieses wieder
 	 * 
 	 */
 	public Contact findByID(Contact contact){
@@ -65,9 +66,9 @@ public class ContactMapper {
 	/**
 	 * FindAll.
 	 *
-	 *Gibt alle Contact Objekte zurück welche mit C_ID, firstName, lastName, geder und U_ID befüllt sind
-	 *Hierfür holen wir C_ID, firstName, lastName, geder und U_ID aus der T_Contact Tabelle und speichern diese in einem Contact Objekt ab und fügen diese dem Vector hinzu
-	 *Diesen Vector befüllt mit Contacts geben wir zurück
+	 *Gibt alle Contact Objekte zurï¿½ck welche mit C_ID, firstName, lastName, geder und U_ID befï¿½llt sind
+	 *Hierfï¿½r holen wir C_ID, firstName, lastName, geder und U_ID aus der T_Contact Tabelle und speichern diese in einem Contact Objekt ab und fï¿½gen diese dem Vector hinzu
+	 *Diesen Vector befï¿½llt mit Contacts geben wir zurï¿½ck
 	 *
 	 */
 	public Vector<Contact> findAll(){
@@ -96,7 +97,7 @@ Vector<Contact> result = new Vector<Contact>();
 	/**
 	 * FindByName.
 	 *
-	 * Findet Contacts durch einen Namen und speichert die dazugehörigen Werte (C_ID, firstName, lastName, gender und U_ID) in einem Contact Objekt ab
+	 * Findet Contacts durch einen Namen und speichert die dazugehï¿½rigen Werte (C_ID, firstName, lastName, gender und U_ID) in einem Contact Objekt ab
 	 * und Speichert dieses Objekt im Vector ab und gibt diesen wieder
 	 * 
 	 */
@@ -128,8 +129,8 @@ Vector<Contact> result = new Vector<Contact>();
 	 * FindAllByUID.
 	 *
 	 * Findet alle Contacts die ein User erstellt hat durch seine U_ID
-	 * Alle Values werden aus T_Contact ausgelesen und in einem Contact Objekt gespeichert und einem Vector hinzugefügt und zurückgegeben
-	 * Gibt ein Vector voller Contact Objekte zurück welche ein User erstellt hat
+	 * Alle Values werden aus T_Contact ausgelesen und in einem Contact Objekt gespeichert und einem Vector hinzugefï¿½gt und zurï¿½ckgegeben
+	 * Gibt ein Vector voller Contact Objekte zurï¿½ck welche ein User erstellt hat
 	 * 
 	 */
 	public Vector<Contact> findAllByUID(User user){
@@ -158,9 +159,9 @@ Vector<Contact> result = new Vector<Contact>();
 	/**
 	 * Insert.
 	 *
-	 *Sucht nach der höchsten C_ID um diese um eins zu erhöhen und als neue C_ID zu nutzen
-	 *Befüllt T_Contact mit C_ID, firstName, lastName, gender, create_date, mod_date, U_ID
-	 *Ein Contact wird zurückgegeben
+	 *Sucht nach der hï¿½chsten C_ID um diese um eins zu erhï¿½hen und als neue C_ID zu nutzen
+	 *Befï¿½llt T_Contact mit C_ID, firstName, lastName, gender, create_date, mod_date, U_ID
+	 *Ein Contact wird zurï¿½ckgegeben
 	 */
 	public Contact insert(Contact contact, User user){
 		Connection con = DBConnection.connection();
@@ -173,21 +174,21 @@ Vector<Contact> result = new Vector<Contact>();
 				contact.setId(rs.getInt("maxcid")+1);
 				Statement stmt2 = con.createStatement();
 				stmt2.executeUpdate("INSERT INTO T_Contact (C_ID, firstName, lastName, gender, create_date, mod_date, U_ID)"
-				+ " VALUES ("
+				+ " VALUES ('"
 				+ contact.getId() 
-				+ ", '" 
+				+ "', '" 
 				+ contact.getFirstname() 
 				+ "', '" 
 				+ contact.getLastname() 
 				+ "', '" 
 				+ contact.getSex() 
-				+ "', " 
+				+ "', '" 
 				+ new Timestamp(System.currentTimeMillis())  
-				+ ", "
+				+ "', '"
 				+ new Timestamp(System.currentTimeMillis()) 
-				+ ", " 
+				+ "', '" 
 				+ user.getId()
-				+ ")") ;
+				+ "')") ;
 						
 				return contact;	
 				// TODO: Timestamp testen...
@@ -206,9 +207,9 @@ Vector<Contact> result = new Vector<Contact>();
 		/**
 		 * Update.
 		 *
-		 * Update von Veränderungen falls sich die firstName, lastName und/oder gender ändert
+		 * Update von Verï¿½nderungen falls sich die firstName, lastName und/oder gender ï¿½ndert
 		 * Falls Updates vorgenommen werden wird ein neuer mod_date gesetzt
-		 * Gibt ein Contact zurück
+		 * Gibt ein Contact zurï¿½ck
 		 * 
 		 */
 		public Contact update(Contact contact){
@@ -239,9 +240,9 @@ Vector<Contact> result = new Vector<Contact>();
 		/**
 		 * Delete.
 		 *
-		 * Entfernt alles aus T_Permission_Contact wo die C_ID der ID des übergebenen Objekts entspricht
-		 * Damit lösen wir die Teilhaberschaft an einem Contact auf
-		 * der nächste Schritt entfernt alles aus T_Contact wo die C_ID der ID des übergebenen Objekts entspricht
+		 * Entfernt alles aus T_Permission_Contact wo die C_ID der ID des ï¿½bergebenen Objekts entspricht
+		 * Damit lï¿½sen wir die Teilhaberschaft an einem Contact auf
+		 * der nï¿½chste Schritt entfernt alles aus T_Contact wo die C_ID der ID des ï¿½bergebenen Objekts entspricht
 		 * 
 		 */
 		public void delete (Contact contact){
