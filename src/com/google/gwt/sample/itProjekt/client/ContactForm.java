@@ -82,6 +82,9 @@ public class ContactForm extends VerticalPanel {
 	ValueTextBox plzTextBox = new ValueTextBox("PLZ");
 	ValueTextBox cityTextBox = new ValueTextBox("Stadt");
 	
+	Label newPropertyLabel = new Label("Eigenschaft hinzufügen  ");
+	Button addNewPropertyButton = new Button("Hinzufügen");
+	
 	/**Listbox für das Hinzufügen neuer Eigenschaften */
 	ListBox newPropertyListBox = new ListBox();
 	
@@ -341,7 +344,7 @@ public class ContactForm extends VerticalPanel {
 				
 				public void onClick (ClickEvent event) {
 					if(contactToDisplay != null) {
-						addValuePopUp(propertyId);	
+						addValuePopUp(propertyId, row);	
 					/*
 					 * Eigentlich braucht man die Zeilen bei else jetzt gar nimmer?!
 					 */
@@ -385,10 +388,9 @@ public class ContactForm extends VerticalPanel {
 		 * 
 		 * @param pid die referenzierte Eigenschaft, wird vom ClickHandler übergeben
 		 */
-		public void addValuePopUp(int pid) {
+		public void addValuePopUp(int pid, int row) {
 
 			DialogBox addValuePopUp = new DialogBox();
-			addValuePopUp.show();
 			addValuePopUp.setText("Neue Ausprägung hinzufügen");
 			addValuePopUp.setAnimationEnabled(true);
 			addValuePopUp.setGlassEnabled(true);
@@ -402,6 +404,9 @@ public class ContactForm extends VerticalPanel {
 			Label addValueLabel = new Label();
 			ValueTextBox addValueTextBox = null;
 			Button addValueButton = new Button("Hinzufügen");
+			addValueDialogBoxPanel.add(addValueLabel);
+			
+			
 			
 			/*
 			 * Je nachdem, um welche Art von Eigenschaft es sich handelt, wir ein anderer Text im Pop-Up angezeigt und dem ClickHandler
@@ -411,35 +416,38 @@ public class ContactForm extends VerticalPanel {
 			case 1: addValueTextBox = new ValueTextBox("Telefonnummer");
 					addValueLabel.setText("Neue geschäftliche Telefonnummer: ");
 					addValueButton.addClickHandler(new AddValueClickHandler(addValuePopUp, addValueTextBox,
-							((ValueTable) contactTable.getWidget(6, 1)), pid, addValueTextBox.getText()));
+							((ValueTable) contactTable.getWidget(row, 1)), pid));
 					break;
 			case 2: addValueTextBox = new ValueTextBox("Telefonnummer");
 					addValueLabel.setText("Neue private Telefonnummer: ");
 					addValueButton.addClickHandler(new AddValueClickHandler(addValuePopUp, addValueTextBox,
-							((ValueTable) contactTable.getWidget(5, 1)), pid, addValueTextBox.getText()));
+							((ValueTable) contactTable.getWidget(row, 1)), pid));
 					break;
 			case 3: addValueTextBox = new ValueTextBox("Email");
 					addValueLabel.setText("Neue e-Mail-Adresse: ");
 					addValueButton.addClickHandler(new AddValueClickHandler(addValuePopUp, addValueTextBox,
-							((ValueTable) contactTable.getWidget(7, 1)), pid, addValueTextBox.getText()));
+							((ValueTable) contactTable.getWidget(row, 1)), pid));
 					break;
 			case 5: addValueTextBox = new ValueTextBox("Arbeitsplatz");
 					addValueLabel.setText("Neue Arbeitsstelle: ");
 					addValueButton.addClickHandler(new AddValueClickHandler(addValuePopUp, addValueTextBox,
-							((ValueTable) contactTable.getWidget(9, 1)), pid, addValueTextBox.getText()));
+							((ValueTable) contactTable.getWidget(row, 1)), pid));
+					Window.alert("case 5");
 					break;
 			case 10:addValueTextBox = new ValueTextBox("Homepage");
 					addValueLabel.setText("Neue Homepage: ");
 					addValueButton.addClickHandler(new AddValueClickHandler(addValuePopUp, addValueTextBox,
-							((ValueTable) contactTable.getWidget(8, 1)), pid, addValueTextBox.getText()));
+							((ValueTable) contactTable.getWidget(row, 1)), pid));
 					break;
 		
 			}
-		
-			addValueDialogBoxPanel.add(addValueLabel);
+			
 			addValueDialogBoxPanel.add(addValueTextBox);
 			addValueDialogBoxPanel.add(addValueButton);
 			addValuePopUp.add(addValueDialogBoxPanel);
+			addValuePopUp.show();
+			
+			
 		
 		}
 		
@@ -466,12 +474,13 @@ public class ContactForm extends VerticalPanel {
 			 * @param pid die ID der Eigenschaftsart des AddValueButtons
 			 * @param content der vom Nutzer eingetragene Inhalt der neuen Ausprägung
 			 */
-			public AddValueClickHandler(DialogBox popup, ValueTextBox tb, ValueTable ft, int pid, String content) {
+			public AddValueClickHandler(DialogBox popup, ValueTextBox tb, ValueTable ft, int pid) {
 				this.popup = popup;
 				this.tb = tb;
 				this.ft = ft;
 				this.pid = pid;
-				this. content = content;
+				//this. content = content;
+				Window.alert("AddValueclickhandler instantiiert");
 						
 			}
 			
@@ -485,7 +494,7 @@ public class ContactForm extends VerticalPanel {
 				else {
 					popup.hide();
 							
-					editorAdministration.createValue(contactToDisplay, pid, content, new AsyncCallback<Value>() {
+					editorAdministration.createValue(contactToDisplay, pid, tb.getText(), new AsyncCallback<Value>() {
 						public void onFailure(Throwable t) {
 							Window.alert("Ausprägung konnte nicht hinzugefügt werden. Versuchen Sie es erneut.");
 						}
@@ -853,6 +862,7 @@ public class ContactForm extends VerticalPanel {
 		
 		editorAdministration.getAllPredefinedPropertiesOf(new AsyncCallback<Vector<Property>>(){
 			public void onFailure(Throwable t) {
+				Window.alert("Auslesen aller vordefinierten Eigenschaften fehlgeschlagen");
 				
 			}
 			
@@ -899,35 +909,7 @@ public class ContactForm extends VerticalPanel {
 		contactTable.setWidget(3, 3, new ValueDisplay(new ValueTextBox("Geburtstag")));
 		((ValueDisplay) contactTable.getWidget(3, 3)).getWidget(0).setWidth("105px");
 		
-		
-		
 	
-		Label newPropertyLabel = new Label("Eigenschaft hinzufügen: ");
-		newPropertyListBox = new ListBox();
-		Button addNewPropertyButton = new Button("Hinzufügen");
-		
-		
-		for (Property p : allPredefinedProperties) {
-			newPropertyListBox.insertItem(p.getType(), p.getId());
-		}
-		
-//		newPropertyListBox.addItem("Private Telefonnummer");
-//		newPropertyListBox.addItem("Anschrift");
-//		newPropertyListBox.addItem("Geschäftliche Telefonnummer");
-//		newPropertyListBox.addItem("e-Mail-Adresse");
-//		newPropertyListBox.addItem("Homepage");
-//		newPropertyListBox.addItem("Arbeitsstelle");
-		newPropertyListBox.insertItem("Sonstiges", newPropertyListBox.getItemCount());
-		
-		
-		newPropertyPanel.add(newPropertyLabel);
-		newPropertyPanel.add(newPropertyListBox);
-		newPropertyPanel.addStyleName("propertyPanel");
-		newPropertyPanel.add(addNewPropertyButton);
-		
-		
-		
-		
 		
 		Button addContactButton = new Button("Neuen Kontakt anlegen");
 		Button shareContactButton = new Button("Kontakt teilen");
@@ -1195,8 +1177,8 @@ public class ContactForm extends VerticalPanel {
 					 * Wenn es sich bei der ValueTextBox um die firstnameTextBox oder lastnameTextBox handelt, wurde eine Veränderung am Kontaktstamm 
 					 * vorgenommen und demzufolge wird die Methode editContact aufgerufen.
 					 */
-					else if(vtb.getIsChanged() && (vtb.getTextBoxValue().equals(firstnameTextBox) ||
-								vtb.getTextBoxValue().equals(lastnameTextBox))){
+					else if(vtb.getIsChanged() && (vtb.equals(firstnameTextBox) ||
+								vtb.equals(lastnameTextBox))){
 						editorAdministration.editContact(contactToDisplay.getId(), firstnameTextBox.getText(), lastnameTextBox.getText(), 
 							contactToDisplay.getSex(), new AsyncCallback<Contact>() {
 	
@@ -1325,49 +1307,71 @@ public class ContactForm extends VerticalPanel {
 	
 	private class NewPropertyClickHandler implements ClickHandler{
 		DialogBox db = new DialogBox();
-		TextBox newPropertyTextBox = new TextBox();
+		TextBox newPropertyTextBox;
 		int pid;
 		String ptype;
+		int row;
+		
 		
 		public void onClick(ClickEvent event) {
-			pid = newPropertyListBox.getSelectedIndex();
 			ptype = newPropertyListBox.getSelectedItemText();
-			
-			if(pid ==100) {	
+			row = contactTable.getRowCount();
+			if(ptype == "Sonstiges") {
+				newPropertyTextBox = new TextBox();
 				db.show();
 				VerticalPanel dbPanel = new VerticalPanel();
-				db.setTitle("Neue Eigenschaft hinzufügen");
+				db.setText("Neue Eigenschaftsart hinzufügen");
 				
-				Button addPropertyButton = new Button("Eigenschaft anlegen");
+				Button addPropertyButton = new Button("Eigenschaftsart anlegen");
 				dbPanel.add(newPropertyTextBox);
 				dbPanel.add(addPropertyButton);
 				db.add(dbPanel);
 				
+					
 				addPropertyButton.addClickHandler(new ClickHandler(){
 					public void onClick(ClickEvent event) {
 						db.hide();
+						
 						editorAdministration.createProperty(contactToDisplay, newPropertyTextBox.getText(), new AsyncCallback<Property>() {
 							public void onFailure (Throwable t) {
-								
+								Window.alert("Eigenschaft anlegen gescheitert");
 							}
 							
 							public void onSuccess(Property result) {
 								ptype = result.getType();
 								pid = result.getId();
+								Window.alert("Eigenschaft anlegen erfolgreich");
+								contactTable.setWidget(row, 0, new ValuePanel(pid, row, ptype + ": "));
+								contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+								
+								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
+								contactTable.setWidget(row, 1, new ValueTable(pid));
 							}
 						
 						});
+					
 					}
 				});
-			}
+			}	
+//			}else {	
+//				editorAdministration.getPropertyByType(ptype, new AsyncCallback<Property>() {
+//					public void onFailure (Throwable t) {
+//						
+//					}
+//					
+//					public void onSuccess(Property result) {
+//						pid = result.getId();
+//						contactTable.setWidget(row, 0, new ValuePanel(pid, row, ptype + ": "));
+//						contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+//						
+//						contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
+//						contactTable.setWidget(row, 1, new ValueTable(pid));
+//					}
+//				});
+//			}
 			
-			contactTable.setWidget(contactTable.getRowCount(), 0, new ValuePanel(pid, contactTable.getRowCount(), ptype + ": "));
-			contactTable.getFlexCellFormatter().setVerticalAlignment(6, 0, ALIGN_TOP);
 			
-			
-			contactTable.getFlexCellFormatter().setColSpan(contactTable.getRowCount(), 1, 3);
-			contactTable.setWidget(contactTable.getRowCount(), 1, new ValueTable(pid));
-			
+
 		}
 	}
 	
@@ -1544,7 +1548,27 @@ public class ContactForm extends VerticalPanel {
 			
 			this.allValueTextBoxes = null;
 			
-		
+			
+			/*
+			 * Befüllen der Eigenschaften aus der Datenbank
+			 */
+			
+			for (Property p : allPredefinedProperties) {
+				newPropertyListBox.addItem(p.getType());
+			}
+			newPropertyListBox.addItem("Sonstiges");	
+			
+			
+			newPropertyPanel.add(newPropertyLabel);
+			newPropertyPanel.add(newPropertyListBox);
+			newPropertyPanel.addStyleName("propertyPanel");
+			newPropertyPanel.add(addNewPropertyButton);
+			
+			
+			
+			
+			
+			
 			contactToDisplay = c;
 			
 			/*
