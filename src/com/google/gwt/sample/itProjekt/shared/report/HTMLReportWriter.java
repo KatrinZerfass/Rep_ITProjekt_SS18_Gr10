@@ -89,7 +89,7 @@ public class HTMLReportWriter extends ReportWriter{
 		
 		for (int i=0; i<rows.size();i++) {
 			Row row=rows.elementAt(i);
-			result.append("tr>");
+			result.append("<tr>");
 			for(int k=0; k<row.getNumColumns();k++) {
 				if (i==0) {
 					result.append("<td>" + row.getColumnAt(k)
@@ -127,7 +127,7 @@ public class HTMLReportWriter extends ReportWriter{
 		
 		for (int i=0; i<rows.size();i++) {
 			Row row=rows.elementAt(i);
-			result.append("tr>");
+			result.append("<tr>");
 			for(int k=0; k<row.getNumColumns();k++) {
 				if (i==0) {
 					result.append("<td>" + row.getColumnAt(k)
