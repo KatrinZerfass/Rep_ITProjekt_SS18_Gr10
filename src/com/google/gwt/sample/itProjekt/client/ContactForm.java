@@ -1118,8 +1118,14 @@ public class ContactForm extends VerticalPanel {
 						Window.alert("Ihr Kontakt konnte nicht angelegt werden, bitte versuchen Sie es erneut.");
 						
 					}else if (checkValue(firstnameTextBox) && checkValue(lastnameTextBox) ) {
+						String sex = null;
+						switch(sexListBox.getSelectedItemText()) {
+							case "männlich": sex = "m";
+							case "weiblich": sex = "f";
+							case "Sonstiges": sex = "o";
+						}
 						
-						editorAdministration.createContact(firstnameTextBox.getText(), lastnameTextBox.getText(), sexListBox.getSelectedItemText(), currentUser, new AsyncCallback<Contact>(){
+						editorAdministration.createContact(firstnameTextBox.getText(), lastnameTextBox.getText(), sex, currentUser, new AsyncCallback<Contact>(){
 							public void onFailure(Throwable t) {
 								Window.alert("Fehler im Kontakt anlegen");
 							}

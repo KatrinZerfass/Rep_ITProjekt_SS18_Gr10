@@ -396,9 +396,9 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 							Window.alert("Fehler beim Erstellen der Kontaktliste!");
 							inputDB.hide();
 						}
-						public void onSuccess(ContactList arg0) {
+						public void onSuccess(ContactList result) {
 							Window.alert("Kontaktliste erfolgreich erstellt.");
-							clctvm.addContactList(arg0);
+							clctvm.addContactList(result);
 							inputDB.hide();
 						}
 					});
