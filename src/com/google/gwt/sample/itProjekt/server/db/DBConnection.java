@@ -10,7 +10,7 @@ import com.google.appengine.api.utils.SystemProperty;
 public class DBConnection {
 
    
-     
+     // TODO: Notiz zu Urheberschaft
     private static Connection con = null;
 
    
