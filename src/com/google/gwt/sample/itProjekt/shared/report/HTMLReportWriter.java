@@ -79,10 +79,10 @@ public class HTMLReportWriter extends ReportWriter{
 		
 		StringBuffer result=new StringBuffer();
 		
-		result.append("H1>" + r.getTitle() + "</H1>");
+		result.append("<H1>" + r.getTitle() + "</H1>");
 		result.append("<table><tr>");
 		result.append("<td valign=\"top\"><b>" + p2HTML(r.getHeaderData()) + "</b></td>");
-		result.append("<tr><tr><td></td><td>" + r.getCreated().toString()+ "</td></tr></table>");
+		result.append("<tr></tr><td></td><td>" + r.getCreated().toString()+ "</td></tr></table>");
 		
 		Vector<Row> rows=r.getRows();
 		result.append("<table>");
@@ -117,10 +117,10 @@ public class HTMLReportWriter extends ReportWriter{
 		
 		StringBuffer result=new StringBuffer();
 		
-		result.append("H1>" + r.getTitle() + "</H1>");
+		result.append("<H1>" + r.getTitle() + "</H1>");
 		result.append("<table><tr>");
 		result.append("<td valign=\"top\"><b>" + p2HTML(r.getHeaderData()) + "</b></td>");
-		result.append("<tr><tr><td></td><td>" + r.getCreated().toString()+ "</td></tr></table>");
+		result.append("<tr></tr><td></td><td>" + r.getCreated().toString()+ "</td></tr></table>");
 		
 		Vector<Row> rows=r.getRows();
 		result.append("<table>");
