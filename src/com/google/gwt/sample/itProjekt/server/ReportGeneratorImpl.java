@@ -102,11 +102,12 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	
 			for (Contact c: allContacts) {
 				Vector<Value> allValues=this.admin.getAllValuesOf(c);
+				System.out.println(allValues.toString());
 				Row contactRow=new Row();
 				contactRow.addColumn(new Column(String.valueOf(c.getId())));
 				contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 				contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
-				switch (c.getSex()){
+				switch(c.getSex()){
 					case "f":
 					contactRow.addColumn(new Column("weiblich"));
 					case "m":

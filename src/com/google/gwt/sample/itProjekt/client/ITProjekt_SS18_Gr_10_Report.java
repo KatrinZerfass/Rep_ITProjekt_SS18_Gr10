@@ -55,7 +55,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	/*
 	 * Die notwendigen Buttons für den Navigationsteil 
 	 */
-	Label searchLabel = new Label("Suche:");
+	Label searchLabel = new Label("Suche: ");
 	TextBox searchInput = new TextBox();
 	Button allContactsOfUserButton = new Button("Alle Kontakte eines Nutzers");
 	Button allSharedContactsOfUserButton = new Button("Alle geteilten Kontakte eines Nutzers");
