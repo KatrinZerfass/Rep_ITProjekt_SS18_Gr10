@@ -855,7 +855,7 @@ public class ContactForm extends VerticalPanel {
 		 * Zunächst wird der angemeldete Nutzer abgefragt und als Instanzenvariable gespeichert.
 		 */
 		
-		
+		Window.alert("blub");
 		currentUser = ClientsideSettings.getUser();
 		Window.alert("user aus den Clientsidesetting: " + ClientsideSettings.getUser().getEmail());
 		this.add(contactTable);
@@ -1367,23 +1367,23 @@ public class ContactForm extends VerticalPanel {
 					
 					}
 				});
-			}	
-//			}else {	
-//				editorAdministration.getPropertyByType(ptype, new AsyncCallback<Property>() {
-//					public void onFailure (Throwable t) {
-//						
-//					}
-//					
-//					public void onSuccess(Property result) {
-//						pid = result.getId();
-//						contactTable.setWidget(row, 0, new ValuePanel(pid, row, ptype + ": "));
-//						contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-//						
-//						contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-//						contactTable.setWidget(row, 1, new ValueTable(pid));
-//					}
-//				});
-//			}
+				
+			}else {	
+				editorAdministration.getPropertyByType(ptype, new AsyncCallback<Property>() {
+					public void onFailure (Throwable t) {
+						
+					}
+					
+					public void onSuccess(Property result) {
+						pid = result.getId();
+						contactTable.setWidget(row, 0, new ValuePanel(pid, row, ptype + ": "));
+						contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+						
+						contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
+						contactTable.setWidget(row, 1, new ValueTable(pid));
+					}
+				});
+			}
 			
 			
 

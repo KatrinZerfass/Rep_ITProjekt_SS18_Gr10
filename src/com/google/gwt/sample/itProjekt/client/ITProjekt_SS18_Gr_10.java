@@ -61,6 +61,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	
 	User user = null;
 	EditorAdministrationAsync editorAdministration = null;
+	ContactForm cf = null;
 	
 	
 	// aus der loadApplication kopiert
@@ -205,7 +206,8 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	    public void onSuccess(LoginInfo result) {
 	    	loginInfo = result;
 	    	if(loginInfo.isLoggedIn()) {
-	    		loadApplication();
+	    		loadUserInformation();
+	    		
 	    	}
 	    	else {
 	    		loadLogin();
@@ -220,7 +222,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
    * Die Methode loadApplication() wird aufgerufen, wenn der Benutzer eingeloggt ist. Sie beinhaltet 
    * die eigentliche Applikation.  
    */
-  	public void loadApplication() {
+  	public void loadUserInformation() {
 	    	
 		if(editorAdministration == null) {
 			editorAdministration = ClientsideSettings.getEditorAdministration();
@@ -239,15 +241,15 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 			public void onSuccess(User result) {
 				ClientsideSettings.setUser(result);
 				user = result;
-				
-				Window.alert("User Objekt wurde übergeben");
-				Window.alert("User-email: " + user.getEmail());
+				loadApplication();
 				
 			}
 			   		
 	    });
-	    				
+  	}	    				
 		
+  	
+  	public void loadApplication(){
 		/*
 		 * Im Folgenden wird das GUI aufgebaut
 		 */
@@ -259,7 +261,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		/*
 		 * Das Div "ContactForm" beinhaltet eine Instanz von ContactForm
 		 */
-		ContactForm cf = new ContactForm();
+		cf = new ContactForm();
 		RootPanel.get("ContactForm").add(cf);
 	
 		
