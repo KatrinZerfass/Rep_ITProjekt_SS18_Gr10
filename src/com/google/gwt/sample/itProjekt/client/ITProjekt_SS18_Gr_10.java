@@ -391,6 +391,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 				
 				@Override
 				public void onClick(ClickEvent arg0) {
+					Window.alert("user-email: " + user.getEmail());
 					editorAdministration.createContactList(inputDB.getTextBox().getText(), user, new AsyncCallback<ContactList>() {
 						public void onFailure(Throwable arg0) {
 							Window.alert("Fehler beim Erstellen der Kontaktliste!");
