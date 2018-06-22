@@ -25,6 +25,8 @@ public interface ReportGenerator extends RemoteService{
 	
 	public void init() throws IllegalArgumentException;
 	
+	public User getUserInformation (String email) throws IllegalArgumentException;
+	
 	/**
 	 * Generiert den Report f�r alle Kontakte eines bestimmten Users.
 	 *

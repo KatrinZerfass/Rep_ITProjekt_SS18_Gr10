@@ -55,6 +55,16 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	protected EditorAdministration getEditorAdministration() {
 		return this.admin;
 	}	
+	
+	
+	/**
+	 * Identifizierung des angemeldeten Users. 
+	 */
+	
+	public User getUserInformation (String email) throws IllegalArgumentException{
+		return this.admin.getUserInformation(email);
+	}
+	
 
 /* (non-Javadoc)
  * @see com.google.gwt.sample.itProjekt.shared.ReportGenerator#generateAllContactsOfUserReport(com.google.gwt.sample.itProjekt.shared.bo.User)
@@ -109,7 +119,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			Contact con1=new Contact();
 			con1.setFirstname("Heidi");
 			con1.setId(1234);
-			con1.setLastname("Almödi");
+			con1.setLastname("Almï¿½di");
 			con1.setSex("female");
 			Vector<Contact> allContacts= new Vector<Contact>();
 			System.out.println("9");
@@ -186,10 +196,10 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	else {
 		AllContactsWithValueReport report = new AllContactsWithValueReport();
 		
-		report.setTitle("Alle Kontakte mit der Ausprägung");
+		report.setTitle("Alle Kontakte mit der Ausprï¿½gung");
 		report.setCreated(new Date());
 			
-		report.setHeaderData(new SimpleParagraph("Gesuchte Ausprägung: " + v.getContent()));
+		report.setHeaderData(new SimpleParagraph("Gesuchte Ausprï¿½gung: " + v.getContent()));
 		
 		Row headline = new Row();
 		

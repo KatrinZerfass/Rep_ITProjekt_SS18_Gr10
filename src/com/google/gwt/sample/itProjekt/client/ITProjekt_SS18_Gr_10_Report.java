@@ -34,7 +34,6 @@ import com.google.gwt.user.client.Window;
 public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	
 	//Relevante Attribute für LoginService
-	private ReportGeneratorAsync reportGenerator=null;
 	
 	static final int REFRESH_INTERVAL = 5000;
 	private LoginInfo loginInfo = null;
@@ -49,6 +48,8 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	HorizontalPanel searchPanel=new HorizontalPanel();
 	HorizontalPanel addPanel = new HorizontalPanel();
 	
+	private User user = null;
+	private ReportGeneratorAsync reportGenerator=null;
 	
 	
 	/*
@@ -84,6 +85,30 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 
 	
 	 public void loadApplication() {
+		 
+		 if(reportGenerator == null){
+			 reportGenerator = ClientsideSettings.getReportGenerator();
+		 }
+		 
+		 
+		 // Anlegen des User Objekts & Abspeichern in einer lokalen Variabel
+		    
+		    reportGenerator.getUserInformation(loginInfo.getEmailAddress(), new AsyncCallback<User>() {
+				
+		    	public void onFailure(Throwable caught) {
+		    		Window.alert("AsyncCallback fehlgeschlagen");			
+				}
+
+				public void onSuccess(User result) {
+					ClientsideSettings.setUser(result);
+					if (user ==null) {
+						user = ClientsideSettings.getUser();
+					}
+					Window.alert("User Objekt wurde übergeben");
+					
+				}
+				   		
+		    });
 		  
 			signOutLink.setHref(loginInfo.getLogoutUrl());
 						

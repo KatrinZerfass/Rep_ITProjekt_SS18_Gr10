@@ -10,6 +10,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public interface ReportGeneratorAsync {
 
 	void init(AsyncCallback<Void> callback);
+	
+	void getUserInformation(String email, AsyncCallback<User> callback);
 
 	void generateAllContactsOfUserReport(User u, AsyncCallback<AllContactsOfUserReport> callback);
 

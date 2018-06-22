@@ -210,23 +210,23 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	    
 	    // Anlegen des User Objekts & Abspeichern in einer lokalen Variabel
 	    
-//	    editorAdministration.getUserInformation(loginInfo.getEmailAddress(), new AsyncCallback<User>() {
-//			
-//	    	public void onFailure(Throwable caught) {
-//	    		Window.alert("AsyncCallback fehlgeschlagen");			
-//			}
-//
-//			public void onSuccess(User result) {
-//				ClientsideSettings.setUser(result);
-//				if (user ==null) {
-//					user = ClientsideSettings.getUser();
-//				}
-//				Window.alert("User Objekt wurde übergeben");
-//				
-//			}
-//			   		
-//	    });
-//	    				
+	    editorAdministration.getUserInformation(loginInfo.getEmailAddress(), new AsyncCallback<User>() {
+			
+	    	public void onFailure(Throwable caught) {
+	    		Window.alert("AsyncCallback fehlgeschlagen");			
+			}
+
+			public void onSuccess(User result) {
+				ClientsideSettings.setUser(result);
+				if (user ==null) {
+					user = ClientsideSettings.getUser();
+				}
+				Window.alert("User Objekt wurde übergeben");
+				
+			}
+			   		
+	    });
+	    				
 		
 		/*
 		 * Im Folgenden wird das GUI aufgebaut
