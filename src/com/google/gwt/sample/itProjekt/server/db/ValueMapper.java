@@ -199,6 +199,7 @@ public class ValueMapper {
 			try{
 				
 				Statement stmt = con.createStatement();
+				
 				stmt.executeUpdate("DELETE FROM T_Value WHERE V_ID =" + value.getId());
 				
 				Property p = new Property();
@@ -212,8 +213,8 @@ public class ValueMapper {
 					
 					PropertyMapper.propertyMapper().delete(p);
 				}
-			
-			
+				
+				
 			}
 			
 			

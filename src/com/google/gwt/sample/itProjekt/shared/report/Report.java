@@ -1,7 +1,3 @@
-/*
- * 
- */
-
 package com.google.gwt.sample.itProjekt.shared.report;
 
 import java.io.Serializable;
