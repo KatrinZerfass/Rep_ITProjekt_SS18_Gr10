@@ -96,8 +96,10 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 			Vector<Contact> allContacts=this.admin.getAllOwnedContactsOf(u.getEmail());
 			allContacts.addAll(this.admin.getAllSharedContactsWith(u.getEmail()));
+			
 				
 			for (Contact c: allContacts) {
+				
 				Row contactRow=new Row();
 				contactRow.addColumn(new Column(String.valueOf(c.getId())));
 				contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
@@ -154,7 +156,15 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			contactRow.addColumn(new Column(String.valueOf(c.getId())));
 			contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 			contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
-			contactRow.addColumn(new Column(String.valueOf(c.getSex())));
+			switch (c.getSex()){
+			case "f":
+			contactRow.addColumn(new Column("weiblich"));
+			case "m":
+			contactRow.addColumn(new Column("männlich"));
+			case "o":
+			contactRow.addColumn(new Column("sonstige"));
+		}
+		
 			report.addRow(contactRow);
 		}
 		return report;
@@ -193,8 +203,15 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			contactRow.addColumn(new Column(String.valueOf(c.getId())));
 			contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 			contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
-			contactRow.addColumn(new Column(String.valueOf(c.getSex())));
-			report.addRow(contactRow);
+			switch (c.getSex()){
+			case "f":
+			contactRow.addColumn(new Column("weiblich"));
+			case "m":
+			contactRow.addColumn(new Column("männlich"));
+			case "o":
+			contactRow.addColumn(new Column("sonstige"));
+		}
+		report.addRow(contactRow);
 		}
 		return report;
 	}
