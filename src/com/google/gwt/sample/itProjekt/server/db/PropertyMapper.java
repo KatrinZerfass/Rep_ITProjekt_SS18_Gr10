@@ -48,6 +48,7 @@ public Property findByID(Property property){
 			Property p = new Property();
 			p.setId(rs.getInt("P_ID"));
 			p.setType(rs.getString("type"));
+			p.setContactID(rs.getInt("C_ID"));
 			return p;	
 		}
 	}
@@ -239,4 +240,24 @@ public void delete (Property property){
 				e2.printStackTrace();
 				}
 			}
+public Property findByType(Property property){
+	Connection con = DBConnection.connection();
+	
+	try{
+		Statement stmt = con.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT P_ID, type FROM T_Property WHERE type ='"+ property.getType() + "' AND C_ID=20000000 ORDER BY P_ID");
+		if (rs.next()){
+			Property p = new Property();
+			p.setId(rs.getInt("P_ID"));
+			p.setType(rs.getString("type"));
+			p.setContactID(rs.getInt("C_ID"));
+			return p;	
+		}
+	}
+	catch (SQLException e2){
+		e2.printStackTrace();
+		return null;
+	}
+	return null;
+}
 }
