@@ -70,63 +70,33 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
  * @see com.google.gwt.sample.itProjekt.shared.ReportGenerator#generateAllContactsOfUserReport(com.google.gwt.sample.itProjekt.shared.bo.User)
  */
 @Override	
-	public AllContactsOfUserReport generateAllContactsOfUserReport(User u) throws IllegalArgumentException {
-//		if(this.getEditorAdministration()==null) {
-//			return null;
-//		} 
-//		else {
+	public AllContactsOfUserReport generateAllContactsOfUserReport(User u) {
+		if(this.getEditorAdministration()==null) {
+			return null;
+		} 
+		else {
 			AllContactsOfUserReport report = new AllContactsOfUserReport();
 			
 			report.setTitle("Alle Kontakte des Nutzers");
 			report.setCreated(new Date());
-			System.out.println("1");
 			CompositeParagraph header=new CompositeParagraph();
-			System.out.println("2");
-			System.out.println(u.getEmail());
 			SimpleParagraph sp = new SimpleParagraph(u.getEmail());
-			System.out.println(sp.getText());
-			System.out.println("3");
-			
 			header.addSubParagraph(sp);
-			System.out.println(header.getParagraphAt(0).getText());
-			System.out.println("4");
-			
 			
 			report.setHeaderData(header);
-			System.out.println(report.getHeaderData().toString());
-			System.out.println("5");
-			
+
 			Row headline = new Row();
-			System.out.println("6");
 			
 			headline.addColumn(new Column ("Kontakt-ID"));
 			headline.addColumn(new Column("Vorname"));
 			headline.addColumn(new Column("Nachname"));
 			headline.addColumn(new Column("Geschlecht"));
-			System.out.println("7");
 			
 			report.addRow(headline);
-			System.out.println("8");
 
-//			Vector<Contact> allContacts=this.admin.getAllOwnedContactsOf(u);
-//			allContacts.addAll(this.admin.getAllSharedContactsWith(u));
-			
-			Contact con=new Contact();
-			con.setFirstname("Biene");
-			con.setLastname("Maya");
-			con.setSex("female");
-			con.setId(1234);
-			Contact con1=new Contact();
-			con1.setFirstname("Heidi");
-			con1.setId(1234);
-			con1.setLastname("Almödi");
-			con1.setSex("female");
-			Vector<Contact> allContacts= new Vector<Contact>();
-			System.out.println("9");
-			allContacts.addElement(con);
-			allContacts.addElement(con1);
-			System.out.println("10");
-			
+			Vector<Contact> allContacts=this.admin.getAllOwnedContactsOf(u.getEmail());
+			allContacts.addAll(this.admin.getAllSharedContactsWith(u.getEmail()));
+				
 			for (Contact c: allContacts) {
 				Row contactRow=new Row();
 				contactRow.addColumn(new Column(String.valueOf(c.getId())));
@@ -134,12 +104,10 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
 				contactRow.addColumn(new Column(String.valueOf(c.getSex())));
 				report.addRow(contactRow);
-				System.out.println("11");
 			}
-			System.out.println("12");
 			return report;
 		}
-//	}
+	}
 	
 /* (non-Javadoc)
  * @see com.google.gwt.sample.itProjekt.shared.ReportGenerator#generateAllSharedContactsOfUserReport(com.google.gwt.sample.itProjekt.shared.bo.User)
