@@ -88,6 +88,8 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 			Row headline = new Row();
 			Row propertyheadline=new Row();
+			propertyheadline.addColumn(new Column("Eigenschaft"));
+			propertyheadline.addColumn(new Column("Ausprägung"));
 			
 			headline.addColumn(new Column ("Kontakt-ID"));
 			headline.addColumn(new Column("Vorname"));
@@ -110,20 +112,24 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				switch(c.getSex()){
 					case "f":
 					contactRow.addColumn(new Column("weiblich"));
+					break;
 					case "m":
 					contactRow.addColumn(new Column("männlich"));
+					break;
 					case "o":
 					contactRow.addColumn(new Column("sonstige"));
+					break;
 				}
 				report.addRow(contactRow);
-				propertyheadline.addColumn(new Column("Eigenschaft"));
-				propertyheadline.addColumn(new Column("Ausprägung"));
-				for (Value v: allValues){
-					Property p=this.admin.getPropertyOfValue(v);
-					Row valueRow=new Row();
-					valueRow.addColumn(new Column(p.getType()));
-					valueRow.addColumn(new Column(v.getContent()));
-					report.addRow(valueRow);
+				if(allValues!=null){
+					report.addRow(propertyheadline);
+					for (Value v: allValues){
+						Property p=this.admin.getPropertyOfValue(v);
+						Row valueRow=new Row();
+						valueRow.addColumn(new Column(p.getType()));
+						valueRow.addColumn(new Column(v.getContent()));
+						report.addRow(valueRow);
+					}
 				}
 				
 			}
@@ -159,6 +165,9 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		headline.addColumn(new Column("Vorname"));
 		headline.addColumn(new Column("Nachname"));
 		headline.addColumn(new Column("Geschlecht"));
+
+		propertyheadline.addColumn(new Column("Eigenschaft"));
+		propertyheadline.addColumn(new Column("Ausprägung"));
 		
 		report.addRow(headline);
 
@@ -173,21 +182,25 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			switch (c.getSex()){
 			case "f":
 			contactRow.addColumn(new Column("weiblich"));
+			break;
 			case "m":
 			contactRow.addColumn(new Column("männlich"));
+			break;
 			case "o":
 			contactRow.addColumn(new Column("sonstige"));
-		}
+			break;
+			}
 		
 			report.addRow(contactRow);
-			propertyheadline.addColumn(new Column("Eigenschaft"));
-			propertyheadline.addColumn(new Column("Ausprägung"));
+			if(allValues!=null){
+			report.addRow(propertyheadline);
 			for (Value v: allValues){
 				Property p=this.admin.getPropertyOfValue(v);
 				Row valueRow=new Row();
 				valueRow.addColumn(new Column(p.getType()));
 				valueRow.addColumn(new Column(v.getContent()));
 				report.addRow(valueRow);
+				}
 			}
 		}
 		return report;
@@ -218,6 +231,9 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		headline.addColumn(new Column("Nachname"));
 		headline.addColumn(new Column("Geschlecht"));
 		
+		propertyheadline.addColumn(new Column("Eigenschaft"));
+		propertyheadline.addColumn(new Column("Ausprägung"));
+		
 		report.addRow(headline);
 
 		Vector<Contact> allContacts=this.admin.getAllContactsWith(v);
@@ -231,20 +247,24 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			switch (c.getSex()){
 				case "f":
 				contactRow.addColumn(new Column("weiblich"));
+				break;
 				case "m":
 				contactRow.addColumn(new Column("männlich"));
+				break;
 				case "o":
-				contactRow.addColumn(new Column("sonstige"));	
+				contactRow.addColumn(new Column("sonstige"));
+				break;
 			}
 			report.addRow(contactRow);
-			propertyheadline.addColumn(new Column("Eigenschaft"));
-			propertyheadline.addColumn(new Column("Ausprägung"));
+			if(allValues!=null){
+			report.addRow(propertyheadline);
 			for (Value val: allValues){
 				Property p=this.admin.getPropertyOfValue(val);
 				Row valueRow=new Row();
 				valueRow.addColumn(new Column(p.getType()));
 				valueRow.addColumn(new Column(val.getContent()));
 				report.addRow(valueRow);
+				}
 			}
 		}
 		return report;
