@@ -238,10 +238,10 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 
 			public void onSuccess(User result) {
 				ClientsideSettings.setUser(result);
-				if (user ==null) {
-					user = ClientsideSettings.getUser();
-				}
+				user = result;
+				
 				Window.alert("User Objekt wurde übergeben");
+				Window.alert("User-email: " + user.getEmail());
 				
 			}
 			   		
