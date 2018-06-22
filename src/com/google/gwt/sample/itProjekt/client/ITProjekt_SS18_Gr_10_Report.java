@@ -115,54 +115,41 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			allContactsOfUserButton.addClickHandler(new ClickHandler() {
 		         @Override
 		         public void onClick(ClickEvent event) {
-		        	 User u=new User();
-		        	 u.setEmail("test@test.de");
-		        	 u.setId(12345678);
-		        	 reportGenerator.generateAllContactsOfUserReport(u, new AsyncCallback<AllContactsOfUserReport>() {
-		 					 public void onFailure(Throwable caught) {
-		 				    RootPanel.get("reporttext").setVisible(true);
-							 Window.alert("fail");
-							 DialogBox dBox = new DialogBox();
-							 Label label = new Label(caught.getMessage());
-							 dBox.add(label);
-							 dBox.center();
-							 dBox.setAutoHideEnabled(true);
-							 dBox.show();
-							 mainPanel.add(dBox);
-
-						 }
-						 public void onSuccess(AllContactsOfUserReport result) {
-							 if (result != null) {
-				 				 RootPanel.get("reporttext").setVisible(true);
-				 				 Window.alert("läuft");
-								 HTMLReportWriter writer=new HTMLReportWriter();
-								 writer.process(result);
-								 RootPanel.get("reporttext").clear();
-								 RootPanel.get("reporttext").add(new HTML(writer.getReportText()));	
-							 }
-						}
-					 });
+		        	 ClientsideSettings.getEditorAdministration().getUserInformation(searchInput.getText(), new AsyncCallback<User>() {
+	        			 public void onFailure(Throwable caught) {
+	        				 
+	        			 }
+	    				 public void onSuccess(User result) {
+	     					 reportGenerator.generateAllContactsOfUserReport(result, new AsyncCallback<AllContactsOfUserReport>() {
+	    						 public void onFailure(Throwable caught) {
+	    							 RootPanel.get("reporttext").setVisible(true);
+	    							 Window.alert("fail");
+	    							 DialogBox dBox = new DialogBox();
+	    							 Label label = new Label(caught.getMessage());
+	    							 dBox.add(label);
+	    							 dBox.center();
+	    							 dBox.setAutoHideEnabled(true);
+	    							 dBox.show();
+	    							 mainPanel.add(dBox);
+	    							 
+	    						 }
+	    						 public void onSuccess(AllContactsOfUserReport result) {
+	    							 if (result != null) {
+	    								 RootPanel.get("reporttext").setVisible(true);
+	    				 				 Window.alert("läuft");
+	    								 HTMLReportWriter writer=new HTMLReportWriter();
+	    								 writer.process(result);
+	    								 RootPanel.get("reporttext").clear();
+	    								 RootPanel.get("reporttext").add(new HTML(writer.getReportText()));
+	    							 }
+	    						}
+	    					 });
+	        			}
+		        	 }
+		        	
+					 );
 		        	 
-//		        	 ClientsideSettings.getEditorAdministration().getUserInformation(searchInput.getText(), new AsyncCallback<User>() {
-//	        			 public void onFailure(Throwable caught) {
-//	        				 
-//	        			 }
-//	    				 public void onSuccess(User result) {
-//	     					 reportGenerator.generateAllContactsOfUserReport(result, new AsyncCallback<AllContactsOfUserReport>() {
-//	    						 public void onFailure(Throwable caught) {
-//	    							 
-//	    						 }
-//	    						 public void onSuccess(AllContactsOfUserReport result) {
-//	    							 if (result != null) {
-//	    								 HTMLReportWriter writer=new HTMLReportWriter();
-//	    								 writer.process(result);
-//	    								 RootPanel.get("reporttext").clear();
-//	    								 RootPanel.get("reporttext").add(new HTML(writer.getReportText()));	
-//	    							 }
-//	    						}
-//	    					 });
-//	        			}
-//		        	 });
+		        	
 		         }	 
 			});
 	 
