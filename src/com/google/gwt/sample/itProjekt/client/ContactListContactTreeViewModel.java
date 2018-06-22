@@ -1,3 +1,4 @@
+
 package com.google.gwt.sample.itProjekt.client;
 
 import java.util.HashMap;
@@ -170,7 +171,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		
 		selectionModel.setSelected(cl, true);
 		//Check
-		Window.alert("4. " + contactListDataProvider.getList().get(0).getName() + " im contactListDataProvider");
+		Window.alert("4. " + contactListDataProvider.getList().get(1).getName() + " im contactListDataProvider");
 		
 		
 	}
@@ -219,7 +220,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 			contactListDataProvider.getList().add(myContactsContactList);
 			
 			// User-Parameter muss den aktuell angemeldeten User zurückgeben
-			editorAdministration.getAllContactListsOf(new User().getEmail(), new AsyncCallback<Vector<ContactList>>(){
+			editorAdministration.getAllContactListsOf(ClientsideSettings.getUser().getEmail(), new AsyncCallback<Vector<ContactList>>(){
 				public void onFailure(Throwable t) {
 					
 				}
@@ -231,6 +232,8 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 					}
 				}
 			});
+			
+			
 			
 		
 			return new DefaultNodeInfo<ContactList>(contactListDataProvider,
