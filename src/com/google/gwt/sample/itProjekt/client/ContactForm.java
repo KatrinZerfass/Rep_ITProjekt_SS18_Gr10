@@ -89,7 +89,7 @@ public class ContactForm extends VerticalPanel {
 	ListBox newPropertyListBox = new ListBox();
 	
 	/**Der aktuell angemeldete Nutzer wird lokal zwischengespeichert.*/
-	User currentUser = null;
+	User currentUser = new User();
 	
 	/*
 	 * Buttons, auf die später auch außerhalb der Methode onLoad zugegriffen werden muss (wegen disablen), 
@@ -857,7 +857,7 @@ public class ContactForm extends VerticalPanel {
 		
 		
 		currentUser = ClientsideSettings.getUser();
-	
+		Window.alert("user aus den Clientsidesetting: " + ClientsideSettings.getUser().getEmail());
 		this.add(contactTable);
 		
 		editorAdministration.getAllPredefinedPropertiesOf(new AsyncCallback<Vector<Property>>(){
@@ -1103,7 +1103,7 @@ public class ContactForm extends VerticalPanel {
 	 * @author JanNoller
 	 */
 	private class SaveChangesClickHandler implements ClickHandler{
-		Contact newContact = null;
+		Contact newContact = new Contact();
 		
 		@Override
 		public void onClick(ClickEvent event) {
@@ -1132,7 +1132,7 @@ public class ContactForm extends VerticalPanel {
 						}
 						Window.alert(sex);
 						Window.alert("Vorname: " + firstnameTextBox.getText() + "Nachname: " + lastnameTextBox.getText());
-						Window.alert(currentUser.getEmail());
+						Window.alert("Email des currentuser: " +currentUser.getEmail());
 						editorAdministration.createContact(firstnameTextBox.getText(), lastnameTextBox.getText(), sex, currentUser, new AsyncCallback<Contact>(){
 							public void onFailure(Throwable t) {
 								Window.alert("Fehler im Kontakt anlegen");
