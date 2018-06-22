@@ -199,6 +199,7 @@ Connection con = DBConnection.connection();
 				
 				Statement stmt = con.createStatement();
 				stmt.executeUpdate("DELETE FROM T_Value WHERE V_ID =" +value.getId());
+				
 			}
 		
 		catch (SQLException e2){
