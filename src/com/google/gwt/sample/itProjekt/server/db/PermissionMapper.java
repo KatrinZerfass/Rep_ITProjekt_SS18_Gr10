@@ -209,7 +209,7 @@ public Permission update(Permission permission){
 						+ permission.getShareableobject().getId()
 						+ ", " 
 						+ permission.getParticipant().getId()
-						+ ", "
+						
 						+ ")") ;
 						
 				return permission;	
@@ -246,7 +246,7 @@ public Permission update(Permission permission){
 						+ permission.getShareableobject().getId()
 						+ ", " 
 						+ permission.getParticipant().getId()
-						+ ", "
+					
 						+ ")") ;
 						
 			return permission;	

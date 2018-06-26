@@ -121,7 +121,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 					break;
 				}
 				report.addRow(contactRow);
-				if(allValues!=null){
+				if(allValues.size()!=0){
 					report.addRow(propertyheadline);
 					for (Value v: allValues){
 						Property p=this.admin.getPropertyOfValue(v);
