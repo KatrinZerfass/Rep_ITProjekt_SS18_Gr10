@@ -271,6 +271,8 @@ Connection con = DBConnection.connection();
 		 *
 		 */
 		public Vector <Contact> getAllContacts(ContactList contactlist){
+			System.out.println("bis hierhin läufts");
+			System.out.println(contactlist.getName());
 			Connection con = DBConnection.connection();
 			
 			Vector<Contact> result = new Vector<Contact>();
@@ -278,6 +280,7 @@ Connection con = DBConnection.connection();
 			try{
 				Statement stmt = con.createStatement();
 				Statement stmt2 = con.createStatement();
+				System.out.println(contactlist.getName());
 				ResultSet rs = stmt.executeQuery("SELECT DISTINCT C_ID FROM T_Contact_Contactlist WHERE CL_ID =" + contactlist.getId() + " ORDER BY C_ID");
 
 				
@@ -292,11 +295,13 @@ Connection con = DBConnection.connection();
 					c.setSex(rs2.getString("gender"));
 					c.setOwner(rs2.getInt("U_ID"));
 					result.addElement(c);
+					System.out.println("läuft");
 				}
 				
 				
 			}
 			catch (SQLException e2){
+				System.out.println("läuft nicht");
 				e2.printStackTrace();
 				return result;
 			}
