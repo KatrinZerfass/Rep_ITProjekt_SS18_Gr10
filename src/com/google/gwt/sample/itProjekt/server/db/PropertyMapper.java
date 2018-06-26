@@ -233,11 +233,8 @@ public void delete (Property property){
 				try{
 					
 					Statement stmt = con.createStatement();
-					if(property.getContactID() != 20000000){
-						
 					stmt.executeUpdate("DELETE FROM T_Property WHERE P_ID =" + property.getId());
 					
-					}
 				}
 			
 			catch (SQLException e2){
