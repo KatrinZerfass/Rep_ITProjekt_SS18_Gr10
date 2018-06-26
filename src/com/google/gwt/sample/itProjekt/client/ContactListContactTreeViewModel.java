@@ -125,8 +125,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		selectedContactList = cl;
 		selectedContact = null;
 		contactForm.setSelected(null);
-		//Check
-		Window.alert("2. " + selectedContactList.getName() + " als selectedContactList des clctvm");
+		
 	}
 	
 	
@@ -170,9 +169,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		//contactDataProviders.put(cl, new ListDataProvider<Contact>());
 		
 		selectionModel.setSelected(cl, true);
-		//Check
-		Window.alert("4. " + contactListDataProvider.getList().get(1).getName() + " im contactListDataProvider");
-		
+			
 		
 	}
 	
@@ -229,9 +226,10 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 				public void onSuccess(Vector<ContactList> contactLists) {
 					for (ContactList cl : contactLists) {
 						contactListDataProvider.getList().add(cl);
-						Window.alert("Alle Kontaktlisten des Nutzers ausgelesen");
+						
 						
 					}
+					Window.alert("Alle Kontaktlisten des Nutzers ausgelesen");
 				}
 			});
 			return new DefaultNodeInfo<ContactList>(contactListDataProvider,
