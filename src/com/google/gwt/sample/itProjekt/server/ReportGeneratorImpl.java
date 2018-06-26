@@ -88,6 +88,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 			Row headline = new Row();
 			Row propertyheadline=new Row();
+			propertyheadline.addColumn(new Column(""));
 			propertyheadline.addColumn(new Column("Eigenschaft"));
 			propertyheadline.addColumn(new Column("Ausprägung"));
 			
@@ -121,7 +122,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 					break;
 				}
 				report.addRow(contactRow);
-				if(allValues.size()!=0){
+				if(allValues.size()!= 0){
 					report.addRow(propertyheadline);
 					for (Value v: allValues){
 						Property p=this.admin.getPropertyOfValue(v);
@@ -166,6 +167,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		headline.addColumn(new Column("Nachname"));
 		headline.addColumn(new Column("Geschlecht"));
 
+		propertyheadline.addColumn(new Column(""));
 		propertyheadline.addColumn(new Column("Eigenschaft"));
 		propertyheadline.addColumn(new Column("Ausprägung"));
 		
@@ -192,7 +194,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			}
 		
 			report.addRow(contactRow);
-			if(allValues!=null){
+			if(allValues.size() != 0){
 			report.addRow(propertyheadline);
 			for (Value v: allValues){
 				Property p=this.admin.getPropertyOfValue(v);
@@ -231,6 +233,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		headline.addColumn(new Column("Nachname"));
 		headline.addColumn(new Column("Geschlecht"));
 		
+		propertyheadline.addColumn(new Column(""));
 		propertyheadline.addColumn(new Column("Eigenschaft"));
 		propertyheadline.addColumn(new Column("Ausprägung"));
 		
@@ -256,7 +259,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				break;
 			}
 			report.addRow(contactRow);
-			if(allValues!=null){
+			if(allValues.size() != 0){
 			report.addRow(propertyheadline);
 			for (Value val: allValues){
 				Property p=this.admin.getPropertyOfValue(val);
