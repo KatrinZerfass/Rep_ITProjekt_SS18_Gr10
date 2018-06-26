@@ -229,37 +229,77 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 				public void onSuccess(Vector<ContactList> contactLists) {
 					for (ContactList cl : contactLists) {
 						contactListDataProvider.getList().add(cl);
+						Window.alert("Alle Kontaktlisten des Nutzers ausgelesen");
 						
 					}
 				}
 			});
-			
-			
-			
-		
 			return new DefaultNodeInfo<ContactList>(contactListDataProvider,
 				new ContactListCell(), selectionModel, null);
 			
 		
-		}if(value instanceof ContactList) {
+		}else if(value instanceof ContactList) {
 			final ListDataProvider<Contact> contactsProvider = new ListDataProvider<Contact>();
 			contactDataProviders.put((ContactList) value, contactsProvider);
-	
-			editorAdministration.getAllContactsOf((ContactList) value, user,
-				new AsyncCallback<Vector<Contact>>() {
-					public void onFailure(Throwable t) {
+			/*
+			 * Bei der angeklickten Kontaktliste handelt es sich um die default myContactsContactList 
+			 */
+			if((ContactList) value == myContactsContactList) {
+				editorAdministration.getAllContactsOfActiveUser(user, new AsyncCallback<Vector<Contact>>() {
+					public void onFailure (Throwable t) {
+						
 					}
-
 					
-					public void onSuccess(Vector<Contact> contacts) {
+					public void onSuccess (Vector<Contact> contacts) {
 						for (Contact c : contacts) {
 							contactsProvider.getList().add(c);
 						}
 					}
 				});
-
+			/*
+			 * Bei der angeklickten Kontaktliste handelt es sich um eine manuell erstellte Kontaktliste
+			 */
+			}else {
+				/*
+				 * Der Nutzer ist Eigentümer der Kontaktliste
+				 */
+				if(user.getId() == ((ContactList) value).getOwner()) {
+					
+					editorAdministration.getAllContactsOf((ContactList) value, user, new AsyncCallback<Vector<Contact>>() {
+							public void onFailure(Throwable t) {
+								Window.alert("Kontakte der Kontaktliste auslesen fehlgeschlagen");
+							}
+		
+							
+							public void onSuccess(Vector<Contact> contacts) {
+								for (Contact c : contacts) {
+									contactsProvider.getList().add(c);
+									Window.alert("Kontakte der Kontaktliste auslesen erfolgreich");
+								}
+							}
+						});
+		
+				/*
+				 * Der Nutzer ist nur Teilhaber der Kontaktliste 
+				 */
+				}
+//				}else {
+//					editorAdministration.getAllSharedContactsOf((ContactList) value, user, new AsyncCallback<Vector<Contact>>() {
+//						public void onFailure(Throwable t) {
+//							
+//						}
+//						public void onSuccess(Vector<Contact> contacts) {
+//							for (Contact c : contacts) {
+//								contactsProvider.getList().add(c);
+//							}
+//						}
+//					});
+//				}
 				return new DefaultNodeInfo<Contact>(contactsProvider,
 						new ContactCell(), selectionModel, null);
+			}
+				
+			
 		}
 		return null;
 	}
