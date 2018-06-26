@@ -339,7 +339,6 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 //		mccl.setId();
 		
 		clctvm.setMyContactsContactList(mccl);
-		Window.alert("Hey Dude!");
 
 		/*
 		 * Das div "Navigator" beinhaltet eine Instanz eines CellBrowswers
@@ -429,6 +428,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 					@Override
 					public void onSuccess(Void arg0) {
 						Window.alert("Kontaktliste erfolgreich gelöscht.");	
+						clctvm.removeContactList(clctvm.getSelectedContactList());
 					}
 				});
 				clctvm.removeContactList(clctvm.getSelectedContactList());

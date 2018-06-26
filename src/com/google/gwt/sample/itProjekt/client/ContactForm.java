@@ -345,13 +345,12 @@ public class ContactForm extends VerticalPanel {
 				public void onClick (ClickEvent event) {
 					if(contactToDisplay != null) {
 						addValuePopUp(propertyId, row);	
-					/*
-					 * Eigentlich braucht man die Zeilen bei else jetzt gar nimmer?!
-					 */
+					
 					}else { 
+						int valueTableRow = ((ValueTable)contactTable.getWidget(row, 1)).getRowCount();
+						
 						switch(propertyId) {
-						case 1: ((ValueTable) contactTable.getWidget(row, 1)).setWidget(((ValueTable) contactTable.getWidget(row, 1))
-									.getRowCount(),0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
+						case 1: ((ValueTable) contactTable.getWidget(row, 1)).setWidget(valueTableRow, 0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
 								break;
 						
 						case 2: ((ValueTable) contactTable.getWidget(row, 1)).setWidget(((ValueTable) contactTable.getWidget(row, 1))
@@ -855,7 +854,7 @@ public class ContactForm extends VerticalPanel {
 		 * Zunächst wird der angemeldete Nutzer abgefragt und als Instanzenvariable gespeichert.
 		 */
 		
-		Window.alert("blub");
+		Window.alert("blub. springt in onLoad on cf");
 		currentUser = ClientsideSettings.getUser();
 		Window.alert("user aus den Clientsidesetting: " + ClientsideSettings.getUser().getEmail());
 		this.add(contactTable);
@@ -1114,7 +1113,7 @@ public class ContactForm extends VerticalPanel {
 				}else {
 					if(!checkValue(firstnameTextBox) || !checkValue(lastnameTextBox) ) {
 						firstnameTextBox.setText("");
-						firstnameTextBox.setText("");
+						lastnameTextBox.setText("");
 						Window.alert("Ihr Kontakt konnte nicht angelegt werden, bitte versuchen Sie es erneut.");
 						
 					}else if (checkValue(firstnameTextBox) && checkValue(lastnameTextBox) ) {

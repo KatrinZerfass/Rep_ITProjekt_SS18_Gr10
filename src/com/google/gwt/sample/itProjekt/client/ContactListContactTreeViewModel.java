@@ -214,6 +214,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	public <T> NodeInfo<?> getNodeInfo(T value) {
 		
 		if(value.equals("Root")) {
+			//evtl. hier Abfrage, ob der Provider = null ist?
 			contactListDataProvider = new ListDataProvider<ContactList>();
 			Window.alert("Geht in NodeInfo rein");
 			
