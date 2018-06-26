@@ -2005,7 +2005,7 @@ public class ContactForm extends VerticalPanel {
 			firstnameTextBox.getElement().setPropertyString("placeholder", "Vorname...");
 			firstnameTextBox.setText("");
 			lastnameTextBox.getElement().setPropertyString("placeholder", "Nachname...");
-			firstnameTextBox.setText("");
+			lastnameTextBox.setText("");
 			((ValueDisplay) contactTable.getWidget(3,3)).getValueTextBox().getElement().setPropertyString("placeholder", "Geburtsdatum...");			
 //			streetTextBox.getElement().setPropertyString("placeholder", "Straße...");
 //			houseNrTextBox.getElement().setPropertyString("placeholder", "Hausnummer...");
