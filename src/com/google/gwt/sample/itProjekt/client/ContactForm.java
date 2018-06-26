@@ -1250,7 +1250,7 @@ public class ContactForm extends VerticalPanel {
 		        db.add(panel);
 		    	db.show();
 	
-		        editorAdministration.getAllContactListsOfActiveUser(currentUser, new AsyncCallback<Vector<ContactList>>() {
+		        editorAdministration.getAllOwnedContactListsOfActiveUser(currentUser, new AsyncCallback<Vector<ContactList>>() {
 		        	
 		        	public void onFailure(Throwable t) {
 		        		Window.alert("Fehler beim Abruf der Kontaklisten des Nutzers");

@@ -45,6 +45,10 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		}
 	}
 	
+	public User getUser(String email) {
+		return uMapper.findByEMail(email);
+	}
+	
 	@Override
 	public User createUser(String email)
 			throws IllegalArgumentException {
@@ -63,15 +67,20 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		return result;
 	}
 	
-	public Vector<ContactList> getAllContactListsOfActiveUser(User user) throws IllegalArgumentException {
+	public Vector<ContactList> getAllOwnedContactListsOfActiveUser(User user) throws IllegalArgumentException {
 		
 		return clMapper.findAllByUID(user);
 	}
 
 	@Override
-	public Vector<ContactList> getAllContactListsOf(String email) throws IllegalArgumentException {
+	public Vector<ContactList> getAllContactListsOfUser(String email) throws IllegalArgumentException {
+		
+		Vector<ContactList> result = new Vector<ContactList>();
+		
+		result = clMapper.findAllByUID(uMapper.findByEMail(email));
+		result.addAll(pmMapper.getAllContactListsByUID(uMapper.findByEMail(email)));
 
-		return clMapper.findAllByUID(uMapper.findByEMail(email));
+		return result;
 	}
 
 	@Override
@@ -89,9 +98,9 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	}
 
 	@Override
-	public Vector<Contact> getAllContactsOf(ContactList contactlist, User user) throws IllegalArgumentException {
+	public Vector<Contact> getAllContactsOf(ContactList contactlist) throws IllegalArgumentException {
 
-		return clMapper.getAllContacts(contactlist, user);
+		return clMapper.getAllContacts(contactlist);
 	}
 
 	@Override
@@ -276,7 +285,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	public Property getPropertyOfValue(Value value) throws IllegalArgumentException {
 		
 		Property property = new Property();
-		property.setId(value.getId());
+		property.setId(value.getPropertyid());
 		
 		return pMapper.findByID(property);
 	}
@@ -326,8 +335,16 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	@Override
 	public Vector<Contact> getAllSharedContactsOfContactList(ContactList contactlist, User user)
 			throws IllegalArgumentException {
-		Vector<Contact> allContactsInCL = getAllContactsOf(contactlist, user);
+		Vector<Contact> allContactsInCL = getAllContactsOf(contactlist);
+		Vector<Contact> allContactsWithPermission = pmMapper.getAllContactsByUID(user);
+		Vector<Contact> result = new Vector<Contact>();
 		
-		return null;
+		for (Contact loop : allContactsInCL) {
+			if (allContactsWithPermission.contains(loop)) {
+				result.add(loop);
+			}
+		}
+		
+		return result;
 	}
 }

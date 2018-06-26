@@ -221,7 +221,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 			contactListDataProvider.getList().add(myContactsContactList);
 			
 			// User-Parameter muss den aktuell angemeldeten User zurückgeben
-			editorAdministration.getAllContactListsOf(ClientsideSettings.getUser().getEmail(), new AsyncCallback<Vector<ContactList>>(){
+			editorAdministration.getAllContactListsOfUser(ClientsideSettings.getUser().getEmail(), new AsyncCallback<Vector<ContactList>>(){
 				public void onFailure(Throwable t) {
 					
 				}
@@ -265,7 +265,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 				 */
 				if(user.getId() == ((ContactList) value).getOwner()) {
 					
-					editorAdministration.getAllContactsOf((ContactList) value, user, new AsyncCallback<Vector<Contact>>() {
+					editorAdministration.getAllContactsOf((ContactList) value, new AsyncCallback<Vector<Contact>>() {
 							public void onFailure(Throwable t) {
 								Window.alert("Kontakte der Kontaktliste auslesen fehlgeschlagen");
 							}
@@ -283,18 +283,18 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 				 * Der Nutzer ist nur Teilhaber der Kontaktliste 
 				 */
 				}
-//				}else {
-//					editorAdministration.getAllSharedContactsOf((ContactList) value, user, new AsyncCallback<Vector<Contact>>() {
-//						public void onFailure(Throwable t) {
-//							
-//						}
-//						public void onSuccess(Vector<Contact> contacts) {
-//							for (Contact c : contacts) {
-//								contactsProvider.getList().add(c);
-//							}
-//						}
-//					});
-//				}
+				else {
+					editorAdministration.getAllSharedContactsOfContactList((ContactList) value, user, new AsyncCallback<Vector<Contact>>() {
+						public void onFailure(Throwable t) {
+							
+						}
+						public void onSuccess(Vector<Contact> contacts) {
+							for (Contact c : contacts) {
+								contactsProvider.getList().add(c);
+							}
+						}
+					});
+				}
 				return new DefaultNodeInfo<Contact>(contactsProvider,
 						new ContactCell(), selectionModel, null);
 			}

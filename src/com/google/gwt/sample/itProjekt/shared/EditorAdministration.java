@@ -12,19 +12,21 @@ public interface EditorAdministration extends RemoteService{
 	
 	public User getUserInformation (String email) throws IllegalArgumentException;
 	
+	public User getUser (String email) throws IllegalArgumentException;
+	
 	public User createUser(String email) throws IllegalArgumentException;
 	
 	public Vector<Contact> getAllContactsOfActiveUser(User user) throws IllegalArgumentException;
 	
-	public Vector<ContactList> getAllContactListsOfActiveUser(User user) throws IllegalArgumentException;
+	public Vector<ContactList> getAllOwnedContactListsOfActiveUser(User user) throws IllegalArgumentException;
 	
-	public Vector<ContactList> getAllContactListsOf(String email) throws IllegalArgumentException;
+	public Vector<ContactList> getAllContactListsOfUser(String email) throws IllegalArgumentException;
 	
 	public Vector<Contact> getAllOwnedContactsOf(String email) throws IllegalArgumentException;
 	
 	public Vector<Contact> getAllSharedContactsWith(String email) throws IllegalArgumentException;
 	
-	public Vector<Contact> getAllContactsOf(ContactList contactlist, User user) throws IllegalArgumentException;
+	public Vector<Contact> getAllContactsOf(ContactList contactlist) throws IllegalArgumentException;
 	
 	public Vector<Contact> getAllContactsWith(Value value) throws IllegalArgumentException;
 	

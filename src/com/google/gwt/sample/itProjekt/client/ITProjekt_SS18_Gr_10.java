@@ -486,7 +486,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 				@Override
 				public void onClick(ClickEvent arg0) {
 					
-					editorAdministration.getUserInformation(inputDB.getTextBox().getText(), new AsyncCallback<User>() {
+					editorAdministration.getUser(inputDB.getTextBox().getText(), new AsyncCallback<User>() {
 						@Override
 						public void onFailure(Throwable arg0) {
 							Window.alert("Fehler beim holen des Users für das teilen der Kontaktliste!");
@@ -500,7 +500,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 					});
 					
 					if(allUsers.contains(shareUser) && shareUser != user) {
-						editorAdministration.shareContactList(clctvm.getSelectedContactList(), inputDB.getTextBox().getText(), new AsyncCallback<Permission>() {
+						editorAdministration.shareContactList(clctvm.getSelectedContactList(), shareUser.getEmail(), new AsyncCallback<Permission>() {
 							@Override
 							public void onFailure(Throwable arg0) {
 								Window.alert("Fehler beim Teilen der Kontaktliste!");
