@@ -16,14 +16,14 @@ import com.google.gwt.sample.itProjekt.shared.bo.User;
  */
 public class PermissionMapper {
 
-	/** Konstruktor für den PermissionMapper (Singleton) */
+	/** Konstruktor fï¿½r den PermissionMapper (Singleton) */
 	//static weil Singleton. Einzige Instanz dieser Klasse
 	private static PermissionMapper  permissionmapper = null;
 	
 	/**
 	 * PermissionMapper.
 	 *
-	 * Falls noch kein PermissionMapper existiert erstellt er ein neuen PermissionMapper und gibt ihn zurück
+	 * Falls noch kein PermissionMapper existiert erstellt er ein neuen PermissionMapper und gibt ihn zurï¿½ck
 	 * 
 	 */
 	public static PermissionMapper permissionMapper() {
@@ -36,12 +36,12 @@ public class PermissionMapper {
 	/**
 	 * FindAll.
 	 *
-	 * Gibt alle Permission Objekte zurück welche mit U_ID und C_ID befüllt sind
-	 * Hierfür holen wir U_ID und C_ID aus der T_Permission_Contact Tabelle und setzten als permissionID ein zusammengesetzten Key aus U_ID und C_ID
-	 * Für das setzten des Participant holen wir, durch das aufrufen der findByID im UserMapper, die U_ID
+	 * Gibt alle Permission Objekte zurï¿½ck welche mit U_ID und C_ID befï¿½llt sind
+	 * Hierfï¿½r holen wir U_ID und C_ID aus der T_Permission_Contact Tabelle und setzten als permissionID ein zusammengesetzten Key aus U_ID und C_ID
+	 * Fï¿½r das setzten des Participant holen wir, durch das aufrufen der findByID im UserMapper, die U_ID
 	 * und speichern diese in einem Permission Objekt ab
 	 * zudem setzen wir die C_ID in einem neuen Contact Objekt und ein Shareableobject durch das aufrufen der findByID Methode im ContactMapper 
-	 * Das selbe führen wir für ContactList durch und fügen das Permission Objekt dem Vector hinzu
+	 * Das selbe fï¿½hren wir fï¿½r ContactList durch und fï¿½gen das Permission Objekt dem Vector hinzu
 	 * 
 	 * 
 	 */
@@ -89,9 +89,9 @@ public class PermissionMapper {
 /**
  * Update.
  *
- * Update von Veränderungen falls sich die Shareableobject ändert
- * Falls die ID unter 30000000 liegt wird ein Contact geupdated, falls die ID über 30000000 liegt werden ContactLists geupdated
- * Gibt ein permission zurück
+ * Update von Verï¿½nderungen falls sich die Shareableobject ï¿½ndert
+ * Falls die ID unter 30000000 liegt wird ein Contact geupdated, falls die ID ï¿½ber 30000000 liegt werden ContactLists geupdated
+ * Gibt ein permission zurï¿½ck
  */
 public Permission update(Permission permission){
 		
@@ -131,10 +131,10 @@ public Permission update(Permission permission){
 	/**
 	 * Delete.
 	 *
-	 * falls die ID des übergebenen Shareableobjects Objekts unter 30000000 liegt wird aus der T_Permission_Contact alles entfernt
+	 * falls die ID des ï¿½bergebenen Shareableobjects Objekts unter 30000000 liegt wird aus der T_Permission_Contact alles entfernt
 	 * wo die U_ID und C_ID der ID des Participants und des Shareableobjects entspricht
 	 * 
-	 * falls die ID des übergebenen Shareableobjects Objekts über 30000000 liegt wird aus der T_Permission_Contactlist alles entfernt
+	 * falls die ID des ï¿½bergebenen Shareableobjects Objekts ï¿½ber 30000000 liegt wird aus der T_Permission_Contactlist alles entfernt
 	 * wo die U_ID und C_ID der ID des Participants und des Shareableobjects entspricht
 	 */
 	public void delete (Permission permission){
@@ -168,8 +168,8 @@ public Permission update(Permission permission){
 	/**
 	 * DeleteAllByCLID.
 	 *
-	 * Entfernt alle Einträge aus T_Permission_Contactlist falls eine ContactList gelöscht wird
-	 * Hierfür wird die T_Permission_Contactlist nach der CL_ID durchsucht wo sie der ID der ContactList entspricht welches wir übergeben bekommen haben
+	 * Entfernt alle Eintrï¿½ge aus T_Permission_Contactlist falls eine ContactList gelï¿½scht wird
+	 * Hierfï¿½r wird die T_Permission_Contactlist nach der CL_ID durchsucht wo sie der ID der ContactList entspricht welches wir ï¿½bergeben bekommen haben
 	 * 
 	 */
 	public void deleteAllByCLID (ContactList contactlist){
@@ -190,9 +190,9 @@ public Permission update(Permission permission){
 	/**
 	 * ShareContact.
 	 *
-	 * Befüllt die T_Permission_Contact mit einer zusammengesetzten ID aus C_ID und U_ID 
-	 * und befüllt die Tabelle mit der C_ID aus dem Shareableobject und der U_ID aus Participant
-	 * und gibt die permission zurück
+	 * Befï¿½llt die T_Permission_Contact mit einer zusammengesetzten ID aus C_ID und U_ID 
+	 * und befï¿½llt die Tabelle mit der C_ID aus dem Shareableobject und der U_ID aus Participant
+	 * und gibt die permission zurï¿½ck
 	 * 
 	 */
 	public Permission shareContact(Permission permission){
@@ -203,7 +203,6 @@ public Permission update(Permission permission){
 		try{
 			Statement stmt = con.createStatement();
 				
-				permission.setId(permission.getShareableobject().getId() + permission.getParticipant().getId());
 				
 				stmt.executeUpdate("INSERT INTO T_Permission_Contact (C_ID, U_ID)"
 						+ " VALUES ("
@@ -226,20 +225,21 @@ public Permission update(Permission permission){
 	/**
 	 * Share contact list.
 	 *
-	 * Befüllt die T_Permission_Contactlist mit einer zusammengesetzten ID aus CL_ID und U_ID 
-	 * und befüllt die Tabelle mit der CL_ID aus dem Shareableobject und der U_ID aus Participant
-	 * und gibt die permission zurück
+	 * Befï¿½llt die T_Permission_Contactlist mit einer zusammengesetzten ID aus CL_ID und U_ID 
+	 * und befï¿½llt die Tabelle mit der CL_ID aus dem Shareableobject und der U_ID aus Participant
+	 * und gibt die permission zurï¿½ck
 	 * 
 	 */
 	public Permission shareContactList(Permission permission){
 		
-		
+		System.out.println("kommt hier rein");
+		System.out.println(permission.getShareableobject().getId());
+		System.out.println(permission.getParticipant().getId());
 		Connection con = DBConnection.connection();
 		
 		try{
 			Statement stmt = con.createStatement();
-				
-			permission.setId(permission.getShareableobject().getId() + permission.getParticipant().getId());
+			
 				
 			stmt.executeUpdate("INSERT INTO T_Permission_Contactlist (CL_ID, U_ID)"
 						+ " VALUES ("
@@ -262,11 +262,11 @@ public Permission update(Permission permission){
 /**
  * GetAllContactsByUID.
  * 
- * Sucht nach allen Contacts die einem User zur Verfügung stehen
- * Hierfür suchen wir nach allen U_ID die der ID des User Objektes entsprechen
+ * Sucht nach allen Contacts die einem User zur Verfï¿½gung stehen
+ * Hierfï¿½r suchen wir nach allen U_ID die der ID des User Objektes entsprechen
  * Die gefundenen C_ID werden in einem Contact Objekt abgespeichert 
- * und durch den Aufruf der findByID im ContactMapper vollständig befüllt und dem Vector hinzugefügt
- * Zum Schluss geben wir den Vector zurück
+ * und durch den Aufruf der findByID im ContactMapper vollstï¿½ndig befï¿½llt und dem Vector hinzugefï¿½gt
+ * Zum Schluss geben wir den Vector zurï¿½ck
  * 
  */
 public Vector<Contact> getAllContactsByUID(User user){
@@ -294,11 +294,11 @@ public Vector<Contact> getAllContactsByUID(User user){
 /**
  * Gets the all contact lists by UID.
  *
- * Sucht nach allen ContactLists die einem User zur Verfügung stehen
- * Hierfür suchen wir nach allen U_ID die der ID des User Objektes entsprechen
+ * Sucht nach allen ContactLists die einem User zur Verfï¿½gung stehen
+ * Hierfï¿½r suchen wir nach allen U_ID die der ID des User Objektes entsprechen
  * Die gefundenen CL_ID werden in einem ContactList Objekt abgespeichert 
- * und durch den Aufruf der findByID im ContactListMapper vollständig befüllt und dem Vector hinzugefügt
- * Zum Schluss geben wir den Vector zurück
+ * und durch den Aufruf der findByID im ContactListMapper vollstï¿½ndig befï¿½llt und dem Vector hinzugefï¿½gt
+ * Zum Schluss geben wir den Vector zurï¿½ck
  */
 public Vector<ContactList> getAllContactListsByUID(User user){
 	

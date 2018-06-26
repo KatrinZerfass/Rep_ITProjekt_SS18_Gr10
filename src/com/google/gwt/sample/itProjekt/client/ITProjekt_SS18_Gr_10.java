@@ -427,12 +427,14 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 					}
 					@Override
 					public void onSuccess(Void arg0) {
+						Window.alert(clctvm.getSelectedContactList().getName());
 						Window.alert("Kontaktliste erfolgreich gelöscht.");	
 						clctvm.removeContactList(clctvm.getSelectedContactList());
+						clctvm.setSelectedContactList(clctvm.getMyContactsContactList());
 					}
 				});
-				clctvm.removeContactList(clctvm.getSelectedContactList());
-				clctvm.setSelectedContactList(clctvm.getMyContactsContactList());
+				
+				
 			}
 			else {
 				editorAdministration.deletePermission(user, clctvm.getSelectedContactList(), new AsyncCallback<Void>() {
@@ -492,6 +494,8 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 						@Override
 						public void onSuccess(User arg0) {
 							shareUser = arg0;
+							Window.alert("Email: shareUser " + shareUser.getEmail());
+							Window.alert(inputDB.getTextBox().getText());
 						}
 					});
 					

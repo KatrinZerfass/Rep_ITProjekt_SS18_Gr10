@@ -348,6 +348,8 @@ public class ContactForm extends VerticalPanel {
 					
 					}else { 
 						int valueTableRow = ((ValueTable)contactTable.getWidget(row, 1)).getRowCount();
+						Window.alert("Widget der contactTable an der Stelle " + row + ", 1: " + ((ValueTable) contactTable.getWidget(row, 1)).getPid());
+						Window.alert("Aktuelle Reihe der ValueTable: " + valueTableRow);
 						
 						switch(propertyId) {
 						case 1: ((ValueTable) contactTable.getWidget(row, 1)).setWidget(valueTableRow, 0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
@@ -461,7 +463,6 @@ public class ContactForm extends VerticalPanel {
 			ValueTextBox tb;
 			FlexTable ft;
 			int pid;
-			String content;
 			
 			/**
 			 * Der Konstruktor von AddValueClickHandler. Ihm müssen alle Parameter aus dem Popup übergeben werden, damit er in einem 
@@ -478,7 +479,6 @@ public class ContactForm extends VerticalPanel {
 				this.tb = tb;
 				this.ft = ft;
 				this.pid = pid;
-				//this. content = content;
 				Window.alert("AddValueclickhandler instantiiert");
 						
 			}
@@ -2008,7 +2008,7 @@ public class ContactForm extends VerticalPanel {
 			firstnameTextBox.getElement().setPropertyString("placeholder", "Vorname...");
 			firstnameTextBox.setText("");
 			lastnameTextBox.getElement().setPropertyString("placeholder", "Nachname...");
-			firstnameTextBox.setText("");
+			lastnameTextBox.setText("");
 			((ValueDisplay) contactTable.getWidget(3,3)).getValueTextBox().getElement().setPropertyString("placeholder", "Geburtsdatum...");			
 //			streetTextBox.getElement().setPropertyString("placeholder", "Straße...");
 //			houseNrTextBox.getElement().setPropertyString("placeholder", "Hausnummer...");

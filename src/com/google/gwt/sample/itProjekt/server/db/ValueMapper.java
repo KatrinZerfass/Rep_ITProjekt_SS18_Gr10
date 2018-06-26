@@ -12,14 +12,14 @@ import com.google.gwt.sample.itProjekt.shared.bo.Property;
 
 public class ValueMapper {
 
-	/** Konstruktor für den ValueMapper (Singleton) */
+	/** Konstruktor fï¿½r den ValueMapper (Singleton) */
 	//static weil Singleton. Einzige Instanz dieser Klasse
 	private static ValueMapper valuemapper = null;
 	
 	/**
 	 * ValueMapper.
 	 *
-	 *Falls noch kein ValueMapper existiert erstellt er ein neuen ValueMapper und gibt ihn zurück
+	 *Falls noch kein ValueMapper existiert erstellt er ein neuen ValueMapper und gibt ihn zurï¿½ck
 	 * 
 	 */
 	public static ValueMapper  valueMapper() {
@@ -33,8 +33,8 @@ public class ValueMapper {
 	 * FindAllByValue.
 	 * 
 	 * Findet alle V_ID durch ein value welches als Filterkriterium dient
-	 * Befüllt ein Value Objekt mit V_ID und value und fügt dieses Objekt dem Vector hinzu
-	 * Gibt ein Vector voller Value Objekte zurück
+	 * Befï¿½llt ein Value Objekt mit V_ID und value und fï¿½gt dieses Objekt dem Vector hinzu
+	 * Gibt ein Vector voller Value Objekte zurï¿½ck
 	 *
 	 */
 	public Vector<Value> findAllByValue(Value value){
@@ -65,8 +65,8 @@ public class ValueMapper {
 	 * FindAllContactsByValue.
 	 *
 	 * Findet alle C_ID durch ein value welches als Filterkriterium dient
-	 * Mit dem Contact Objekt welches C_ID beinhaltet wird durch findByID im ContactMapper das Contact Objekt vollständig befüllt und fügt diesen dem Vector hinzu
-	 * Gibt ein Vector voller Contact Objekte zurück welche eine bestimmte value besitzen
+	 * Mit dem Contact Objekt welches C_ID beinhaltet wird durch findByID im ContactMapper das Contact Objekt vollstï¿½ndig befï¿½llt und fï¿½gt diesen dem Vector hinzu
+	 * Gibt ein Vector voller Contact Objekte zurï¿½ck welche eine bestimmte value besitzen
 	 *
 	 */
 	public Vector<Contact> findAllContactsByValue(Value value){
@@ -92,9 +92,9 @@ public class ValueMapper {
 	/**
 	 * FindAll.
 	 *
-	 *Gibt alle Value Objekte zurück welche mit V_ID und value befüllt sind
-	 *Hierfür holen wir V_ID und value aus der T_Value Tabelle und speichern diese in einem Value Objekt ab und fügen diese dem Vector hinzu
-	 *Am Ende geben wir diesen Vector zurück
+	 *Gibt alle Value Objekte zurï¿½ck welche mit V_ID und value befï¿½llt sind
+	 *Hierfï¿½r holen wir V_ID und value aus der T_Value Tabelle und speichern diese in einem Value Objekt ab und fï¿½gen diese dem Vector hinzu
+	 *Am Ende geben wir diesen Vector zurï¿½ck
 	 *
 	 */
 	public Vector<Value> findAll(){
@@ -125,10 +125,10 @@ public class ValueMapper {
 	/**
 	 * Insert.
 	 *
-	 *Sucht nach der höchsten V_ID um diese um eins zu erhöhen und als neue V_ID zu nutzen
-	 *Befüllt T_Value mit V_ID, P_ID, value, C_ID und isShared
+	 *Sucht nach der hï¿½chsten V_ID um diese um eins zu erhï¿½hen und als neue V_ID zu nutzen
+	 *Befï¿½llt T_Value mit V_ID, P_ID, value, C_ID und isShared
 	 *Mit dem isShared legen wir fest ob die value True oder False ist bzw. ob es geteilt ist oder nicht
-	 *Eine value wird zum Schluss zurückgegeben
+	 *Eine value wird zum Schluss zurï¿½ckgegeben
 	 *
 	 */
 	public Value insert(Value value, Contact contact, Property property){
@@ -167,8 +167,8 @@ public class ValueMapper {
 		/**
 		 * Update.
 		 *
-		 *Update von Veränderungen falls sich value, P_ID, C_ID oder isShared ändert
-		 *Gibt ein value zurück
+		 *Update von Verï¿½nderungen falls sich value, P_ID, C_ID oder isShared ï¿½ndert
+		 *Gibt ein value zurï¿½ck
 		 * 
 		 */
 		public Value update(Value value, Contact contact, Property property){
@@ -189,10 +189,10 @@ public class ValueMapper {
 		/**
 		 * Delete.
 		 *
-		 *Entfernt alles aus T_Value wo die V_ID der ID des übergebenen Objekts entspricht
+		 *Entfernt alles aus T_Value wo die V_ID der ID des ï¿½bergebenen Objekts entspricht
 		 * 
 		 */
-		//TODO kommentar ergänzen
+		//TODO kommentar ergï¿½nzen
 		public void delete (Value value){
 			Connection con = DBConnection.connection();
 			
@@ -251,9 +251,9 @@ public class ValueMapper {
 		/**
 		 * getAllContactsByPID.
 		 *
-		 *Befüllt ein Vector mit Contacts welche eine bestimmte Property haben und gibt diesen Vactor zurück
-		 *Hierfür suchen wir nach C_ID in der T_Value Tabelle wo die P_ID der ID des übergebenen Objekts entspricht
-		 *Mit der C_ID befüllen wir ein Contact Objekt mit der Methode findByID und fügen diesen dem Vector hinzu
+		 *Befï¿½llt ein Vector mit Contacts welche eine bestimmte Property haben und gibt diesen Vactor zurï¿½ck
+		 *Hierfï¿½r suchen wir nach C_ID in der T_Value Tabelle wo die P_ID der ID des ï¿½bergebenen Objekts entspricht
+		 *Mit der C_ID befï¿½llen wir ein Contact Objekt mit der Methode findByID und fï¿½gen diesen dem Vector hinzu
 		 *
 		 *
 		 */
@@ -282,9 +282,9 @@ public class ValueMapper {
 		/**
 		 * getAllPropertiesByCID.
 		 *
-		 *Befüllt ein Vector mit Property welche eine bestimmter Contact hat und gibt diesen Vactor zurück
-		 *Hierfür suchen wir nach P_ID in der T_Value Tabelle wo die C_ID der ID des übergebenen Objekts entspricht
-		 *Mit dieser P_ID werden alle type und P_ID aus T_Property geholt und in einem neuen Property Objekt gespeichert und den Vector hinzugefügt
+		 *Befï¿½llt ein Vector mit Property welche eine bestimmter Contact hat und gibt diesen Vactor zurï¿½ck
+		 *Hierfï¿½r suchen wir nach P_ID in der T_Value Tabelle wo die C_ID der ID des ï¿½bergebenen Objekts entspricht
+		 *Mit dieser P_ID werden alle type und P_ID aus T_Property geholt und in einem neuen Property Objekt gespeichert und den Vector hinzugefï¿½gt
 		 *
 		 */
 		public Vector <Property> getAllPropertiesByCID (Contact contact){
@@ -319,9 +319,9 @@ public class ValueMapper {
 		/**
 		 * getAllValueByCID.
 		 *
-		 * Befüllt ein Vector mit Value welche eine bestimmter Contact hat und gibt diesen Vactor zurück
-		 * Hierfür suchen wir nach V_ID, value, P_ID und isShared in der T_Value Tabelle wo die C_ID der ID des übergebenen Objekts entspricht
-		 * Wir befüllen diese Daten in ein Value Objekt welches wir dem Vector hinzufügen
+		 * Befï¿½llt ein Vector mit Value welche eine bestimmter Contact hat und gibt diesen Vactor zurï¿½ck
+		 * Hierfï¿½r suchen wir nach V_ID, value, P_ID und isShared in der T_Value Tabelle wo die C_ID der ID des ï¿½bergebenen Objekts entspricht
+		 * Wir befï¿½llen diese Daten in ein Value Objekt welches wir dem Vector hinzufï¿½gen
 		 *
 		 */
 		public Vector <Value> getAllValueByCID (Contact contact){
@@ -354,9 +354,9 @@ public class ValueMapper {
 		/**
 		 * getAllSharedValueByCID.
 		 *
-		 * Befüllt ein Vector mit Value welche eine bestimmter Contact hat und geteilt ist und gibt diesen Vactor zurück
-		 * Hierfür suchen wir nach V_ID, value, P_ID und isShared in der T_Value Tabelle wo die C_ID der ID des übergebenen Objekts entspricht und isShared 1 (TRUE) entspricht
-		 * Wir befüllen diese Daten in ein Value Objekt welches wir dem Vector hinzufügen
+		 * Befï¿½llt ein Vector mit Value welche eine bestimmter Contact hat und geteilt ist und gibt diesen Vactor zurï¿½ck
+		 * Hierfï¿½r suchen wir nach V_ID, value, P_ID und isShared in der T_Value Tabelle wo die C_ID der ID des ï¿½bergebenen Objekts entspricht und isShared 1 (TRUE) entspricht
+		 * Wir befï¿½llen diese Daten in ein Value Objekt welches wir dem Vector hinzufï¿½gen
 		 *
 		 */
 		
@@ -390,9 +390,9 @@ public class ValueMapper {
 		/**
 		 * FindAllByPID.
 		 * 
-		 * Findet alle V_ID, value, P_ID und isShared wo die P_ID und die C_ID der ID der beiden übergebenen Objekte entspricht
-		 * Befüllt das Value Objekt mit den Attributen und fügt dieses Objekt dem Vector hinzu
-		 * Gibt ein Vector voller Value Objekte zurück
+		 * Findet alle V_ID, value, P_ID und isShared wo die P_ID und die C_ID der ID der beiden ï¿½bergebenen Objekte entspricht
+		 * Befï¿½llt das Value Objekt mit den Attributen und fï¿½gt dieses Objekt dem Vector hinzu
+		 * Gibt ein Vector voller Value Objekte zurï¿½ck
 		 *
 		 */
 		
