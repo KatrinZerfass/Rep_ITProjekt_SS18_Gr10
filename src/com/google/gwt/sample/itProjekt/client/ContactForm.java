@@ -1241,7 +1241,7 @@ public class ContactForm extends VerticalPanel {
 		        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 		        
 		        Label label = new Label("Bitte wählen Sie die Kontaktliste aus.");
-		        Button ok = new Button("OK");
+		        final Button ok = new Button("OK");
 		        
 		        panel.add(label);
 		        panel.add(listbox);
@@ -1252,46 +1252,49 @@ public class ContactForm extends VerticalPanel {
 	
 		        editorAdministration.getAllContactListsOfActiveUser(currentUser, new AsyncCallback<Vector<ContactList>>() {
 		        	
-		        	public void onFailure(Throwable t) {	
+		        	public void onFailure(Throwable t) {
+		        		Window.alert("Fehler beim Abruf der Kontaklisten des Nutzers");
 		        	}
 		        	
 		        	public void onSuccess(Vector<ContactList> result) {
 		        		contactLists = result;
+		        		for (ContactList cl : contactLists) {
+				        	listbox.addItem(cl.getName());
+				        }
+		        		ok.addClickHandler(new ClickHandler() {
+				        	
+				        	public void onClick(ClickEvent event) {
+				        		for (ContactList cl : contactLists) {
+				        			if (listbox.getSelectedItemText() == cl.getName()) {
+				        				choice = cl;
+				        			}
+				        		} 
+				        		db.hide();
+				        		
+				        		editorAdministration.addContactToContactList(choice, contactToDisplay, new AsyncCallback<ContactList>() {
+				        			
+				        			public void onFailure(Throwable z) {
+				        				Window.alert("Fehler beim Hinzufügen des Kontakts zur Kontaktliste!");
+				        			}
+				        			
+				        			public void onSuccess(ContactList result) {
+				        				Window.alert("Kontakt zur Kontaktliste hinzugefügt.");
+				        			}
+								});
+				        	}
+				        });
 		        	}
 				});
 		        
 		        /*
 		         * In der Dialogbox soll eine ListBox angezeigt werden, die alle Kontaktlisten des Nutzers beinhaltet.
 		         */
-		        for (ContactList cl : contactLists) {
-		        	listbox.addItem(cl.getName());
-		        }
+		        
 		        
 		       /*
 		        * Hat der Nutzer eine Kontaktliste ausgewählt und klickt "OK", so wird der Kontakt dieser Kontaktliste hinzugefügt.
 		        */
-		        ok.addClickHandler(new ClickHandler() {
-		        	
-		        	public void onClick(ClickEvent event) {
-		        		for (ContactList cl : contactLists) {
-		        			if (listbox.getSelectedItemText() == cl.getName()) {
-		        				choice = cl;
-		        			}
-		        		} 
-		        		db.hide();
-		        		
-		        		editorAdministration.addContactToContactList(choice, contactToDisplay, new AsyncCallback<ContactList>() {
-		        			
-		        			public void onFailure(Throwable z) {
-		        				Window.alert("Fehler beim Hinzufügen des Kontakts zur Kontaktliste!");
-		        			}
-		        			
-		        			public void onSuccess(ContactList result) {
-		        				Window.alert("Kontakt zur Kontaktliste hinzugefügt.");
-		        			}
-						});
-		        	}
-		        });
+		        
 			}
 	        
 		}

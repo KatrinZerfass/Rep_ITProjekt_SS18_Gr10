@@ -321,4 +321,13 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 
 		return uMapper.findAll();
 	}
+
+
+	@Override
+	public Vector<Contact> getAllSharedContactsOfContactList(ContactList contactlist, User user)
+			throws IllegalArgumentException {
+		Vector<Contact> allContactsInCL = getAllContactsOf(contactlist, user);
+		
+		return null;
+	}
 }

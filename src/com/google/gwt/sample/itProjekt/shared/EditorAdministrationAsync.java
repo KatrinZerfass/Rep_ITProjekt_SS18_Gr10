@@ -83,4 +83,6 @@ public interface EditorAdministrationAsync {
 	void getAllUsers(AsyncCallback<Vector<User>> callback);
 
 	void getPropertyByType(String type, AsyncCallback<Property> callback);
+
+	void getAllSharedContactsOfContactList(ContactList contactlist, User user, AsyncCallback<Vector<Contact>> callback);
 }
