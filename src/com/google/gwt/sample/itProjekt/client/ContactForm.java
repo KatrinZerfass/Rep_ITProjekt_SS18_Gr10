@@ -441,7 +441,15 @@ public class ContactForm extends VerticalPanel {
 					addValueButton.addClickHandler(new AddValueClickHandler(addValuePopUp, addValueTextBox,
 							((ValueTable) contactTable.getWidget(row, 1)), pid));
 					break;
-		
+			default: 
+				if(pid>10) {
+					addValueTextBox = new ValueTextBox("");
+					addValueLabel.setText("Neue Ausprägung: ");
+					addValueButton.addClickHandler(new AddValueClickHandler(addValuePopUp, addValueTextBox,
+							((ValueTable) contactTable.getWidget(row, 1)), pid));
+					break;
+					
+				}
 			}
 			
 			addValueDialogBoxPanel.add(addValueTextBox);
@@ -581,9 +589,10 @@ public class ContactForm extends VerticalPanel {
 		 * @param v die anzuzeigende Ausprägung
 		 */
 		public void setValue(Value v) {
+			Window.alert("Springt in die setValue der ValueTextBox");
 			this.value = v;
 			if(value!= null) {
-				this.setText(value.getContent());
+				setText(value.getContent());
 			//	allValueTextBoxes.add(this);
 			}else {
 				/*
@@ -1061,8 +1070,7 @@ public class ContactForm extends VerticalPanel {
 				Window.alert("kein Kontakt ausgewählt");
 			}
 			else {	
-				if (clctvm.getSelectedContact().getOwner() == currentUser.getId()) {
-					clearContactForm();
+				if (compareUser()) {
 					editorAdministration.deleteContact(contactToDisplay.getId(), new AsyncCallback<Void>() {
 						public void onFailure(Throwable arg0) {
 							Window.alert("Fehler beim Löschen des Kontakts!");
@@ -1074,7 +1082,6 @@ public class ContactForm extends VerticalPanel {
 					});
 				}
 				else {
-					clearContactForm();
 					editorAdministration.deletePermission(currentUser, contactToDisplay, new AsyncCallback<Void>() {
 						@Override
 						public void onFailure(Throwable arg0) {
@@ -1082,10 +1089,13 @@ public class ContactForm extends VerticalPanel {
 						}
 						@Override
 						public void onSuccess(Void arg0) {
-							Window.alert("Kontakt erfolgreich entfernt.");
+							Window.alert("Kontakt-Teilhaberschaft erfolgreich entfernt.");
+							clctvm.removeContactOfContactList(clctvm.getSelectedContactList(), contactToDisplay);
+							
 						}
 					});
 				}
+				clearContactForm();
 			}
 		}
 	}
@@ -1350,6 +1360,7 @@ public class ContactForm extends VerticalPanel {
 		public void onClick(ClickEvent event) {
 			ptype = newPropertyListBox.getSelectedItemText();
 			row = contactTable.getRowCount();
+			
 			if(ptype == "Sonstiges") {
 				newPropertyTextBox = new TextBox();
 				db.show();
@@ -1572,6 +1583,9 @@ public class ContactForm extends VerticalPanel {
 			}
 		}
 		
+		contactTable.removeCell(3, 2);
+		contactTable.removeCell(3, 3);
+		
 		/*
 		 * Bei jedem neuen Aufruf von setSelected werden die ausgefüllten ValueTextBoxen geleert und aus dem Vector alle TextBoxen entfernt.
 		 */
@@ -1581,9 +1595,6 @@ public class ContactForm extends VerticalPanel {
 				vtb.setValue((Value) null);
 			}
 		}
-		
-//		this.allValueTextBoxes = null;
-		
 		
 		if (c != null){
 			Window.alert("Kontakt ungleich null");
