@@ -786,6 +786,8 @@ public class ContactForm extends VerticalPanel {
 			setAnimationEnabled(true);
 			setGlassEnabled(true);
 			
+			Window.alert("EmailDialogBox Konstruktor");
+			
 			Button ok = new Button("OK");
 	        ok.addClickHandler(new ClickHandler() {
 	        	public void onClick(ClickEvent event) {
@@ -1039,6 +1041,7 @@ public class ContactForm extends VerticalPanel {
 				 * Über eine Instanz der inneren Klasse EmailDialogBox können Objekte mit anderen Nutzern geteilt werden.
 				 */
 				EmailDialogBox dialog = new EmailDialogBox();
+				Window.alert("EmailDialogBox instanziert");
 				dialog.show();
 			}
 		}
@@ -1291,6 +1294,28 @@ public class ContactForm extends VerticalPanel {
 	        
 		}
 	}
+	
+//	private class AddContactToContactListCallback implements AsyncCallback<ContactList>{
+//		
+//		Button ok = null;
+//		
+//		AddContactToContactListCallback(Button b){
+//			ok=b;
+//		}
+//
+//		@Override
+//		public void onFailure(Throwable arg0) {
+//			// TODO Auto-generated method stub
+//			
+//		}
+//
+//		@Override
+//		public void onSuccess(ContactList arg0) {
+//			// TODO Auto-generated method stub
+//			
+//		}
+//		
+//	}
 	
 	/**
 	 * Die innere Klasse RemoveContactFromContactListClickHandler.

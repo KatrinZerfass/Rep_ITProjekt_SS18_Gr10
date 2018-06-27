@@ -45,6 +45,9 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	
 	/** Der contactDataProvider vom Typ Map verbindet je eine Kontaktliste mit einem ListDataProvider von Kontakten.  */
 	private Map<ContactList, ListDataProvider<Contact>> contactDataProviders = null;
+	
+	private ContactList nameResultsCL = new ContactList();
+	private ContactList valueResultsCL = new ContactList();
 
 	/**
 	 * Die innere Klasse BusinessObjectKeyProvider
@@ -203,6 +206,26 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		selectionModel.setSelected(cl, true);
 	}
 	
+	public void addNameResults () {
+		
+		removeContactList(nameResultsCL);
+		
+		nameResultsCL = new ContactList();
+		getNameResultsCL().setName("Suchergebnis im Namen");
+		
+		addContactList(nameResultsCL);
+	}
+	
+	public void addValueResults () {
+		
+		removeContactList(valueResultsCL);
+		
+		valueResultsCL = new ContactList();
+		getValueResultsCL().setName("Suchergebnis in den Eigenschaften");
+		
+		addContactList(valueResultsCL);
+	}
+	
 	
 
 	/** 
@@ -315,6 +338,26 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 
 	public boolean isLeaf(Object value) {
 		return (value instanceof Contact);
+	}
+
+
+	public ContactList getNameResultsCL() {
+		return nameResultsCL;
+	}
+
+
+	public void setNameResultsCL(ContactList nameResultsCL) {
+		this.nameResultsCL = nameResultsCL;
+	}
+
+
+	public ContactList getValueResultsCL() {
+		return valueResultsCL;
+	}
+
+
+	public void setValueResultsCL(ContactList valueResultsCL) {
+		this.valueResultsCL = valueResultsCL;
 	}
 
 	
