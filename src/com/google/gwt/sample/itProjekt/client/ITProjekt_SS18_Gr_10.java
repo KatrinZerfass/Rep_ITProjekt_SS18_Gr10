@@ -304,7 +304,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		
 		//Das Suchfeld
 		
-		SearchButtonClickHandler SearchButtonHandler = new SearchButtonClickHandler();
+		SearchButtonClickHandler SearchButtonHandler = new SearchButtonClickHandler(searchTextBox);
 		searchButton.addClickHandler(SearchButtonHandler);
 		searchLabel.setText("Durchsuchen Sie Ihre Kontaktlisten nach bestimmten Ausprägungen: ");
 		searchLabel.setWidth("240px");
@@ -529,9 +529,15 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	 */
 	private class SearchButtonClickHandler implements ClickHandler {
 		
+		TextBox searchTextBox = null;
+		
 		Vector<Contact> nameResults = new Vector<Contact>();
 		Vector<Contact> valueResults = new Vector<Contact>();
 		Vector<Contact> allContactsOfUser = new Vector<Contact>();
+		
+		public SearchButtonClickHandler(TextBox sTB) {
+			searchTextBox = sTB;
+		}
 		
 		@Override
 		public void onClick(ClickEvent arg0) {
