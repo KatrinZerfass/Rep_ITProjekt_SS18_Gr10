@@ -49,6 +49,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	VerticalPanel mainPanel = new VerticalPanel ();
 	HorizontalPanel reportbuttonPanel=new HorizontalPanel();
 	HorizontalPanel searchPanel=new HorizontalPanel();
+	HorizontalPanel descriptionPanel = new HorizontalPanel();
 	
 	HorizontalPanel addPanel = new HorizontalPanel();
 	
@@ -72,8 +73,10 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 		reportGenerator=ClientsideSettings.getReportGenerator();
 		RootPanel.get("reporttext").setVisible(false);
 		searchheading.addStyleName("searchheading");
-		searchLabel.addStyleName("searchlabel");
 		signOutLink.addStyleName("signout");
+		signInLink.addStyleName("reportbutton");
+
+		searchLabel.addStyleName("searchlabel");
 		reportbuttonPanel.addStyleName("top-buttons");
 		allContactsOfUserButton.addStyleName("reportbutton");
 		allSharedContactsOfUserButton.addStyleName("reportbutton");
@@ -266,6 +269,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			});
 			
 			
+			descriptionPanel.add(searchheading);
 			addPanel.add(searchLabel);
 			addPanel.add(searchInput);
 			reportbuttonPanel.add(allContactsOfUserButton);
@@ -277,6 +281,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			
 			RootPanel.get("report").add(reportbuttonPanel);
 			mainPanel.add(searchPanel);
+			mainPanel.add(descriptionPanel);
 			mainPanel.add(addPanel);
 			RootPanel.get("report").add(mainPanel);
 			  
