@@ -283,18 +283,19 @@ Connection con = DBConnection.connection();
 				System.out.println(contactlist.getName());
 				ResultSet rs = stmt.executeQuery("SELECT DISTINCT C_ID FROM T_Contact_Contactlist WHERE CL_ID =" + contactlist.getId() + " ORDER BY C_ID");
 
-				
+				Contact c = new Contact();
+				c.setId(rs.getInt("C_ID"));
 				
 				while (rs.next()){
 										
-					ResultSet rs2 = stmt2.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID FROM T_Contact WHERE C_ID =" + rs.getInt("C_ID") + " ORDER BY C_ID");
-					Contact c = new Contact();
-					c.setId(rs2.getInt("C_ID"));
-					c.setFirstname(rs2.getString("firstName"));
-					c.setLastname(rs2.getString("lastName"));
-					c.setSex(rs2.getString("gender"));
-					c.setOwner(rs2.getInt("U_ID"));
-					result.addElement(c);
+					ResultSet rs2 = stmt2.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID FROM T_Contact WHERE C_ID =" + c.getId() + " ORDER BY C_ID");
+					Contact c2 = new Contact();
+					c2.setId(rs2.getInt("C_ID"));
+					c2.setFirstname(rs2.getString("firstName"));
+					c2.setLastname(rs2.getString("lastName"));
+					c2.setSex(rs2.getString("gender"));
+					c2.setOwner(rs2.getInt("U_ID"));
+					result.addElement(c2);
 					System.out.println("läuft");
 				}
 				
