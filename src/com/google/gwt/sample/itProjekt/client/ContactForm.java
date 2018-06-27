@@ -1578,6 +1578,7 @@ public class ContactForm extends VerticalPanel {
 	 * @author KatrinZerfass & JanNoller
 	 */
 	public void setSelected(Contact c) {
+		Window.alert("Springt in die setSelected von ContactForm");
 		
 		if(newPropertyPanel.isVisible()==true) {
 			newPropertyPanel.setVisible(false);
@@ -1589,12 +1590,14 @@ public class ContactForm extends VerticalPanel {
 			}
 		}
 		
-		if(contactTable.getWidget(3, 2) != null) {
+		if(contactTable.isCellPresent(3, 2)) {
 			contactTable.removeCell(3, 2);
 		}
-		if(contactTable.getWidget(3, 3) != null) {
+		
+		if(contactTable.isCellPresent(3, 3)) {
 			contactTable.removeCell(3, 3);
 		}
+		
 		
 		/*
 		 * Bei jedem neuen Aufruf von setSelected werden die ausgefüllten ValueTextBoxen geleert und aus dem Vector alle TextBoxen entfernt.
