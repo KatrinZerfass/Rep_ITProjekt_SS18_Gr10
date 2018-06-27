@@ -1,8 +1,10 @@
 package com.google.gwt.sample.itProjekt.shared;
 
+import com.google.gwt.sample.itProjekt.shared.bo.Property;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
 import com.google.gwt.sample.itProjekt.shared.bo.Value;
 import com.google.gwt.sample.itProjekt.shared.report.AllContactsOfUserReport;
+import com.google.gwt.sample.itProjekt.shared.report.AllContactsWithPropertyReport;
 import com.google.gwt.sample.itProjekt.shared.report.AllContactsWithValueReport;
 import com.google.gwt.sample.itProjekt.shared.report.AllSharedContactsOfUserReport;
 
@@ -53,6 +55,10 @@ public interface ReportGenerator extends RemoteService{
 	 * @return den Report f�r alle Kontakte mit einer bestimmten Auspr�gung.
 	 * @throws IllegalArgumentException the illegal argument exception
 	 */
-	public abstract AllContactsWithValueReport generateAllContactsWithValueReport(Value v) throws IllegalArgumentException;
+	
+	public abstract AllContactsWithPropertyReport generateAllContactsWithPropertyReport(User user, Property property) throws IllegalArgumentException;
+
+	public abstract AllContactsWithValueReport generateAllContactsWithValueReport(User user, Value value) throws IllegalArgumentException;
+
 
 }
