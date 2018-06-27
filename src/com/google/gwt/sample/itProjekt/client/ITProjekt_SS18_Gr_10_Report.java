@@ -74,6 +74,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 		searchheading.addStyleName("searchheading");
 		searchLabel.addStyleName("searchlabel");
 		signOutLink.addStyleName("signout");
+		reportbuttonPanel.addStyleName("top-buttons");
 		allContactsOfUserButton.addStyleName("reportbutton");
 		allSharedContactsOfUserButton.addStyleName("reportbutton");
 		allContactsWithValueButton.addStyleName("reportbutton");
@@ -274,7 +275,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			
 			RootPanel.get("signout").add(signOutLink);
 			
-			mainPanel.add(reportbuttonPanel);
+			RootPanel.get("report").add(reportbuttonPanel);
 			mainPanel.add(searchPanel);
 			mainPanel.add(addPanel);
 			RootPanel.get("report").add(mainPanel);

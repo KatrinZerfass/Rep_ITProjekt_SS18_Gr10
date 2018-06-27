@@ -48,13 +48,23 @@ h1 {
 	left: 30%;
 }
 
+#signout{
+	position: absolute;
+    right: 4%;
+    top: 15%;
+}
+
 #report {
 	position: absolute;
 }
 
+.top-buttons{
+	margin-bottom: 2%;
+}
+
 #reporttext {
 	position: absolute;
-	top: 100px;
+	top: 140px;
 	background-color: #8080801a;
 	width: 100%;
 	padding: 0px 58px 50px;
