@@ -802,7 +802,7 @@ public class ContactForm extends VerticalPanel {
 		    				Window.alert("kein Kontakt ausgewählt!");
 		    			}
 		    			else {
-		    				editorAdministration.shareContact(contactToDisplay, getEmail(), new AsyncCallback<Permission>() {
+		    				editorAdministration.shareContact(currentUser, getEmail(), contactToDisplay, new AsyncCallback<Permission>() {
 		    					public void onFailure(Throwable arg0) {
 		    						Window.alert("Fehler beim teilen des Kontakts!");
 		    					}

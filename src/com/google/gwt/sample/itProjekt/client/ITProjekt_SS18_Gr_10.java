@@ -499,7 +499,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 					});
 					
 					if(allUsers.contains(shareUser) && shareUser != user) {
-						editorAdministration.shareContactList(clctvm.getSelectedContactList(), shareUser.getEmail(), new AsyncCallback<Permission>() {
+						editorAdministration.shareContactList(user, shareUser, clctvm.getSelectedContactList(), new AsyncCallback<Permission>() {
 							@Override
 							public void onFailure(Throwable arg0) {
 								Window.alert("Fehler beim Teilen der Kontaktliste!");
