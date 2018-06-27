@@ -142,12 +142,13 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	}
 
 	@Override
-	public Permission shareContact(Contact contact, String email) throws IllegalArgumentException {
+	public Permission shareContact(User sourceUser, String shareUserEmail, Contact shareContact) throws IllegalArgumentException {
 		
 		Permission newpermission = new Permission();
-		newpermission.setParticipant(uMapper.findByEMail(email));
+		newpermission.setSourceUserID(sourceUser.getId());
+		newpermission.setParticipantID(uMapper.findByEMail(shareUserEmail).getId());
+		newpermission.setShareableObjectID(shareContact.getId());
 		newpermission.setIsowner(false);
-		newpermission.setShareableobject(contact);
 		
 		return pmMapper.shareContact(newpermission);
 	}
@@ -188,14 +189,13 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	}
 
 	@Override
-	public Permission shareContactList(ContactList contactlist, String email) throws IllegalArgumentException {
+	public Permission shareContactList(User sourceUser, User shareUser, ContactList shareContactList) throws IllegalArgumentException {
 		
 		Permission newpermission = new Permission();
-		User user = new User();
-		user = getUserInformation(email);
-		newpermission.setParticipant(user);
+		newpermission.setSourceUserID(sourceUser.getId());
+		newpermission.setParticipantID(shareUser.getId());
+		newpermission.setShareableObjectID(shareContactList.getId());
 		newpermission.setIsowner(false);
-		newpermission.setShareableobject(contactlist);
 		
 		return pmMapper.shareContactList(newpermission);
 	}
@@ -259,8 +259,10 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	@Override
 	public void deletePermission(User user, BusinessObject bo) throws IllegalArgumentException {
 		Permission permission = new Permission();
-		permission.setParticipant(user);
+		permission.setParticipantID(user.getId());
+		permission.setShareableObjectID(bo.getId());
 		
+		pmMapper.delete(permission);
 	}
 
 

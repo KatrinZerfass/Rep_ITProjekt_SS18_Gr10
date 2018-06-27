@@ -157,6 +157,9 @@ public class ValueMapper {
 				return value;	
 				
 			}
+			Contact c2 = new Contact();
+			c2 = ContactMapper.contactMapper().findByID(contact);
+			ContactMapper.contactMapper().update(c2);
 		}
 		catch (SQLException e2){
 			e2.printStackTrace();
@@ -178,7 +181,11 @@ public class ValueMapper {
 				Statement stmt = con.createStatement();
 				stmt.executeUpdate("UPDATE T_Value SET P_ID ="+property.getId()+", value ='" + value.getContent()+ "', C_ID=" + contact.getId() +", isShared="
 						+ value.getIsShared());
+				Contact c2 = new Contact();
+				c2 = ContactMapper.contactMapper().findByID(contact);
+				ContactMapper.contactMapper().update(c2);
 			}
+			
 		
 		catch (SQLException e2){
 			e2.printStackTrace();

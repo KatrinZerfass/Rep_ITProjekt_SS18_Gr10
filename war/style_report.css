@@ -17,7 +17,7 @@ h1 {
 	font-size: 2em;
 }
 
-.gwt-Button {
+.reportbutton {
 	background-color: #7dd286;
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
@@ -33,11 +33,13 @@ h1 {
 	margin: 0px 10px;
 }
 
-.gwt-Button:hover {
+
+
+.reportbutton:hover {
 	background-color: #49ba8f;
 }
 
-.gwt-Button:active {
+.reportbutton:active {
 	position: relative;
 	top: 1px;
 }
@@ -48,13 +50,23 @@ h1 {
 	left: 30%;
 }
 
+#signout{
+	position: absolute;
+    right: 4%;
+    top: 15%;
+}
+
 #report {
 	position: absolute;
 }
 
+.top-buttons{
+	margin-bottom: 2%;
+}
+
 #reporttext {
 	position: absolute;
-	top: 100px;
+	top: 140px;
 	background-color: #8080801a;
 	width: 100%;
 	padding: 0px 58px 50px;
@@ -85,6 +97,29 @@ h1 {
 	top: 30%;
 }
 
+#startseiteLogo{
+	position: relative;
+    width: 290px;
+    height:auto;
+    display: block;
+    margin: 0 auto;
+}
+
+#buttoncontainer{
+	position: relative;
+    display: block;
+    margin: 0 auto;
+    width: 360px;
+    height:auto;
+}
+
+#wrapper-home{
+	position:absolute;
+	width:100%;
+	top: 120px;
+    position: absolute;
+}
+
 .infotable {
 	margin-bottom: 16px;
 }
@@ -95,8 +130,8 @@ h1 {
 	color: white;
 }
 
-.gwt-Label {
-	padding: 11px 0px;
+.searchlabel {
+	padding: 5% 0px;
 }
 
 body, table td, select, button {
