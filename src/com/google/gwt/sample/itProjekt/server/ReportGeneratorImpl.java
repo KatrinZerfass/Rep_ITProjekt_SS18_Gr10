@@ -126,10 +126,10 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				report.addRow(contactRow);
 				if(allValues.size()!= 0){
 					
-					headline.addColumn(new Column(""));
-					headline.addColumn(new Column(""));
-					headline.addColumn(new Column(""));
-					headline.addColumn(new Column(""));
+					contactRow.addColumn(new Column(""));
+					contactRow.addColumn(new Column(""));
+					contactRow.addColumn(new Column(""));
+					contactRow.addColumn(new Column(""));
 					headline.addColumn(new Column("Eigenschaft"));
 					headline.addColumn(new Column("Ausprägung"));
 					headline.addColumn(new Column("Modifikationsdatum"));
@@ -210,10 +210,10 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			report.addRow(contactRow);
 			if(allValues.size() != 0){
 				
-				headline.addColumn(new Column(""));
-				headline.addColumn(new Column(""));
-				headline.addColumn(new Column(""));
-				headline.addColumn(new Column(""));
+				contactRow.addColumn(new Column(""));
+				contactRow.addColumn(new Column(""));
+				contactRow.addColumn(new Column(""));
+				contactRow.addColumn(new Column(""));
 				propertyheadline.addColumn(new Column("Eigenschaft"));
 				propertyheadline.addColumn(new Column("Ausprägung"));
 				headline.addColumn(new Column("Modifikationsdatum"));
@@ -286,10 +286,10 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			report.addRow(contactRow);
 			if(allValues.size() != 0){
 				
-				headline.addColumn(new Column(""));
-				headline.addColumn(new Column(""));
-				headline.addColumn(new Column(""));
-				headline.addColumn(new Column(""));
+				contactRow.addColumn(new Column(""));
+				contactRow.addColumn(new Column(""));
+				contactRow.addColumn(new Column(""));
+				contactRow.addColumn(new Column(""));
 				headline.addColumn(new Column("Eigenschaft"));
 				headline.addColumn(new Column("Ausprägung"));
 				headline.addColumn(new Column("Modifikationsdatum"));
@@ -357,10 +357,10 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			report.addRow(contactRow);
 			if(allValues.size() != 0){
 
-				headline.addColumn(new Column(""));
-				headline.addColumn(new Column(""));
-				headline.addColumn(new Column(""));
-				headline.addColumn(new Column(""));
+				contactRow.addColumn(new Column(""));
+				contactRow.addColumn(new Column(""));
+				contactRow.addColumn(new Column(""));
+				contactRow.addColumn(new Column(""));
 				headline.addColumn(new Column("Eigenschaft"));
 				headline.addColumn(new Column("Ausprägung"));
 				headline.addColumn(new Column("Modifikationsdatum"));
