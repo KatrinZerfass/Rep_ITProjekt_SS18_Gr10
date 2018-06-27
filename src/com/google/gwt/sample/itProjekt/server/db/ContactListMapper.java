@@ -271,23 +271,21 @@ Connection con = DBConnection.connection();
 		 *
 		 */
 		public Vector <Contact> getAllContacts(ContactList contactlist){
-			System.out.println("bis hierhin läufts");
 			Connection con = DBConnection.connection();
 			Vector<Contact> result = new Vector<Contact>();
 			
 			try{
 				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT DISTINCT C_ID FROM T_Contact_Contactlist WHERE CL_ID =" + contactlist.getId() + " ORDER BY C_ID");
-				
+				ResultSet rs = stmt.executeQuery("SELECT DISTINCT C_ID FROM T_Contact_Contactlist WHERE CL_ID =" + contactlist.getId() + " ORDER BY C_ID");			
 			
 				
 				while (rs.next()){
+
 					Contact c2=new Contact();
 					c2.setId(rs.getInt("C_ID"));
-					result.addElement(ContactMapper.contactMapper().findByID(c2));
-					
-				}
-				
+					result.addElement(ContactMapper.contactMapper().findByID(c2));					
+										
+				}				
 				
 			}
 			catch (SQLException e2){

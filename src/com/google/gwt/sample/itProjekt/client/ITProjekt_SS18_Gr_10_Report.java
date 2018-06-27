@@ -7,9 +7,11 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.sample.itProjekt.shared.LoginService;
 import com.google.gwt.sample.itProjekt.shared.LoginServiceAsync;
 import com.google.gwt.sample.itProjekt.shared.ReportGeneratorAsync;
+import com.google.gwt.sample.itProjekt.shared.bo.Property;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
 import com.google.gwt.sample.itProjekt.shared.bo.Value;
 import com.google.gwt.sample.itProjekt.shared.report.AllContactsOfUserReport;
+import com.google.gwt.sample.itProjekt.shared.report.AllContactsWithPropertyReport;
 import com.google.gwt.sample.itProjekt.shared.report.AllContactsWithValueReport;
 import com.google.gwt.sample.itProjekt.shared.report.AllSharedContactsOfUserReport;
 import com.google.gwt.sample.itProjekt.shared.report.HTMLReportWriter;
@@ -60,7 +62,8 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	Button allContactsOfUserButton = new Button("Alle Kontakte eines Nutzers");
 	Button allSharedContactsOfUserButton = new Button("Alle geteilten Kontakte eines Nutzers");
 	Button allContactsWithValueButton = new Button("Kontakte mit bestimmter Ausprägung");
-	
+	Button allContactsWithPropertyButton = new Button("Kontakte mit bestimmter Eigenschaft");
+
 	public void onModuleLoad() {
 		
 		reportGenerator=ClientsideSettings.getReportGenerator();
@@ -114,13 +117,8 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 						
 			allContactsOfUserButton.addClickHandler(new ClickHandler() {
 		         @Override
-		         public void onClick(ClickEvent event) {
-		        	 ClientsideSettings.getEditorAdministration().getUserInformation(searchInput.getText(), new AsyncCallback<User>() {
-	        			 public void onFailure(Throwable caught) {
-	        				 
-	        			 }
-	    				 public void onSuccess(User result) {
-	     					 reportGenerator.generateAllContactsOfUserReport(result, new AsyncCallback<AllContactsOfUserReport>() {
+		         public void onClick(ClickEvent event){
+		        	 reportGenerator.generateAllContactsOfUserReport(user, new AsyncCallback<AllContactsOfUserReport>() {
 	    						 public void onFailure(Throwable caught) {
 	    							 RootPanel.get("reporttext").setVisible(true);
 	    							 Window.alert("fail");
@@ -149,22 +147,13 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 		        	
 					 );
 		        	 
-		        	
-		         }	 
-			});
+		    
 	 
 			
 			allSharedContactsOfUserButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					 ClientsideSettings.getEditorAdministration().getUserInformation(searchInput.getText(), new AsyncCallback<User>() {
-	        			 public void onFailure(Throwable caught) {
-			 				    Window.alert("fail");
-	        				 
-	        			 }
-	    				 public void onSuccess(User result) {
-			 				    Window.alert("läuft");
-			 				    reportGenerator.generateAllSharedContactsOfUserReport(result, new AsyncCallback<AllSharedContactsOfUserReport>() {
+					 reportGenerator.generateAllSharedContactsOfUserReport(user, new AsyncCallback<AllSharedContactsOfUserReport>() {
 			 				    	public void onFailure(Throwable caught) {
 			 				    		RootPanel.get("reporttext").setVisible(true);
 						 				Window.alert("failed");
@@ -190,15 +179,15 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 		   					 });
 	   				 	}
 					});
-				}
-			});
+				
+
 			
 			allContactsWithValueButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
 					Value v = new Value();
 					v.setContent(searchInput.getText());
-					 reportGenerator.generateAllContactsWithValueReport(v, new AsyncCallback<AllContactsWithValueReport>() {
+					 reportGenerator.generateAllContactsWithValueReport(user, v, new AsyncCallback<AllContactsWithValueReport>() {
 						 public void onFailure(Throwable caught) {
 			 				    RootPanel.get("reporttext").setVisible(true);
 			 				    Window.alert("fail");
@@ -224,11 +213,44 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	   			}
 			});
 			
+			allContactsWithPropertyButton.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					Property p = new Property();
+					p.setType(searchInput.getText());
+					 reportGenerator.generateAllContactsWithPropertyReport(user, p, new AsyncCallback<AllContactsWithPropertyReport>() {
+						 public void onFailure(Throwable caught) {
+			 				    RootPanel.get("reporttext").setVisible(true);
+			 				    Window.alert("fail");
+								DialogBox dBox = new DialogBox();
+								Label label = new Label("Es existieren leider keine passenden Kontakte mit der angegebenen Ausprägung.");
+								dBox.add(label);
+								dBox.center();
+								dBox.setAutoHideEnabled(true);
+								dBox.show();
+								mainPanel.add(dBox);
+						 }
+						 public void onSuccess(AllContactsWithPropertyReport result) {
+			 				    RootPanel.get("reporttext").setVisible(true);
+			 				    Window.alert("läuft");
+								if (result!=null) {
+									 HTMLReportWriter writer=new HTMLReportWriter();
+								 	 writer.process(result);
+									 RootPanel.get("reporttext").clear();
+									 RootPanel.get("reporttext").add(new HTML(writer.getReportText()));
+								}
+						 }
+					 });
+	   			}
+			});
+			
+			
 			addPanel.add(searchLabel);
 			addPanel.add(searchInput);
 			addPanel.add(allContactsOfUserButton);
 			addPanel.add(allContactsWithValueButton);
 			addPanel.add(allSharedContactsOfUserButton);
+			addPanel.add(allContactsWithPropertyButton);
 			
 			mainPanel.add(signOutLink);
 			

@@ -104,6 +104,29 @@ public class TextReportWriter extends ReportWriter{
 		}
 		this.reportText=result.toString();
 	}
+
+@Override
+public void process(AllContactsWithPropertyReport r) {
+	this.reportText="";
+	
+	StringBuffer result=new StringBuffer();
+	
+	result.append(" Report: "+ r.getTitle() +"\n\n");
+	
+	if(r.getHeaderData()!=null) {
+		result.append(r.getHeaderData()+ "\n");
+	}
+	
+	Vector <Row> rows=r.getRows();
+	result.append("Erstellt am: " + r.getCreated().toString()+"\n\n");
+	for (Row row:rows) {
+		for (int i=0; i< row.getNumColumns();i++){
+			result.append(row.getColumnAt(i) + "\t\t");
+		}
+		result.append("\n");
+	}
+	this.reportText=result.toString();
+}
 	
 	/**
 	 * Gets the report text.
