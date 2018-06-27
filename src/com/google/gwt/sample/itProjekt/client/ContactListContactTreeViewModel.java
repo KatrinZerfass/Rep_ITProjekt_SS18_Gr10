@@ -280,10 +280,11 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 							public void onSuccess(Vector<Contact> contacts) {
 								for (Contact c : contacts) {
 									contactsProvider.getList().add(c);
-									Window.alert("Kontakte der Kontaktliste auslesen erfolgreich");
 								}
 							}
 						});
+					return new DefaultNodeInfo<Contact>(contactsProvider,
+							new ContactCell(), selectionModel, null);
 		
 				/*
 				 * Der Nutzer ist nur Teilhaber der Kontaktliste 
@@ -301,15 +302,10 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 							}
 						}
 					});
-				}
-				
-						
-			}
-	
-			Window.alert(contactsProvider.getList().get(0).getFirstname());
-			return new DefaultNodeInfo<Contact>(contactsProvider,
-			new ContactCell(), selectionModel, null);	
-			
+					return new DefaultNodeInfo<Contact>(contactsProvider,
+							new ContactCell(), selectionModel, null);
+				}									
+			}					
 		}
 		return null;
 	}
