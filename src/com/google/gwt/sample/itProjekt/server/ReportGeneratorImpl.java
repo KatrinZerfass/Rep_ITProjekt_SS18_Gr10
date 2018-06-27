@@ -108,7 +108,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				Row contactRow=new Row();
 				contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 				contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
-				contactRow.addColumn(new Column(String.valueOf(c.getCreationDate())));
+				
 				switch(c.getSex()){
 					case "f":
 					contactRow.addColumn(new Column("weiblich"));
@@ -120,8 +120,16 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 					contactRow.addColumn(new Column("sonstige"));
 					break;
 				}
+				
+				contactRow.addColumn(new Column(String.valueOf(c.getCreationDate())));
+				
 				report.addRow(contactRow);
 				if(allValues.size()!= 0){
+					
+					headline.addColumn(new Column(""));
+					headline.addColumn(new Column(""));
+					headline.addColumn(new Column(""));
+					headline.addColumn(new Column(""));
 					headline.addColumn(new Column("Eigenschaft"));
 					headline.addColumn(new Column("Ausprägung"));
 					headline.addColumn(new Column("Modifikationsdatum"));
@@ -183,7 +191,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			
 			contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 			contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
-			contactRow.addColumn(new Column(String.valueOf(c.getCreationDate())));
+			
 			
 			switch (c.getSex()){
 			case "f":
@@ -196,10 +204,16 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			contactRow.addColumn(new Column("sonstige"));
 			break;
 			}
+			
+			contactRow.addColumn(new Column(String.valueOf(c.getCreationDate())));
 		
 			report.addRow(contactRow);
 			if(allValues.size() != 0){
 				
+				headline.addColumn(new Column(""));
+				headline.addColumn(new Column(""));
+				headline.addColumn(new Column(""));
+				headline.addColumn(new Column(""));
 				propertyheadline.addColumn(new Column("Eigenschaft"));
 				propertyheadline.addColumn(new Column("Ausprägung"));
 				headline.addColumn(new Column("Modifikationsdatum"));
@@ -252,7 +266,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			
 			contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 			contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
-			contactRow.addColumn(new Column(String.valueOf(c.getCreationDate())));
+			
 			
 			switch (c.getSex()){
 				case "f":
@@ -265,9 +279,17 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				contactRow.addColumn(new Column("sonstige"));
 				break;
 			}
+			
+			contactRow.addColumn(new Column(String.valueOf(c.getCreationDate())));
+			
+			
 			report.addRow(contactRow);
 			if(allValues.size() != 0){
 				
+				headline.addColumn(new Column(""));
+				headline.addColumn(new Column(""));
+				headline.addColumn(new Column(""));
+				headline.addColumn(new Column(""));
 				headline.addColumn(new Column("Eigenschaft"));
 				headline.addColumn(new Column("Ausprägung"));
 				headline.addColumn(new Column("Modifikationsdatum"));
@@ -317,7 +339,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			Row contactRow=new Row();
 			contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 			contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
-			contactRow.addColumn(new Column(String.valueOf(c.getCreationDate())));
+			
 			switch (c.getSex()){
 				case "f":
 				contactRow.addColumn(new Column("weiblich"));
@@ -329,9 +351,16 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				contactRow.addColumn(new Column("sonstige"));
 				break;
 			}
+			
+			contactRow.addColumn(new Column(String.valueOf(c.getCreationDate())));
+			
 			report.addRow(contactRow);
 			if(allValues.size() != 0){
 
+				headline.addColumn(new Column(""));
+				headline.addColumn(new Column(""));
+				headline.addColumn(new Column(""));
+				headline.addColumn(new Column(""));
 				headline.addColumn(new Column("Eigenschaft"));
 				headline.addColumn(new Column("Ausprägung"));
 				headline.addColumn(new Column("Modifikationsdatum"));
