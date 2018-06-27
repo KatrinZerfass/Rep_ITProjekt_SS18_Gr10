@@ -368,6 +368,12 @@ public class ContactForm extends VerticalPanel {
 						case 10: ((ValueTable) contactTable.getWidget(row, 1)).setWidget(((ValueTable) contactTable.getWidget(row, 1))
 									.getRowCount(),0, new ValueDisplay(new ValueTextBox("Homepage")));
 								break;
+						default:
+							if (propertyId>10) {
+								((ValueTable) contactTable.getWidget(row, 1)).setWidget(((ValueTable) contactTable.getWidget(row, 1))
+										.getRowCount(),0, new ValueDisplay(new ValueTextBox("")));
+							}
+							break;
 					
 						}
 					}
@@ -1583,8 +1589,12 @@ public class ContactForm extends VerticalPanel {
 			}
 		}
 		
-		contactTable.removeCell(3, 2);
-		contactTable.removeCell(3, 3);
+		if(contactTable.getWidget(3, 2) != null) {
+			contactTable.removeCell(3, 2);
+		}
+		if(contactTable.getWidget(3, 3) != null) {
+			contactTable.removeCell(3, 3);
+		}
 		
 		/*
 		 * Bei jedem neuen Aufruf von setSelected werden die ausgefüllten ValueTextBoxen geleert und aus dem Vector alle TextBoxen entfernt.
@@ -1627,6 +1637,7 @@ public class ContactForm extends VerticalPanel {
 			 * bereits im Vorfeld ausgegraut.
 			 */
 			if(!compareUser()) {
+				Window.alert("buttons wurden ausgegraut, weil der User nicht der Eigentümer ist");
 				saveChangesButton.setEnabled(false);
 				removeContactFromContactListButton.setEnabled(false);
 			}
