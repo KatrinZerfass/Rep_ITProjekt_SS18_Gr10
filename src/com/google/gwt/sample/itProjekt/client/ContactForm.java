@@ -347,6 +347,7 @@ public class ContactForm extends VerticalPanel {
 						addValuePopUp(propertyId, row);	
 					
 					}else { 
+						Window.alert("geht in AddValueclickHandler rein");
 						int valueTableRow = ((ValueTable)contactTable.getWidget(row, 1)).getRowCount();
 						Window.alert("Widget der contactTable an der Stelle " + row + ", 1: " + ((ValueTable) contactTable.getWidget(row, 1)).getPid());
 						Window.alert("Aktuelle Reihe der ValueTable: " + valueTableRow);
@@ -856,9 +857,8 @@ public class ContactForm extends VerticalPanel {
 		 * Zunächst wird der angemeldete Nutzer abgefragt und als Instanzenvariable gespeichert.
 		 */
 		
-		Window.alert("blub. springt in onLoad on cf");
 		currentUser = ClientsideSettings.getUser();
-		Window.alert("user aus den Clientsidesetting: " + ClientsideSettings.getUser().getEmail());
+		
 		this.add(contactTable);
 		
 		editorAdministration.getAllPredefinedPropertiesOf(new AsyncCallback<Vector<Property>>(){
@@ -901,15 +901,7 @@ public class ContactForm extends VerticalPanel {
 		sexListBox.addItem("Sonstiges");
 		
 		contactTable.setWidget(3, 0, sexLabel);
-		contactTable.setWidget(3, 1, sexListBox);
-		
-		
-		Label birthdateLabel = new Label("Geburtsdatum: ");
-		contactTable.setWidget(3, 2, birthdateLabel);
-		
-		contactTable.setWidget(3, 3, new ValueDisplay(new ValueTextBox("Geburtstag")));
-		((ValueDisplay) contactTable.getWidget(3, 3)).getWidget(0).setWidth("105px");
-		
+		contactTable.setWidget(3, 1, sexListBox);		
 	
 		
 		Button addContactButton = new Button("Neuen Kontakt anlegen");
@@ -1388,6 +1380,8 @@ public class ContactForm extends VerticalPanel {
 								
 								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
 								contactTable.setWidget(row, 1, new ValueTable(pid));
+								Window.alert("Reihe der neu hinzugefügten Eigenschaft: " +((Integer) row).toString());
+								Window.alert("Pid der neuen ValueTable" + ((Integer) ((ValueTable)contactTable.getWidget(row, 1)).getPid()).toString());
 							}
 						
 						});
@@ -1568,29 +1562,27 @@ public class ContactForm extends VerticalPanel {
 	 */
 	public void setSelected(Contact c) {
 		
+		newPropertyPanel.setVisible(false);
+		
+		for (int i = 4; i < contactTable.getRowCount(); i++) {
+			for (int a =0; a<=4; a++) {
+				contactTable.removeCell(i, a);
+			}
+		}
 		
 		/*
-		 * Wenn setSelected mit einem bestimmten Kontakt-Objekt aufgerufen wird, wird dieser im Folgenden im Kontaktformular angezeigt.
+		 * Bei jedem neuen Aufruf von setSelected werden die ausgefüllten ValueTextBoxen geleert und aus dem Vector alle TextBoxen entfernt.
 		 */
+		for(ValueTextBox vtb : allValueTextBoxes) {
+			Value v = null;
+			vtb.setValue(v);
+		}
+		
+		this.allValueTextBoxes = null;
+		
+		
 		if (c != null){
-			
-			for (int i = 4; i < contactTable.getRowCount(); i++) {
-				for (int a =0; a<=4; a++) {
-					contactTable.removeCell(i, a);
-				}
-			}
-			
-			/*
-			 * Bei jedem neuen Aufruf von setSelected werden die ausgefüllten ValueTextBoxen geleert und aus dem Vector alle TextBoxen entfernt.
-			 */
-			for(ValueTextBox vtb : allValueTextBoxes) {
-				Value v = null;
-				vtb.setValue(v);
-			}
-			
-			this.allValueTextBoxes = null;
-			
-			
+				
 			/*
 			 * Befüllen der Eigenschaften aus der Datenbank
 			 */
@@ -1626,7 +1618,7 @@ public class ContactForm extends VerticalPanel {
 			 * Alle Ausprägungen des contactToDisplay werden ausgelesen und in einem Vector<Values> gespeichert.
 			 */
 			
-	//		editorAdministration.getAllPropertiesOf()
+
 			
 			editorAdministration.getAllValuesOf(contactToDisplay, new AsyncCallback<Vector<Value>>() {
 				public void onFailure(Throwable t) {
@@ -1825,6 +1817,11 @@ public class ContactForm extends VerticalPanel {
 							 * Eine Ausprägung zu Geburtstag kann nur einmal vorhanden sein. Demzufolge gibt es hierfür auch keine ValueTable.
 							 * Das ValueDisplay, in dem sich die TextBox für das Geburtsdatum befindet, wird direkt angesprochen.
 							 */
+							Label birthdateLabel = new Label("Geburtsdatum: ");
+							contactTable.setWidget(3, 2, birthdateLabel);
+							
+							contactTable.setWidget(3, 3, new ValueDisplay(new ValueTextBox("Geburtstag")));
+							((ValueDisplay) contactTable.getWidget(3, 3)).getWidget(0).setWidth("105px");
 							((ValueDisplay) contactTable.getWidget(3,3)).setValue(allValuesOfContact.get(i));
 							break;
 							
@@ -2034,7 +2031,7 @@ public class ContactForm extends VerticalPanel {
 			firstnameTextBox.setText("");
 			lastnameTextBox.getElement().setPropertyString("placeholder", "Nachname...");
 			lastnameTextBox.setText("");
-			((ValueDisplay) contactTable.getWidget(3,3)).getValueTextBox().getElement().setPropertyString("placeholder", "Geburtsdatum...");			
+//			((ValueDisplay) contactTable.getWidget(3,3)).getValueTextBox().getElement().setPropertyString("placeholder", "Geburtsdatum...");			
 //			streetTextBox.getElement().setPropertyString("placeholder", "Straße...");
 //			houseNrTextBox.getElement().setPropertyString("placeholder", "Hausnummer...");
 //			plzTextBox.getElement().setPropertyString("placeholder", "PLZ...");

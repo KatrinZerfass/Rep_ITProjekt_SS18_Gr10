@@ -350,11 +350,10 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		cellBrowser.setAnimationEnabled(true);
 		cellBrowser.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 		
-		Window.alert("3. created cellbrowser");
 		
 		RootPanel.get("Navigator").add(cellBrowser);
 		
-		Window.alert("6. finished loadApplication");
+
 		  
 	  }
 	  
