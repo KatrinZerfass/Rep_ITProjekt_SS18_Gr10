@@ -304,8 +304,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		
 		//Das Suchfeld
 		
-		SearchButtonClickHandler SearchButtonHandler = new SearchButtonClickHandler(searchTextBox);
-		searchButton.addClickHandler(SearchButtonHandler);
+		searchButton.addClickHandler(new SearchButtonClickHandler(searchTextBox));
 		searchLabel.setText("Durchsuchen Sie Ihre Kontaktlisten nach bestimmten Ausprägungen: ");
 		searchLabel.setWidth("240px");
 		searchPanel.add(searchLabel);
@@ -354,7 +353,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		RootPanel.get("Navigator").add(cellBrowser);
 		
 
-		  
+		Window.alert("Ende der Methode loadApplication");
 	  }
 	  
 	 
