@@ -33,6 +33,8 @@ h1 {
 	margin: 0px 10px;
 }
 
+
+
 .reportbutton:hover {
 	background-color: #49ba8f;
 }
@@ -95,7 +97,28 @@ h1 {
 	top: 30%;
 }
 
+#startseiteLogo{
+	position: relative;
+    width: 290px;
+    height:auto;
+    display: block;
+    margin: 0 auto;
+}
 
+#buttoncontainer{
+	position: relative;
+    display: block;
+    margin: 0 auto;
+    width: 360px;
+    height:auto;
+}
+
+#wrapper-home{
+	position:absolute;
+	width:100%;
+	top: 120px;
+    position: absolute;
+}
 
 .infotable {
 	margin-bottom: 16px;
