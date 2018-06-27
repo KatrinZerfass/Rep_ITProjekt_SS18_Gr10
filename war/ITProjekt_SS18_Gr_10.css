@@ -4,7 +4,7 @@
 
 #Logo{
 /* 	width: 10em; */
-	height: 4em;
+	max-height: 4em;
 }
 
 div#Header {
