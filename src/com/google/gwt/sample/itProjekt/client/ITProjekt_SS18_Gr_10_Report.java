@@ -47,7 +47,9 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	
 	
 	VerticalPanel mainPanel = new VerticalPanel ();
+	HorizontalPanel reportbuttonPanel=new HorizontalPanel();
 	HorizontalPanel searchPanel=new HorizontalPanel();
+	
 	HorizontalPanel addPanel = new HorizontalPanel();
 	
 	private User user = null;
@@ -57,6 +59,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	/*
 	 * Die notwendigen Buttons für den Navigationsteil 
 	 */
+	Label searchheading = new Label("Hier können Sie Ihre Kontakte gefiltert nach Eigenschaft oder Ausprägung ausgeben.");
 	Label searchLabel = new Label("Suche: ");
 	TextBox searchInput = new TextBox();
 	Button allContactsOfUserButton = new Button("Alle Kontakte eines Nutzers");
@@ -68,8 +71,15 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 		
 		reportGenerator=ClientsideSettings.getReportGenerator();
 		RootPanel.get("reporttext").setVisible(false);
+		searchheading.addStyleName("searchheading");
+		searchLabel.addStyleName("searchlabel");
+		signOutLink.addStyleName("signout");
+		allContactsOfUserButton.addStyleName("reportbutton");
+		allSharedContactsOfUserButton.addStyleName("reportbutton");
+		allContactsWithValueButton.addStyleName("reportbutton");
+		allContactsWithPropertyButton.addStyleName("reportbutton");
 
-	
+		
 		LoginServiceAsync loginService = GWT.create(LoginService.class);
 	    loginService.login("https://it-projekt-gruppe-10-203610.appspot.com/ITProjekt_SS18_Gr_10_Report.html", new AsyncCallback<LoginInfo>() {
 	    	public void onFailure(Throwable error) {
@@ -257,14 +267,14 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			
 			addPanel.add(searchLabel);
 			addPanel.add(searchInput);
-			addPanel.add(allContactsOfUserButton);
+			reportbuttonPanel.add(allContactsOfUserButton);
+			reportbuttonPanel.add(allSharedContactsOfUserButton);
 			addPanel.add(allContactsWithValueButton);
-			addPanel.add(allSharedContactsOfUserButton);
 			addPanel.add(allContactsWithPropertyButton);
 			
-			mainPanel.add(signOutLink);
+			RootPanel.get("signout").add(signOutLink);
 			
-
+			mainPanel.add(reportbuttonPanel);
 			mainPanel.add(searchPanel);
 			mainPanel.add(addPanel);
 			RootPanel.get("report").add(mainPanel);

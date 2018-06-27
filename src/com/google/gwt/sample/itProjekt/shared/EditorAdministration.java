@@ -38,7 +38,7 @@ public interface EditorAdministration extends RemoteService{
 	
 	public Contact editContact(int id, String firstname, String lastname, String sex) throws IllegalArgumentException;
 	
-	public Permission shareContact(Contact contact, String email) throws IllegalArgumentException;
+	public Permission shareContact(User sourceUser, String shareUserEmail, Contact shareContact) throws IllegalArgumentException;
 	
 	public void deleteContact(int id) throws IllegalArgumentException;
 	
@@ -48,7 +48,7 @@ public interface EditorAdministration extends RemoteService{
 	
 	public ContactList addContactToContactList(ContactList contactlist, Contact contact) throws IllegalArgumentException;
 	
-	public Permission shareContactList(ContactList contactlist, String email) throws IllegalArgumentException;
+	public Permission shareContactList(User sourceUser, User shareUser, ContactList shareContactList) throws IllegalArgumentException;
 	
 	public ContactList removeContactFromContactList(ContactList contactlist, Contact contact) throws IllegalArgumentException;
 	

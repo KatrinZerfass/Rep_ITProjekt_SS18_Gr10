@@ -17,7 +17,7 @@ h1 {
 	font-size: 2em;
 }
 
-.gwt-Button {
+.reportbutton {
 	background-color: #7dd286;
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
@@ -33,11 +33,11 @@ h1 {
 	margin: 0px 10px;
 }
 
-.gwt-Button:hover {
+.reportbutton:hover {
 	background-color: #49ba8f;
 }
 
-.gwt-Button:active {
+.reportbutton:active {
 	position: relative;
 	top: 1px;
 }
@@ -85,6 +85,8 @@ h1 {
 	top: 30%;
 }
 
+
+
 .infotable {
 	margin-bottom: 16px;
 }
@@ -95,8 +97,8 @@ h1 {
 	color: white;
 }
 
-.gwt-Label {
-	padding: 11px 0px;
+.searchlabel {
+	padding: 5% 0px;
 }
 
 body, table td, select, button {
