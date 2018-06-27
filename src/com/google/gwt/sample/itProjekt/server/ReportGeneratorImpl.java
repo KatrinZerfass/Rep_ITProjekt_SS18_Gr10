@@ -172,7 +172,6 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		report.setHeaderData(header);
 		
 		Row headline = new Row();
-		Row propertyheadline=new Row();
 
 		headline.addColumn(new Column("Vorname"));
 		headline.addColumn(new Column("Nachname"));
@@ -211,8 +210,8 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			if(allValues.size() != 0){
 				
 
-				propertyheadline.addColumn(new Column("Eigenschaft"));
-				propertyheadline.addColumn(new Column("Ausprägung"));
+				headline.addColumn(new Column("Eigenschaft"));
+				headline.addColumn(new Column("Ausprägung"));
 				headline.addColumn(new Column("Modifikationsdatum"));
 				
 			for (Value v: allValues){
@@ -255,7 +254,8 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		headline.addColumn(new Column("Vorname"));
 		headline.addColumn(new Column("Nachname"));
 		headline.addColumn(new Column("Geschlecht"));
-		
+		headline.addColumn(new Column("Erstellungsdatum"));
+
 		
 		report.addRow(headline);
 
