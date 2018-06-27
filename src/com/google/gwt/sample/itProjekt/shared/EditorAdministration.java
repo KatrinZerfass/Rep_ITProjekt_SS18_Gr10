@@ -84,5 +84,5 @@ public interface EditorAdministration extends RemoteService{
 
 	public Vector<Contact> getAllContactsOfUserWithValue(User user, Value value) throws IllegalArgumentException;
 
-	public Vector<Contact> getContactsByOfUserWithProperty(User user, Property Property) throws IllegalArgumentException;
+	public Vector<Contact> getContactsOfUserWithProperty(User user, Property Property) throws IllegalArgumentException;
 }

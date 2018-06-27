@@ -304,7 +304,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		
 		report.addRow(headline);
 
-		Vector<Contact> allContacts=this.admin.getContactsByOfUserWithProperty(user, property);
+		Vector<Contact> allContacts=this.admin.getContactsOfUserWithProperty(user, property);
 		
 		for (Contact c: allContacts) {
 			Vector<Value> allValues=this.admin.getAllValuesOf(c);
