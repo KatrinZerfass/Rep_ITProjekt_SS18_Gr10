@@ -135,7 +135,6 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 		        	 reportGenerator.generateAllContactsOfUserReport(user, new AsyncCallback<AllContactsOfUserReport>() {
 	    						 public void onFailure(Throwable caught) {
 	    							 RootPanel.get("reporttext").setVisible(true);
-	    							 Window.alert("fail");
 	    							 DialogBox dBox = new DialogBox();
 	    							 Label label = new Label(caught.getMessage());
 	    							 dBox.add(label);
@@ -148,7 +147,6 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	    						 public void onSuccess(AllContactsOfUserReport result) {
 	    							 if (result != null) {
 	    								 RootPanel.get("reporttext").setVisible(true);
-	    				 				 Window.alert("läuft");
 	    								 HTMLReportWriter writer=new HTMLReportWriter();
 	    								 writer.process(result);
 	    								 RootPanel.get("reporttext").clear();
@@ -170,11 +168,8 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 					 reportGenerator.generateAllSharedContactsOfUserReport(user, new AsyncCallback<AllSharedContactsOfUserReport>() {
 			 				    	public void onFailure(Throwable caught) {
 			 				    		RootPanel.get("reporttext").setVisible(true);
-						 				Window.alert("failed");
 			   							DialogBox dBox = new DialogBox();
-	
-										Label label = new Label(
-												"Es existieren leider keine geteilten Kontakte.");
+										Label label = new Label("Es existieren leider keine geteilten Kontakte.");
 										dBox.add(label);
 										dBox.center();
 										dBox.setAutoHideEnabled(true);
@@ -182,8 +177,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 		   						 }
 		   						 public void onSuccess(AllSharedContactsOfUserReport result) {
 		 		 				    RootPanel.get("reporttext").setVisible(true);
-		 		 				    Window.alert("läuft");
-		   								if(result!=null){
+	   								if(result!=null){
 		   	   	    						 HTMLReportWriter writer=new HTMLReportWriter();
 	   	    								 writer.process(result);
 	   	    								 RootPanel.get("reporttext").clear();
@@ -203,15 +197,11 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 					v.setContent(searchInput.getText());
 					 reportGenerator.generateAllContactsWithValueReport(user, v, new AsyncCallback<AllContactsWithValueReport>() {
 						 public void onFailure(Throwable caught) {
-			 				    RootPanel.get("reporttext").setVisible(true);
-			 				    Window.alert("fail");
-							
+			 				    RootPanel.get("reporttext").setVisible(true);				
 						 }
 						 public void onSuccess(AllContactsWithValueReport result) {
 			 				    RootPanel.get("reporttext").setVisible(true);
-			 				    Window.alert("läuft");
 								if (result!=null) {
-									 Window.alert("geht rein");
 									 HTMLReportWriter writer=new HTMLReportWriter();
 								 	 writer.process(result);
 									 RootPanel.get("reporttext").clear();
@@ -238,21 +228,15 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 					p.setType(searchInput.getText());
 					 reportGenerator.generateAllContactsWithPropertyReport(user, p, new AsyncCallback<AllContactsWithPropertyReport>() {
 						 public void onFailure(Throwable caught) {
-			 				    RootPanel.get("reporttext").setVisible(true);
-			 				    Window.alert("fail");
-								
+			 				    RootPanel.get("reporttext").setVisible(true);							
 						 }
 						 public void onSuccess(AllContactsWithPropertyReport result) {
 			 				    RootPanel.get("reporttext").setVisible(true);
-			 				    Window.alert("läuft");
 								if (result !=null) {
-									Window.alert("geht rein");
 									HTMLReportWriter writer=new HTMLReportWriter();
-								 	 writer.process(result);
-									 RootPanel.get("reporttext").clear();
-									 RootPanel.get("reporttext").add(new HTML(writer.getReportText()));
-									 Window.alert(result.getHeaderData().toString());
-									 Window.alert(result.getRows().toString());
+								 	writer.process(result);
+									RootPanel.get("reporttext").clear();
+									RootPanel.get("reporttext").add(new HTML(writer.getReportText()));
 
 								}else{
 									DialogBox dBox = new DialogBox();

@@ -82,7 +82,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			report.setTitle("Alle Kontakte des Nutzers");
 			report.setCreated(new Date());
 			CompositeParagraph header=new CompositeParagraph();
-			SimpleParagraph sp = new SimpleParagraph(u.getEmail());
+			SimpleParagraph sp = new SimpleParagraph("Nutzer: " + u.getEmail());
 			header.addSubParagraph(sp);
 			
 			report.setHeaderData(header);
