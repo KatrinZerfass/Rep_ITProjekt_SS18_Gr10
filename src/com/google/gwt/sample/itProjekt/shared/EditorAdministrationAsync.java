@@ -68,9 +68,9 @@ public interface EditorAdministrationAsync {
 
 	void deletePermission(User user, BusinessObject bo, AsyncCallback<Void> callback);
 
-	void getAllContactsBy(String content, AsyncCallback<Vector<Contact>> callback);
+	void getAllContactsWithValue(String content, AsyncCallback<Vector<Contact>> callback);
 
-	void getAllContactsWith(String name, AsyncCallback<Vector<Contact>> callback);
+	void getAllContactsWithName(String name, AsyncCallback<Vector<Contact>> callback);
 
 	void getPropertyOfValue(Value value, AsyncCallback<Property> callback);
 

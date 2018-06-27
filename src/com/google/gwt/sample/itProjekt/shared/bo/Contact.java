@@ -1,7 +1,9 @@
 package com.google.gwt.sample.itProjekt.shared.bo;
 
+import java.sql.Timestamp;
+
 /**
- * Die Klasse Contact, Datenstruktur für das Kontakt Business Objekt.
+ * Die Klasse Contact, Datenstruktur fï¿½r das Kontakt Business Objekt.
  * @author JanNoller
  * 
  */
@@ -18,6 +20,12 @@ public class Contact extends BusinessObject {
 	
 	/** Der Besitzer des Kontakts. */
 	private int owner;
+	
+	/** Erstellungsdatum des Kontakts. */
+	private Timestamp creationdate;
+	
+	/** Modifikationsdatum des Kontakts. */
+	private Timestamp modificationdate;
 	
 	/**
 	 * TODO vielleicht Konstruktor(en)?
@@ -39,7 +47,7 @@ public class Contact extends BusinessObject {
 	 */
 	
 	/**
-	 * Getter für den Vornamen.
+	 * Getter fï¿½r den Vornamen.
 	 *
 	 * @return der Vorname
 	 */
@@ -48,7 +56,7 @@ public class Contact extends BusinessObject {
 	}
 	
 	/**
-	 * Setter für Vorname.
+	 * Setter fï¿½r Vorname.
 	 *
 	 * @param firstname der neue Vorname
 	 */
@@ -57,7 +65,7 @@ public class Contact extends BusinessObject {
 	}
 	
 	/**
-	 * Getter für Nachnamen.
+	 * Getter fï¿½r Nachnamen.
 	 *
 	 * @return der Nachname
 	 */
@@ -66,7 +74,7 @@ public class Contact extends BusinessObject {
 	}
 	
 	/**
-	 * Setter für Nachname.
+	 * Setter fï¿½r Nachname.
 	 *
 	 * @param lastname der neue Nachname
 	 */
@@ -75,7 +83,7 @@ public class Contact extends BusinessObject {
 	}
 	
 	/**
-	 * Getter für Geschlecht.
+	 * Getter fï¿½r Geschlecht.
 	 *
 	 * @return das Geschlecht
 	 */
@@ -84,7 +92,7 @@ public class Contact extends BusinessObject {
 	}
 	
 	/**
-	 * Setter für Geschlecht.
+	 * Setter fï¿½r Geschlecht.
 	 *
 	 * @param sex das neue Geschlecht
 	 */
@@ -98,5 +106,21 @@ public class Contact extends BusinessObject {
 
 	public void setOwner(int owner) {
 		this.owner = owner;
+	}
+	
+	public void setCreationDate(Timestamp creationdate){
+		this.creationdate = creationdate;
+	}
+	
+	public Timestamp getCreationDate(){
+		return creationdate;
+	}
+	
+	public void setModificationDate(Timestamp modificationdate){
+		this.modificationdate = modificationdate;
+	}
+	
+	public Timestamp getModificationDate(){
+		return modificationdate;
 	}
 }

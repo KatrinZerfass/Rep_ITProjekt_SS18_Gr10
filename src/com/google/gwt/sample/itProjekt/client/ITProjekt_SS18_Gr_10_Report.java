@@ -197,13 +197,13 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			 				    RootPanel.get("reporttext").setVisible(true);
 			 				    Window.alert("läuft");
 								if (result!=null) {
+									 Window.alert("geht rein");
 									 HTMLReportWriter writer=new HTMLReportWriter();
 								 	 writer.process(result);
 									 RootPanel.get("reporttext").clear();
 									 RootPanel.get("reporttext").add(new HTML(writer.getReportText()));
 									 
 								}else{
-									
 									DialogBox dBox = new DialogBox();
 									Label label = new Label("Es existieren leider keine passenden Kontakte mit der angegebenen Ausprägung.");
 									dBox.add(label);
@@ -231,15 +231,18 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 						 public void onSuccess(AllContactsWithPropertyReport result) {
 			 				    RootPanel.get("reporttext").setVisible(true);
 			 				    Window.alert("läuft");
-								if (result!=null) {
-									 HTMLReportWriter writer=new HTMLReportWriter();
+								if (result !=null) {
+									Window.alert("geht rein");
+									HTMLReportWriter writer=new HTMLReportWriter();
 								 	 writer.process(result);
 									 RootPanel.get("reporttext").clear();
 									 RootPanel.get("reporttext").add(new HTML(writer.getReportText()));
+									 Window.alert(result.getHeaderData().toString());
+									 Window.alert(result.getRows().toString());
+
 								}else{
-									
 									DialogBox dBox = new DialogBox();
-									Label label = new Label("Es existieren leider keine passenden Kontakte mit der angegebenen Ausprägung.");
+									Label label = new Label("Es existieren leider keine passenden Kontakte mit der angegebenen Eigenschaft.");
 									dBox.add(label);
 									dBox.center();
 									dBox.setAutoHideEnabled(true);
