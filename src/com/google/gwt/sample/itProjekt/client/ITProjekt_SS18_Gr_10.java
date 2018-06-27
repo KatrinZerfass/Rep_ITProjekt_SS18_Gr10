@@ -534,10 +534,6 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		Vector<Contact> valueResults = new Vector<Contact>();
 		Vector<Contact> allContactsOfUser = new Vector<Contact>();
 		
-		ContactList nameResultsCL = new ContactList();
-		ContactList valueResultsCL = new ContactList();
-		
-		
 		@Override
 		public void onClick(ClickEvent arg0) {
 			
@@ -551,12 +547,6 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 					allContactsOfUser = arg0;
 				}
 			});
-			
-			nameResultsCL.setName("Suchergebnis im Namen");
-			valueResultsCL.setName("Suchergebnis in den Eigenschaften");
-			
-			clctvm.removeContactList(nameResultsCL);
-			clctvm.removeContactList(valueResultsCL);
 			
 			editorAdministration.getAllContactsWith(searchTextBox.getText(), new AsyncCallback<Vector<Contact>>() {
 				@Override
@@ -580,24 +570,32 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 				}
 			});
 			
-			clctvm.addContactList(nameResultsCL);
-			clctvm.addContactList(valueResultsCL);
 			if (nameResults.size() > 0) {
 				for (Contact c : nameResults) {
 					if (allContactsOfUser.contains(c)) {
-						clctvm.addContactOfContactList(nameResultsCL, c);
+						clctvm.addNameResults();
+						clctvm.addContactOfContactList(clctvm.getNameResultsCL(), c);
 					}
 				}
+			}
+			else {
+				clctvm.removeContactList(clctvm.getNameResultsCL());
 			}
 			if (valueResults.size() > 0) {
 				for (Contact c : valueResults) {
 					if (allContactsOfUser.contains(c)) {
-						clctvm.addContactOfContactList(valueResultsCL, c);
+						clctvm.addValueResults();
+						clctvm.addContactOfContactList(clctvm.getValueResultsCL(), c);
 					}
 				}
 			}
+			else {
+				clctvm.removeContactList(clctvm.getValueResultsCL());
+			}
 			if (nameResults.size() == 0 && valueResults.size() == 0) {
 				Window.alert("Kein Suchergebnis!");
+				clctvm.removeContactList(clctvm.getNameResultsCL());
+				clctvm.removeContactList(clctvm.getValueResultsCL());
 			}
 		}
 	}
