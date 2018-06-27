@@ -547,7 +547,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 				}
 			});
 			
-			editorAdministration.getAllContactsWith(searchTextBox.getText(), new AsyncCallback<Vector<Contact>>() {
+			editorAdministration.getAllContactsWithName(searchTextBox.getText(), new AsyncCallback<Vector<Contact>>() {
 				@Override
 				public void onFailure(Throwable arg0) {
 					Window.alert("Fehler beim Suchen der Kontakte nach Namen im cMapper!");
@@ -558,7 +558,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 				}
 			});
 			
-			editorAdministration.getAllContactsBy(searchTextBox.getText(), new AsyncCallback<Vector<Contact>>() {
+			editorAdministration.getAllContactsWithValue(searchTextBox.getText(), new AsyncCallback<Vector<Contact>>() {
 				@Override
 				public void onFailure(Throwable arg0) {
 					Window.alert("Fehler beim Suchen der Kontakte nach Value im vMapper!");	
@@ -570,9 +570,9 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 			});
 			
 			if (nameResults.size() > 0) {
+				clctvm.addNameResults();
 				for (Contact c : nameResults) {
 					if (allContactsOfUser.contains(c)) {
-						clctvm.addNameResults();
 						clctvm.addContactOfContactList(clctvm.getNameResultsCL(), c);
 					}
 				}
@@ -581,9 +581,9 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 				clctvm.removeContactList(clctvm.getNameResultsCL());
 			}
 			if (valueResults.size() > 0) {
+				clctvm.addValueResults();
 				for (Contact c : valueResults) {
 					if (allContactsOfUser.contains(c)) {
-						clctvm.addValueResults();
 						clctvm.addContactOfContactList(clctvm.getValueResultsCL(), c);
 					}
 				}
