@@ -135,7 +135,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 
 	public void setSelectedContact(Contact c) {
 		selectedContact = c;
-		contactForm.setSelected(c);
+		contactForm.setSelected(selectedContact);
 		
 	//muss dan auch die dazugehörige Kontaktliste ausgewählt werden?! --> siehe R&T
 	}
