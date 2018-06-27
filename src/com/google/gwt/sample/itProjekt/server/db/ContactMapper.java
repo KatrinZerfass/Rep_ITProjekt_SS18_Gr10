@@ -44,7 +44,7 @@ public class ContactMapper {
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID FROM T_Contact WHERE C_ID =" + contact.getId() + " ORDER BY C_ID");
+			ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID, create_date, mod_date FROM T_Contact WHERE C_ID =" + contact.getId() + " ORDER BY C_ID");
 			if (rs.next()){
 				Contact c = new Contact();
 				c.setId(rs.getInt("C_ID"));
@@ -52,6 +52,8 @@ public class ContactMapper {
 				c.setLastname(rs.getString("lastName"));
 				c.setSex(rs.getString("gender"));
 				c.setOwner(rs.getInt("U_ID"));
+				c.setCreationDate(rs.getTimestamp("create_date"));
+				c.setModificationDate(rs.getTimestamp("mod_date"));
 				return c;	
 			}
 		}
@@ -77,7 +79,7 @@ Vector<Contact> result = new Vector<Contact>();
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID FROM T_Contact ORDER BY C_ID");
+			ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID, create_date, mod_date FROM T_Contact ORDER BY C_ID");
 			
 			while (rs.next()){
 				Contact c = new Contact();
@@ -86,6 +88,8 @@ Vector<Contact> result = new Vector<Contact>();
 				c.setLastname(rs.getString("lastName"));
 				c.setSex(rs.getString("gender"));
 				c.setOwner(rs.getInt("U_ID"));
+				c.setCreationDate(rs.getTimestamp("create_date"));
+				c.setModificationDate(rs.getTimestamp("mod_date"));
 				result.addElement(c);
 			}		
 		}catch(SQLException e2){
@@ -107,7 +111,7 @@ Vector<Contact> result = new Vector<Contact>();
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID FROM T_Contact WHERE firstName ='" + contact.getFirstname() + "' AND lastName='" + contact.getLastname() + "' ORDER BY C_ID");
+			ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID, create_date, mod_date FROM T_Contact WHERE firstName ='" + contact.getFirstname() + "' AND lastName='" + contact.getLastname() + "' ORDER BY C_ID");
 			while (rs.next()){
 				Contact c = new Contact();
 				c.setId(rs.getInt("C_ID"));
@@ -115,6 +119,8 @@ Vector<Contact> result = new Vector<Contact>();
 				c.setLastname(rs.getString("lastName"));
 				c.setSex(rs.getString("gender"));
 				c.setOwner(rs.getInt("U_ID"));
+				c.setCreationDate(rs.getTimestamp("create_date"));
+				c.setModificationDate(rs.getTimestamp("mod_date"));
 				result.addElement(c);	
 			}
 		}
@@ -139,7 +145,7 @@ Vector<Contact> result = new Vector<Contact>();
 				
 				try{
 					Statement stmt = con.createStatement();
-					ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID FROM T_Contact WHERE U_ID=" + user.getId()+ " ORDER BY C_ID");
+					ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID, create_date, mod_date FROM T_Contact WHERE U_ID=" + user.getId()+ " ORDER BY C_ID");
 					
 					while (rs.next()){
 						Contact c = new Contact();
@@ -148,6 +154,8 @@ Vector<Contact> result = new Vector<Contact>();
 						c.setLastname(rs.getString("lastName"));
 						c.setSex(rs.getString("gender"));
 						c.setOwner(rs.getInt("U_ID"));
+						c.setCreationDate(rs.getTimestamp("create_date"));
+						c.setModificationDate(rs.getTimestamp("mod_date"));
 						result.addElement(c);
 					}		
 				}catch(SQLException e2){
@@ -311,7 +319,7 @@ try{
 			
 			try{
 				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID FROM T_Contact WHERE firstName LIKE'%" +name+ "%' OR lastName LIKE'%" + name+ "%' ORDER BY C_ID");
+				ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID, create_date, mod_date FROM T_Contact WHERE firstName LIKE'%" +name+ "%' OR lastName LIKE'%" + name+ "%' ORDER BY C_ID");
 				while (rs.next()){
 					Contact c = new Contact();
 					c.setId(rs.getInt("C_ID"));
@@ -319,6 +327,8 @@ try{
 					c.setLastname(rs.getString("lastName"));
 					c.setSex(rs.getString("gender"));
 					c.setOwner(rs.getInt("U_ID"));
+					c.setCreationDate(rs.getTimestamp("create_date"));
+					c.setModificationDate(rs.getTimestamp("mod_date"));
 					result.addElement(c);	
 				}
 			}
