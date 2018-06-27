@@ -210,15 +210,17 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	 */
 	public <T> NodeInfo<?> getNodeInfo(T value) {
 		
+		user = ClientsideSettings.getUser();
+		
 		if(value.equals("Root")) {
 			//evtl. hier Abfrage, ob der Provider = null ist?
 			contactListDataProvider = new ListDataProvider<ContactList>();
-			Window.alert("Geht in NodeInfo rein");
+			
 			
 			contactListDataProvider.getList().add(myContactsContactList);
 			
 			// User-Parameter muss den aktuell angemeldeten User zurückgeben
-			editorAdministration.getAllContactListsOfUser(ClientsideSettings.getUser().getEmail(), new AsyncCallback<Vector<ContactList>>(){
+			editorAdministration.getAllContactListsOfUser(user.getEmail(), new AsyncCallback<Vector<ContactList>>(){
 				public void onFailure(Throwable t) {
 					
 				}
@@ -229,7 +231,6 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 						
 						
 					}
-					Window.alert("Alle Kontaktlisten des Nutzers ausgelesen");
 				}
 			});
 			return new DefaultNodeInfo<ContactList>(contactListDataProvider,
@@ -242,11 +243,9 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 			/*
 			 * Bei der angeklickten Kontaktliste handelt es sich um die default myContactsContactList 
 			 */
-			Window.alert("erkennt Kontakliste");
-			Window.alert(((Integer)((ContactList) value).getOwner()).toString());
+	
 			
 			if((ContactList) value == myContactsContactList) {
-				Window.alert("meine Kontakte");
 				editorAdministration.getAllContactsOfActiveUser(user, new AsyncCallback<Vector<Contact>>() {
 					public void onFailure (Throwable t) {
 						
@@ -264,12 +263,13 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 			 * Bei der angeklickten Kontaktliste handelt es sich um eine manuell erstellte Kontaktliste
 			 */
 			}else {
-				Window.alert("springt in else");
+		
 				/*
 				 * Der Nutzer ist Eigentümer der Kontaktliste
 				 */
+				
 				if(user.getId() == ((ContactList) value).getOwner()) {
-					Window.alert("meine Kontaktliste");
+				
 					
 					editorAdministration.getAllContactsOf((ContactList) value, new AsyncCallback<Vector<Contact>>() {
 							public void onFailure(Throwable t) {
@@ -305,7 +305,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 				
 						
 			}
-			Window.alert("läuft if else durch");
+	
 			Window.alert(contactsProvider.getList().get(0).getFirstname());
 			return new DefaultNodeInfo<Contact>(contactsProvider,
 			new ContactCell(), selectionModel, null);	

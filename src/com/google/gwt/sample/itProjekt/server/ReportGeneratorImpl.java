@@ -10,6 +10,7 @@ import com.google.gwt.sample.itProjekt.shared.bo.Property;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
 import com.google.gwt.sample.itProjekt.shared.bo.Value;
 import com.google.gwt.sample.itProjekt.shared.report.AllContactsOfUserReport;
+import com.google.gwt.sample.itProjekt.shared.report.AllContactsWithPropertyReport;
 import com.google.gwt.sample.itProjekt.shared.report.AllContactsWithValueReport;
 import com.google.gwt.sample.itProjekt.shared.report.AllSharedContactsOfUserReport;
 import com.google.gwt.sample.itProjekt.shared.report.Column;
@@ -215,7 +216,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
  * @see com.google.gwt.sample.itProjekt.shared.ReportGenerator#generateAllContactsWithValueReport(com.google.gwt.sample.itProjekt.shared.bo.Value)
  */
 @Override	
-	public AllContactsWithValueReport generateAllContactsWithValueReport(Value v) {
+	public AllContactsWithValueReport generateAllContactsWithValueReport(User u, Value v) {
 	if(this.getEditorAdministration()==null) {
 		return null;
 	} 
@@ -241,7 +242,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		
 		report.addRow(headline);
 
-		Vector<Contact> allContacts=this.admin.getAllContactsWith(v);
+		Vector<Contact> allContacts=this.admin.getAllContactsOfUserWithValue(u, v);
 		
 		for (Contact c: allContacts) {
 			Vector<Value> allValues=this.admin.getAllValuesOf(c);
@@ -275,5 +276,67 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		}
 		return report;
 	}
+}
+
+@Override
+	public AllContactsWithPropertyReport generateAllContactsWithPropertyReport(User user, Property property){
+	if(this.getEditorAdministration()==null) {
+		return null;
+	} 
+	else {
+		AllContactsWithPropertyReport report = new AllContactsWithPropertyReport();
+		
+		report.setTitle("Alle Kontakte mit der Eigenschaft");
+		report.setCreated(new Date());
+			
+		report.setHeaderData(new SimpleParagraph("Gesuchte Eigenschaft: " + property.getType()));
+		
+		Row headline = new Row();
+		Row propertyheadline=new Row();
+
+		headline.addColumn(new Column ("Kontakt-ID"));
+		headline.addColumn(new Column("Vorname"));
+		headline.addColumn(new Column("Nachname"));
+		headline.addColumn(new Column("Geschlecht"));
+		propertyheadline.addColumn(new Column(""));
+		propertyheadline.addColumn(new Column("Eigenschaft"));
+		propertyheadline.addColumn(new Column("Ausprägung"));
+		
+		report.addRow(headline);
+
+		Vector<Contact> allContacts=this.admin.getContactsOfUserWithProperty(user, property);
+		
+		for (Contact c: allContacts) {
+			Vector<Value> allValues=this.admin.getAllValuesOf(c);
+			Row contactRow=new Row();
+			contactRow.addColumn(new Column(String.valueOf(c.getId())));
+			contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
+			contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
+			switch (c.getSex()){
+				case "f":
+				contactRow.addColumn(new Column("weiblich"));
+				break;
+				case "m":
+				contactRow.addColumn(new Column("männlich"));
+				break;
+				case "o":
+				contactRow.addColumn(new Column("sonstige"));
+				break;
+			}
+			report.addRow(contactRow);
+			if(allValues.size() != 0){
+			report.addRow(propertyheadline);
+			for (Value val: allValues){
+				Property prop=this.admin.getPropertyOfValue(val);
+				Row valueRow=new Row();
+				valueRow.addColumn(new Column(""));
+				valueRow.addColumn(new Column(prop.getType()));
+				valueRow.addColumn(new Column(val.getContent()));
+				report.addRow(valueRow);
+				}
+			}
+		}
+		return report;
+}
 }
 }

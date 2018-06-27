@@ -855,9 +855,8 @@ public class ContactForm extends VerticalPanel {
 		 * Zunächst wird der angemeldete Nutzer abgefragt und als Instanzenvariable gespeichert.
 		 */
 		
-		Window.alert("blub. springt in onLoad on cf");
 		currentUser = ClientsideSettings.getUser();
-		Window.alert("user aus den Clientsidesetting: " + ClientsideSettings.getUser().getEmail());
+		
 		this.add(contactTable);
 		
 		editorAdministration.getAllPredefinedPropertiesOf(new AsyncCallback<Vector<Property>>(){

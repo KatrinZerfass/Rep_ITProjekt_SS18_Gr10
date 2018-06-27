@@ -28,4 +28,7 @@ public abstract class ReportWriter {
 		 * @param r the r
 		 */
 		public abstract void process(AllContactsWithValueReport r);
+		
+		public abstract void process(AllContactsWithPropertyReport r);
+
 }
