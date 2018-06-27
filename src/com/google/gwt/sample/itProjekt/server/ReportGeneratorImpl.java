@@ -43,7 +43,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
  */
 @Override
 	public void init() throws IllegalArgumentException{
-		EditorAdministrationImpl a =new EditorAdministrationImpl();
+		EditorAdministrationImpl a = new EditorAdministrationImpl();
 		a.init();
 		this.admin=a;
 	}
@@ -127,6 +127,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 					for (Value v: allValues){
 						Property p=this.admin.getPropertyOfValue(v);
 						Row valueRow=new Row();
+						valueRow.addColumn(new Column(""));
 						valueRow.addColumn(new Column(p.getType()));
 						valueRow.addColumn(new Column(v.getContent()));
 						report.addRow(valueRow);
@@ -199,6 +200,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			for (Value v: allValues){
 				Property p=this.admin.getPropertyOfValue(v);
 				Row valueRow=new Row();
+				valueRow.addColumn(new Column(""));
 				valueRow.addColumn(new Column(p.getType()));
 				valueRow.addColumn(new Column(v.getContent()));
 				report.addRow(valueRow);
@@ -264,6 +266,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			for (Value val: allValues){
 				Property p=this.admin.getPropertyOfValue(val);
 				Row valueRow=new Row();
+				valueRow.addColumn(new Column(""));
 				valueRow.addColumn(new Column(p.getType()));
 				valueRow.addColumn(new Column(val.getContent()));
 				report.addRow(valueRow);
