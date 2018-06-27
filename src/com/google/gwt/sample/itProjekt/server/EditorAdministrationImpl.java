@@ -369,8 +369,10 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	public Vector<Contact> getContactsOfUserWithProperty(User user, Property property) throws IllegalArgumentException{
 		Vector<Contact> allContactsOfUser= new Vector<Contact>();
 		allContactsOfUser = getAllContactsOfActiveUser(user);
+		Property p=new Property();
+		p=pMapper.findByType(property);
 		
-		Vector<Contact> allContactsWithProperty=vMapper.getAllContactsByPID(property);
+		Vector<Contact> allContactsWithProperty=vMapper.getAllContactsByPID(p);
 		Vector<Contact> result=new Vector<Contact>();
 		
 		for (Contact c :allContactsOfUser){
