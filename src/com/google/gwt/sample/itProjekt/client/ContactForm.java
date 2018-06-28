@@ -440,7 +440,6 @@ public class ContactForm extends VerticalPanel {
 					addValueLabel.setText("Neue Arbeitsstelle: ");
 					addValueButton.addClickHandler(new AddValueClickHandler(addValuePopUp, addValueTextBox,
 							((ValueTable) contactTable.getWidget(row, 1)), pid));
-					Window.alert("case 5");
 					break;
 			case 10:addValueTextBox = new ValueTextBox("Homepage");
 					addValueLabel.setText("Neue Homepage: ");
@@ -476,7 +475,7 @@ public class ContactForm extends VerticalPanel {
 		private class AddValueClickHandler implements ClickHandler {
 			DialogBox popup;
 			ValueTextBox tb;
-			FlexTable ft;
+			FlexTable vt;
 			int pid;
 			
 			/**
@@ -489,10 +488,10 @@ public class ContactForm extends VerticalPanel {
 			 * @param pid die ID der Eigenschaftsart des AddValueButtons
 			 * @param content der vom Nutzer eingetragene Inhalt der neuen Ausprägung
 			 */
-			public AddValueClickHandler(DialogBox popup, ValueTextBox tb, ValueTable ft, int pid) {
+			public AddValueClickHandler(DialogBox popup, ValueTextBox tb, ValueTable vt, int pid) {
 				this.popup = popup;
 				this.tb = tb;
-				this.ft = ft;
+				this.vt = vt;
 				this.pid = pid;
 				Window.alert("AddValueclickhandler instantiiert");
 						
@@ -513,12 +512,19 @@ public class ContactForm extends VerticalPanel {
 							Window.alert("Ausprägung konnte nicht hinzugefügt werden. Versuchen Sie es erneut.");
 						}
 						public void onSuccess(Value v) {
+							Window.alert("Vorname vom contacttoDisplay: " + contactToDisplay.getFirstname()
+							+ "\n  Text aus der TextBox: " + tb.getText() + "\n");
+							Window.alert("Value aus der Datenbank: " + v.getContent());
 							/*
 							 * War das Anlegen der Ausprägung auf dem Server erfolgreich, so wird sie auch im GUI als neue Zeile in
 							 * der jeweiligen ValueTable angezeigt.
 							 */
-							ft.setWidget(ft.getRowCount(), 0, new ValueDisplay(new ValueTextBox(tb.getIdentifier())));
-							((ValueDisplay) ft.getWidget(ft.getRowCount(),0)).setValue(v);
+							int rowCount = vt.getRowCount();
+							Window.alert(tb.getIdentifier());
+							Window.alert(((Integer) rowCount).toString());
+							vt.setWidget(rowCount, 0, new ValueDisplay(new ValueTextBox(tb.getIdentifier())));
+							((ValueDisplay) vt.getWidget(rowCount ,0)).setValue(v);
+							Window.alert("addvalueclikchandler durchgelaufen");
 						}
 					});
 				
@@ -556,7 +562,7 @@ public class ContactForm extends VerticalPanel {
 		 */
 		public ValueTextBox(String identifier) {
 	
-			this.setIdentifier(identifier);
+			setIdentifier(identifier);
 			allValueTextBoxes.add(this);
 			this.setText("");
 			
@@ -670,6 +676,7 @@ public class ContactForm extends VerticalPanel {
 		 * @param v die anzuzeigende Ausprägung
 		 */
 		public void setValue(Value v) {
+			Window.alert("Springt in die setValue von ValueDisplay");
 			this.value = v;
 			valueTextBox.setValue(value);
 			lockButton.setValue(value);
@@ -1656,10 +1663,9 @@ public class ContactForm extends VerticalPanel {
 					
 				}
 				public void onSuccess(Vector<Value> values) {
-					for (Value v : values) {
-						allValuesOfContact = new Vector<Value>();
-						allValuesOfContact.add(v);
-					}
+					allValuesOfContact = values;
+					displayAllValuesOfContact();
+					
 					Window.alert("Alle Ausprägungen des Kontaktes ausgelesen");
 				}
 			});
@@ -1688,369 +1694,6 @@ public class ContactForm extends VerticalPanel {
 			sexListBox.setEnabled(false);
 			
 			
-			
-			/*
-			 * Der Vector allValuesOfContact, welcher alle Ausprägungen des anzuzeigenden Kontaktes enthält, wird durchiteriert
-			 * und jede Ausprägung wird im dazugehörigen ValueDisplay der jeweiligen Eigenschaftsart angezeigt.
-			 * 
-			 * Bei den Eigenschaftsarten mit der P_ID 1, 2, 3, 5, und 10 können jeweils mehrere Ausprägungen vorhanden sein.
-			 * Die genaue Funktionalität hierzu ist in "case 1" vollständig durchkommentiert, in den folgenden Cases verhält es sich 
-			 * immer genau gleich. Der einzige Unterschied sind nur das ValuePanel und ValueTable, welche zu Beginn jedes Cases gesetzt werden
-			 * und sich jeweils in einer anderen Zeile der contactTable befinden, je nachdem um welche Eigenschaftsart es sich handelt.
-			 * 
-			 */ 
-			
-			for(int i=0; i<allValuesOfContact.size(); i++) {
-				int pid = allValuesOfContact.get(i).getPropertyid(); 
-				ValuePanel vp; //das ValuePanel der jeweiligen Eigenschaftsart
-				ValueTable vt; //die ValueTable der jeweiligen Eigenschaftsart
-				int row = contactTable.getRowCount();
-				
-				switch (pid) {
-
-					case 1: // Tel.Nr. geschäftlich
-							/*
-							 * Das korrekte ValuePanel und ValueTable werden gesetzt und im Folgenden auf ihnen operiert.
-							 */
-							contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Geschäftliche Telefonnummer: "));
-							contactTable.getFlexCellFormatter().setVerticalAlignment(6, 0, ALIGN_TOP);
-							vp = (ValuePanel) contactTable.getWidget(row, 0);
-							
-							contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-							contactTable.setWidget(row, 1, new ValueTable(pid));
-							vt = (ValueTable) contactTable.getWidget(row, 1);
-							
-							/*
-							 * Ist noch keine Ausprägung im ersten (bereits im GUI bestehenden) ValueDisplay gesetzt worden, so passiert dies nun.
-							 */
-							if(vt.getValueDisplay(0) == null) {
-								vt.setWidget(0, 0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
-								vt.getValueDisplay(0).setValue(allValuesOfContact.get(i));
-							
-								/*
-								 * Je nachdem, ob der angemeldete Nutzer der Eigentümer des Kontakts ist oder nicht, werden die Buttons 
-								 * AddValueButton, LockButton, und DeleteValueButton aktiviert oder nicht.
-								 */
-								if(compareUser()) {
-									vt.getValueDisplay(0).enableButtons();
-									vp.getAddValueButton().setEnabled(true);
-								}
-								else {
-									vt.getValueDisplay(0).disableButtons();
-									vp.getAddValueButton().setEnabled(false);
-								}
-								
-							/*
-							 * Das erste ValueDisplay wurde bereits befüllt. 
-							 * Gibt es nun mehrere Ausprägungen zu geschäftlichen Telefonnummern, wird eine neue Zeile in der 
-							 * zugehörigen ValueTable vt erstellt und dieser ebenfalls ein ValueDisplay hinzugefügt. In dieses ValueDisplay
-							 * wird die Ausprägung gesetzt.
-							 */
-							}else {
-								vt.setWidget(vt.getRowCount(), 0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
-								vt.getValueDisplay(vt.getRowCount()).setValue(allValuesOfContact.get(i));
-								
-								/*
-								 * Gleiches Prinzip wie gerade schon, nur jetzt für das soeben neu hinzugefügte ValueDisplay.
-								 */
-								if (compareUser()) {
-									vt.getValueDisplay(vt.getRowCount()).enableButtons();
-									vp.getAddValueButton().setEnabled(true);
-								}
-								else {
-									vt.getValueDisplay(vt.getRowCount()).disableButtons();
-									vp.getAddValueButton().setEnabled(false);
-								}
-							}
-							break;
-							
-					
-					case 2:  // Tel.Nr. privat
-							contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Private Telefonnummer: "));
-							contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-							vp = (ValuePanel) contactTable.getWidget(row, 0); 
-							
-							contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-							contactTable.setWidget(row, 1, new ValueTable(pid));
-							vt = (ValueTable) contactTable.getWidget(row, 1); 
-							
-							if(vt.getValueDisplay(0) == null) {
-								vt.setWidget(0, 0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
-								vt.getValueDisplay(0).setValue(allValuesOfContact.get(i));
-							
-								if(compareUser()) {
-									vt.getValueDisplay(0).enableButtons();
-									vp.getAddValueButton().setEnabled(true);
-								}
-								else {
-									vt.getValueDisplay(0).disableButtons();
-									vp.getAddValueButton().setEnabled(false);
-								}
-							}else {
-								/*
-								 * Es gibt mehrere Ausprägungen zu privaten Telefonnummern.
-								 */
-								vt.setWidget(vt.getRowCount(), 0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
-								vt.getValueDisplay(vt.getRowCount()).setValue(allValuesOfContact.get(i));
-								
-								if (compareUser()) {
-									vt.getValueDisplay(vt.getRowCount()).enableButtons();
-									vp.getAddValueButton().setEnabled(true);
-								}
-								else {
-									vt.getValueDisplay(vt.getRowCount()).disableButtons();
-									vp.getAddValueButton().setEnabled(false);
-								}
-							}
-							break;
-							
-					
-					case 3:  // e-Mail
-							contactTable.setWidget(row, 0, new ValuePanel(pid, row, "e-Mail-Adressen "));
-							contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-							vp = (ValuePanel) contactTable.getWidget(row, 0); 
-							
-							contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-							contactTable.setWidget(row, 1, new ValueTable(pid));
-							vt = (ValueTable) contactTable.getWidget(row, 1);
-							
-							if(vt.getValueDisplay(0).getValue() == null){
-								vt.getValueDisplay(0).setValue(allValuesOfContact.get(i));
-							
-								if(compareUser()) {
-									vt.getValueDisplay(0).enableButtons();
-									vp.getAddValueButton().setEnabled(true);
-								}
-								else {
-									vt.getValueDisplay(0).disableButtons();
-									vp.getAddValueButton().setEnabled(false);
-								}
-							}else {
-								/*
-								 * Es gibt mehrere Ausprägungen zu e-Mail-Adressen.
-								 */
-								vt.setWidget(vt.getRowCount(), 0, new ValueDisplay(new ValueTextBox("Email")));
-								vt.getValueDisplay(vt.getRowCount()).setValue(allValuesOfContact.get(i));
-								
-								if(compareUser()) {
-									vt.getValueDisplay(vt.getRowCount()).enableButtons();
-									vp.getAddValueButton().setEnabled(true);
-								}
-								else {
-									vt.getValueDisplay(vt.getRowCount()).disableButtons();
-									vp.getAddValueButton().setEnabled(false);
-								}
-							}
-							break;
-							
-							
-					case 4:  // Geburtstag
-							/*
-							 * Eine Ausprägung zu Geburtstag kann nur einmal vorhanden sein. Demzufolge gibt es hierfür auch keine ValueTable.
-							 * Das ValueDisplay, in dem sich die TextBox für das Geburtsdatum befindet, wird direkt angesprochen.
-							 */
-							Label birthdateLabel = new Label("Geburtsdatum: ");
-							contactTable.setWidget(3, 2, birthdateLabel);
-							
-							contactTable.setWidget(3, 3, new ValueDisplay(new ValueTextBox("Geburtstag")));
-							((ValueDisplay) contactTable.getWidget(3, 3)).getWidget(0).setWidth("105px");
-							((ValueDisplay) contactTable.getWidget(3,3)).setValue(allValuesOfContact.get(i));
-							break;
-							
-							
-					case 5: // Arbeitsplatz
-							contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Arbeitsplatz "));
-							contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-							vp = (ValuePanel) contactTable.getWidget(row, 0);
-							
-							contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-							contactTable.setWidget(row, 1, new ValueTable(pid));
-							vt = (ValueTable) contactTable.getWidget(row, 1);
-							
-							if(vt.getValueDisplay(0).getValue() == null){
-								vt.getValueDisplay(0).setValue(allValuesOfContact.get(i));
-							
-								if(compareUser()) {
-									vt.getValueDisplay(0).enableButtons();
-									vp.getAddValueButton().setEnabled(true);
-								}
-								else {
-									vt.getValueDisplay(0).disableButtons();
-									vp.getAddValueButton().setEnabled(false);
-								}
-							}else {
-								/*
-								 * Es gibt mehrere Ausprägungen zu Arbeitsplatz.
-								 */
-								vt.setWidget(vt.getRowCount(), 0, new ValueDisplay(new ValueTextBox("Arbeitsplatz")));
-								vt.getValueDisplay(vt.getRowCount()).setValue(allValuesOfContact.get(i));
-								
-								if(compareUser()) {
-									vt.getValueDisplay(vt.getRowCount()).enableButtons();
-									vp.getAddValueButton().setEnabled(true);
-								}
-								else {
-									vt.getValueDisplay(vt.getRowCount()).disableButtons();
-									vp.getAddValueButton().setEnabled(false);
-								}
-							}
-							break;
-							
-					
-					/*
-					 * Bei der Anschrift kann ebenfalls nur eine Ausprägung vorhanden sein. Demzufolge wurden die ValueTextBoxen hierfür
-					 * als Instanzenvariablen von ContactForm deklariert und können nun hier direkt angesprochen werden.
-					 * Sie befinden sich alle in der umschließenden FlexTable adressTable.
-					 */
-					case 6:  // Straße
-
-							
-							Label addressLabel = new Label("Anschrift: ");
-							contactTable.setWidget(4, 0, addressLabel);
-							
-							contactTable.getFlexCellFormatter().setColSpan(4, 1, 3);
-							contactTable.setWidget(4, 1, addressTable);
-							
-							addressTable.setWidget(0, 0, streetTextBox);
-							addressTable.setWidget(0, 1, houseNrTextBox);
-							addressTable.setWidget(1, 0, plzTextBox);
-							addressTable.setWidget(1, 1, cityTextBox);
-								
-							addressTable.getFlexCellFormatter().setRowSpan(0, 2, 2);
-							addressTable.setWidget(0, 2, new ValueDisplay(new ValueTextBox("")));
-							((ValueDisplay) addressTable.getWidget(0, 2)).remove(0);
-							
-							/*
-							 * Da es sich bei der Anschrift nicht um ValueDisplays handelt, muss auf die beiden Buttons seperat
-							 * operiert werden. Ihnen wird jeweils die Straße als Ausprägung gesetzt, da es nur möglich ist, einen
-							 * einzelnen Wert als Value zu setzten. Trotzdem operieren diese Buttons beim Klicken auf die gesamten
-							 * vier Ausprägungen, die zur Anschrift gehören.
-							 */
-							streetTextBox.setValue(allValuesOfContact.get(i));
-							((LockButton) addressTable.getWidget(0, 2)).setValue(allValuesOfContact.get(i));
-							((DeleteValueButton) addressTable.getWidget(0,3)).setValue(allValuesOfContact.get(i));
-							
-							if(compareUser()) {
-								((LockButton) addressTable.getWidget(0, 2)).setEnabled(true);
-								((DeleteValueButton) addressTable.getWidget(0,3)).setEnabled(true);
-							}
-							else {
-								((LockButton) addressTable.getWidget(0, 2)).setEnabled(false);
-								((DeleteValueButton) addressTable.getWidget(0,3)).setEnabled(false);
-							}
-							break;
-			
-					case 7:  // Hausnummer
-							houseNrTextBox.setValue(allValuesOfContact.get(i));
-							break;
-							
-					
-					case 8:  // PLZ
-							plzTextBox.setValue(allValuesOfContact.get(i));
-							break;
-					
-					
-					case 9:  // Wohnort
-							cityTextBox.setValue(allValuesOfContact.get(i));
-							break;
-							
-					
-					case 10:  // Homepage
-							contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Homepages: "));
-							contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-							vp = (ValuePanel) contactTable.getWidget(row, 0); 
-							
-							contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-							contactTable.setWidget(row, 1, new ValueTable(pid));
-							vt = (ValueTable) contactTable.getWidget(row, 1);
-							
-							if(vt.getValueDisplay(0).getValue() == null){
-								vt.getValueDisplay(0).setValue(allValuesOfContact.get(i));
-							
-								if(compareUser()) {
-									vt.getValueDisplay(0).enableButtons();
-									vp.getAddValueButton().setEnabled(true);
-								}
-								else {
-									vt.getValueDisplay(0).disableButtons();
-									vp.getAddValueButton().setEnabled(false);
-								}
-							 }else {
-								 /*
-								 * Es gibt mehrere Ausprägungen zu Homepage.
-								 */
-								 vt.setWidget(vt.getRowCount(), 0, new ValueDisplay(new ValueTextBox("Homepage")));
-									vt.getValueDisplay(vt.getRowCount()).setValue(allValuesOfContact.get(i));
-									
-									if(compareUser()) {
-										vt.getValueDisplay(vt.getRowCount()).enableButtons();
-										vp.getAddValueButton().setEnabled(true);
-									}
-									else {
-										vt.getValueDisplay(vt.getRowCount()).disableButtons();
-										vp.getAddValueButton().setEnabled(false);
-									}
-								}
-								break;
-					//TODO: neu hinzugefügte Eigenschaft
-					default: 
-						if (pid > 10){
-						
-							editorAdministration.getPropertyOfValue(allValuesOfContact.get(i), new AsyncCallback<Property>() {
-								public void onFailure (Throwable t) {
-									
-								}
-								
-								public void onSuccess(Property result) {
-									allNewPropertiesOfContact.add(result);
-									
-								}
-							});
-							
-							
-							contactTable.setWidget(row, 0, new ValuePanel(pid, row, allNewPropertiesOfContact.get(i).getType() + ": "));
-							contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-							vp = (ValuePanel) contactTable.getWidget(row, 0); 
-							
-							contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-							contactTable.setWidget(row, 1, new ValueTable(pid));
-							vt = (ValueTable) contactTable.getWidget(row, 1);
-							
-							
-							if(vt.getValueDisplay(0).getValue() == null){
-								vt.getValueDisplay(0).setValue(allValuesOfContact.get(i));
-							
-								if(compareUser()) {
-									vt.getValueDisplay(0).enableButtons();
-									vp.getAddValueButton().setEnabled(true);
-								}
-								else {
-									vt.getValueDisplay(0).disableButtons();
-									vp.getAddValueButton().setEnabled(false);
-								}
-							 }else {
-								 /*
-								 * Es gibt mehrere Ausprägungen zur neuen Eigenschaft.
-								 */
-								 vt.setWidget(vt.getRowCount(), 0, new ValueDisplay(new ValueTextBox("Homepage")));
-									vt.getValueDisplay(vt.getRowCount()).setValue(allValuesOfContact.get(i));
-									
-									if(compareUser()) {
-										vt.getValueDisplay(vt.getRowCount()).enableButtons();
-										vp.getAddValueButton().setEnabled(true);
-									}
-									else {
-										vt.getValueDisplay(vt.getRowCount()).disableButtons();
-										vp.getAddValueButton().setEnabled(false);
-									}
-								}
-						
-						}else {
-							Window.alert("Unbekannte Eigenschaft kann nicht hinzugefügt werden.");
-					}
-						
-				}
-			}Window.alert("Auslesen aller Ausprägungen ist durchgelaufen");
 				
 		
 		/*
@@ -2074,6 +1717,372 @@ public class ContactForm extends VerticalPanel {
 //			((ValueTable) contactTable.getWidget(9, 1)).getValueDisplay(0).getValueTextBox().getElement().setPropertyString("placeholder", "Arbeitsstelle...");
 		}
 				
+	}
+	
+	public void displayAllValuesOfContact() {
+		
+		
+		/*
+		 * Der Vector allValuesOfContact, welcher alle Ausprägungen des anzuzeigenden Kontaktes enthält, wird durchiteriert
+		 * und jede Ausprägung wird im dazugehörigen ValueDisplay der jeweiligen Eigenschaftsart angezeigt.
+		 * 
+		 * Bei den Eigenschaftsarten mit der P_ID 1, 2, 3, 5, und 10 können jeweils mehrere Ausprägungen vorhanden sein.
+		 * Die genaue Funktionalität hierzu ist in "case 1" vollständig durchkommentiert, in den folgenden Cases verhält es sich 
+		 * immer genau gleich. Der einzige Unterschied sind nur das ValuePanel und ValueTable, welche zu Beginn jedes Cases gesetzt werden
+		 * und sich jeweils in einer anderen Zeile der contactTable befinden, je nachdem um welche Eigenschaftsart es sich handelt.
+		 * 
+		 */ 
+		
+		for(int i=0; i<allValuesOfContact.size(); i++) {
+			int pid = allValuesOfContact.get(i).getPropertyid(); 
+			ValuePanel vp; //das ValuePanel der jeweiligen Eigenschaftsart
+			ValueTable vt; //die ValueTable der jeweiligen Eigenschaftsart
+			int row = contactTable.getRowCount();
+			
+			switch (pid) {
+
+				case 1: // Tel.Nr. geschäftlich
+						/*
+						 * Das korrekte ValuePanel und ValueTable werden gesetzt und im Folgenden auf ihnen operiert.
+						 */
+						contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Geschäftliche Telefonnummer: "));
+						contactTable.getFlexCellFormatter().setVerticalAlignment(6, 0, ALIGN_TOP);
+						vp = (ValuePanel) contactTable.getWidget(row, 0);
+						
+						contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
+						contactTable.setWidget(row, 1, new ValueTable(pid));
+						vt = (ValueTable) contactTable.getWidget(row, 1);
+						
+						/*
+						 * Ist noch keine Ausprägung im ersten (bereits im GUI bestehenden) ValueDisplay gesetzt worden, so passiert dies nun.
+						 */
+						if(vt.getValueDisplay(0) == null) {
+							vt.setWidget(0, 0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
+							vt.getValueDisplay(0).setValue(allValuesOfContact.get(i));
+						
+							/*
+							 * Je nachdem, ob der angemeldete Nutzer der Eigentümer des Kontakts ist oder nicht, werden die Buttons 
+							 * AddValueButton, LockButton, und DeleteValueButton aktiviert oder nicht.
+							 */
+							if(compareUser()) {
+								vt.getValueDisplay(0).enableButtons();
+								vp.getAddValueButton().setEnabled(true);
+							}
+							else {
+								vt.getValueDisplay(0).disableButtons();
+								vp.getAddValueButton().setEnabled(false);
+							}
+							
+						/*
+						 * Das erste ValueDisplay wurde bereits befüllt. 
+						 * Gibt es nun mehrere Ausprägungen zu geschäftlichen Telefonnummern, wird eine neue Zeile in der 
+						 * zugehörigen ValueTable vt erstellt und dieser ebenfalls ein ValueDisplay hinzugefügt. In dieses ValueDisplay
+						 * wird die Ausprägung gesetzt.
+						 */
+						}else {
+							vt.setWidget(vt.getRowCount(), 0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
+							vt.getValueDisplay(vt.getRowCount()).setValue(allValuesOfContact.get(i));
+							
+							/*
+							 * Gleiches Prinzip wie gerade schon, nur jetzt für das soeben neu hinzugefügte ValueDisplay.
+							 */
+							if (compareUser()) {
+								vt.getValueDisplay(vt.getRowCount()).enableButtons();
+								vp.getAddValueButton().setEnabled(true);
+							}
+							else {
+								vt.getValueDisplay(vt.getRowCount()).disableButtons();
+								vp.getAddValueButton().setEnabled(false);
+							}
+						}
+						break;
+						
+				
+				case 2:  // Tel.Nr. privat
+						contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Private Telefonnummer: "));
+						contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+						vp = (ValuePanel) contactTable.getWidget(row, 0); 
+						
+						contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
+						contactTable.setWidget(row, 1, new ValueTable(pid));
+						vt = (ValueTable) contactTable.getWidget(row, 1); 
+						
+						if(vt.getValueDisplay(0) == null) {
+							vt.setWidget(0, 0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
+							vt.getValueDisplay(0).setValue(allValuesOfContact.get(i));
+						
+							if(compareUser()) {
+								vt.getValueDisplay(0).enableButtons();
+								vp.getAddValueButton().setEnabled(true);
+							}
+							else {
+								vt.getValueDisplay(0).disableButtons();
+								vp.getAddValueButton().setEnabled(false);
+							}
+						}else {
+							/*
+							 * Es gibt mehrere Ausprägungen zu privaten Telefonnummern.
+							 */
+							vt.setWidget(vt.getRowCount(), 0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
+							vt.getValueDisplay(vt.getRowCount()).setValue(allValuesOfContact.get(i));
+							
+							if (compareUser()) {
+								vt.getValueDisplay(vt.getRowCount()).enableButtons();
+								vp.getAddValueButton().setEnabled(true);
+							}
+							else {
+								vt.getValueDisplay(vt.getRowCount()).disableButtons();
+								vp.getAddValueButton().setEnabled(false);
+							}
+						}
+						break;
+						
+				
+				case 3:  // e-Mail
+						contactTable.setWidget(row, 0, new ValuePanel(pid, row, "e-Mail-Adressen "));
+						contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+						vp = (ValuePanel) contactTable.getWidget(row, 0); 
+						
+						contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
+						contactTable.setWidget(row, 1, new ValueTable(pid));
+						vt = (ValueTable) contactTable.getWidget(row, 1);
+						
+						if(vt.getValueDisplay(0).getValue() == null){
+							vt.getValueDisplay(0).setValue(allValuesOfContact.get(i));
+						
+							if(compareUser()) {
+								vt.getValueDisplay(0).enableButtons();
+								vp.getAddValueButton().setEnabled(true);
+							}
+							else {
+								vt.getValueDisplay(0).disableButtons();
+								vp.getAddValueButton().setEnabled(false);
+							}
+						}else {
+							/*
+							 * Es gibt mehrere Ausprägungen zu e-Mail-Adressen.
+							 */
+							vt.setWidget(vt.getRowCount(), 0, new ValueDisplay(new ValueTextBox("Email")));
+							vt.getValueDisplay(vt.getRowCount()).setValue(allValuesOfContact.get(i));
+							
+							if(compareUser()) {
+								vt.getValueDisplay(vt.getRowCount()).enableButtons();
+								vp.getAddValueButton().setEnabled(true);
+							}
+							else {
+								vt.getValueDisplay(vt.getRowCount()).disableButtons();
+								vp.getAddValueButton().setEnabled(false);
+							}
+						}
+						break;
+						
+						
+				case 4:  // Geburtstag
+						/*
+						 * Eine Ausprägung zu Geburtstag kann nur einmal vorhanden sein. Demzufolge gibt es hierfür auch keine ValueTable.
+						 * Das ValueDisplay, in dem sich die TextBox für das Geburtsdatum befindet, wird direkt angesprochen.
+						 */
+						Label birthdateLabel = new Label("Geburtsdatum: ");
+						contactTable.setWidget(3, 2, birthdateLabel);
+						
+						contactTable.setWidget(3, 3, new ValueDisplay(new ValueTextBox("Geburtstag")));
+						((ValueDisplay) contactTable.getWidget(3, 3)).getWidget(0).setWidth("105px");
+						((ValueDisplay) contactTable.getWidget(3,3)).setValue(allValuesOfContact.get(i));
+						break;
+						
+						
+				case 5: // Arbeitsplatz
+						contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Arbeitsplatz "));
+						contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+						vp = (ValuePanel) contactTable.getWidget(row, 0);
+						
+						contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
+						contactTable.setWidget(row, 1, new ValueTable(pid));
+						vt = (ValueTable) contactTable.getWidget(row, 1);
+						
+						if(vt.getValueDisplay(0).getValue() == null){
+							vt.getValueDisplay(0).setValue(allValuesOfContact.get(i));
+						
+							if(compareUser()) {
+								vt.getValueDisplay(0).enableButtons();
+								vp.getAddValueButton().setEnabled(true);
+							}
+							else {
+								vt.getValueDisplay(0).disableButtons();
+								vp.getAddValueButton().setEnabled(false);
+							}
+						}else {
+							/*
+							 * Es gibt mehrere Ausprägungen zu Arbeitsplatz.
+							 */
+							vt.setWidget(vt.getRowCount(), 0, new ValueDisplay(new ValueTextBox("Arbeitsplatz")));
+							vt.getValueDisplay(vt.getRowCount()).setValue(allValuesOfContact.get(i));
+							
+							if(compareUser()) {
+								vt.getValueDisplay(vt.getRowCount()).enableButtons();
+								vp.getAddValueButton().setEnabled(true);
+							}
+							else {
+								vt.getValueDisplay(vt.getRowCount()).disableButtons();
+								vp.getAddValueButton().setEnabled(false);
+							}
+						}
+						break;
+						
+				
+				/*
+				 * Bei der Anschrift kann ebenfalls nur eine Ausprägung vorhanden sein. Demzufolge wurden die ValueTextBoxen hierfür
+				 * als Instanzenvariablen von ContactForm deklariert und können nun hier direkt angesprochen werden.
+				 * Sie befinden sich alle in der umschließenden FlexTable adressTable.
+				 */
+				case 6:  // Straße
+
+						
+						Label addressLabel = new Label("Anschrift: ");
+						contactTable.setWidget(4, 0, addressLabel);
+						
+						contactTable.getFlexCellFormatter().setColSpan(4, 1, 3);
+						contactTable.setWidget(4, 1, addressTable);
+						
+						addressTable.setWidget(0, 0, streetTextBox);
+						addressTable.setWidget(0, 1, houseNrTextBox);
+						addressTable.setWidget(1, 0, plzTextBox);
+						addressTable.setWidget(1, 1, cityTextBox);
+							
+						addressTable.getFlexCellFormatter().setRowSpan(0, 2, 2);
+						addressTable.setWidget(0, 2, new ValueDisplay(new ValueTextBox("")));
+						((ValueDisplay) addressTable.getWidget(0, 2)).remove(0);
+						
+						/*
+						 * Da es sich bei der Anschrift nicht um ValueDisplays handelt, muss auf die beiden Buttons seperat
+						 * operiert werden. Ihnen wird jeweils die Straße als Ausprägung gesetzt, da es nur möglich ist, einen
+						 * einzelnen Wert als Value zu setzten. Trotzdem operieren diese Buttons beim Klicken auf die gesamten
+						 * vier Ausprägungen, die zur Anschrift gehören.
+						 */
+						streetTextBox.setValue(allValuesOfContact.get(i));
+						((LockButton) addressTable.getWidget(0, 2)).setValue(allValuesOfContact.get(i));
+						((DeleteValueButton) addressTable.getWidget(0,3)).setValue(allValuesOfContact.get(i));
+						
+						if(compareUser()) {
+							((LockButton) addressTable.getWidget(0, 2)).setEnabled(true);
+							((DeleteValueButton) addressTable.getWidget(0,3)).setEnabled(true);
+						}
+						else {
+							((LockButton) addressTable.getWidget(0, 2)).setEnabled(false);
+							((DeleteValueButton) addressTable.getWidget(0,3)).setEnabled(false);
+						}
+						break;
+		
+				case 7:  // Hausnummer
+						houseNrTextBox.setValue(allValuesOfContact.get(i));
+						break;
+						
+				
+				case 8:  // PLZ
+						plzTextBox.setValue(allValuesOfContact.get(i));
+						break;
+				
+				
+				case 9:  // Wohnort
+						cityTextBox.setValue(allValuesOfContact.get(i));
+						break;
+						
+				
+				case 10:  // Homepage
+						contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Homepages: "));
+						contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+						vp = (ValuePanel) contactTable.getWidget(row, 0); 
+						
+						contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
+						contactTable.setWidget(row, 1, new ValueTable(pid));
+						vt = (ValueTable) contactTable.getWidget(row, 1);
+						
+						if(vt.getValueDisplay(0).getValue() == null){
+							vt.getValueDisplay(0).setValue(allValuesOfContact.get(i));
+						
+							if(compareUser()) {
+								vt.getValueDisplay(0).enableButtons();
+								vp.getAddValueButton().setEnabled(true);
+							}
+							else {
+								vt.getValueDisplay(0).disableButtons();
+								vp.getAddValueButton().setEnabled(false);
+							}
+						 }else {
+							 /*
+							 * Es gibt mehrere Ausprägungen zu Homepage.
+							 */
+							 vt.setWidget(vt.getRowCount(), 0, new ValueDisplay(new ValueTextBox("Homepage")));
+								vt.getValueDisplay(vt.getRowCount()).setValue(allValuesOfContact.get(i));
+								
+								if(compareUser()) {
+									vt.getValueDisplay(vt.getRowCount()).enableButtons();
+									vp.getAddValueButton().setEnabled(true);
+								}
+								else {
+									vt.getValueDisplay(vt.getRowCount()).disableButtons();
+									vp.getAddValueButton().setEnabled(false);
+								}
+							}
+							break;
+				//TODO: neu hinzugefügte Eigenschaft
+				default: 
+					if (pid > 10){
+					
+						editorAdministration.getPropertyOfValue(allValuesOfContact.get(i), new AsyncCallback<Property>() {
+							public void onFailure (Throwable t) {
+								
+							}
+							
+							public void onSuccess(Property result) {
+								allNewPropertiesOfContact.add(result);
+								
+							}
+						});
+						
+						
+						contactTable.setWidget(row, 0, new ValuePanel(pid, row, allNewPropertiesOfContact.get(i).getType() + ": "));
+						contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+						vp = (ValuePanel) contactTable.getWidget(row, 0); 
+						
+						contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
+						contactTable.setWidget(row, 1, new ValueTable(pid));
+						vt = (ValueTable) contactTable.getWidget(row, 1);
+						
+						
+						if(vt.getValueDisplay(0).getValue() == null){
+							vt.getValueDisplay(0).setValue(allValuesOfContact.get(i));
+						
+							if(compareUser()) {
+								vt.getValueDisplay(0).enableButtons();
+								vp.getAddValueButton().setEnabled(true);
+							}
+							else {
+								vt.getValueDisplay(0).disableButtons();
+								vp.getAddValueButton().setEnabled(false);
+							}
+						 }else {
+							 /*
+							 * Es gibt mehrere Ausprägungen zur neuen Eigenschaft.
+							 */
+							 vt.setWidget(vt.getRowCount(), 0, new ValueDisplay(new ValueTextBox("Homepage")));
+								vt.getValueDisplay(vt.getRowCount()).setValue(allValuesOfContact.get(i));
+								
+								if(compareUser()) {
+									vt.getValueDisplay(vt.getRowCount()).enableButtons();
+									vp.getAddValueButton().setEnabled(true);
+								}
+								else {
+									vt.getValueDisplay(vt.getRowCount()).disableButtons();
+									vp.getAddValueButton().setEnabled(false);
+								}
+							}
+					
+					}else {
+						Window.alert("Unbekannte Eigenschaft kann nicht hinzugefügt werden.");
+					}
+				}
+		}Window.alert("Auslesen aller Ausprägungen ist durchgelaufen");
 	}
 	
 	/**
