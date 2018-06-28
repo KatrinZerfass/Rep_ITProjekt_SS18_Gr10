@@ -193,7 +193,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			allContactsWithValueButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					if(searchInput.getText() != null){
+					if(searchInput.getText() != ""){
 					Value v = new Value();
 					v.setContent(searchInput.getText());
 					 reportGenerator.generateAllContactsWithValueReport(user, v, new AsyncCallback<AllContactsWithValueReport>() {
@@ -228,7 +228,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			allContactsWithPropertyButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					if(searchInput.getText() != null){
+					if(searchInput.getText() != ""){
 					Property p = new Property();
 					p.setType(searchInput.getText());
 					 reportGenerator.generateAllContactsWithPropertyReport(user, p, new AsyncCallback<AllContactsWithPropertyReport>() {
