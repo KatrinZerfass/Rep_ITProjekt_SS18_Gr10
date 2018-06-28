@@ -49,6 +49,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	private ContactList nameResultsCL = new ContactList();
 	private ContactList valueResultsCL = new ContactList();
 	private Vector<Contact> nameResults = null;
+	private Vector<Contact> valueResults = null;
 
 	/**
 	 * Die innere Klasse BusinessObjectKeyProvider
@@ -199,10 +200,16 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	
 	
 	public void addContactOfSearchResultList(ContactList cl, Vector<Contact> contacts) {
-
-		nameResults = contacts;
-		contactListDataProvider.getList().add(cl);
-		selectionModel.setSelected(cl, true);
+		if(cl == nameResultsCL) {
+			nameResults = contacts;
+			contactListDataProvider.getList().add(cl);
+			selectionModel.setSelected(cl, true);
+		}
+		if(cl == valueResultsCL) {
+			valueResults = contacts;
+			contactListDataProvider.getList().add(cl);
+			selectionModel.setSelected(cl, true);
+		}
 		
 	}
 	
