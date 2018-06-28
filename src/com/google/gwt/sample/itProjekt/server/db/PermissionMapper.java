@@ -55,7 +55,7 @@ public class PermissionMapper {
 					
 					while (rs.next()){
 						Permission p = new Permission();
-						p.setId(rs.getInt("U_ID") + rs.getInt("C_ID"));
+						p.setId(rs.getInt("U_ID") + rs.getInt("C_ID") +rs.getInt("srcU_ID"));
 						p.setParticipantID(rs.getInt("U_ID"));
 						p.setSourceUserID(rs.getInt("srcU_ID"));
 						p.setShareableObjectID(rs.getInt("C_ID"));
@@ -71,7 +71,7 @@ public class PermissionMapper {
 					
 					while (rs.next()){
 						Permission p = new Permission();
-						p.setId(rs.getInt("U_ID") + rs.getInt("CL_ID"));
+						p.setId(rs.getInt("U_ID") + rs.getInt("CL_ID")+rs.getInt("srcU_ID"));
 						p.setParticipantID(rs.getInt("U_ID"));
 						p.setSourceUserID(rs.getInt("srcU_ID"));
 						p.setShareableObjectID(rs.getInt("CL_ID"));
