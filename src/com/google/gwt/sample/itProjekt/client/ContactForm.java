@@ -440,7 +440,6 @@ public class ContactForm extends VerticalPanel {
 					addValueLabel.setText("Neue Arbeitsstelle: ");
 					addValueButton.addClickHandler(new AddValueClickHandler(addValuePopUp, addValueTextBox,
 							((ValueTable) contactTable.getWidget(row, 1)), pid));
-					Window.alert("case 5");
 					break;
 			case 10:addValueTextBox = new ValueTextBox("Homepage");
 					addValueLabel.setText("Neue Homepage: ");
@@ -515,13 +514,17 @@ public class ContactForm extends VerticalPanel {
 						public void onSuccess(Value v) {
 							Window.alert("Vorname vom contacttoDisplay: " + contactToDisplay.getFirstname()
 							+ "\n  Text aus der TextBox: " + tb.getText() + "\n");
+							Window.alert("Value aus der Datenbank: " + v.getContent());
 							/*
 							 * War das Anlegen der Ausprägung auf dem Server erfolgreich, so wird sie auch im GUI als neue Zeile in
 							 * der jeweiligen ValueTable angezeigt.
 							 */
-							vt.setWidget(vt.getRowCount(), 0, new ValueDisplay(new ValueTextBox(tb.getIdentifier())));
-							((ValueDisplay) vt.getWidget(vt.getRowCount(),0)).setValue(v);
-							Window.alert("Value aus der Datenbank: " + v.getContent());
+							int rowCount = vt.getRowCount();
+							Window.alert(tb.getIdentifier());
+							Window.alert(((Integer) rowCount).toString());
+							vt.setWidget(rowCount, 0, new ValueDisplay(new ValueTextBox(tb.getIdentifier())));
+							((ValueDisplay) vt.getWidget(rowCount ,0)).setValue(v);
+							Window.alert("addvalueclikchandler durchgelaufen");
 						}
 					});
 				
@@ -559,7 +562,7 @@ public class ContactForm extends VerticalPanel {
 		 */
 		public ValueTextBox(String identifier) {
 	
-			this.setIdentifier(identifier);
+			setIdentifier(identifier);
 			allValueTextBoxes.add(this);
 			this.setText("");
 			
