@@ -476,7 +476,7 @@ public class ContactForm extends VerticalPanel {
 		private class AddValueClickHandler implements ClickHandler {
 			DialogBox popup;
 			ValueTextBox tb;
-			FlexTable ft;
+			FlexTable vt;
 			int pid;
 			
 			/**
@@ -489,10 +489,10 @@ public class ContactForm extends VerticalPanel {
 			 * @param pid die ID der Eigenschaftsart des AddValueButtons
 			 * @param content der vom Nutzer eingetragene Inhalt der neuen Ausprägung
 			 */
-			public AddValueClickHandler(DialogBox popup, ValueTextBox tb, ValueTable ft, int pid) {
+			public AddValueClickHandler(DialogBox popup, ValueTextBox tb, ValueTable vt, int pid) {
 				this.popup = popup;
 				this.tb = tb;
-				this.ft = ft;
+				this.vt = vt;
 				this.pid = pid;
 				Window.alert("AddValueclickhandler instantiiert");
 						
@@ -513,12 +513,15 @@ public class ContactForm extends VerticalPanel {
 							Window.alert("Ausprägung konnte nicht hinzugefügt werden. Versuchen Sie es erneut.");
 						}
 						public void onSuccess(Value v) {
+							Window.alert("Vorname vom contacttoDisplay: " + contactToDisplay.getFirstname()
+							+ "\n  Text aus der TextBox: " + tb.getText() + "\n");
 							/*
 							 * War das Anlegen der Ausprägung auf dem Server erfolgreich, so wird sie auch im GUI als neue Zeile in
 							 * der jeweiligen ValueTable angezeigt.
 							 */
-							ft.setWidget(ft.getRowCount(), 0, new ValueDisplay(new ValueTextBox(tb.getIdentifier())));
-							((ValueDisplay) ft.getWidget(ft.getRowCount(),0)).setValue(v);
+							vt.setWidget(vt.getRowCount(), 0, new ValueDisplay(new ValueTextBox(tb.getIdentifier())));
+							((ValueDisplay) vt.getWidget(vt.getRowCount(),0)).setValue(v);
+							Window.alert("Value aus der Datenbank: " + v.getContent());
 						}
 					});
 				
@@ -670,6 +673,7 @@ public class ContactForm extends VerticalPanel {
 		 * @param v die anzuzeigende Ausprägung
 		 */
 		public void setValue(Value v) {
+			Window.alert("Springt in die setValue von ValueDisplay");
 			this.value = v;
 			valueTextBox.setValue(value);
 			lockButton.setValue(value);
