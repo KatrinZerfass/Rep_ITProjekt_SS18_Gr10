@@ -193,6 +193,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			allContactsWithValueButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
+					if(searchInput.getText() != null){
 					Value v = new Value();
 					v.setContent(searchInput.getText());
 					 reportGenerator.generateAllContactsWithValueReport(user, v, new AsyncCallback<AllContactsWithValueReport>() {
@@ -219,11 +220,15 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 						 }
 					 });
 	   			}
-			});
+				else{
+					Window.alert("Suchleiste ist leer. Bitte füllen Sie einen Suchbegriff in das Suchfeld ein.");
+					
+				}}});
 			
 			allContactsWithPropertyButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
+					if(searchInput.getText() != null){
 					Property p = new Property();
 					p.setType(searchInput.getText());
 					 reportGenerator.generateAllContactsWithPropertyReport(user, p, new AsyncCallback<AllContactsWithPropertyReport>() {
@@ -249,7 +254,9 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 								}
 						 }
 					 });
-	   			}
+	   			}else{
+	   				Window.alert("Suchleiste ist leer. Bitte füllen Sie einen Suchbegriff in das Suchfeld ein.");
+	   			}}
 			});
 			
 			
