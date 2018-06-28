@@ -1578,7 +1578,6 @@ public class ContactForm extends VerticalPanel {
 	 * @author KatrinZerfass & JanNoller
 	 */
 	public void setSelected(Contact c) {
-		Window.alert("Springt in die setSelected von ContactForm");
 		
 		if(newPropertyPanel.isVisible()==true) {
 			newPropertyPanel.setVisible(false);
