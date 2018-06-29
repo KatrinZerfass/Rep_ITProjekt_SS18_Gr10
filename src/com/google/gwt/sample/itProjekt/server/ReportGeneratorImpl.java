@@ -72,7 +72,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	 */
 	
 	public User getUserInformation (String email) throws IllegalArgumentException{
-		return this.admin.getUserInformation(email);
+		return this.admin.getUser(email);
 	}
 	
 
@@ -119,6 +119,8 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				Vector<Value> allValues=this.admin.getAllValuesOf(c);
 				System.out.println(allValues.toString());
 				Row contactRow=new Row();
+				
+				contactRow.addColumn(new Column(String.valueOf((admin.getUserByID(c.getId())).getEmail())));
 				contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 				contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
 				
@@ -150,14 +152,14 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 						Property p=this.admin.getPropertyOfValue(v);
 						Row valueRow=new Row();
 						
-						for(int i = 0; i < 6; i++){
+						for(int i = 0; i < 5; i++){
 							valueRow.addColumn(new Column(""));
 						}
 						
 						valueRow.addColumn(new Column(String.valueOf(p.getType())));
 						valueRow.addColumn(new Column(String.valueOf(v.getContent())));
 						valueRow.addColumn(new Column(String.valueOf(c.getModificationDate())));
-						valueRow.addColumn(new Column(String.valueOf(u.getEmail())));
+						
 						report.addRow(valueRow);
 					}
 				}
@@ -206,6 +208,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			Vector<Value> allValues=this.admin.getAllValuesOf(c);
 			Row contactRow=new Row();
 			
+			contactRow.addColumn(new Column(String.valueOf((admin.getUserByID(c.getId())).getEmail())));
 			contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 			contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
 			
@@ -238,14 +241,13 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				Property p=this.admin.getPropertyOfValue(v);
 				Row valueRow=new Row();
 				
-				for(int i = 0; i < 6; i++){
+				for(int i = 0; i < 5; i++){
 					valueRow.addColumn(new Column(""));
 				}
 				
 				valueRow.addColumn(new Column(String.valueOf(p.getType())));
 				valueRow.addColumn(new Column(String.valueOf(v.getContent())));
 				valueRow.addColumn(new Column(String.valueOf(c.getModificationDate())));
-				valueRow.addColumn(new Column(String.valueOf(u.getEmail())));
 				
 				report.addRow(valueRow);
 				}
@@ -289,6 +291,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			Vector<Value> allValues=this.admin.getAllValuesOf(c);
 			Row contactRow=new Row();
 			
+			contactRow.addColumn(new Column(String.valueOf((admin.getUserByID(c.getId())).getEmail())));
 			contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 			contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
 			
@@ -322,14 +325,13 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				Property p=this.admin.getPropertyOfValue(val);
 				Row valueRow=new Row();
 				
-				for(int i = 0; i < 6; i++){
+				for(int i = 0; i < 5; i++){
 					valueRow.addColumn(new Column(""));
 				}
 				
 				valueRow.addColumn(new Column(String.valueOf(p.getType())));
 				valueRow.addColumn(new Column(String.valueOf(val.getContent())));
 				valueRow.addColumn(new Column(String.valueOf(c.getModificationDate())));
-				valueRow.addColumn(new Column(String.valueOf(u.getEmail())));
 				
 				report.addRow(valueRow);
 				}
@@ -370,7 +372,12 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		
 		for (Contact c: allContacts) {
 			Vector<Value> allValues=this.admin.getAllValuesOf(c);
+			Contact c2 = new Contact();
+			
+			
 			Row contactRow=new Row();
+			
+			contactRow.addColumn(new Column(String.valueOf((admin.getUserByID(c.getId())).getEmail())));
 			contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 			contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
 			
@@ -402,14 +409,14 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				Property prop=this.admin.getPropertyOfValue(val);
 				Row valueRow=new Row();
 				
-				for(int i = 0; i < 6; i++){
+				for(int i = 0; i < 5; i++){
 					valueRow.addColumn(new Column(""));
 				}
 				
 				valueRow.addColumn(new Column(String.valueOf(prop.getType())));
 				valueRow.addColumn(new Column(String.valueOf(val.getContent())));
 				valueRow.addColumn(new Column(String.valueOf(c.getModificationDate())));
-				valueRow.addColumn(new Column(String.valueOf(user.getEmail())));
+				
 				report.addRow(valueRow);
 				}
 			}

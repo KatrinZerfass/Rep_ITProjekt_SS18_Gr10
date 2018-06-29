@@ -20,12 +20,12 @@ public class ContactListCell extends AbstractCell<ContactList> {
 		}
 		
 		sb.appendHtmlConstant("<div id =\"contactListCell\">");
-		if(value.getOwner() == ClientsideSettings.getUser().getId()) {
+		if(value.getOwner() == ClientsideSettings.getUser().getId() ||
+				value.getName() == "Meine Kontakte") {
 			sb.appendHtmlConstant("<img src=\"owner_symbol.png\" id= \"itemSymbol\">");	
 		}else {
 			sb.appendHtmlConstant("<img src=\"shared_symbol.png\" id= \"itemSymbol\">");
 		}
-		Window.alert("symbol-icon von Kontaktliste wurde gesetzt");
 		sb.appendEscaped(" ");
 	    sb.appendEscaped(value.getName());
 	    sb.appendHtmlConstant("</div>");

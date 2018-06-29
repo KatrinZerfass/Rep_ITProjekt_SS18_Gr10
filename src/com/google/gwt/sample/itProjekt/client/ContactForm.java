@@ -772,8 +772,7 @@ public class ContactForm extends VerticalPanel {
 		 * @param pid die ID der referenzierten Eigenschaftsart 
 		 */
 		public ValueTable(int pid) {
-			this.propertyId=pid;
-			
+			this.propertyId=pid;			
 		}
 		
 		/**
@@ -1754,6 +1753,7 @@ public class ContactForm extends VerticalPanel {
 		Window.alert("Size vom allValuesOfContact: " + ((Integer) allValuesOfContact.size()).toString() + ". \nKatrin");
 		for(int i=0; i<allValuesOfContact.size(); i++) {
 			int pid = allValuesOfContact.get(i).getPropertyid(); 
+			Window.alert("pid vom aktuellen Value: " + ((Integer) pid).toString());
 			ValuePanel vp = null; //das ValuePanel der jeweiligen Eigenschaftsart
 			ValueTable vt = null; //die ValueTable der jeweiligen Eigenschaftsart
 			int row = contactTable.getRowCount();
@@ -1761,6 +1761,7 @@ public class ContactForm extends VerticalPanel {
 			switch (pid) {
 				
 				case 1: // Tel.Nr. geschäftlich
+					Window.alert("Springt in case 1 von switch-case");
 						/*
 						 * Das korrekte ValuePanel und ValueTable werden gesetzt und im Folgenden auf ihnen operiert.
 						 */
@@ -1776,33 +1777,35 @@ public class ContactForm extends VerticalPanel {
 						/*
 						 * Ist noch keine Ausprägung im ersten (bereits im GUI bestehenden) ValueDisplay gesetzt worden, so passiert dies nun.
 						 */
-						if(vt.getValueDisplay(0) == null) {
-							vt.setWidget(0, 0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
-							vt.getValueDisplay(0).setValue(allValuesOfContact.get(i));
-							Window.alert("ValueDisplay in der ValueTable wurde gesetzt. \nKatrin");
-						
-							/*
-							 * Je nachdem, ob der angemeldete Nutzer der Eigentümer des Kontakts ist oder nicht, werden die Buttons 
-							 * AddValueButton, LockButton, und DeleteValueButton aktiviert oder nicht.
-							 */
-							if(compareUser()) {
-								vt.getValueDisplay(0).enableButtons();
-								vp.getAddValueButton().setEnabled(true);
-							}
-							else {
-								vt.getValueDisplay(0).disableButtons();
-								vp.getAddValueButton().setEnabled(false);
-							}
-							
-						/*
-						 * Das erste ValueDisplay wurde bereits befüllt. 
-						 * Gibt es nun mehrere Ausprägungen zu geschäftlichen Telefonnummern, wird eine neue Zeile in der 
-						 * zugehörigen ValueTable vt erstellt und dieser ebenfalls ein ValueDisplay hinzugefügt. In dieses ValueDisplay
-						 * wird die Ausprägung gesetzt.
-						 */
-						}else {
+						Window.alert("RowCount der ContactTable: " +((Integer) contactTable.getRowCount()).toString());
+					//	if(vt.getWidget(0,0) == null) {
+//							vt.setWidget(0, 0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
+//							vt.getValueDisplay(0).setValue(allValuesOfContact.get(i));
+//							Window.alert("ValueDisplay in der ValueTable wurde gesetzt. \nKatrin");
+//						 
+//							/*
+//							 * Je nachdem, ob der angemeldete Nutzer der Eigentümer des Kontakts ist oder nicht, werden die Buttons 
+//							 * AddValueButton, LockButton, und DeleteValueButton aktiviert oder nicht.
+//							 */
+//							if(compareUser()) {
+//								vt.getValueDisplay(0).enableButtons();
+//								vp.getAddValueButton().setEnabled(true);
+//							}
+//							else {
+//								vt.getValueDisplay(0).disableButtons();
+//								vp.getAddValueButton().setEnabled(false);
+//							}
+//							
+//						/*
+//						 * Das erste ValueDisplay wurde bereits befüllt. 
+//						 * Gibt es nun mehrere Ausprägungen zu geschäftlichen Telefonnummern, wird eine neue Zeile in der 
+//						 * zugehörigen ValueTable vt erstellt und dieser ebenfalls ein ValueDisplay hinzugefügt. In dieses ValueDisplay
+//						 * wird die Ausprägung gesetzt.
+//						 */
+//						}else {
 							vt.setWidget(vtRow, 0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
 							vt.getValueDisplay(vtRow).setValue(allValuesOfContact.get(i));
+							Window.alert("value wurde gesetzt \nKatrin");
 							
 							/*
 							 * Gleiches Prinzip wie gerade schon, nur jetzt für das soeben neu hinzugefügte ValueDisplay.
@@ -1815,7 +1818,7 @@ public class ContactForm extends VerticalPanel {
 								vt.getValueDisplay(vtRow).disableButtons();
 								vp.getAddValueButton().setEnabled(false);
 							}
-						}
+					//	}
 						Window.alert("case 1 durchgelaufen \nKatrin");
 						break;
 						
@@ -1829,7 +1832,7 @@ public class ContactForm extends VerticalPanel {
 						contactTable.setWidget(row, 1, new ValueTable(pid));
 						vt = (ValueTable) contactTable.getWidget(row, 1); 
 						
-						if(vt.getValueDisplay(0) == null) {
+						if(vt.getWidget(0,0) == null) {
 							vt.setWidget(0, 0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
 							vt.getValueDisplay(0).setValue(allValuesOfContact.get(i));
 						
