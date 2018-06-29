@@ -248,7 +248,19 @@ public Permission update(Permission permission){
 						+ permission.getSourceUserID()
 					
 						+ ")") ;
-						
+			
+			ContactList cl= new ContactList();
+			cl.setId(permission.getParticipantID());	
+				cl = ContactListMapper.contactListMapper().findByID(cl);
+				Vector <Contact> c = ContactListMapper.contactListMapper().getAllContacts(cl);
+				for(Contact c1: c){
+					Permission p = new Permission();
+					p.setParticipantID(permission.getParticipantID());
+					p.setSourceUserID(permission.getSourceUserID());
+					p.setShareableObjectID(c1.getId());
+					shareContact(p);
+				}
+			
 			return permission;	
 				
 				}
