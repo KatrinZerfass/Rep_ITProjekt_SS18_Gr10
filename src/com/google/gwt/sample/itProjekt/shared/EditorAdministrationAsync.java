@@ -96,4 +96,7 @@ public interface EditorAdministrationAsync {
 	void getContactsOfNameSearchResult(User user, String textBox, AsyncCallback<Vector<Contact>> callback);
 
 	void getContactsOfValueSearchResult(User user, String textBox, AsyncCallback<Vector<Contact>> callback);
+
+	void getAllSharedContactsOfUser(String email, AsyncCallback<Vector<Contact>> callback);
+
 }

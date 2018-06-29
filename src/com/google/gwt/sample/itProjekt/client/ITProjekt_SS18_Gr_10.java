@@ -352,7 +352,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		
 		RootPanel.get("Navigator").add(cellBrowser);
 		
-
+		Window.alert("ende der Methode loadApplication");
 	  }
 	  
 	 
