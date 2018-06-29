@@ -340,8 +340,8 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		 * Die default-Kontaktliste "Meine Kontakte" wird erstellt.
 		 */
 		mccl.setName("Meine Kontakte");
-//		mccl.setOwner();
-//		mccl.setId();
+		mccl.setOwner(user.getId());
+//		mccl.setId(0);
 		
 		clctvm.setMyContactsContactList(mccl);
 

@@ -180,7 +180,7 @@ public class ValueMapper {
 			try{
 				Statement stmt = con.createStatement();
 				stmt.executeUpdate("UPDATE T_Value SET P_ID ="+property.getId()+", value ='" + value.getContent()+ "', C_ID=" + contact.getId() +", isShared="
-						+ value.getIsShared());
+						+ value.getIsShared() + "WHERE V_ID=" + value.getId());
 				Contact c2 = new Contact();
 				c2 = ContactMapper.contactMapper().findByID(contact);
 				ContactMapper.contactMapper().update(c2);

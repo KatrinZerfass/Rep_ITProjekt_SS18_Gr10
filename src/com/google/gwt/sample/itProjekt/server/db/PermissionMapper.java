@@ -248,7 +248,19 @@ public Permission update(Permission permission){
 						+ permission.getSourceUserID()
 					
 						+ ")") ;
-						
+			
+			ContactList cl= new ContactList();
+			cl.setId(permission.getParticipantID());	
+				cl = ContactListMapper.contactListMapper().findByID(cl);
+				Vector <Contact> c = ContactListMapper.contactListMapper().getAllContacts(cl);
+				for(Contact c1: c){
+					Permission p = new Permission();
+					p.setParticipantID(permission.getParticipantID());
+					p.setSourceUserID(permission.getSourceUserID());
+					p.setShareableObjectID(c1.getId());
+					shareContact(p);
+				}
+			
 			return permission;	
 				
 				}
@@ -307,7 +319,7 @@ public Vector<ContactList> getAllContactListsByUID(User user){
 			
 			try{
 				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT DISTINCT CL_ID From T_Permission_Contact WHERE U_ID=" + user.getId()+ " ORDER BY CL_ID");
+				ResultSet rs = stmt.executeQuery("SELECT CL_ID From T_Permission_Contactlist WHERE U_ID=" + user.getId()+ " ORDER BY CL_ID");
 				
 				while (rs.next()){
 					ContactList cl = new ContactList();

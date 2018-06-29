@@ -92,10 +92,8 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			report.setCreated(new Date());
 			CompositeParagraph header=new CompositeParagraph();
 			SimpleParagraph sp = new SimpleParagraph("Nutzer: " + user.getEmail());
-			SimpleParagraph sp1 = new SimpleParagraph("Nutzer: " + user.getId());
 
 			header.addSubParagraph(sp);
-			header.addSubParagraph(sp1);
 
 			report.setHeaderData(header);
 
@@ -195,7 +193,6 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		CompositeParagraph header=new CompositeParagraph();
 		
 		header.addSubParagraph(new SimpleParagraph("Nutzer: " + user.getEmail()));
-		header.addSubParagraph(new SimpleParagraph("Nutzer-ID: " + user.getId()));
 		
 		report.setHeaderData(header);
 		
