@@ -280,6 +280,8 @@ public class ContactForm extends VerticalPanel {
 							
 							public void onSuccess(Void result) {	
 								Window.alert("Die Ausprägung wurde gelöscht.");
+								
+								
 							}
 
 						});
@@ -339,15 +341,18 @@ public class ContactForm extends VerticalPanel {
 			
 		//wieder zurück kommentieren!
 			this.setEnabled(true);
+			
 					
 			this.addClickHandler(new ClickHandler() {
 				
 				public void onClick (ClickEvent event) {
+					
 					if(contactToDisplay != null) {
 						addValuePopUp(propertyId, row);	
+						
 					
 					}else { 
-						Window.alert("geht in AddValueclickHandler rein. \nKatrin");
+						Window.alert("geht in AddValueclickHandler rein. Kontakt gleich null\nKatrin");
 						int valueTableRow = ((ValueTable)contactTable.getWidget(row, 1)).getRowCount();
 						Window.alert("Widget der contactTable an der Stelle " + row + ", 1: " + ((ValueTable) contactTable.getWidget(row, 1)).getPid() + "\nKatrin");
 						Window.alert("Aktuelle Reihe der ValueTable: " + valueTableRow + "\nKatrin");
@@ -520,10 +525,9 @@ public class ContactForm extends VerticalPanel {
 							 * der jeweiligen ValueTable angezeigt.
 							 */
 							int rowCount = vt.getRowCount();
-							Window.alert(tb.getIdentifier() + " \nKatrin");
-							Window.alert(((Integer) rowCount).toString()+ "\nKatrin");
 							vt.setWidget(rowCount, 0, new ValueDisplay(new ValueTextBox(tb.getIdentifier())));
 							((ValueDisplay) vt.getWidget(rowCount ,0)).setValue(v);
+							((ValueDisplay) vt.getWidget(rowCount ,0)).enableButtons();
 							Window.alert("addvalueclikchandler durchgelaufen  \nKatrin");
 						}
 					});
@@ -601,7 +605,6 @@ public class ContactForm extends VerticalPanel {
 		 * @param v die anzuzeigende Ausprägung
 		 */
 		public void setValue(Value v) {
-			Window.alert("Springt in die setValue der ValueTextBox \n Katrin");
 			this.value = v;
 			if(value!= null) {
 				setText(value.getContent());
@@ -676,7 +679,6 @@ public class ContactForm extends VerticalPanel {
 		 * @param v die anzuzeigende Ausprägung
 		 */
 		public void setValue(Value v) {
-			Window.alert("Springt in die setValue von ValueDisplay \n Katrin");
 			this.value = v;
 			valueTextBox.setValue(value);
 			lockButton.setValue(value);
@@ -1125,8 +1127,7 @@ public class ContactForm extends VerticalPanel {
 	 * @author JanNoller
 	 */
 	private class SaveChangesClickHandler implements ClickHandler{
-		Contact newContact = new Contact();
-		
+
 		@Override
 		public void onClick(ClickEvent event) {
 			
@@ -1158,7 +1159,6 @@ public class ContactForm extends VerticalPanel {
 								
 							}
 							public void onSuccess(Contact result) {
-								newContact= result;
 								Window.alert("Kontakt erfolgreich angelegt.");
 								clctvm.addContactOfContactList(clctvm.getMyContactsContactList(), result);
 							}
