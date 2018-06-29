@@ -89,8 +89,10 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		public void onSelectionChange(SelectionChangeEvent event) {
 			BusinessObject selection = selectionModel.getSelectedObject();
 			if (selection instanceof ContactList) {
+				Window.alert("1. Methode wird aufgerufen");
 				setSelectedContactList((ContactList) selection);
 			} else if (selection instanceof Contact) {
+				Window.alert("2. Methode wird aufgerufen");
 				setSelectedContact((Contact) selection);
 			}
 		}
@@ -203,7 +205,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		if(cl == nameResultsCL) {
 			nameResults = contacts;
 			contactListDataProvider.getList().add(cl);
-			selectionModel.setSelected(contactListDataProvider.getList().get(2), true);;
+			selectionModel.setSelected(contactListDataProvider.getList().get(2), true);
 		}
 		if(cl == valueResultsCL) {
 			valueResults = contacts;

@@ -92,7 +92,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	    	public void onSuccess(LoginInfo result) {
 	    		loginInfo = result;
 	    		if(loginInfo.isLoggedIn()) {
-	    			loadApplication();
+	    			loadUserInformation();
 	    		} else {
 	    			loadLogin();
 	    		}
@@ -100,33 +100,53 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	    });
 	  }
 		
+	public void loadUserInformation() {
+    	
+		if(reportGenerator == null){
+			 reportGenerator = ClientsideSettings.getReportGenerator();
+		 }
+		
+		reportGenerator.getUserInformation(loginInfo.getEmailAddress(), new AsyncCallback<User>() {
+			
+	    	public void onFailure(Throwable caught) {
+	    		Window.alert("AsyncCallback fehlgeschlagen");			
+			}
 
+			public void onSuccess(User result) {
+				ClientsideSettings.setUser(result);
+				user = result;
+				loadApplication();
+				
+			}
+			   		
+	    });
+  	}
 	
 	 public void loadApplication() {
 		 
-		 if(reportGenerator == null){
-			 reportGenerator = ClientsideSettings.getReportGenerator();
-		 }
-		 
-		 
-		 // Anlegen des User Objekts & Abspeichern in einer lokalen Variabel
-		    
-		    reportGenerator.getUserInformation(loginInfo.getEmailAddress(), new AsyncCallback<User>() {
-				
-		    	public void onFailure(Throwable caught) {
-		    		Window.alert("AsyncCallback fehlgeschlagen");			
-				}
-
-				public void onSuccess(User result) {
-					ClientsideSettings.setUser(result);
-					if (user ==null) {
-						user = ClientsideSettings.getUser();
-					}
-					Window.alert("User Objekt wurde übergeben");
-					
-				}
-				   		
-		    });
+//		 if(reportGenerator == null){
+//			 reportGenerator = ClientsideSettings.getReportGenerator();
+//		 }
+//		 
+//		 
+//		 // Anlegen des User Objekts & Abspeichern in einer lokalen Variabel
+//		    
+//		    reportGenerator.getUserInformation(loginInfo.getEmailAddress(), new AsyncCallback<User>() {
+//				
+//		    	public void onFailure(Throwable caught) {
+//		    		Window.alert("AsyncCallback fehlgeschlagen");			
+//				}
+//
+//				public void onSuccess(User result) {
+//					ClientsideSettings.setUser(result);
+//					if (user ==null) {
+//						user = ClientsideSettings.getUser();
+//					}
+//					Window.alert("User Objekt wurde übergeben");
+//					
+//				}
+//				   		
+//		    });
 		  
 			signOutLink.setHref(loginInfo.getLogoutUrl());
 						
