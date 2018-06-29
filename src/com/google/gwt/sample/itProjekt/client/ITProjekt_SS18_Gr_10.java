@@ -282,7 +282,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 				
 		//Die Buttons für Kontaktlisten
 		VerticalPanel contactListButtonsPanel = new VerticalPanel();
-		contactListButtonsPanel.setStyleName("buttonPanel");
+		contactListButtonsPanel.setStyleName("contactListButtonPanel");
 		
 		Button newContactListButton = new Button("Neue Kontaktliste anlegen");
 		newContactListButton.addStyleName("buttonPanel");
