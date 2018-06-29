@@ -347,10 +347,10 @@ public class ContactForm extends VerticalPanel {
 						addValuePopUp(propertyId, row);	
 					
 					}else { 
-						Window.alert("geht in AddValueclickHandler rein");
+						Window.alert("geht in AddValueclickHandler rein. \nKatrin");
 						int valueTableRow = ((ValueTable)contactTable.getWidget(row, 1)).getRowCount();
-						Window.alert("Widget der contactTable an der Stelle " + row + ", 1: " + ((ValueTable) contactTable.getWidget(row, 1)).getPid());
-						Window.alert("Aktuelle Reihe der ValueTable: " + valueTableRow);
+						Window.alert("Widget der contactTable an der Stelle " + row + ", 1: " + ((ValueTable) contactTable.getWidget(row, 1)).getPid() + "\nKatrin");
+						Window.alert("Aktuelle Reihe der ValueTable: " + valueTableRow + "\nKatrin");
 						
 						switch(propertyId) {
 						case 1: ((ValueTable) contactTable.getWidget(row, 1)).setWidget(valueTableRow, 0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
@@ -493,7 +493,7 @@ public class ContactForm extends VerticalPanel {
 				this.tb = tb;
 				this.vt = vt;
 				this.pid = pid;
-				Window.alert("AddValueclickhandler instantiiert");
+				Window.alert("AddValueclickhandler instantiiert \nKatrin");
 						
 			}
 			
@@ -513,18 +513,18 @@ public class ContactForm extends VerticalPanel {
 						}
 						public void onSuccess(Value v) {
 							Window.alert("Vorname vom contacttoDisplay: " + contactToDisplay.getFirstname()
-							+ "\n  Text aus der TextBox: " + tb.getText() + "\n");
-							Window.alert("Value aus der Datenbank: " + v.getContent());
+							+ "\n  Text aus der TextBox: " + tb.getText() + "\nKatrin");
+							Window.alert("Value aus der Datenbank: " + v.getContent() + "\nKatrin");
 							/*
 							 * War das Anlegen der Ausprägung auf dem Server erfolgreich, so wird sie auch im GUI als neue Zeile in
 							 * der jeweiligen ValueTable angezeigt.
 							 */
 							int rowCount = vt.getRowCount();
-							Window.alert(tb.getIdentifier());
-							Window.alert(((Integer) rowCount).toString());
+							Window.alert(tb.getIdentifier() + " \nKatrin");
+							Window.alert(((Integer) rowCount).toString()+ "\nKatrin");
 							vt.setWidget(rowCount, 0, new ValueDisplay(new ValueTextBox(tb.getIdentifier())));
 							((ValueDisplay) vt.getWidget(rowCount ,0)).setValue(v);
-							Window.alert("addvalueclikchandler durchgelaufen");
+							Window.alert("addvalueclikchandler durchgelaufen  \nKatrin");
 						}
 					});
 				
@@ -601,7 +601,7 @@ public class ContactForm extends VerticalPanel {
 		 * @param v die anzuzeigende Ausprägung
 		 */
 		public void setValue(Value v) {
-			Window.alert("Springt in die setValue der ValueTextBox");
+			Window.alert("Springt in die setValue der ValueTextBox \n Katrin");
 			this.value = v;
 			if(value!= null) {
 				setText(value.getContent());
@@ -676,7 +676,7 @@ public class ContactForm extends VerticalPanel {
 		 * @param v die anzuzeigende Ausprägung
 		 */
 		public void setValue(Value v) {
-			Window.alert("Springt in die setValue von ValueDisplay");
+			Window.alert("Springt in die setValue von ValueDisplay \n Katrin");
 			this.value = v;
 			valueTextBox.setValue(value);
 			lockButton.setValue(value);
@@ -1147,9 +1147,6 @@ public class ContactForm extends VerticalPanel {
 								sex = "o";
 								break;
 						}
-						Window.alert(sex);
-						Window.alert("Vorname: " + firstnameTextBox.getText() + "Nachname: " + lastnameTextBox.getText());
-						Window.alert("Email des currentuser: " +currentUser.getEmail());
 						editorAdministration.createContact(firstnameTextBox.getText(), lastnameTextBox.getText(), sex, currentUser, new AsyncCallback<Contact>(){
 							public void onFailure(Throwable t) {
 								Window.alert("Fehler im Kontakt anlegen");
@@ -1404,8 +1401,8 @@ public class ContactForm extends VerticalPanel {
 								
 								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
 								contactTable.setWidget(row, 1, new ValueTable(pid));
-								Window.alert("Reihe der neu hinzugefügten Eigenschaft: " +((Integer) row).toString());
-								Window.alert("Pid der neuen ValueTable" + ((Integer) ((ValueTable)contactTable.getWidget(row, 1)).getPid()).toString());
+								Window.alert("Reihe der neu hinzugefügten Eigenschaft: " +((Integer) row).toString() + "\nKatrin");
+								Window.alert("Pid der neuen ValueTable" + ((Integer) ((ValueTable)contactTable.getWidget(row, 1)).getPid()).toString() + "\nKatrin");
 							}
 						
 						});
@@ -1585,6 +1582,7 @@ public class ContactForm extends VerticalPanel {
 	 * @author KatrinZerfass & JanNoller
 	 */
 	public void setSelected(Contact c) {
+		Window.alert("setSelected von ContactForm \nKatrin");
 		
 		if(newPropertyPanel.isVisible()==true) {
 			newPropertyPanel.setVisible(false);
@@ -1606,7 +1604,7 @@ public class ContactForm extends VerticalPanel {
 			contactTable.removeCell(3, 3);
 		}
 		
-		allValuesOfContact = null;
+		// allValuesOfContact = null;
 		
 		/*
 		 * Bei jedem neuen Aufruf von setSelected werden die ausgefüllten ValueTextBoxen geleert und aus dem Vector alle TextBoxen entfernt.
@@ -1618,13 +1616,13 @@ public class ContactForm extends VerticalPanel {
 			}
 		}
 		
-		allValueTextBoxes = null;
-		
+	//	allValueTextBoxes = null;
+		Window.alert("alles anfängliche von setSelected durchgelaufen. \nKatrin");
 		if (c != null){
 			
 			contactToDisplay = c;
 			
-			Window.alert("Kontakt ungleich null. Ausgewählter Kontakt: " + contactToDisplay.getFirstname());
+			Window.alert("Kontakt ungleich null. Ausgewählter Kontakt: " + contactToDisplay.getFirstname() + "\nKatrin");
 			/*
 			 * Befüllen der Eigenschaften aus der Datenbank
 			 */
@@ -1662,7 +1660,7 @@ public class ContactForm extends VerticalPanel {
 				removeContactFromContactListButton.setEnabled(false);
 				firstnameTextBox.setEnabled(false);
 				lastnameTextBox.setEnabled(false);
-				Window.alert("buttons wurden ausgegraut, weil der User nicht der Eigentümer ist");
+				Window.alert("buttons wurden ausgegraut, weil der User nicht der Eigentümer ist. \nKatrin");
 			}
 			
 			/*
@@ -1674,14 +1672,14 @@ public class ContactForm extends VerticalPanel {
 					
 				}
 				public void onSuccess(Vector<Value> values) {
-					Window.alert("onsuccess von getAllValuesOf");
+					Window.alert("onsuccess von getAllValuesOf . \nKatrin");
 					allValuesOfContact = new Vector<Value>();
 					for(Value v: values) {
 						allValuesOfContact.add(v);
 					}
 					displayAllValuesOfContact();
 					
-					Window.alert("Alle Ausprägungen des Kontaktes ausgelesen");
+					Window.alert("Alle Ausprägungen des Kontaktes ausgelesen. \nKatrin");
 				}
 			});
 			
@@ -1747,7 +1745,7 @@ public class ContactForm extends VerticalPanel {
 		 * und sich jeweils in einer anderen Zeile der contactTable befinden, je nachdem um welche Eigenschaftsart es sich handelt.
 		 * 
 		 */ 
-		Window.alert("Size vom allValuesOfContact: " + ((Integer) allValuesOfContact.size()).toString());
+		Window.alert("Size vom allValuesOfContact: " + ((Integer) allValuesOfContact.size()).toString() + ". \nKatrin");
 		for(int i=0; i<allValuesOfContact.size(); i++) {
 			int pid = allValuesOfContact.get(i).getPropertyid(); 
 			ValuePanel vp; //das ValuePanel der jeweiligen Eigenschaftsart
@@ -1775,7 +1773,7 @@ public class ContactForm extends VerticalPanel {
 						if(vt.getValueDisplay(0) == null) {
 							vt.setWidget(0, 0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
 							vt.getValueDisplay(0).setValue(allValuesOfContact.get(i));
-							Window.alert("ValueDisplay in der ValueTable wurde gesetzt");
+							Window.alert("ValueDisplay in der ValueTable wurde gesetzt. \nKatrin");
 						
 							/*
 							 * Je nachdem, ob der angemeldete Nutzer der Eigentümer des Kontakts ist oder nicht, werden die Buttons 
@@ -1812,7 +1810,7 @@ public class ContactForm extends VerticalPanel {
 								vp.getAddValueButton().setEnabled(false);
 							}
 						}
-						Window.alert("case 1 durchgelaufen");
+						Window.alert("case 1 durchgelaufen \nKatrin");
 						break;
 						
 				
@@ -2100,7 +2098,7 @@ public class ContactForm extends VerticalPanel {
 						Window.alert("Unbekannte Eigenschaft kann nicht hinzugefügt werden.");
 					}
 				}
-		}Window.alert("Auslesen aller Ausprägungen ist durchgelaufen");
+		}Window.alert("Auslesen aller Ausprägungen ist durchgelaufen \nKatrin");
 	}
 	
 	/**
