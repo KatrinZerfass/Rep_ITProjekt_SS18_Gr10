@@ -21,17 +21,18 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 
 // 
+// 
 /**
  * Die ReportGeneratorImpl Klasse.
  */
 @SuppressWarnings("serial")
 public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportGenerator{
 	
-	/** Die Instanz der Klasse der . */
+	/** Die Instanz der Klasse der Editor Administration . */
 	private EditorAdministration admin = null;
 	
 	/**
-	 * Instantiates a new report generator impl.
+	 * Der Konstruktor für der ReportGeneratorImpl.
 	 *
 	 * @throws IllegalArgumentException the illegal argument exception
 	 */
@@ -40,6 +41,9 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 	
 /**
+ * Initiiert die EditorAdministrationImpl, damit man auf die Funktionen der EditorAdministration Impl zugreifen kann.
+ *
+ * @throws IllegalArgumentException the illegal argument exception
  * @see javax.servlet.GenericServlet#init()
  */
 @Override
@@ -50,7 +54,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	}
 
 	/**
-	 * Gets the editor administration.
+	 * Getter für das EditorAdministrationsobjekt.
 	 *
 	 * @return the editor administration
 	 */
@@ -60,7 +64,11 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	
 	
 	/**
-	 * Identifizierung des angemeldeten Users. 
+	 * Identifizierung des angemeldeten Users.
+	 *
+	 * @param email the email
+	 * @return the user information
+	 * @throws IllegalArgumentException the illegal argument exception
 	 */
 	
 	public User getUserInformation (String email) throws IllegalArgumentException{
@@ -83,8 +91,11 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			report.setCreated(new Date());
 			CompositeParagraph header=new CompositeParagraph();
 			SimpleParagraph sp = new SimpleParagraph("Nutzer: " + u.getEmail());
+			SimpleParagraph sp1 = new SimpleParagraph("Nutzer: " + u.getId());
+
 			header.addSubParagraph(sp);
-			
+			header.addSubParagraph(sp1);
+
 			report.setHeaderData(header);
 
 			Row headline = new Row();
@@ -311,6 +322,9 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	}
 }
 
+/* (non-Javadoc)
+ * @see com.google.gwt.sample.itProjekt.shared.ReportGenerator#generateAllContactsWithPropertyReport(com.google.gwt.sample.itProjekt.shared.bo.User, com.google.gwt.sample.itProjekt.shared.bo.Property)
+ */
 @Override
 	public AllContactsWithPropertyReport generateAllContactsWithPropertyReport(User user, Property property){
 	if(this.getEditorAdministration()==null) {
