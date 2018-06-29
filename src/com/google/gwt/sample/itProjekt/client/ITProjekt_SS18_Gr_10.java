@@ -59,6 +59,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	private Anchor signInLink = new Anchor("Sign In");
 	private Anchor signOutLink = new Anchor("Sign Out");
 	
+	
 	User user = null;
 	EditorAdministrationAsync editorAdministration = null;
 	ContactForm cf = null;
@@ -255,7 +256,9 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		 */
 	    
 	    signOutLink.setHref(loginInfo.getLogoutUrl());
-
+	    signOutLink.addStyleName("signout");
+		signInLink.addStyleName("reportbutton");
+		
 		RootPanel.get("Login").add(signOutLink);
 		
 		/*
@@ -279,11 +282,14 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 				
 		//Die Buttons für Kontaktlisten
 		VerticalPanel contactListButtonsPanel = new VerticalPanel();
-		contactListButtonsPanel.setStyleName("buttonPanel");
+		contactListButtonsPanel.setStyleName("contactListButtonPanel");
 		
 		Button newContactListButton = new Button("Neue Kontaktliste anlegen");
+		newContactListButton.addStyleName("buttonPanel");
 		Button deleteContactListButton = new Button("Kontaktliste löschen");
+		deleteContactListButton.addStyleName("buttonPanel");
 		Button shareContactListButton = new Button("Kontaktliste teilen");
+		shareContactListButton.addStyleName("buttonPanel");
 		
 		contactListButtonsPanel.add(shareContactListButton);
 		contactListButtonsPanel.add(deleteContactListButton);

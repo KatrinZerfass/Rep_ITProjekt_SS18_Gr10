@@ -126,12 +126,12 @@ div#Trailer {
 	border: 1px solid black;
 }
 
-.buttonsPanel {
+.contactListButtonPanel {
 	/* 	border: 1px solid black; */
 	
 }
 
-.buttonsPanel .gwt-Button {
+.contactListButtonPanel .gwt-Button {
 	margin: 5px 5px 5px 0px;
 	border: 1px solid black;
 	width: 90px;
@@ -157,4 +157,25 @@ div#Trailer {
 #itemSymbol{
 	width: 15px;
 	height: 15px;
+}
+
+/*TEST*/
+.signout{
+	background-color: #fc9191;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+	border: 1px solid #ffffff;
+	display: inline-block;
+	cursor: pointer;
+	color: #ffffff;
+	font-family: 'Lato', sans-serif;
+	font-size: 15px;
+	padding: 12px 18px;
+	text-decoration: none;
+	margin: 0px 10px;
+}
+
+.signout:hover {
+	background-color: #c05c5f;
 }

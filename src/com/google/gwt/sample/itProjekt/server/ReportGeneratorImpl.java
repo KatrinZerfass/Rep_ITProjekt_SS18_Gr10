@@ -4,8 +4,6 @@ import java.util.Date;
 import java.util.Vector;
 import com.google.gwt.sample.itProjekt.shared.EditorAdministration;
 import com.google.gwt.sample.itProjekt.server.EditorAdministrationImpl;
-import com.google.gwt.sample.itProjekt.server.db.ContactMapper;
-import com.google.gwt.sample.itProjekt.server.db.UserMapper;
 import com.google.gwt.sample.itProjekt.shared.ReportGenerator;
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.sample.itProjekt.shared.bo.Property;
@@ -113,6 +111,8 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			//Vector<Contact> allContacts=this.admin.getAllOwnedContactsOf(u.getEmail());
 			//allContacts.addAll(this.admin.getAllSharedContactsWith(u.getEmail()));
 			
+			System.out.println(u.getEmail());
+			System.out.println(u.getId());
 			Vector<Contact> allContacts= this.admin.getAllContactsOfActiveUser(u);
 			System.out.println(allContacts.toString());
 	
@@ -122,7 +122,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				System.out.println(allValues.toString());
 				Row contactRow=new Row();
 				
-				contactRow.addColumn(new Column(String.valueOf((admin.getUserByID(c.getId())).getEmail())));
+				contactRow.addColumn(new Column(String.valueOf((admin.getUserByID(admin.getContact(c.getId()).getOwner())).getEmail())));
 				contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 				contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
 				
@@ -210,7 +210,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			Vector<Value> allValues=this.admin.getAllValuesOf(c);
 			Row contactRow=new Row();
 			
-			contactRow.addColumn(new Column(String.valueOf((admin.getUserByID(c.getId())).getEmail())));
+			contactRow.addColumn(new Column(String.valueOf((admin.getUserByID(admin.getContact(c.getId()).getOwner())).getEmail())));
 			contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 			contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
 			
@@ -293,7 +293,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			Vector<Value> allValues=this.admin.getAllValuesOf(c);
 			Row contactRow=new Row();
 			
-			contactRow.addColumn(new Column(String.valueOf((admin.getUserByID(c.getId())).getEmail())));
+			contactRow.addColumn(new Column(String.valueOf((admin.getUserByID(admin.getContact(c.getId()).getOwner())).getEmail())));
 			contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 			contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
 			
@@ -379,7 +379,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			
 			Row contactRow=new Row();
 			
-			contactRow.addColumn(new Column(String.valueOf((admin.getUserByID(c.getId())).getEmail())));
+			contactRow.addColumn(new Column(String.valueOf((admin.getUserByID(admin.getContact(c.getId()).getOwner())).getEmail())));
 			contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 			contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
 			

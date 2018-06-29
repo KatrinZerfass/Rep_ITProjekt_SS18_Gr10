@@ -68,7 +68,9 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	public Vector<Contact> getAllContactsOfActiveUser(User user) throws IllegalArgumentException {
 		
 		Vector<Contact> result = cMapper.findAllByUID(user);
+		System.out.println(result.toString());
 		Vector<Contact> sharedContacts = pmMapper.getAllContactsByUID(user);
+		System.out.println(sharedContacts.toString());
 		
 		for (Contact c : sharedContacts) {
 			result.add(c);
