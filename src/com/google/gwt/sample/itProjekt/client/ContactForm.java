@@ -1469,7 +1469,7 @@ public class ContactForm extends VerticalPanel {
 		
 		switch(identifier) {
 			case "Name":
-				if (text.matches("\\w+")) {
+				if (text.matches("(äöüÄÖÜß\\w)+")) {
 					return true;
 				}
 				else {
@@ -1477,7 +1477,7 @@ public class ContactForm extends VerticalPanel {
 					return false;
 				}
 			case "Straße":
-				if (text.matches("\\w+")) {
+				if (text.matches("(äöüÄÖÜß\\w)+")) {
 					return true;
 				}
 				else {
@@ -1509,7 +1509,7 @@ public class ContactForm extends VerticalPanel {
 					return false;
 				}
 			case "Stadt":
-				if (text.matches("\\w+")) {
+				if (text.matches("(äöüÄÖÜß\\w)+")) {
 					return true;
 				}
 				else {
@@ -1550,13 +1550,16 @@ public class ContactForm extends VerticalPanel {
 				}
 				
 			case "Arbeitsplatz":
-				if (text.matches("[\\w|\\s]*")) {
+				if (text.matches("[(äöüÄÖÜß\\w)|\\s]*")) {
 					return true;
 				}
 				else {
 					Window.alert("Ungültige Zeichen im Arbeitgebernamen!");
 					return false;
 				}
+				
+			case "Sonstiges":
+				return true;
 				
 			default: 
 				Window.alert("Switch case hat nicht ausgelöst!");
