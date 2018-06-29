@@ -402,7 +402,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		return result;
 	}
 	
-	public Vector<Contact> getContactsOfNameSearchResult(User user, String textBox) throws IllegalArgumentException{
+	public Vector<Contact> getContactsOfNameSearchResult(User user, String textBox, ContactList selectedContactList) throws IllegalArgumentException{
 		
 		Vector<Contact> allContactsOfUser = new Vector<Contact>();
 		Vector<Contact> nameResults = new Vector<Contact>();
@@ -422,7 +422,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		
 	}
 	
-	public Vector<Contact> getContactsOfValueSearchResult(User user, String textBox) throws IllegalArgumentException{
+	public Vector<Contact> getContactsOfValueSearchResult(User user, String textBox, ContactList selectedContactList) throws IllegalArgumentException{
 		
 		Vector<Contact> allContactsOfUser = new Vector<Contact>();
 		Vector<Contact> valueResults = new Vector<Contact>();
