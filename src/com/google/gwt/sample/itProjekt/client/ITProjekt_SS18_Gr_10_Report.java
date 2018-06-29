@@ -82,6 +82,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 		allSharedContactsOfUserButton.addStyleName("reportbutton");
 		allContactsWithValueButton.addStyleName("reportbutton");
 		allContactsWithPropertyButton.addStyleName("reportbutton");
+		searchInput.addStyleName("inputReport");
 
 		
 		LoginServiceAsync loginService = GWT.create(LoginService.class);
