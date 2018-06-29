@@ -159,10 +159,12 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			allSharedContactsOfUserButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					 reportGenerator.generateAllSharedContactsOfUserReport(user, new AsyncCallback<AllSharedContactsOfUserReport>() {
+					User sharedUser=new User();
+					sharedUser.setEmail(searchInput.getText());
+					reportGenerator.generateAllSharedContactsOfUserReport(user, sharedUser, new AsyncCallback<AllSharedContactsOfUserReport>() {
 			 				    	public void onFailure(Throwable caught) {
 	   				 				    RootPanel.get("reporttext").setVisible(false);	
-	   				 				    Label errornote=new Label("Es Existieren leider keine geteilten Kontakte");
+	   				 				    Label errornote=new Label("Es Existieren leider keine geteilten Kontakte mit dem eingegebenen Nutzer");
 	   				 				    errornote.addStyleName("errornote");
 	   				 				    mainPanel.add(errornote);
 		   						 }

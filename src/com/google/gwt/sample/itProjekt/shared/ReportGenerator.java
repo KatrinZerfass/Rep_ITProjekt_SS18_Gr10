@@ -46,7 +46,7 @@ public interface ReportGenerator extends RemoteService{
 	 * @return den Report f�r alle geteilten Kontakte eines Users
 	 * @throws IllegalArgumentException the illegal argument exception
 	 */
-	public abstract AllSharedContactsOfUserReport generateAllSharedContactsOfUserReport(User u) throws IllegalArgumentException;
+	public abstract AllSharedContactsOfUserReport generateAllSharedContactsOfUserReport(User owner, User receiver) throws IllegalArgumentException;
 	
 	/**
 	 * Generiert den Report f�r alle Kontakte mit einer bestimmten Auspr�gung.

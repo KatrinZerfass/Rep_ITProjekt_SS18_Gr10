@@ -19,7 +19,7 @@ public interface ReportGeneratorAsync {
 
 	void generateAllContactsWithValueReport(User user, Value value, AsyncCallback<AllContactsWithValueReport> callback);
 
-	void generateAllSharedContactsOfUserReport(User u, AsyncCallback<AllSharedContactsOfUserReport> callback);
+	void generateAllSharedContactsOfUserReport(User owner, User receiver, AsyncCallback<AllSharedContactsOfUserReport> callback);
 
 	void generateAllContactsWithPropertyReport(User user, Property property, AsyncCallback<AllContactsWithPropertyReport> callback);
 
