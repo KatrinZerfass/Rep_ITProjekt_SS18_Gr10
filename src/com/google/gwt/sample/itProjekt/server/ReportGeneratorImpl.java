@@ -106,6 +106,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			headline.addColumn(new Column("Nachname"));
 			headline.addColumn(new Column("Geschlecht"));
 			headline.addColumn(new Column("Erstellungsdatum"));
+			headline.addColumn(new Column("Modifikationsdatum"));
 			
 			report.addRow(headline);
 		
@@ -138,6 +139,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				}
 				
 				contactRow.addColumn(new Column(String.valueOf(c.getCreationDate())));
+				contactRow.addColumn(new Column(String.valueOf(c.getModificationDate())));
 				
 				report.addRow(contactRow);
 				if(allValues.size()!= 0){
@@ -145,7 +147,6 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 					if(headline.getNumColumns() < 8){
 					headline.addColumn(new Column("Eigenschaft"));
 					headline.addColumn(new Column("Ausprägung"));
-					headline.addColumn(new Column("Modifikationsdatum"));
 					
 					}
 					for (Value v: allValues){
@@ -153,13 +154,12 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 						Property p=this.admin.getPropertyOfValue(v);
 						Row valueRow=new Row();
 						
-						for(int i = 0; i < 5; i++){
+						for(int i = 0; i < 6; i++){
 							valueRow.addColumn(new Column(""));
 						}
 						
 						valueRow.addColumn(new Column(String.valueOf(p.getType())));
 						valueRow.addColumn(new Column(String.valueOf(v.getContent())));
-						valueRow.addColumn(new Column(String.valueOf(c.getModificationDate())));
 						
 						report.addRow(valueRow);
 					}
@@ -206,6 +206,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		headline.addColumn(new Column("Nachname"));
 		headline.addColumn(new Column("Geschlecht"));
 		headline.addColumn(new Column("Erstellungsdatum"));
+		headline.addColumn(new Column("Modifikationsdatum"));
 		
 		
 		report.addRow(headline);
@@ -235,6 +236,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			}
 			
 			contactRow.addColumn(new Column(String.valueOf(c.getCreationDate())));
+			contactRow.addColumn(new Column(String.valueOf(c.getModificationDate())));
 		
 			report.addRow(contactRow);
 			if(allValues.size() != 0){
@@ -242,7 +244,6 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				if(headline.getNumColumns() < 8){
 				headline.addColumn(new Column("Eigenschaft"));
 				headline.addColumn(new Column("Ausprägung"));
-				headline.addColumn(new Column("Modifikationsdatum"));
 				
 				}
 				
@@ -250,13 +251,12 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				Property p=this.admin.getPropertyOfValue(v);
 				Row valueRow=new Row();
 				
-				for(int i = 0; i < 5; i++){
+				for(int i = 0; i < 6; i++){
 					valueRow.addColumn(new Column(""));
 				}
 				
 				valueRow.addColumn(new Column(String.valueOf(p.getType())));
 				valueRow.addColumn(new Column(String.valueOf(v.getContent())));
-				valueRow.addColumn(new Column(String.valueOf(c.getModificationDate())));
 				
 				report.addRow(valueRow);
 				}
@@ -292,6 +292,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		headline.addColumn(new Column("Nachname"));
 		headline.addColumn(new Column("Geschlecht"));
 		headline.addColumn(new Column("Erstellungsdatum"));
+		headline.addColumn(new Column("Modifikationsdatum"));
 
 		
 		report.addRow(headline);
@@ -323,15 +324,15 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			}
 			
 			contactRow.addColumn(new Column(String.valueOf(c.getCreationDate())));
-			
+			contactRow.addColumn(new Column(String.valueOf(c.getModificationDate())));
 			
 			report.addRow(contactRow);
+			
 			if(allValues.size() != 0){
 				
 				if(headline.getNumColumns() < 8){
 				headline.addColumn(new Column("Eigenschaft"));
 				headline.addColumn(new Column("Ausprägung"));
-				headline.addColumn(new Column("Modifikationsdatum"));
 				
 				}
 				
@@ -339,13 +340,12 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				Property p=this.admin.getPropertyOfValue(val);
 				Row valueRow=new Row();
 				
-				for(int i = 0; i < 5; i++){
+				for(int i = 0; i < 6; i++){
 					valueRow.addColumn(new Column(""));
 				}
 				
 				valueRow.addColumn(new Column(String.valueOf(p.getType())));
 				valueRow.addColumn(new Column(String.valueOf(val.getContent())));
-				valueRow.addColumn(new Column(String.valueOf(c.getModificationDate())));
 				
 				report.addRow(valueRow);
 				}
@@ -386,6 +386,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		headline.addColumn(new Column("Nachname"));
 		headline.addColumn(new Column("Geschlecht"));
 		headline.addColumn(new Column("Erstellungsdatum"));
+		headline.addColumn(new Column("Modifikationsdatum"));
 		
 		
 		report.addRow(headline);
@@ -395,7 +396,6 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		if(allContacts.size()!=0){
 		for (Contact c: allContacts) {
 			Vector<Value> allValues=this.admin.getAllValuesOf(c);
-			Contact c2 = new Contact();
 			
 			
 			Row contactRow=new Row();
@@ -417,6 +417,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			}
 			
 			contactRow.addColumn(new Column(String.valueOf(c.getCreationDate())));
+			contactRow.addColumn(new Column(String.valueOf(c.getModificationDate())));
 			
 			report.addRow(contactRow);
 			if(allValues.size() != 0){
@@ -424,7 +425,6 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				if(headline.getNumColumns() < 8){
 				headline.addColumn(new Column("Eigenschaft"));
 				headline.addColumn(new Column("Ausprägung"));
-				headline.addColumn(new Column("Modifikationsdatum"));
 				
 				}
 				
@@ -432,13 +432,12 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				Property prop=this.admin.getPropertyOfValue(val);
 				Row valueRow=new Row();
 				
-				for(int i = 0; i < 5; i++){
+				for(int i = 0; i < 6; i++){
 					valueRow.addColumn(new Column(""));
 				}
 				
 				valueRow.addColumn(new Column(String.valueOf(prop.getType())));
 				valueRow.addColumn(new Column(String.valueOf(val.getContent())));
-				valueRow.addColumn(new Column(String.valueOf(c.getModificationDate())));
 				
 				report.addRow(valueRow);
 				}
