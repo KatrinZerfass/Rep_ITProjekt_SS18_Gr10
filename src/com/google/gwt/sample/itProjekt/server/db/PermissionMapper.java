@@ -307,7 +307,7 @@ public Vector<ContactList> getAllContactListsByUID(User user){
 			
 			try{
 				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT DISTINCT CL_ID From T_Permission_Contact WHERE U_ID=" + user.getId()+ " ORDER BY CL_ID");
+				ResultSet rs = stmt.executeQuery("SELECT CL_ID From T_Permission_Contactlist WHERE U_ID=" + user.getId()+ " ORDER BY CL_ID");
 				
 				while (rs.next()){
 					ContactList cl = new ContactList();
