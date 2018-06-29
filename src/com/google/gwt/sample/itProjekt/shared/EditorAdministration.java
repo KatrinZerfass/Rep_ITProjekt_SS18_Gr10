@@ -14,6 +14,8 @@ public interface EditorAdministration extends RemoteService{
 	
 	public User getUser (String email) throws IllegalArgumentException;
 	
+	public User getUserByID (int ID) throws IllegalArgumentException;
+	
 	public User createUser(String email) throws IllegalArgumentException;
 	
 	public Vector<Contact> getAllContactsOfActiveUser(User user) throws IllegalArgumentException;

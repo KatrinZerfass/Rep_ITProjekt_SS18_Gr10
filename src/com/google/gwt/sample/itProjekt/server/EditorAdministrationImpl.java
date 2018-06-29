@@ -50,6 +50,12 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	}
 	
 	@Override
+	public User getUserByID(int ID) throws IllegalArgumentException {
+
+		return uMapper.findByID(ID);
+	}
+	
+	@Override
 	public User createUser(String email)
 			throws IllegalArgumentException {
 
