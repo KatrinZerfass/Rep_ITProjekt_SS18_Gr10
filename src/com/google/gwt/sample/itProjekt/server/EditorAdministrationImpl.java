@@ -104,10 +104,19 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	}
 	
 	@Override
-	public Vector<Contact> getAllSharedContactsOfUser(String email) throws IllegalArgumentException {
-		Vector<Contact> resultcontacts = new Vector<Contact>();
-		resultcontacts = pmMapper.getAllContactsByUID(uMapper.findByEMail(email));
-		return resultcontacts;
+	public Vector<Contact> getAllSharedContactsOfUserWithOtherUser(User source, String receiver) throws IllegalArgumentException {
+		
+		Vector<Contact> result = new Vector<Contact>();
+		Vector<Contact> sourceContacts = pmMapper.getAllContactsBySrcUID(source);
+		Vector<Contact> receiverContacts = pmMapper.getAllContactsByUID(uMapper.findByEMail(receiver));
+				
+		for (Contact c : sourceContacts) {
+			if (receiverContacts.contains(c)) {
+				result.add(c);
+			}
+		}
+		
+		return sourceContacts;
 	}
 
 	@Override
