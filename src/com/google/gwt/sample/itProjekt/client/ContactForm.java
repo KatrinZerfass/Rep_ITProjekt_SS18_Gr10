@@ -1748,8 +1748,8 @@ public class ContactForm extends VerticalPanel {
 		Window.alert("Size vom allValuesOfContact: " + ((Integer) allValuesOfContact.size()).toString() + ". \nKatrin");
 		for(int i=0; i<allValuesOfContact.size(); i++) {
 			int pid = allValuesOfContact.get(i).getPropertyid(); 
-			ValuePanel vp; //das ValuePanel der jeweiligen Eigenschaftsart
-			ValueTable vt; //die ValueTable der jeweiligen Eigenschaftsart
+			ValuePanel vp = null; //das ValuePanel der jeweiligen Eigenschaftsart
+			ValueTable vt = null; //die ValueTable der jeweiligen Eigenschaftsart
 			int row = contactTable.getRowCount();
 			
 			switch (pid) {
@@ -1758,13 +1758,13 @@ public class ContactForm extends VerticalPanel {
 						/*
 						 * Das korrekte ValuePanel und ValueTable werden gesetzt und im Folgenden auf ihnen operiert.
 						 */
-						contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Geschäftliche Telefonnummer: "));
+						vp = new ValuePanel(pid, row, "Geschäftliche Telefonnummer: ");
+						contactTable.setWidget(row, 0, vp);
 						contactTable.getFlexCellFormatter().setVerticalAlignment(6, 0, ALIGN_TOP);
-						vp = (ValuePanel) contactTable.getWidget(row, 0);
 						
+						vt = new ValueTable(pid);
 						contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-						contactTable.setWidget(row, 1, new ValueTable(pid));
-						vt = (ValueTable) contactTable.getWidget(row, 1);
+						contactTable.setWidget(row, 1, vt);
 						int vtRow = vt.getRowCount();
 						
 						/*
