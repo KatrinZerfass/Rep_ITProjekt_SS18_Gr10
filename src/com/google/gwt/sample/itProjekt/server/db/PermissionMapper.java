@@ -236,6 +236,7 @@ public Permission update(Permission permission){
 		Connection con = DBConnection.connection();
 		
 		try{
+			System.out.println("test");
 			Statement stmt = con.createStatement();
 			
 				
@@ -250,16 +251,19 @@ public Permission update(Permission permission){
 						+ ")") ;
 			
 			ContactList cl= new ContactList();
-			cl.setId(permission.getParticipantID());	
-				cl = ContactListMapper.contactListMapper().findByID(cl);
+			cl.setId(permission.getShareableObjectID());
+						
 				Vector <Contact> c = ContactListMapper.contactListMapper().getAllContacts(cl);
+				
+				Permission p = new Permission();
+				if(c.size()>0){
 				for(Contact c1: c){
-					Permission p = new Permission();
+					
 					p.setParticipantID(permission.getParticipantID());
 					p.setSourceUserID(permission.getSourceUserID());
 					p.setShareableObjectID(c1.getId());
 					shareContact(p);
-				}
+				}}
 			
 			return permission;	
 				
