@@ -3,6 +3,7 @@ package com.google.gwt.sample.itProjekt.client;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
+import com.google.gwt.user.client.Window;
 
 
 /**
@@ -18,7 +19,14 @@ public class ContactListCell extends AbstractCell<ContactList> {
 			return;
 		}
 		
-		sb.appendHtmlConstant("<div>");
+		sb.appendHtmlConstant("<div id =\"contactListCell\">");
+		if(value.getOwner() == ClientsideSettings.getUser().getId()) {
+			sb.appendHtmlConstant("<img src=\"owner_symbol.png\"> id= \"itemSymbol\"");	
+		}else {
+			sb.appendHtmlConstant("<img src=\"shared_symbol.png\"> id= \"itemSymbol\"");
+		}
+		Window.alert("symbol-icon von Kontaktliste wurde gesetzt");
+		sb.appendEscaped(" ");
 	    sb.appendEscaped(value.getName());
 	    sb.appendHtmlConstant("</div>");
 		
