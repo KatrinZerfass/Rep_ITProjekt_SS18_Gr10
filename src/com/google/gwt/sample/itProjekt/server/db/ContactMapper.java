@@ -52,8 +52,8 @@ public class ContactMapper {
 				c.setLastname(rs.getString("lastName"));
 				c.setSex(rs.getString("gender"));
 				c.setOwner(rs.getInt("U_ID"));
-				c.setCreationDate(rs.getTimestamp("create_date"));
-				c.setModificationDate(rs.getTimestamp("mod_date"));
+				//c.setCreationDate(rs.getTimestamp("create_date"));
+				//c.setModificationDate(rs.getTimestamp("mod_date"));
 				return c;	
 			}
 		}
@@ -88,8 +88,8 @@ Vector<Contact> result = new Vector<Contact>();
 				c.setLastname(rs.getString("lastName"));
 				c.setSex(rs.getString("gender"));
 				c.setOwner(rs.getInt("U_ID"));
-				c.setCreationDate(rs.getTimestamp("create_date"));
-				c.setModificationDate(rs.getTimestamp("mod_date"));
+				//c.setCreationDate(rs.getTimestamp("create_date"));
+				//c.setModificationDate(rs.getTimestamp("mod_date"));
 				result.addElement(c);
 			}		
 		}catch(SQLException e2){
@@ -119,8 +119,8 @@ Vector<Contact> result = new Vector<Contact>();
 				c.setLastname(rs.getString("lastName"));
 				c.setSex(rs.getString("gender"));
 				c.setOwner(rs.getInt("U_ID"));
-				c.setCreationDate(rs.getTimestamp("create_date"));
-				c.setModificationDate(rs.getTimestamp("mod_date"));
+				//c.setCreationDate(rs.getTimestamp("create_date"));
+				//c.setModificationDate(rs.getTimestamp("mod_date"));
 				result.addElement(c);	
 			}
 		}
@@ -158,11 +158,8 @@ Vector<Contact> result = new Vector<Contact>();
 						c.setLastname(rs.getString("lastName"));
 						c.setSex(rs.getString("gender"));
 						c.setOwner(rs.getInt("U_ID"));
-						//c.setCreationDate(rs.getTimestamp("create_date"));
-						//c.setModificationDate(rs.getTimestamp("mod_date"));
-						c.setCreationDate(new Timestamp(System.currentTimeMillis()));
-						c.setModificationDate(new Timestamp(System.currentTimeMillis()));
-						//System.out.println("5."+rs.getInt("C_ID")+ " " +rs.getString("firstName")+ " "+rs.getString("lastName")+ " "+rs.getString("gender")+ " "+rs.getInt("U_ID")+ " "+rs.getTimestamp("create_date")+ " "+rs.getTimestamp("mod_date"));
+						c.setCreationDate(rs.getTimestamp("create_date").toString());
+						c.setModificationDate(rs.getTimestamp("mod_date").toString());
 						
 						result.addElement(c);
 					}		
@@ -335,8 +332,8 @@ try{
 					c.setLastname(rs.getString("lastName"));
 					c.setSex(rs.getString("gender"));
 					c.setOwner(rs.getInt("U_ID"));
-					c.setCreationDate(rs.getTimestamp("create_date"));
-					c.setModificationDate(rs.getTimestamp("mod_date"));
+					//c.setCreationDate(rs.getTimestamp("create_date"));
+					//c.setModificationDate(rs.getTimestamp("mod_date"));
 					result.addElement(c);	
 				}
 			}

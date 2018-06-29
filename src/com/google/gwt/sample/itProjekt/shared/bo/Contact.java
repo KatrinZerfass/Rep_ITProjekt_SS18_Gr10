@@ -2,6 +2,7 @@ package com.google.gwt.sample.itProjekt.shared.bo;
 
 import java.sql.Timestamp;
 
+
 /**
  * Die Klasse Contact, Datenstruktur f�r das Kontakt Business Objekt.
  * @author JanNoller
@@ -22,10 +23,15 @@ public class Contact extends BusinessObject {
 	private int owner;
 	
 	/** Erstellungsdatum des Kontakts. */
-	private Timestamp creationdate;
+	//private Timestamp creationdate;
+	private String creationdate;
+	
+	
+	
 	
 	/** Modifikationsdatum des Kontakts. */
-	private Timestamp modificationdate;
+	//private Timestamp modificationdate;
+	private String modificationdate;
 	
 	/**
 	 * TODO vielleicht Konstruktor(en)?
@@ -108,19 +114,20 @@ public class Contact extends BusinessObject {
 		this.owner = owner;
 	}
 	
-	public void setCreationDate(Timestamp creationdate){
+	public void setCreationDate(String creationdate){
 		this.creationdate = creationdate;
+		
 	}
 	
-	public Timestamp getCreationDate(){
+	public String getCreationDate(){
 		return creationdate;
 	}
 	
-	public void setModificationDate(Timestamp modificationdate){
+	public void setModificationDate(String modificationdate){
 		this.modificationdate = modificationdate;
 	}
 	
-	public Timestamp getModificationDate(){
+	public String getModificationDate(){
 		return modificationdate;
 	}
 }
