@@ -145,17 +145,25 @@ Vector<Contact> result = new Vector<Contact>();
 				
 				try{
 					Statement stmt = con.createStatement();
+					System.out.println("1. SELECT C_ID, firstName, lastName, gender, U_ID, create_date, mod_date FROM T_Contact WHERE U_ID=" + user.getId()+ " ORDER BY C_ID");
 					ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID, create_date, mod_date FROM T_Contact WHERE U_ID=" + user.getId()+ " ORDER BY C_ID");
-					
+					System.out.println("2."+rs.toString());
+					//System.out.println("3. "+rs.getInt("C_ID")+ " " +rs.getString("firstName")+ " "+rs.getString("lastName")+ " "+rs.getString("gender")+ " "+rs.getInt("U_ID"));
 					while (rs.next()){
+						System.out.println("4."+rs.getInt("C_ID")+ " " +rs.getString("firstName")+ " "+rs.getString("lastName")+ " "+rs.getString("gender")+ " "+rs.getInt("U_ID"));
+						
 						Contact c = new Contact();
 						c.setId(rs.getInt("C_ID"));
 						c.setFirstname(rs.getString("firstName"));
 						c.setLastname(rs.getString("lastName"));
 						c.setSex(rs.getString("gender"));
 						c.setOwner(rs.getInt("U_ID"));
-						c.setCreationDate(rs.getTimestamp("create_date"));
-						c.setModificationDate(rs.getTimestamp("mod_date"));
+						//c.setCreationDate(rs.getTimestamp("create_date"));
+						//c.setModificationDate(rs.getTimestamp("mod_date"));
+						c.setCreationDate(new Timestamp(System.currentTimeMillis()));
+						c.setModificationDate(new Timestamp(System.currentTimeMillis()));
+						//System.out.println("5."+rs.getInt("C_ID")+ " " +rs.getString("firstName")+ " "+rs.getString("lastName")+ " "+rs.getString("gender")+ " "+rs.getInt("U_ID")+ " "+rs.getTimestamp("create_date")+ " "+rs.getTimestamp("mod_date"));
+						
 						result.addElement(c);
 					}		
 				}catch(SQLException e2){
