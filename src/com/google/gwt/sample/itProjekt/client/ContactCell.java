@@ -23,9 +23,9 @@ public class ContactCell extends AbstractCell<Contact> {
 		
 		sb.appendHtmlConstant("<div id =\"contactCell\">");
 		if(value.getOwner() == ClientsideSettings.getUser().getId()) {
-			sb.appendHtmlConstant("<img src=\"owner_symbol.png\"> id= \"itemSymbol\"");	
+			sb.appendHtmlConstant("<img src=\"owner_symbol.png\" id= \"itemSymbol\">");	
 		}else {
-			sb.appendHtmlConstant("<img src=\"shared_symbol.png\"> id= \"itemSymbol\"");
+			sb.appendHtmlConstant("<img src=\"shared_symbol.png\" id= \"itemSymbol\">");
 		}
 		Window.alert("symbol-icon von Contact wurde gesetzt");
 		sb.appendEscaped(" ");
