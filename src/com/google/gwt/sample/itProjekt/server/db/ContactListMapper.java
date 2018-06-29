@@ -8,6 +8,7 @@ import java.util.Vector;
 
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
+import com.google.gwt.sample.itProjekt.shared.bo.Permission;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
 
 /**
@@ -249,7 +250,22 @@ Connection con = DBConnection.connection();
 			catch (SQLException e2){
 				e2.printStackTrace();
 
-				}	
+				}
+		try{
+			
+						
+				Vector <Contact> c = ContactListMapper.contactListMapper().getAllContacts(contactlist);
+				
+				if(c.size()>0){
+				for(Contact c1: c){	
+			Statement stmt2 = con.createStatement();
+				stmt2.executeUpdate("DELETE FROM T_Permission_Contact WHERE C_ID =" + c1.getId());
+		}}}
+
+		catch (SQLException e2){
+			e2.printStackTrace();
+
+			}	
 		try{
 				
 				Statement stmt = con.createStatement();
