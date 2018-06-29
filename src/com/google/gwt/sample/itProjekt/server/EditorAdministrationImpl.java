@@ -62,7 +62,11 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	public Vector<Contact> getAllContactsOfActiveUser(User user) throws IllegalArgumentException {
 		
 		Vector<Contact> result = cMapper.findAllByUID(user);
-		result.addAll(pmMapper.getAllContactsByUID(user));
+		Vector<Contact> sharedContacts = pmMapper.getAllContactsByUID(user);
+		
+		for (Contact c : sharedContacts) {
+			result.add(c);
+		}
 		
 		return result;
 	}
@@ -88,6 +92,13 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 
 		Vector<Contact> resultcontacts = new Vector<Contact>();
 		resultcontacts = cMapper.findAllByUID(uMapper.findByEMail(email));
+		return resultcontacts;
+	}
+	
+	@Override
+	public Vector<Contact> getAllSharedContactsOfUser(String email) throws IllegalArgumentException {
+		Vector<Contact> resultcontacts = new Vector<Contact>();
+		resultcontacts = pmMapper.getAllContactsByUID(uMapper.findByEMail(email));
 		return resultcontacts;
 	}
 
