@@ -547,8 +547,10 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 				}
 				@Override
 				public void onSuccess(Vector<Contact> arg0){
-					clctvm.addNameResults();
-					clctvm.addContactOfSearchResultList(clctvm.getNameResultsCL(), arg0);
+					if(arg0.size() != 0) {
+						clctvm.addNameResults();
+						clctvm.addContactOfSearchResultList(clctvm.getNameResultsCL(), arg0);
+					}
 				}
 				
 			});	
@@ -560,8 +562,10 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 				}
 				@Override
 				public void onSuccess(Vector<Contact> arg0){
-					clctvm.addValueResults();
-					clctvm.addContactOfSearchResultList(clctvm.getNameResultsCL(), arg0);
+					if(arg0.size() != 0){
+						clctvm.addValueResults();
+						clctvm.addContactOfSearchResultList(clctvm.getNameResultsCL(), arg0);
+					}
 				}
 				
 			});	
