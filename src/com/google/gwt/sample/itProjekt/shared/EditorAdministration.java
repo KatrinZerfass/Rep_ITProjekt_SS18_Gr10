@@ -14,6 +14,8 @@ public interface EditorAdministration extends RemoteService{
 	
 	public User getUser (String email) throws IllegalArgumentException;
 	
+	public User getUserByID (int ID) throws IllegalArgumentException;
+	
 	public User createUser(String email) throws IllegalArgumentException;
 	
 	public Vector<Contact> getAllContactsOfActiveUser(User user) throws IllegalArgumentException;
@@ -87,4 +89,8 @@ public interface EditorAdministration extends RemoteService{
 	public Vector<Contact> getAllContactsOfUserWithValue(User user, Value value) throws IllegalArgumentException;
 
 	public Vector<Contact> getContactsOfUserWithProperty(User user, Property Property) throws IllegalArgumentException;
+	
+	public Vector<Contact> getContactsOfNameSearchResult(User user, String textBox) throws IllegalArgumentException;
+	
+	public Vector<Contact> getContactsOfValueSearchResult(User user, String textBox) throws IllegalArgumentException;
 }
