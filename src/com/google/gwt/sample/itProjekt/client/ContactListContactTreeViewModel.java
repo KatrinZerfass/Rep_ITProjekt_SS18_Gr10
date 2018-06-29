@@ -203,7 +203,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		if(cl == nameResultsCL) {
 			nameResults = contacts;
 			contactListDataProvider.getList().add(cl);
-			selectionModel.setSelected(cl, true);
+			selectionModel.setSelected(contactListDataProvider.getList().get(2), true);;
 		}
 		if(cl == valueResultsCL) {
 			valueResults = contacts;
@@ -326,20 +326,26 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 			}else if((ContactList) value == nameResultsCL){
 					
 					for (Contact c : nameResults){
-						Window.alert(c.getFirstname());
 						contactsProvider.getList().add(c);
 					}
 					return new DefaultNodeInfo<Contact>(contactsProvider,
 							new ContactCell(), selectionModel, null);
 					
-				}
+				
 			
+			}else if((ContactList) value == valueResultsCL){
+			
+					for (Contact c : valueResults){
+						contactsProvider.getList().add(c);
+					}
+					return new DefaultNodeInfo<Contact>(contactsProvider,
+							new ContactCell(), selectionModel, null);
 				
 			  /*
 		       * Der Nutzer ist nur Teilhaber der Kontaktliste 
 			   */
 								
-			else {
+			}else {
 					Window.alert("geteilte Kontakliste");
 					editorAdministration.getAllSharedContactsOfContactList((ContactList) value, user, new AsyncCallback<Vector<Contact>>() {
 						public void onFailure(Throwable t) {

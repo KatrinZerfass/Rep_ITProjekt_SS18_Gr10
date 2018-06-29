@@ -578,7 +578,6 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 										for (Contact c : nameResults) {
 											if (allContactsOfUser.contains(c)) {
 												finalNameResult.add(c);
-												Window.alert(c.getFirstname());
 											}
 										}
 										
