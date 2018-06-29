@@ -24,14 +24,14 @@ public class Contact extends BusinessObject {
 	
 	/** Erstellungsdatum des Kontakts. */
 	//private Timestamp creationdate;
-	private String creationdate;
+	private Timestamp creationdate;
 	
 	
 	
 	
 	/** Modifikationsdatum des Kontakts. */
 	//private Timestamp modificationdate;
-	private String modificationdate;
+	private Timestamp modificationdate;
 	
 	/**
 	 * TODO vielleicht Konstruktor(en)?
@@ -114,20 +114,20 @@ public class Contact extends BusinessObject {
 		this.owner = owner;
 	}
 	
-	public void setCreationDate(String creationdate){
+	public void setCreationDate(Timestamp creationdate){
 		this.creationdate = creationdate;
 		
 	}
 	
-	public String getCreationDate(){
+	public Timestamp getCreationDate(){
 		return creationdate;
 	}
 	
-	public void setModificationDate(String modificationdate){
+	public void setModificationDate(Timestamp modificationdate){
 		this.modificationdate = modificationdate;
 	}
 	
-	public String getModificationDate(){
+	public Timestamp getModificationDate(){
 		return modificationdate;
 	}
 }

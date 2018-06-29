@@ -931,11 +931,11 @@ public class ContactForm extends VerticalPanel {
 		shareContactButton.addStyleName("buttonPanel");
 		Button deleteContactButton = new Button("Kontakt löschen");
 		deleteContactButton.addStyleName("buttonPanel");
-		Button saveChangesButton = new Button("Änderungen speichern");
+		saveChangesButton = new Button("Änderungen speichern");
 		saveChangesButton.addStyleName("buttonPanel");
 		Button addContactToContactListButton = new Button("Kontakt zu einer Kontaktliste hinzufügen");
 		addContactToContactListButton.addStyleName("buttonPanel");
-		Button removeContactFromContactListButton = new Button("Kontakt aus der aktuellen Kontaktliste entfernen");
+		removeContactFromContactListButton = new Button("Kontakt aus der aktuellen Kontaktliste entfernen");
 		removeContactFromContactListButton.addStyleName("buttonPanel");
 		
 		buttonsPanel.add(addContactButton);

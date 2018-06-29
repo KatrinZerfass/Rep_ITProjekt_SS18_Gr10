@@ -406,16 +406,16 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	
 	public Vector<Contact> getContactsOfNameSearchResult(User user, String textBox, ContactList selectedContactList) throws IllegalArgumentException{
 		
-		Vector<Contact> allContactsOfUser = new Vector<Contact>();
+		Vector<Contact> allContactsOfList = new Vector<Contact>();
 		Vector<Contact> nameResults = new Vector<Contact>();
 		
 		Vector<Contact> result = new Vector<Contact>();
 		
-		allContactsOfUser = getAllContactsOfActiveUser(user);
+		allContactsOfList = getAllContactsOf(selectedContactList);
 		nameResults = getAllContactsWithName(textBox);
 		
 			for (Contact c : nameResults) {
-				if (allContactsOfUser.contains(c)) {
+				if (allContactsOfList.contains(c)) {
 					result.add(c);
 				}	
 		}
@@ -426,16 +426,16 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	
 	public Vector<Contact> getContactsOfValueSearchResult(User user, String textBox, ContactList selectedContactList) throws IllegalArgumentException{
 		
-		Vector<Contact> allContactsOfUser = new Vector<Contact>();
+		Vector<Contact> allContactsOfList = new Vector<Contact>();
 		Vector<Contact> valueResults = new Vector<Contact>();
 		
 		Vector<Contact> result = new Vector<Contact>();
 		
-		allContactsOfUser = getAllContactsOfActiveUser(user);
-		valueResults = getAllContactsWithName(textBox);
+		allContactsOfList = getAllContactsOf(selectedContactList); 
+		valueResults = getAllContactsWithValue(textBox);
 		
 		for (Contact c : valueResults) {
-			if (allContactsOfUser.contains(c)) {
+			if (allContactsOfList.contains(c)) {
 				result.add(c);
 			}	
 	    }

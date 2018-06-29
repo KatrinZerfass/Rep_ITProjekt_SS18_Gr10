@@ -254,7 +254,14 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 					p.setType(searchInput.getText());
 					 reportGenerator.generateAllContactsWithPropertyReport(user, p, new AsyncCallback<AllContactsWithPropertyReport>() {
 						 public void onFailure(Throwable caught) {
-			 				    RootPanel.get("reporttext").setVisible(true);							
+			 				    RootPanel.get("reporttext").setVisible(true);	
+			 				    DialogBox dBox = new DialogBox();
+								Label label = new Label("Es existieren leider keine passenden Kontakte mit der angegebenen Eigenschaft.");
+								dBox.add(label);
+								dBox.center();
+								dBox.setAutoHideEnabled(true);
+								dBox.show();
+								mainPanel.add(dBox);
 						 }
 						 public void onSuccess(AllContactsWithPropertyReport result) {
 			 				    RootPanel.get("reporttext").setVisible(true);
