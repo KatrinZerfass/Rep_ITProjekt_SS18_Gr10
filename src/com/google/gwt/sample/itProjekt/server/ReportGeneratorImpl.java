@@ -92,10 +92,8 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			report.setCreated(new Date());
 			CompositeParagraph header=new CompositeParagraph();
 			SimpleParagraph sp = new SimpleParagraph("Nutzer: " + user.getEmail());
-			SimpleParagraph sp1 = new SimpleParagraph("Nutzer: " + user.getId());
 
 			header.addSubParagraph(sp);
-			header.addSubParagraph(sp1);
 
 			report.setHeaderData(header);
 
@@ -170,7 +168,8 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			else{
 				report.removeRow(headline);
 				SimpleParagraph errornote=new SimpleParagraph("Es wurden leider keine Kontakte des Nutzers gefunden");
-				header.addSubParagraph(errornote);		
+				header.addSubParagraph(errornote);
+				report.setHeaderData(header);
 				}
 			
 			
@@ -182,7 +181,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
  * @see com.google.gwt.sample.itProjekt.shared.ReportGenerator#generateAllSharedContactsOfUserReport(com.google.gwt.sample.itProjekt.shared.bo.User)
  */
 @Override	
-	public AllSharedContactsOfUserReport generateAllSharedContactsOfUserReport(User user) {
+	public AllSharedContactsOfUserReport generateAllSharedContactsOfUserReport(User owner, User receiver) {
 	if(this.getEditorAdministration()==null) {
 		return null;
 	} 
@@ -194,8 +193,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		
 		CompositeParagraph header=new CompositeParagraph();
 		
-		header.addSubParagraph(new SimpleParagraph("Nutzer: " + user.getEmail()));
-		header.addSubParagraph(new SimpleParagraph("Nutzer-ID: " + user.getId()));
+		header.addSubParagraph(new SimpleParagraph("Eingegebener Nutzer: " + receiver.getEmail()));
 		
 		report.setHeaderData(header);
 		
@@ -211,7 +209,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		
 		report.addRow(headline);
 
-		Vector<Contact> allContacts=this.admin.getAllSharedContactsWith(user.getEmail());
+		Vector<Contact> allContacts=this.admin.getAllSharedContactsOfUserWithOtherUser(owner, receiver.getEmail());
 		
 		for (Contact c: allContacts) {
 			
@@ -279,7 +277,9 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		
 		report.setTitle("Alle Kontakte mit der Ausprägung");
 		report.setCreated(new Date());
-		CompositeParagraph header=new CompositeParagraph();	
+		
+		CompositeParagraph header=new CompositeParagraph();
+		
 		header.addSubParagraph(new SimpleParagraph("Nutzer: " + user.getEmail()));
 		header.addSubParagraph(new SimpleParagraph("Gesuchte Ausprägung: " + value.getContent()));
 		
@@ -301,8 +301,6 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		
 		if(allContacts.size()!=0){
 			for (Contact c: allContacts) {
-		
-			
 			Vector<Value> allValues=this.admin.getAllValuesOf(c);
 			Row contactRow=new Row();
 			
@@ -350,11 +348,14 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				report.addRow(valueRow);
 				}
 			}
-		}
+			}
+			
 		}else{
 			report.removeRow(headline);
 			SimpleParagraph errornote=new SimpleParagraph("Es wurden leider keine Kontakte mit der eingegebenen Ausprägung gefunden");
-			header.addSubParagraph(errornote);	
+			header.addSubParagraph(errornote);
+			report.setHeaderData(header);
+
 		}
 		return report;
 	}

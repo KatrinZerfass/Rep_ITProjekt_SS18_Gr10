@@ -188,6 +188,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	
 	public void addContactOfContactList(ContactList cl, Contact c) {
 		if (!contactDataProviders.containsKey(cl)) {
+			Window.alert("Fehler beim addContactofcontactlist");
 			return;
 		}
 		ListDataProvider<Contact> contactsProvider = contactDataProviders.get(cl);
