@@ -533,8 +533,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	 */
 	private class SearchButtonClickHandler implements ClickHandler {
 		
-		TextBox searchTextBox = null;
-			
+		TextBox searchTextBox = null;						
 		public SearchButtonClickHandler(TextBox sTB) {
 			searchTextBox = sTB;
 		}
@@ -544,8 +543,10 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		@Override
 		public void onClick(ClickEvent arg0) {
 			
+			ContactList selectedContactList = clctvm.getSelectedContactList();
+			Window.alert(selectedContactList.getName());		
 			
-			editorAdministration.getContactsOfNameSearchResult(user, searchTextBox.getText(), new AsyncCallback<Vector<Contact>>() {
+			editorAdministration.getContactsOfNameSearchResult(user, searchTextBox.getText(), selectedContactList,  new AsyncCallback<Vector<Contact>>() {
 				@Override
 				public void onFailure(Throwable arg0) {
 					Window.alert("Fehler beim Füllen des allContactsOfUser Vectors!");
@@ -558,7 +559,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 				
 			});	
 			
-			editorAdministration.getContactsOfValueSearchResult(user, searchTextBox.getText(), new AsyncCallback<Vector<Contact>>() {
+			editorAdministration.getContactsOfValueSearchResult(user, searchTextBox.getText(), selectedContactList, new AsyncCallback<Vector<Contact>>() {
 				
 				public void onFailure(Throwable arg0) {
 					Window.alert("Fehler beim Füllen des allContactsOfUser Vectors!");
