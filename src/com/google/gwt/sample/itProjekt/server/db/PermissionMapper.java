@@ -303,6 +303,30 @@ public Vector<Contact> getAllContactsByUID(User user){
 			return result;
 		}
 
+public Vector<Contact> getAllContactsBySrcUID(User user){
+	
+	Connection con = DBConnection.connection();
+	Vector<Contact> result = new Vector<Contact>();
+			
+			try{
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT DISTINCT C_ID From T_Permission_Contact WHERE srcU_ID=" + user.getId()+ " ORDER BY C_ID");
+				
+				while (rs.next()){
+					Contact c = new Contact();
+					c.setId(rs.getInt("C_ID"));
+									
+					result.addElement(ContactMapper.contactMapper().findByID(c));
+				}		
+			}catch(SQLException e2){
+				e2.printStackTrace();
+				return result;
+			}
+			return result;
+		}
+
+
+
 /**
  * Gets the all contact lists by UID.
  *
