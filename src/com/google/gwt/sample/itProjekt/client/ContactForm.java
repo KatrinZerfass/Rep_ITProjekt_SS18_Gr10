@@ -772,8 +772,7 @@ public class ContactForm extends VerticalPanel {
 		 * @param pid die ID der referenzierten Eigenschaftsart 
 		 */
 		public ValueTable(int pid) {
-			this.propertyId=pid;
-			
+			this.propertyId=pid;			
 		}
 		
 		/**
@@ -1748,6 +1747,7 @@ public class ContactForm extends VerticalPanel {
 		Window.alert("Size vom allValuesOfContact: " + ((Integer) allValuesOfContact.size()).toString() + ". \nKatrin");
 		for(int i=0; i<allValuesOfContact.size(); i++) {
 			int pid = allValuesOfContact.get(i).getPropertyid(); 
+			Window.alert("pid vom aktuellen Value: " + ((Integer) pid).toString());
 			ValuePanel vp = null; //das ValuePanel der jeweiligen Eigenschaftsart
 			ValueTable vt = null; //die ValueTable der jeweiligen Eigenschaftsart
 			int row = contactTable.getRowCount();
@@ -1755,6 +1755,7 @@ public class ContactForm extends VerticalPanel {
 			switch (pid) {
 				
 				case 1: // Tel.Nr. geschäftlich
+					Window.alert("Springt in case 1 von switch-case");
 						/*
 						 * Das korrekte ValuePanel und ValueTable werden gesetzt und im Folgenden auf ihnen operiert.
 						 */
@@ -1770,11 +1771,12 @@ public class ContactForm extends VerticalPanel {
 						/*
 						 * Ist noch keine Ausprägung im ersten (bereits im GUI bestehenden) ValueDisplay gesetzt worden, so passiert dies nun.
 						 */
-						if(vt.getValueDisplay(0) == null) {
+						Window.alert("vor dem if von getValueDisplay()");
+						if(vt.getWidget(0,0) == null) {
 							vt.setWidget(0, 0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
 							vt.getValueDisplay(0).setValue(allValuesOfContact.get(i));
 							Window.alert("ValueDisplay in der ValueTable wurde gesetzt. \nKatrin");
-						
+						 
 							/*
 							 * Je nachdem, ob der angemeldete Nutzer der Eigentümer des Kontakts ist oder nicht, werden die Buttons 
 							 * AddValueButton, LockButton, und DeleteValueButton aktiviert oder nicht.
@@ -1823,7 +1825,7 @@ public class ContactForm extends VerticalPanel {
 						contactTable.setWidget(row, 1, new ValueTable(pid));
 						vt = (ValueTable) contactTable.getWidget(row, 1); 
 						
-						if(vt.getValueDisplay(0) == null) {
+						if(vt.getWidget(0,0) == null) {
 							vt.setWidget(0, 0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
 							vt.getValueDisplay(0).setValue(allValuesOfContact.get(i));
 						

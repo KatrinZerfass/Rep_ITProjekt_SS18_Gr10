@@ -25,7 +25,6 @@ public class ContactListCell extends AbstractCell<ContactList> {
 		}else {
 			sb.appendHtmlConstant("<img src=\"shared_symbol.png\" id= \"itemSymbol\">");
 		}
-		Window.alert("symbol-icon von Kontaktliste wurde gesetzt");
 		sb.appendEscaped(" ");
 	    sb.appendEscaped(value.getName());
 	    sb.appendHtmlConstant("</div>");
