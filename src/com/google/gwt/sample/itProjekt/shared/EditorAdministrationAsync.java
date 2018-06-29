@@ -92,4 +92,8 @@ public interface EditorAdministrationAsync {
 	void getAllContactsOfUserWithValue(User user, Value value, AsyncCallback<Vector<Contact>> callback);
 
 	void getContactsOfUserWithProperty(User user, Property Property, AsyncCallback<Vector<Contact>> callback);
+
+	void getContactsOfNameSearchResult(User user, String textBox, AsyncCallback<Vector<Contact>> callback);
+
+	void getContactsOfValueSearchResult(User user, String textBox, AsyncCallback<Vector<Contact>> callback);
 }

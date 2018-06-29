@@ -528,14 +528,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	private class SearchButtonClickHandler implements ClickHandler {
 		
 		TextBox searchTextBox = null;
-		
-		Vector<Contact> nameResults = new Vector<Contact>();
-		Vector<Contact> valueResults = new Vector<Contact>();
-		Vector<Contact> allContactsOfUser = new Vector<Contact>();
-		
-		Vector<Contact> finalNameResult = new Vector<Contact>();
-		Vector<Contact> finalValueResult = new Vector<Contact>();
-		
+			
 		public SearchButtonClickHandler(TextBox sTB) {
 			searchTextBox = sTB;
 		}
@@ -546,69 +539,87 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		public void onClick(ClickEvent arg0) {
 			
 			
-			editorAdministration.getAllContactsOfActiveUser(user, new AsyncCallback<Vector<Contact>>() {
+			editorAdministration.getContactsOfNameSearchResult(user, searchTextBox.getText(), new AsyncCallback<Vector<Contact>>() {
 				@Override
 				public void onFailure(Throwable arg0) {
 					Window.alert("Fehler beim Füllen des allContactsOfUser Vectors!");
 				}
 				@Override
-				public void onSuccess(Vector<Contact> arg0) {
-					allContactsOfUser = arg0;
-					
-					editorAdministration.getAllContactsWithName(searchTextBox.getText(), new AsyncCallback<Vector<Contact>>() {
-						@Override
-						public void onFailure(Throwable arg0) {
-							Window.alert("Fehler beim Suchen der Kontakte nach Namen im cMapper!");
-						}
-						@Override
-						public void onSuccess(Vector<Contact> arg0) {
-							nameResults = arg0;
-							
-							editorAdministration.getAllContactsWithValue(searchTextBox.getText(), new AsyncCallback<Vector<Contact>>() {
-								@Override
-								public void onFailure(Throwable arg0) {
-									Window.alert("Fehler beim Suchen der Kontakte nach Value im vMapper!");	
-								}
-								@Override
-								public void onSuccess(Vector<Contact> arg0) {
-									valueResults = arg0;
-									
-									if (nameResults.size() > 0) {
-										clctvm.addNameResults();
-										for (Contact c : nameResults) {
-											if (allContactsOfUser.contains(c)) {
-												finalNameResult.add(c);
-											}
-										}
-										
-										clctvm.addContactOfSearchResultList(clctvm.getNameResultsCL(), finalNameResult);
-									}
-//									else {
-//										clctvm.removeContactList(clctvm.getNameResultsCL());
-//									}
-									if (valueResults.size() > 0) {
-										clctvm.addValueResults();
-										for (Contact c : valueResults) {
-											if (allContactsOfUser.contains(c)) {
-											finalValueResult.add(c);
-											}
-										}
-										clctvm.addContactOfSearchResultList(clctvm.getValueResultsCL(), finalValueResult);
-									}
-									else {
-										clctvm.removeContactList(clctvm.getValueResultsCL());
-									}
-									if (nameResults.size() == 0 && valueResults.size() == 0) {
-										Window.alert("Kein Suchergebnis!");
-										clctvm.removeContactList(clctvm.getNameResultsCL());
-										clctvm.removeContactList(clctvm.getValueResultsCL());
-									}
-								}
-							});
-						}
-					});
+				public void onSuccess(Vector<Contact> arg0){
+					clctvm.addNameResults();
+					clctvm.addContactOfSearchResultList(clctvm.getNameResultsCL(), arg0);
 				}
-			});
+				
+			});	
+			
+			editorAdministration.getContactsOfValueSearchResult(user, searchTextBox.getText(), new AsyncCallback<Vector<Contact>>() {
+				
+				public void onFailure(Throwable arg0) {
+					Window.alert("Fehler beim Füllen des allContactsOfUser Vectors!");
+				}
+				@Override
+				public void onSuccess(Vector<Contact> arg0){
+					clctvm.addValueResults();
+					clctvm.addContactOfSearchResultList(clctvm.getNameResultsCL(), arg0);
+				}
+				
+			});	
+					
+					
+//					editorAdministration.getAllContactsWithName(searchTextBox.getText(), new AsyncCallback<Vector<Contact>>() {
+//						@Override
+//						public void onFailure(Throwable arg0) {
+//							Window.alert("Fehler beim Suchen der Kontakte nach Namen im cMapper!");
+//						}
+//						@Override
+//						public void onSuccess(Vector<Contact> arg0) {
+//							nameResults = arg0;
+//							
+//							editorAdministration.getAllContactsWithValue(searchTextBox.getText(), new AsyncCallback<Vector<Contact>>() {
+//								@Override
+//								public void onFailure(Throwable arg0) {
+//									Window.alert("Fehler beim Suchen der Kontakte nach Value im vMapper!");	
+//								}
+//								@Override
+//								public void onSuccess(Vector<Contact> arg0) {
+//									valueResults = arg0;
+//									
+//									if (nameResults.size() > 0) {
+//										clctvm.addNameResults();
+//										for (Contact c : nameResults) {
+//											if (allContactsOfUser.contains(c)) {
+//												finalNameResult.add(c);
+//											}
+//										}
+//										
+//										clctvm.addContactOfSearchResultList(clctvm.getNameResultsCL(), finalNameResult);
+//									}
+////									else {
+////										clctvm.removeContactList(clctvm.getNameResultsCL());
+////									}
+//									if (valueResults.size() > 0) {
+//										clctvm.addValueResults();
+//										for (Contact c : valueResults) {
+//											if (allContactsOfUser.contains(c)) {
+//											finalValueResult.add(c);
+//											}
+//										}
+//										clctvm.addContactOfSearchResultList(clctvm.getValueResultsCL(), finalValueResult);
+//									}
+//									else {
+//										clctvm.removeContactList(clctvm.getValueResultsCL());
+//									}
+//									if (nameResults.size() == 0 && valueResults.size() == 0) {
+//										Window.alert("Kein Suchergebnis!");
+//										clctvm.removeContactList(clctvm.getNameResultsCL());
+//										clctvm.removeContactList(clctvm.getValueResultsCL());
+//									}
+//								}
+//							});
+//						}
+//					});
+//				}
+//			});
 			
 //TODO fliegt raus wenn triple callback tut			
 			
