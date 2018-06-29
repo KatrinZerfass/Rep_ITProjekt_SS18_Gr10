@@ -1591,8 +1591,10 @@ public class ContactForm extends VerticalPanel {
 		}
 		
 		for (int i = 4; i < contactTable.getRowCount(); i++) {
-			for (int a =0; a<=4; a++) {
-				contactTable.removeCell(i, a);
+			for (int a =0; a<4; a++) {
+				if(contactTable.isCellPresent(i, a)) {
+					contactTable.removeCell(i, a);
+				}
 			}
 		}
 		
@@ -1604,6 +1606,7 @@ public class ContactForm extends VerticalPanel {
 			contactTable.removeCell(3, 3);
 		}
 		
+		allValuesOfContact = null;
 		
 		/*
 		 * Bei jedem neuen Aufruf von setSelected werden die ausgefüllten ValueTextBoxen geleert und aus dem Vector alle TextBoxen entfernt.
@@ -1615,8 +1618,13 @@ public class ContactForm extends VerticalPanel {
 			}
 		}
 		
+		allValueTextBoxes = null;
+		
 		if (c != null){
-			Window.alert("Kontakt ungleich null");
+			
+			contactToDisplay = c;
+			
+			Window.alert("Kontakt ungleich null. Ausgewählter Kontakt: " + contactToDisplay.getFirstname());
 			/*
 			 * Befüllen der Eigenschaften aus der Datenbank
 			 */
@@ -1635,35 +1643,42 @@ public class ContactForm extends VerticalPanel {
 			newPropertyPanel.add(addNewPropertyButton);
 			
 			
+			firstnameTextBox.setEnabled(true);
+			lastnameTextBox.setEnabled(true);
+			saveChangesButton.setEnabled(true);
+			removeContactFromContactListButton.setEnabled(true);
 			
 			
 			
-			
-			contactToDisplay = c;
 			
 			/*
 			 * Der angemeldete Nutzer wird mit dem Eigentümer verglichen. Ist er ausschließlich Teilhaber, so werden bestimmte Buttons
 			 * bereits im Vorfeld ausgegraut.
 			 */
+		
+			
 			if(!compareUser()) {
-				Window.alert("buttons wurden ausgegraut, weil der User nicht der Eigentümer ist");
 				saveChangesButton.setEnabled(false);
 				removeContactFromContactListButton.setEnabled(false);
+				firstnameTextBox.setEnabled(false);
+				lastnameTextBox.setEnabled(false);
+				Window.alert("buttons wurden ausgegraut, weil der User nicht der Eigentümer ist");
 			}
 			
 			/*
 			 * Alle Ausprägungen des contactToDisplay werden ausgelesen und in einem Vector<Values> gespeichert.
 			 */
-			
-
-			
 			editorAdministration.getAllValuesOf(contactToDisplay, new AsyncCallback<Vector<Value>>() {
 				public void onFailure(Throwable t) {
 					Window.alert("Fehler beim Auslesen der Ausprägungen des Kontakts");
 					
 				}
 				public void onSuccess(Vector<Value> values) {
-					allValuesOfContact = values;
+					Window.alert("onsuccess von getAllValuesOf");
+					allValuesOfContact = new Vector<Value>();
+					for(Value v: values) {
+						allValuesOfContact.add(v);
+					}
 					displayAllValuesOfContact();
 					
 					Window.alert("Alle Ausprägungen des Kontaktes ausgelesen");
@@ -1721,7 +1736,7 @@ public class ContactForm extends VerticalPanel {
 	
 	public void displayAllValuesOfContact() {
 		
-		
+		allValueTextBoxes = new Vector<ValueTextBox>();
 		/*
 		 * Der Vector allValuesOfContact, welcher alle Ausprägungen des anzuzeigenden Kontaktes enthält, wird durchiteriert
 		 * und jede Ausprägung wird im dazugehörigen ValueDisplay der jeweiligen Eigenschaftsart angezeigt.
@@ -1732,7 +1747,7 @@ public class ContactForm extends VerticalPanel {
 		 * und sich jeweils in einer anderen Zeile der contactTable befinden, je nachdem um welche Eigenschaftsart es sich handelt.
 		 * 
 		 */ 
-		
+		Window.alert("Size vom allValuesOfContact: " + ((Integer) allValuesOfContact.size()).toString());
 		for(int i=0; i<allValuesOfContact.size(); i++) {
 			int pid = allValuesOfContact.get(i).getPropertyid(); 
 			ValuePanel vp; //das ValuePanel der jeweiligen Eigenschaftsart
@@ -1740,7 +1755,7 @@ public class ContactForm extends VerticalPanel {
 			int row = contactTable.getRowCount();
 			
 			switch (pid) {
-
+				
 				case 1: // Tel.Nr. geschäftlich
 						/*
 						 * Das korrekte ValuePanel und ValueTable werden gesetzt und im Folgenden auf ihnen operiert.
@@ -1752,6 +1767,7 @@ public class ContactForm extends VerticalPanel {
 						contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
 						contactTable.setWidget(row, 1, new ValueTable(pid));
 						vt = (ValueTable) contactTable.getWidget(row, 1);
+						int vtRow = vt.getRowCount();
 						
 						/*
 						 * Ist noch keine Ausprägung im ersten (bereits im GUI bestehenden) ValueDisplay gesetzt worden, so passiert dies nun.
@@ -1759,6 +1775,7 @@ public class ContactForm extends VerticalPanel {
 						if(vt.getValueDisplay(0) == null) {
 							vt.setWidget(0, 0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
 							vt.getValueDisplay(0).setValue(allValuesOfContact.get(i));
+							Window.alert("ValueDisplay in der ValueTable wurde gesetzt");
 						
 							/*
 							 * Je nachdem, ob der angemeldete Nutzer der Eigentümer des Kontakts ist oder nicht, werden die Buttons 
@@ -1780,21 +1797,22 @@ public class ContactForm extends VerticalPanel {
 						 * wird die Ausprägung gesetzt.
 						 */
 						}else {
-							vt.setWidget(vt.getRowCount(), 0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
-							vt.getValueDisplay(vt.getRowCount()).setValue(allValuesOfContact.get(i));
+							vt.setWidget(vtRow, 0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
+							vt.getValueDisplay(vtRow).setValue(allValuesOfContact.get(i));
 							
 							/*
 							 * Gleiches Prinzip wie gerade schon, nur jetzt für das soeben neu hinzugefügte ValueDisplay.
 							 */
 							if (compareUser()) {
-								vt.getValueDisplay(vt.getRowCount()).enableButtons();
+								vt.getValueDisplay(vtRow).enableButtons();
 								vp.getAddValueButton().setEnabled(true);
 							}
 							else {
-								vt.getValueDisplay(vt.getRowCount()).disableButtons();
+								vt.getValueDisplay(vtRow).disableButtons();
 								vp.getAddValueButton().setEnabled(false);
 							}
 						}
+						Window.alert("case 1 durchgelaufen");
 						break;
 						
 				
