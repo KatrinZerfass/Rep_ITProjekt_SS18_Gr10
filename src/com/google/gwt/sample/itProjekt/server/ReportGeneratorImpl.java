@@ -4,8 +4,6 @@ import java.util.Date;
 import java.util.Vector;
 import com.google.gwt.sample.itProjekt.shared.EditorAdministration;
 import com.google.gwt.sample.itProjekt.server.EditorAdministrationImpl;
-import com.google.gwt.sample.itProjekt.server.db.ContactMapper;
-import com.google.gwt.sample.itProjekt.server.db.UserMapper;
 import com.google.gwt.sample.itProjekt.shared.ReportGenerator;
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.sample.itProjekt.shared.bo.Property;
