@@ -21,7 +21,9 @@ public class ContactListCell extends AbstractCell<ContactList> {
 		
 		sb.appendHtmlConstant("<div id =\"contactListCell\">");
 		if(value.getOwner() == ClientsideSettings.getUser().getId() ||
-				value.getName() == "Meine Kontakte") {
+				value.getName() == "Meine Kontakte" ||
+				value.getName() == "Suchergebnis im Namen" ||
+				value.getName() == "Suchergebnis in den Eigenschaften"){
 			sb.appendHtmlConstant("<img src=\"owner_symbol.png\" id= \"itemSymbol\">");	
 		}else {
 			sb.appendHtmlConstant("<img src=\"shared_symbol.png\" id= \"itemSymbol\">");
