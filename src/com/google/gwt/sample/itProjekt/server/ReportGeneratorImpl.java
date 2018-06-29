@@ -122,7 +122,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				System.out.println(allValues.toString());
 				Row contactRow=new Row();
 				
-				contactRow.addColumn(new Column(String.valueOf((admin.getUserByID(c.getId())).getEmail())));
+				contactRow.addColumn(new Column(String.valueOf((admin.getUserByID(admin.getContact(c.getId()).getOwner())).getEmail())));
 				contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 				contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
 				
@@ -210,7 +210,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			Vector<Value> allValues=this.admin.getAllValuesOf(c);
 			Row contactRow=new Row();
 			
-			contactRow.addColumn(new Column(String.valueOf((admin.getUserByID(c.getId())).getEmail())));
+			contactRow.addColumn(new Column(String.valueOf((admin.getUserByID(admin.getContact(c.getId()).getOwner())).getEmail())));
 			contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 			contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
 			
@@ -293,7 +293,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			Vector<Value> allValues=this.admin.getAllValuesOf(c);
 			Row contactRow=new Row();
 			
-			contactRow.addColumn(new Column(String.valueOf((admin.getUserByID(c.getId())).getEmail())));
+			contactRow.addColumn(new Column(String.valueOf((admin.getUserByID(admin.getContact(c.getId()).getOwner())).getEmail())));
 			contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 			contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
 			
@@ -379,7 +379,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			
 			Row contactRow=new Row();
 			
-			contactRow.addColumn(new Column(String.valueOf((admin.getUserByID(c.getId())).getEmail())));
+			contactRow.addColumn(new Column(String.valueOf((admin.getUserByID(admin.getContact(c.getId()).getOwner())).getEmail())));
 			contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 			contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
 			
