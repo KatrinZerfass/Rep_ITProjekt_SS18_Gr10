@@ -89,10 +89,8 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		public void onSelectionChange(SelectionChangeEvent event) {
 			BusinessObject selection = selectionModel.getSelectedObject();
 			if (selection instanceof ContactList) {
-				Window.alert("1. Methode wird aufgerufen");
 				setSelectedContactList((ContactList) selection);
 			} else if (selection instanceof Contact) {
-				Window.alert("2. Methode wird aufgerufen");
 				setSelectedContact((Contact) selection);
 			}
 		}
@@ -226,8 +224,10 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	
 	public void addNameResults () {
 		
-		removeContactList(nameResultsCL);
-		
+		//removeContactList(nameResultsCL);
+		contactListDataProvider.getList().remove(nameResultsCL);
+
+				
 		nameResultsCL = new ContactList();
 		getNameResultsCL().setName("Suchergebnis im Namen");
 		
@@ -258,6 +258,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 			
 			
 			contactListDataProvider.getList().add(myContactsContactList);
+		
 			
 			// User-Parameter muss den aktuell angemeldeten User zurückgeben
 			editorAdministration.getAllContactListsOfUser(user.getEmail(), new AsyncCallback<Vector<ContactList>>(){
