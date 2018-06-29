@@ -48,6 +48,8 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	
 	private ContactList nameResultsCL = new ContactList();
 	private ContactList valueResultsCL = new ContactList();
+	private Vector<Contact> nameResults = null;
+	private Vector<Contact> valueResults = null;
 
 	/**
 	 * Die innere Klasse BusinessObjectKeyProvider
@@ -184,7 +186,6 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		}
 	}
 	
-	
 	public void addContactOfContactList(ContactList cl, Contact c) {
 		if (!contactDataProviders.containsKey(cl)) {
 			return;
@@ -194,6 +195,21 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 			contactsProvider.getList().add(c);
 		}
 		selectionModel.setSelected(c, true);
+		
+	}
+	
+	
+	public void addContactOfSearchResultList(ContactList cl, Vector<Contact> contacts) {
+		if(cl == nameResultsCL) {
+			nameResults = contacts;
+			contactListDataProvider.getList().add(cl);
+			selectionModel.setSelected(contactListDataProvider.getList().get(2), true);;
+		}
+		if(cl == valueResultsCL) {
+			valueResults = contacts;
+			contactListDataProvider.getList().add(cl);
+			selectionModel.setSelected(cl, true);
+		}
 		
 	}
 	
@@ -213,7 +229,6 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		nameResultsCL = new ContactList();
 		getNameResultsCL().setName("Suchergebnis im Namen");
 		
-		addContactList(nameResultsCL);
 	}
 	
 	public void addValueResults () {
@@ -282,38 +297,55 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 				});
 				return new DefaultNodeInfo<Contact>(contactsProvider,
 						new ContactCell(), selectionModel, null);
-			/*
-			 * Bei der angeklickten Kontaktliste handelt es sich um eine manuell erstellte Kontaktliste
-			 */
-			}else {
-		
-				/*
-				 * Der Nutzer ist Eigentümer der Kontaktliste
-				 */
 				
-				if(user.getId() == ((ContactList) value).getOwner()) {
+			/* 
+			 * Der Nutzer ist Eigentümer der Kontakliste 
+			 */	
 				
-					
-					editorAdministration.getAllContactsOf((ContactList) value, new AsyncCallback<Vector<Contact>>() {
-							public void onFailure(Throwable t) {
-								Window.alert("Kontakte der Kontaktliste auslesen fehlgeschlagen");
-							}
+			}else if(user.getId() == ((ContactList) value).getOwner())  {
+				editorAdministration.getAllContactsOf((ContactList) value, new AsyncCallback<Vector<Contact>>() {
+					public void onFailure(Throwable t) {
+							Window.alert("Kontakte der Kontaktliste auslesen fehlgeschlagen");
+					}
 		
-							
-							public void onSuccess(Vector<Contact> contacts) {
-								for (Contact c : contacts) {
-									contactsProvider.getList().add(c);
-								}
-							}
-						});
+					public void onSuccess(Vector<Contact> contacts) {
+						for (Contact c : contacts) {
+								contactsProvider.getList().add(c);
+						}
+					}
+				});
 					return new DefaultNodeInfo<Contact>(contactsProvider,
 							new ContactCell(), selectionModel, null);
+					
+					
+			/*
+			 * Ergebnis der Kontaktsuche
+			 */
 		
-				/*
-				 * Der Nutzer ist nur Teilhaber der Kontaktliste 
-				 */
-				}
-				else {
+		    
+			}else if((ContactList) value == nameResultsCL){
+					
+					for (Contact c : nameResults){
+						contactsProvider.getList().add(c);
+					}
+					return new DefaultNodeInfo<Contact>(contactsProvider,
+							new ContactCell(), selectionModel, null);
+					
+				
+			
+			}else if((ContactList) value == valueResultsCL){
+			
+					for (Contact c : valueResults){
+						contactsProvider.getList().add(c);
+					}
+					return new DefaultNodeInfo<Contact>(contactsProvider,
+							new ContactCell(), selectionModel, null);
+				
+			  /*
+		       * Der Nutzer ist nur Teilhaber der Kontaktliste 
+			   */
+								
+			}else {
 					Window.alert("geteilte Kontakliste");
 					editorAdministration.getAllSharedContactsOfContactList((ContactList) value, user, new AsyncCallback<Vector<Contact>>() {
 						public void onFailure(Throwable t) {
@@ -327,8 +359,8 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 					});
 					return new DefaultNodeInfo<Contact>(contactsProvider,
 							new ContactCell(), selectionModel, null);
-				}									
-			}					
+			}									
+								
 		}
 		return null;
 	}
