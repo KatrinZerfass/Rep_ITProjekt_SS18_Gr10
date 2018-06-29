@@ -104,10 +104,19 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	}
 	
 	@Override
-	public Vector<Contact> getAllSharedContactsOfUser(String email) throws IllegalArgumentException {
-		Vector<Contact> resultcontacts = new Vector<Contact>();
-		resultcontacts = pmMapper.getAllContactsByUID(uMapper.findByEMail(email));
-		return resultcontacts;
+	public Vector<Contact> getAllSharedContactsOfUserWithOtherUser(User source, String receiver) throws IllegalArgumentException {
+		
+		Vector<Contact> result = new Vector<Contact>();
+		Vector<Contact> sourceContacts = pmMapper.getAllContactsBySrcUID(source);
+		Vector<Contact> receiverContacts = pmMapper.getAllContactsByUID(uMapper.findByEMail(receiver));
+				
+		for (Contact c : sourceContacts) {
+			if (receiverContacts.contains(c)) {
+				result.add(c);
+			}
+		}
+		
+		return sourceContacts;
 	}
 
 	@Override
@@ -406,19 +415,29 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	
 	public Vector<Contact> getContactsOfNameSearchResult(User user, String textBox, ContactList selectedContactList) throws IllegalArgumentException{
 		
+		Vector<Contact> allContactsOfUser = new Vector<Contact>();
 		Vector<Contact> allContactsOfList = new Vector<Contact>();
 		Vector<Contact> nameResults = new Vector<Contact>();
 		
 		Vector<Contact> result = new Vector<Contact>();
 		
+		allContactsOfUser = getAllContactsOfActiveUser(user);
 		allContactsOfList = getAllContactsOf(selectedContactList);
 		nameResults = getAllContactsWithName(textBox);
 		
-			for (Contact c : nameResults) {
-				if (allContactsOfList.contains(c)) {
-					result.add(c);
-				}	
-		}
+			if(selectedContactList.getId() == 5) {
+				for (Contact c : nameResults) {
+					if (allContactsOfUser.contains(c)) {
+						result.add(c);
+				    }
+				}
+			}else{
+				for (Contact c : nameResults) {
+					if (allContactsOfList.contains(c)) {
+						result.add(c);
+				    }
+			    }	
+			}
 		
 		return result;
 		

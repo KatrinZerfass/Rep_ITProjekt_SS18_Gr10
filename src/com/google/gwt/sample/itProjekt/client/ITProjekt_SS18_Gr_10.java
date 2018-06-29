@@ -341,7 +341,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		 */
 		mccl.setName("Meine Kontakte");
 		mccl.setOwner(user.getId());
-//		mccl.setId(0);
+		mccl.setId(5);
 		
 		clctvm.setMyContactsContactList(mccl);
 
@@ -543,8 +543,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		@Override
 		public void onClick(ClickEvent arg0) {
 			
-			ContactList selectedContactList = clctvm.getSelectedContactList();
-			Window.alert(selectedContactList.getName());		
+			ContactList selectedContactList = clctvm.getSelectedContactList();		
 			
 			editorAdministration.getContactsOfNameSearchResult(user, searchTextBox.getText(), selectedContactList,  new AsyncCallback<Vector<Contact>>() {
 				@Override

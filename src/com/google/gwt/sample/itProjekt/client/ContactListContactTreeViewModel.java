@@ -225,10 +225,8 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	
 	public void addNameResults () {
 		
-		//removeContactList(nameResultsCL);
 		contactListDataProvider.getList().remove(nameResultsCL);
-
-				
+			
 		nameResultsCL = new ContactList();
 		getNameResultsCL().setName("Suchergebnis im Namen");
 		
@@ -257,7 +255,6 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 			//evtl. hier Abfrage, ob der Provider = null ist?
 			contactListDataProvider = new ListDataProvider<ContactList>();
 			
-			
 			contactListDataProvider.getList().add(myContactsContactList);
 		
 			
@@ -270,7 +267,6 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 				public void onSuccess(Vector<ContactList> contactLists) {
 					for (ContactList cl : contactLists) {
 						contactListDataProvider.getList().add(cl);
-						
 						
 					}
 				}
