@@ -145,16 +145,12 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 				@Override
 				public void onSuccess(Vector<User> arg0) {
 					
-					Window.alert("onSuccess InputDialogBox");
-					
 					for(User loopUser : arg0) {
-						if (loopUser != user) {
+						if (loopUser.equals(user)) {
 							getOracle().add(loopUser.getEmail());
 						}
 					}
 					setSuggestBox(new SuggestBox(getOracle()));
-					
-					Window.alert("nach setSuggestBox");
 					
 					setText("Eingabe");
 					setAnimationEnabled(true);
