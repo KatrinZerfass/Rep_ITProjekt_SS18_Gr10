@@ -170,6 +170,8 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 			        panel.add(getSuggestBox());
 			        panel.add(ok);
 			        
+			        setWidget(panel);
+			        
 			        show();
 				}
 			});
