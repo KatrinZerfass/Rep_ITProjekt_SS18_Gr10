@@ -127,12 +127,16 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	        panel.add(tb);
 	        panel.add(ok);
 
-	        setWidget(panel);	
+	        setWidget(panel);
+	        
+	        show();
 	    }
 		
 		public InputDialogBox(MultiWordSuggestOracle inputOracle) {
 			
 			setOracle(inputOracle);
+			
+			setdialogBoxLabel("Bitte geben Sie die Email-Adresse des Nutzers ein mit dem Sie die Kontaktliste teilen möchten.");
 			
 			editorAdministration.getAllUsers(new AsyncCallback<Vector<User>>() {
 				public void onFailure(Throwable arg0) {
@@ -140,6 +144,9 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 				}
 				@Override
 				public void onSuccess(Vector<User> arg0) {
+					
+					Window.alert("onSuccess InputDialogBox");
+					
 					for(User loopUser : arg0) {
 						if (loopUser != user) {
 							getOracle().add(loopUser.getEmail());
@@ -147,11 +154,12 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 					}
 					setSuggestBox(new SuggestBox(getOracle()));
 					
+					Window.alert("nach setSuggestBox");
+					
 					setText("Eingabe");
 					setAnimationEnabled(true);
 					setGlassEnabled(true);
 					
-			        
 					VerticalPanel panel = new VerticalPanel();
 					
 			        panel.setHeight("100");
@@ -161,6 +169,8 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 			        panel.add(dialogBoxLabel);
 			        panel.add(getSuggestBox());
 			        panel.add(ok);
+			        
+			        show();
 				}
 			});
 		}
@@ -516,11 +526,13 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		
 		public void onClick(ClickEvent event) {
 			inputDB = new InputDialogBox(new MultiWordSuggestOracle());
-			inputDB.setdialogBoxLabel("Bitte geben Sie die Email-Adresse des Nutzers ein mit dem Sie die Kontaktliste teilen möchten.");
-			inputDB.show();
+			
+			
 			
 			inputDB.getOKButton().addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
+					
+					Window.alert(inputDB.getSuggestBox().getText());
 					
 					editorAdministration.shareContactList(user, inputDB.getSuggestBox().getText(), clctvm.getSelectedContactList(), new AsyncCallback<Permission>() {
 

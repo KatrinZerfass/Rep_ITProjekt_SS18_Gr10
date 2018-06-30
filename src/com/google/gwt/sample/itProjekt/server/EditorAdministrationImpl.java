@@ -227,10 +227,6 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		newCLpermission.setShareableObjectID(shareContactList.getId());
 		newCLpermission.setIsowner(false);
 		
-		for (Contact loopContact : allContactsOfCL) {
-			shareContact(sourceUser, shareUserEmail, loopContact);
-		}
-		
 		return pmMapper.shareContactList(newCLpermission);
 	}
 
