@@ -841,7 +841,7 @@ public class ContactForm extends VerticalPanel {
 				public void onSuccess(Vector<User> arg0) {
 					
 					for(User loopUser : arg0) {
-						if (loopUser.equals(currentUser)) {
+						if (!loopUser.equals(currentUser)) {
 							getOracle().add(loopUser.getEmail());
 						}
 					}
@@ -1844,6 +1844,7 @@ public class ContactForm extends VerticalPanel {
 					allValuesOfContact = new Vector<Value>();
 					for(Value v: values) {
 						allValuesOfContact.add(v);
+						Window.alert("isShared des Values " + v.getContent() + " = " + v.getIsShared()); 
 					}
 					Window.alert("Alle Ausprägungen des Kontaktes ausgelesen. \n"
 							+ "Anzahl der Values im Vektor: " + ((Integer)allValuesOfContact.size()).toString());
