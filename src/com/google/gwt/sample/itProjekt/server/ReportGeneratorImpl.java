@@ -3,6 +3,7 @@ package com.google.gwt.sample.itProjekt.server;
 import java.util.Date;
 import java.util.Vector;
 import com.google.gwt.sample.itProjekt.shared.EditorAdministration;
+import com.gargoylesoftware.htmlunit.javascript.host.Window;
 import com.google.gwt.sample.itProjekt.server.EditorAdministrationImpl;
 import com.google.gwt.sample.itProjekt.shared.ReportGenerator;
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
@@ -219,8 +220,9 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				
 				Vector<Value> allValues=this.admin.getAllValuesOf(c);
 				Row contactRow=new Row();
-				
+				System.out.println("test1");
 				contactRow.addColumn(new Column(String.valueOf((admin.getUserByID(admin.getContact(c.getId()).getOwner())).getEmail())));
+				System.out.println("test2");
 				contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 				contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
 				

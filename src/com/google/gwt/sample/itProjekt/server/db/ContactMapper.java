@@ -59,7 +59,7 @@ public class ContactMapper {
 		}
 		catch (SQLException e2){
 			e2.printStackTrace();
-			return null;
+//			return null;
 		}
 		return null;
 	}

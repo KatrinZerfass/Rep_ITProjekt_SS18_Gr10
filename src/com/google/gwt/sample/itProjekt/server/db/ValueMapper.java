@@ -282,7 +282,7 @@ public class ValueMapper {
 						}		
 					}catch(SQLException e2){
 						e2.printStackTrace();
-						return result;
+//						return result;
 					}
 					return result;
 				}
