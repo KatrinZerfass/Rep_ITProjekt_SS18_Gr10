@@ -168,6 +168,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		newcontact.setFirstname(firstname);
 		newcontact.setLastname(lastname);
 		newcontact.setSex(sex);
+		newcontact.setOwner(user.getId());
 		
 		return cMapper.insert(newcontact, user);
 	}
