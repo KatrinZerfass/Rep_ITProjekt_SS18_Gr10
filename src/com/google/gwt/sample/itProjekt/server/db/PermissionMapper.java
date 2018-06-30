@@ -386,7 +386,7 @@ public User getSourceUserByUIDAndCID(User user, Contact contact){
 			
 			try{
 				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT DISTINCT srcU_ID From T_Permission_Contact WHERE U_ID=" + user.getId()+ " AND C_ID=" + contact.getId() + " ORDER BY C_ID");
+				ResultSet rs = stmt.executeQuery("SELECT DISTINCT srcU_ID From T_Permission_Contact WHERE U_ID=" + user.getId()+ " AND C_ID=" + contact.getId());
 				
 				if (rs.next()){
 					User u = new User();
@@ -407,7 +407,7 @@ public Vector<User> getSourceUsersByUIDAndCLID(User user, ContactList contact){
 			
 			try{
 				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT CL_ID From T_Permission_Contactlist WHERE U_ID=" + user.getId()+ " AND C_ID= " + contact.getId()+ " ORDER BY CL_ID");
+				ResultSet rs = stmt.executeQuery("SELECT CL_ID From T_Permission_Contactlist WHERE U_ID=" + user.getId()+ " AND C_ID= " + contact.getId());
 				
 				while (rs.next()){
 					User u = new User();
