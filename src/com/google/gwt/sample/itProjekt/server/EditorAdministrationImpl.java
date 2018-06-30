@@ -217,6 +217,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 
 		ContactList newcontactlist = new ContactList();
 		newcontactlist.setName(name);
+		newcontactlist.setOwner(user.getId());
 		
 		return clMapper.insert(newcontactlist, user);
 	}

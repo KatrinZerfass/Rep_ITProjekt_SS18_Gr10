@@ -1440,7 +1440,7 @@ public class ContactForm extends VerticalPanel {
 	}
 	
 	private class NewPropertyClickHandler implements ClickHandler{
-		DialogBox db = new DialogBox();
+		DialogBox db;
 		TextBox inputTextBox;
 		int pid;
 		String ptype;
@@ -1452,6 +1452,7 @@ public class ContactForm extends VerticalPanel {
 			row = contactTable.getRowCount();
 			
 			if(ptype == "Geburtstag") {
+				db = new DialogBox();
 				//Abfrage, dass nur einmal hinzugefügt werden kann
 				//newPropertyListBox.removeItem(newPropertyListBox.getSelectedIndex());
 				VerticalPanel dbPanel = new VerticalPanel();
@@ -1487,6 +1488,7 @@ public class ContactForm extends VerticalPanel {
 				
 			}
 			else if(ptype == "Sonstiges") {
+				db = new DialogBox();
 				inputTextBox = new TextBox();
 				db.show();
 				VerticalPanel dbPanel = new VerticalPanel();
@@ -1914,12 +1916,15 @@ public class ContactForm extends VerticalPanel {
 		int count = allValuesOfContact.size();
 		for(int i=0; i<count; i++) {
 			int pid = allValuesOfContact.get(i).getPropertyid();
+			
+		
 		
 			
 			switch (pid) {
 				
 				case 1: // Tel.Nr. geschäftlich
 						row = contactTable.getRowCount();
+						Window.alert("Row in case 1: " + ((Integer) row).toString());
 						
 							/*
 							 * Das korrekte ValuePanel und ValueTable werden gesetzt und im Folgenden auf ihnen operiert.
@@ -2301,16 +2306,16 @@ public class ContactForm extends VerticalPanel {
 			
 		}
 		public void onSuccess(Property result) {
-			allNewPropertiesOfContact = new Vector<Property>();
-			allNewPropertiesOfContact.add(result);
+			Window.alert("row im getpropertyofvaluecallback: " + ((Integer) row).toString());
 			
 			if(contactTable.isCellPresent(row, 0)) {
 				if (contactTable.getWidget(row, 0) == null) {
-					contactTable.setWidget(row, 0, new ValuePanel(pid, row, allNewPropertiesOfContact.get(0).getType() + ": "));
+					contactTable.setWidget(row, 0, new ValuePanel(pid, row, result.getType() + ": "));
 					contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
 				}
 			}else {
-				contactTable.setWidget(row, 0, new ValuePanel(pid, row, allNewPropertiesOfContact.get(0).getType() + ": "));
+				Window.alert("else: neues Value Panel");
+				contactTable.setWidget(row, 0, new ValuePanel(pid, row, result.getType() + ": "));
 				contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
 			}
 			vp = (ValuePanel) contactTable.getWidget(row, 0);
