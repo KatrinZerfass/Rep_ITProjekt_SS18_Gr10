@@ -215,6 +215,14 @@ public class ContactForm extends VerticalPanel {
 				}
 			});
 		}	
+		
+		public void setImage(boolean b) {
+			if(b==true) {
+				this.getUpFace().setImage(lockUnlocked);
+			}else {
+				this.getUpFace().setImage(lockLocked);
+			}
+		}
 	}
 			
 	
@@ -715,6 +723,14 @@ public class ContactForm extends VerticalPanel {
 		public void disableButtons() {
 			this.deleteValueButton.setEnabled(false);
 			this.lockButton.setEnabled(false);
+		}
+		
+		public void setLockButtonTo(boolean b) {
+			if(b==true) {
+				this.lockButton.setImage(b);
+			}else {
+				this.lockButton.setImage(b);
+			}
 		}
 			
 	}
@@ -1662,6 +1678,17 @@ public class ContactForm extends VerticalPanel {
 	public void clearContactForm() {
 		contactTable.clear();
 		buttonsPanel.clear();
+		sexListBox.clear();
+		newPropertyListBox.clear();
+		allPredefinedProperties.clear();
+		allValuesOfContact.clear();
+	
+		for(ValueTextBox vtb : allValueTextBoxes) {
+			if(vtb.getTextBoxValue() !=null) {
+				vtb.setValue((Value) null);
+			}
+		}
+		allValueTextBoxes.clear();
 		
 		this.onLoad();
 		
@@ -1682,33 +1709,28 @@ public class ContactForm extends VerticalPanel {
 			newPropertyPanel.setVisible(false);
 		}
 		
-		for (int i = 4; i < contactTable.getRowCount(); i++) {
-			for (int a =0; a<4; a++) {
-				if(contactTable.isCellPresent(i, a)) {
-					contactTable.removeCell(i, a);
-				}
-			}
-		}
-		
-		if(contactTable.isCellPresent(3, 2)) {
-			contactTable.removeCell(3, 2);
-		}
-		
-		if(contactTable.isCellPresent(3, 3)) {
-			contactTable.removeCell(3, 3);
-		}
-		
-		// allValuesOfContact = null;
+//		for (int i = 4; i < contactTable.getRowCount(); i++) {
+//			for (int a =0; a<4; a++) {
+//				if(contactTable.isCellPresent(i, a)) {
+//					contactTable.removeCell(i, a);
+//				}
+//			}
+//		}
+//		
+//		if(contactTable.isCellPresent(3, 2)) {
+//			contactTable.removeCell(3, 2);
+//		}
+//		
+//		if(contactTable.isCellPresent(3, 3)) {
+//			contactTable.removeCell(3, 3);
+//		}
+	
 		
 		/*
 		 * Bei jedem neuen Aufruf von setSelected werden die ausgefüllten ValueTextBoxen geleert und aus dem Vector alle TextBoxen entfernt.
 		 */
 		
-		for(ValueTextBox vtb : allValueTextBoxes) {
-			if(vtb.getTextBoxValue() !=null) {
-				vtb.setValue((Value) null);
-			}
-		}
+		
 		
 		firstnameTextBox.setEnabled(true);
 		lastnameTextBox.setEnabled(true);
@@ -1716,7 +1738,7 @@ public class ContactForm extends VerticalPanel {
 		saveChangesButton.setEnabled(true);
 		removeContactFromContactListButton.setEnabled(true);
 		
-	//	allValueTextBoxes = null;
+	
 		if (c != null){
 			
 			contactToDisplay = c;
@@ -1891,6 +1913,11 @@ public class ContactForm extends VerticalPanel {
 						if (compareUser()) {
 							vt.getValueDisplay(vtRow).enableButtons();
 							vp.getAddValueButton().setEnabled(true);
+							if(allValuesOfContact.get(i).getIsShared() == true){
+								vt.getValueDisplay(vtRow).setLockButtonTo(true);
+							}else {
+								vt.getValueDisplay(vtRow).setLockButtonTo(false);
+							}
 						}
 						else {
 							vt.getValueDisplay(vtRow).disableButtons();
@@ -2187,75 +2214,95 @@ public class ContactForm extends VerticalPanel {
 				default: 
 					row = contactTable.getRowCount();
 					if (pid > 10){
+						Window.alert("Springt in default der switch case");
 					
-						editorAdministration.getPropertyOfValue(allValuesOfContact.get(i), new AsyncCallback<Property>() {
-							public void onFailure (Throwable t) {
-								
-							}
+						editorAdministration.getPropertyOfValue(allValuesOfContact.get(i), 
+								new GetPropertyOfValueCallback(row, pid, vt, vp, allValuesOfContact.get(i)));
 							
-							public void onSuccess(Property result) {
-								allNewPropertiesOfContact = null;
-								allNewPropertiesOfContact = new Vector<Property>();
-								allNewPropertiesOfContact.add(result);
-								
-							}
-						});
 						
 			
 						
 						/*
 						 * Das korrekte ValuePanel und ValueTable werden gesetzt und im Folgenden auf ihnen operiert.
 						 */
-						if(contactTable.isCellPresent(row, 0)) {
-							if (contactTable.getWidget(row, 0) == null) {
-								contactTable.setWidget(row, 0, new ValuePanel(pid, row, allNewPropertiesOfContact.get(0).getType() + ": "));
-								contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-							}
-						}else {
-							contactTable.setWidget(row, 0, new ValuePanel(pid, row, allNewPropertiesOfContact.get(0).getType() + ": "));
-							contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-						}
-						vp = (ValuePanel) contactTable.getWidget(row, 0);
-										
-						
-						if (contactTable.isCellPresent(row, 1)) {
-							if (contactTable.getWidget(row, 1) == null) {
-								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-								contactTable.setWidget(row, 1, new ValueTable(pid));
-							}
-							
-						}else {
-							contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-							contactTable.setWidget(row, 1, new ValueTable(pid));
-						}
-						vt = (ValueTable) contactTable.getWidget(row, 1);
-						vtRow = vt.getRowCount();
-						vt.setWidget(vtRow, 0, new ValueDisplay(new ValueTextBox("Sonstiges")));
-						vt.getValueDisplay(vtRow).setValue(allValuesOfContact.get(i));
-						
-						
-						/*
-						 * Gleiches Prinzip wie gerade schon, nur jetzt für das soeben neu hinzugefügte ValueDisplay.
-						 */
-						if (compareUser()) {
-							vt.getValueDisplay(vtRow).enableButtons();
-							vp.getAddValueButton().setEnabled(true);
-						}
-						else {
-							vt.getValueDisplay(vtRow).disableButtons();
-							vp.getAddValueButton().setEnabled(false);
-						}
+				
 					
 						break;
-	
-					
 					
 					}else {
 						Window.alert("Unbekannte Eigenschaft kann nicht hinzugefügt werden.");
 					}
 				}
+		
 		}
 	}
+	
+	private class GetPropertyOfValueCallback implements AsyncCallback<Property>{
+		int row;
+		int pid;
+		ValueTable vt;
+		ValuePanel vp;
+		Value value;
+		
+		public GetPropertyOfValueCallback(int row, int pid, ValueTable vt, ValuePanel vp, Value value) {
+			this.row=row;
+			this.pid = pid;
+			this.vt=vt;
+			this.vp=vp;
+			this.value = value;
+		}
+		
+		public void onFailure(Throwable t) {
+			
+		}
+		public void onSuccess(Property result) {
+			allNewPropertiesOfContact = new Vector<Property>();
+			allNewPropertiesOfContact.add(result);
+			Window.alert("Property der Value ausgelesen");
+			
+			if(contactTable.isCellPresent(row, 0)) {
+				if (contactTable.getWidget(row, 0) == null) {
+					contactTable.setWidget(row, 0, new ValuePanel(pid, row, allNewPropertiesOfContact.get(0).getType() + ": "));
+					contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+				}
+			}else {
+				contactTable.setWidget(row, 0, new ValuePanel(pid, row, allNewPropertiesOfContact.get(0).getType() + ": "));
+				contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+			}
+			vp = (ValuePanel) contactTable.getWidget(row, 0);
+							
+			
+			if (contactTable.isCellPresent(row, 1)) {
+				if (contactTable.getWidget(row, 1) == null) {
+					contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
+					contactTable.setWidget(row, 1, new ValueTable(pid));
+				}
+				
+			}else {
+				contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
+				contactTable.setWidget(row, 1, new ValueTable(pid));
+			}
+			vt = (ValueTable) contactTable.getWidget(row, 1);
+			int vtRow = vt.getRowCount();
+			vt.setWidget(vtRow, 0, new ValueDisplay(new ValueTextBox("Sonstiges")));
+			vt.getValueDisplay(vtRow).setValue(value);
+			
+			
+			/*
+			 * Gleiches Prinzip wie gerade schon, nur jetzt für das soeben neu hinzugefügte ValueDisplay.
+			 */
+			if (compareUser()) {
+				vt.getValueDisplay(vtRow).enableButtons();
+				vp.getAddValueButton().setEnabled(true);
+			}
+			else {
+				vt.getValueDisplay(vtRow).disableButtons();
+				vp.getAddValueButton().setEnabled(false);
+			}
+		}
+	}
+	
+	
 	
 	/**
 	 * Setzt das referenzierte TreeViewModel
@@ -2273,5 +2320,10 @@ public class ContactForm extends VerticalPanel {
 	
 	public HorizontalPanel getNewPropertyPanel() {
 		return this.newPropertyPanel;
-		}
+	}
+	
+	public void disableRemoveContactButton() {
+		this.removeContactFromContactListButton.setEnabled(false);
+	}
+	
 	}

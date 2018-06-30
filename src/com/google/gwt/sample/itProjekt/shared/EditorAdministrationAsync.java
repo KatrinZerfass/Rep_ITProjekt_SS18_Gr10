@@ -58,7 +58,7 @@ public interface EditorAdministrationAsync {
 
 	void shareContact(User sourceUser, String shareUserEmail, Contact shareContact, AsyncCallback<Permission> callback);
 
-	void shareContactList(User sourceUser, User shareUser, ContactList shareContactList,
+	void shareContactList(User sourceUser, String shareUserEmail, ContactList shareContactList,
 			AsyncCallback<Permission> callback);
 
 	void getAllOwnedContactListsOfActiveUser(User user, AsyncCallback<Vector<ContactList>> callback);
@@ -99,8 +99,10 @@ public interface EditorAdministrationAsync {
 	void getContactsOfValueSearchResult(User user, String textBox, ContactList selectedContactList,
 			AsyncCallback<Vector<Contact>> callback);
 
+	void getAllSharedContactsOfUserWithOtherUser(User source, String receiver, AsyncCallback<Vector<Contact>> callback);
+
 	void getUserByID(int ID, AsyncCallback<User> callback);
 
-	void getAllSharedContactsOfUserWithOtherUser(User source, String email, AsyncCallback<Vector<Contact>> callback);
+	void getSourceToSharedContact(Contact contact, User receivingUser, AsyncCallback<Vector<User>> callback);
 }
 

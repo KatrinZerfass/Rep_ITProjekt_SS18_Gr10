@@ -52,7 +52,7 @@ public interface EditorAdministration extends RemoteService{
 	
 	public ContactList addContactToContactList(ContactList contactlist, Contact contact) throws IllegalArgumentException;
 	
-	public Permission shareContactList(User sourceUser, User shareUser, ContactList shareContactList) throws IllegalArgumentException;
+	public Permission shareContactList(User sourceUser, String shareUserEmail, ContactList shareContactList) throws IllegalArgumentException;
 	
 	public ContactList removeContactFromContactList(ContactList contactlist, Contact contact) throws IllegalArgumentException;
 	
@@ -93,4 +93,6 @@ public interface EditorAdministration extends RemoteService{
 	public Vector<Contact> getContactsOfNameSearchResult(User user, String textBox, ContactList selectedContactList) throws IllegalArgumentException;
 	
 	public Vector<Contact> getContactsOfValueSearchResult(User user, String textBox, ContactList selectedContactList) throws IllegalArgumentException;
+	
+	public Vector<User> getSourceToSharedContact(Contact contact, User receivingUser) throws IllegalArgumentException;
 }

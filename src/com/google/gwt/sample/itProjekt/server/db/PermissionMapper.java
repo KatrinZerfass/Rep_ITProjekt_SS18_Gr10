@@ -302,7 +302,7 @@ public Vector<Contact> getAllContactsByUID(User user){
 				}		
 			}catch(SQLException e2){
 				e2.printStackTrace();
-				return result;
+//				return result;
 			}
 			return result;
 		}
@@ -324,7 +324,7 @@ public Vector<Contact> getAllContactsBySrcUID(User user){
 				}		
 			}catch(SQLException e2){
 				e2.printStackTrace();
-				return result;
+//				return result;
 			}
 			return result;
 		}
@@ -360,7 +360,67 @@ public Vector<ContactList> getAllContactListsByUID(User user){
 			}
 			return result;
 		}
+public Vector<ContactList> getAllContactListsBySrcUID(User user){
 	
-		
+	Connection con = DBConnection.connection();
+	Vector<ContactList> result = new Vector<ContactList>();
+			
+			try{
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT CL_ID From T_Permission_Contactlist WHERE srcU_ID=" + user.getId()+ " ORDER BY CL_ID");
+				
+				while (rs.next()){
+					ContactList cl = new ContactList();
+					cl.setId(rs.getInt("CL_ID"));
+									
+					result.addElement(ContactListMapper.contactListMapper().findByID(cl));
+				}		
+			}catch(SQLException e2){
+				e2.printStackTrace();
+			}
+			return result;
+		}
+public Vector<User> getSourceUserByUIDAndCID(User user, Contact contact){
+	
+	Connection con = DBConnection.connection();
+	Vector<User> result = new Vector<User>();
+			
+			try{
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT DISTINCT srcU_ID From T_Permission_Contact WHERE U_ID=" + user.getId()+ " AND C_ID=" + contact.getId() + " ORDER BY C_ID");
+				
+				while (rs.next()){
+					User u = new User();
+					u.setId(rs.getInt("srcU_ID"));
+					
+									
+					result.addElement(UserMapper.userMapper().findByID(u.getId()));
+				}		
+			}catch(SQLException e2){
+				e2.printStackTrace();
+				return result;
+			}
+			return result;
+		}
+public Vector<User> getSourceUsersByUIDAndCLID(User user, ContactList contact){
+	
+	Connection con = DBConnection.connection();
+	Vector<User> result = new Vector<User>();
+			
+			try{
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT CL_ID From T_Permission_Contactlist WHERE U_ID=" + user.getId()+ " AND C_ID= " + contact.getId()+ " ORDER BY CL_ID");
+				
+				while (rs.next()){
+					User u = new User();
+					u.setId(rs.getInt("srcU_ID"));
+									
+					result.addElement(UserMapper.userMapper().findByID(u.getId()));
+				}		
+			}catch(SQLException e2){
+				e2.printStackTrace();
+			}
+			return result;
+		}
 }
 
