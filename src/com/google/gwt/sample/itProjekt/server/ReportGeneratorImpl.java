@@ -212,9 +212,9 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		
 		
 		report.addRow(headline);
-
+		System.out.println("vorher");
 		Vector<Contact> allContacts=this.admin.getAllSharedContactsOfUserWithOtherUser(owner, receiver.getEmail());
-		
+		System.out.println("nachher");
 		if(allContacts.size()!=0){
 			for (Contact c: allContacts) {
 				
