@@ -292,7 +292,7 @@ public Vector<Contact> getAllContactsByUID(User user){
 			
 			try{
 				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT DISTINCT C_ID From T_Permission_Contact WHERE U_ID=" + user.getId()+ " ORDER BY C_ID");
+				ResultSet rs = stmt.executeQuery("SELECT DISTINCT C_ID FROM T_Permission_Contact WHERE U_ID=" + user.getId()+ " ORDER BY C_ID");
 				
 				while (rs.next()){
 					Contact c = new Contact();
@@ -314,7 +314,7 @@ public Vector<Contact> getAllContactsBySrcUID(User user){
 			
 			try{
 				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT DISTINCT C_ID From T_Permission_Contact WHERE srcU_ID=" + user.getId()+ " ORDER BY C_ID");
+				ResultSet rs = stmt.executeQuery("SELECT DISTINCT C_ID FROM T_Permission_Contact WHERE srcU_ID=" + user.getId()+ " ORDER BY C_ID");
 				
 				while (rs.next()){
 					Contact c = new Contact();
@@ -347,7 +347,7 @@ public Vector<ContactList> getAllContactListsByUID(User user){
 			
 			try{
 				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT CL_ID From T_Permission_Contactlist WHERE U_ID=" + user.getId()+ " ORDER BY CL_ID");
+				ResultSet rs = stmt.executeQuery("SELECT CL_ID FROM T_Permission_Contactlist WHERE U_ID=" + user.getId()+ " ORDER BY CL_ID");
 				
 				while (rs.next()){
 					ContactList cl = new ContactList();
@@ -367,7 +367,7 @@ public Vector<ContactList> getAllContactListsBySrcUID(User user){
 			
 			try{
 				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT CL_ID From T_Permission_Contactlist WHERE srcU_ID=" + user.getId()+ " ORDER BY CL_ID");
+				ResultSet rs = stmt.executeQuery("SELECT CL_ID FROM T_Permission_Contactlist WHERE srcU_ID=" + user.getId()+ " ORDER BY CL_ID");
 				
 				while (rs.next()){
 					ContactList cl = new ContactList();
@@ -386,19 +386,19 @@ public User getSourceUserByUIDAndCID(User user, Contact contact){
 			
 			try{
 				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT DISTINCT srcU_ID From T_Permission_Contact WHERE U_ID=" + user.getId()+ " AND C_ID=" + contact.getId());
+				ResultSet rs = stmt.executeQuery("SELECT srcU_ID FROM T_Permission_Contact WHERE U_ID=" + user.getId()+ " AND C_ID=" + contact.getId());
 				
 				if (rs.next()){
-					User u = new User();
-					u.setId(rs.getInt("srcU_ID"));
+					User u1 = new User();
+					u1.setId(rs.getInt("srcU_ID"));
 					
-					return UserMapper.userMapper().findByID(u.getId());
+					return UserMapper.userMapper().findByID(u1.getId());
 					
 				}		
 			}catch(SQLException e2){
 				e2.printStackTrace();
 			}
-			return null;
+			return user;
 		}
 public Vector<User> getSourceUsersByUIDAndCLID(User user, ContactList contact){
 	
@@ -407,7 +407,7 @@ public Vector<User> getSourceUsersByUIDAndCLID(User user, ContactList contact){
 			
 			try{
 				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT CL_ID From T_Permission_Contactlist WHERE U_ID=" + user.getId()+ " AND C_ID= " + contact.getId());
+				ResultSet rs = stmt.executeQuery("SELECT CL_ID FROM T_Permission_Contactlist WHERE U_ID=" + user.getId()+ " AND C_ID= " + contact.getId());
 				
 				while (rs.next()){
 					User u = new User();
