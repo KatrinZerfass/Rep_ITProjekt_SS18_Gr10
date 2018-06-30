@@ -1033,11 +1033,12 @@ public class ContactForm extends VerticalPanel {
 	//	DialogBox db = new DialogBox();
 		
 		public void onClick(ClickEvent event) {
-			setSelected(null);
+			
 			if(!checkValue(firstnameTextBox) || !checkValue(lastnameTextBox) ) {
 				firstnameTextBox.setText("");
 				lastnameTextBox.setText("");
 				Window.alert("Ihr Kontakt konnte nicht angelegt werden, bitte versuchen Sie es erneut.");
+				
 			}else if(checkValue(firstnameTextBox) && checkValue(lastnameTextBox)){
 				
 			String sex = "o";
