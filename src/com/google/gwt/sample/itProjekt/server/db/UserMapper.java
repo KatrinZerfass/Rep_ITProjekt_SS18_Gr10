@@ -53,7 +53,7 @@ public class UserMapper {
 		
 		catch (SQLException e){
 			e.printStackTrace();
-			return null;
+//			return null;
 		}
 		
 		return null;
@@ -82,7 +82,7 @@ public class UserMapper {
 		}
 		catch (SQLException e){
 			e.printStackTrace();
-			return null;
+//			return null;
 		}
 		
 		return null;
