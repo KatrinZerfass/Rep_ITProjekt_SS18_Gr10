@@ -286,7 +286,6 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	} 
 	else {
 		AllContactsWithValueReport report = new AllContactsWithValueReport();
-		
 		report.setTitle("Alle Kontakte mit der Ausprägung");
 		report.setCreated(new Date());
 		
@@ -316,8 +315,9 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			for (Contact c: allContacts) {
 			Vector<Value> allValues=this.admin.getAllValuesOf(c);
 			Row contactRow=new Row();
-			
-			contactRow.addColumn(new Column(String.valueOf((admin.getUserByID(admin.getContact(c.getId()).getOwner())).getEmail())));
+//			User owner=admin.getOwnerOfContact();
+
+//			contactRow.addColumn(new Column(String.valueOf((owner)));
 			contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 			contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
 			

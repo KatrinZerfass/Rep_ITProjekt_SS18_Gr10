@@ -105,6 +105,8 @@ public interface EditorAdministrationAsync {
 
 	void getSourceToSharedContact(Contact contact, User receivingUser, AsyncCallback<Vector<User>> callback);
 
+	void getAllPermissions(AsyncCallback<Vector<Permission>> callback);
+
 	void getAllContactsOfContactlistForUser(ContactList contactlist, User user,
 			AsyncCallback<Vector<Contact>> callback);
 }
