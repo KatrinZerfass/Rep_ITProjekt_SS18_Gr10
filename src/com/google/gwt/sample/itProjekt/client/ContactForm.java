@@ -1107,33 +1107,44 @@ public class ContactForm extends VerticalPanel {
 			
 			if (contactToDisplay == null) {
 				Window.alert("kein Kontakt ausgewählt");
-			}
-			else {	
-				if (compareUser()) {
-					editorAdministration.deleteContact(contactToDisplay.getId(), new AsyncCallback<Void>() {
-						public void onFailure(Throwable arg0) {
-							Window.alert("Fehler beim Löschen des Kontakts!");
-						}
-						public void onSuccess(Void arg0) {
-							Window.alert("Kontakt erfolgreich gelöscht.");
-							clctvm.removeContactOfContactList(clctvm.getSelectedContactList(), contactToDisplay);
-						}
-					});
-				}
-				else {
-					editorAdministration.deletePermission(currentUser, contactToDisplay, new AsyncCallback<Void>() {
-						@Override
-						public void onFailure(Throwable arg0) {
-							Window.alert("Fehler beim Löschen der Permission!");	
-						}
-						@Override
-						public void onSuccess(Void arg0) {
-							Window.alert("Kontakt-Teilhaberschaft erfolgreich entfernt.");
-							clctvm.removeContactOfContactList(clctvm.getSelectedContactList(), contactToDisplay);
-							
-						}
-					});
-				}
+			
+			}else{
+				
+				editorAdministration.deleteContact(contactToDisplay, compareUser(), currentUser, new AsyncCallback<Void>() {
+					public void onFailure(Throwable arg0) {
+						Window.alert("Fehler beim Löschen des Kontakts!");
+					}
+					public void onSuccess(Void arg0){
+						Window.alert("Kontakt erfolgreich gelöscht");
+						clctvm.removeContactOfContactList(clctvm.getSelectedContactList(), contactToDisplay);
+					}
+				});
+				
+//				if (compareUser()) {
+//					editorAdministration.deleteContact(contactToDisplay.getId(), new AsyncCallback<Void>() {
+//						public void onFailure(Throwable arg0) {
+//							Window.alert("Fehler beim Löschen des Kontakts!");
+//						}
+//						public void onSuccess(Void arg0) {
+//							Window.alert("Kontakt erfolgreich gelöscht.");
+//							clctvm.removeContactOfContactList(clctvm.getSelectedContactList(), contactToDisplay);
+//						}
+//					});
+//				}
+//				else {
+//					editorAdministration.deletePermission(currentUser, contactToDisplay, new AsyncCallback<Void>() {
+//						@Override
+//						public void onFailure(Throwable arg0) {
+//							Window.alert("Fehler beim Löschen der Permission!");	
+//						}
+//						@Override
+//						public void onSuccess(Void arg0) {
+//							Window.alert("Kontakt-Teilhaberschaft erfolgreich entfernt.");
+//							clctvm.removeContactOfContactList(clctvm.getSelectedContactList(), contactToDisplay);
+//							
+//						}
+//					});
+//				}
 				setSelected(null);
 			}
 		}
@@ -1855,7 +1866,10 @@ public class ContactForm extends VerticalPanel {
 		ValuePanel vp = null; //das ValuePanel der jeweiligen Eigenschaftsart
 		ValueTable vt = null;	 //die ValueTable der jeweiligen Eigenschaftsart
 		
-		for(int i=0; i<allValuesOfContact.size(); i++) {
+		Window.alert("in display-methode: " + ((Integer)allValuesOfContact.size()).toString());
+		
+		int count = allValuesOfContact.size();
+		for(int i=0; i<count; i++) {
 			int pid = allValuesOfContact.get(i).getPropertyid();
 			Window.alert("pid vom aktuellen Value: " + ((Integer) pid).toString());
 		
@@ -2028,7 +2042,7 @@ public class ContactForm extends VerticalPanel {
 						((ValueDisplay) contactTable.getWidget(3, 3)).getWidget(0).setWidth("105px");
 						((ValueDisplay) contactTable.getWidget(3,3)).setValue(allValuesOfContact.get(i));
 						
-						for(int a = 0; i<allPredefinedProperties.size(); a++) {
+						for(int a = 0; a<allPredefinedProperties.size(); a++) {
 							if (allPredefinedProperties.get(a).getType() == "Geburtstag") {
 								allPredefinedProperties.remove(a);
 								newPropertyListBox.clear();
@@ -2201,9 +2215,10 @@ public class ContactForm extends VerticalPanel {
 						break;
 		
 				default: 
+					Window.alert("Springt in default der switch case");
 					row = contactTable.getRowCount();
 					if (pid > 10){
-						Window.alert("Springt in default der switch case");
+						
 					
 						editorAdministration.getPropertyOfValue(allValuesOfContact.get(i), 
 								new GetPropertyOfValueCallback(row, pid, vt, vp, allValuesOfContact.get(i)));

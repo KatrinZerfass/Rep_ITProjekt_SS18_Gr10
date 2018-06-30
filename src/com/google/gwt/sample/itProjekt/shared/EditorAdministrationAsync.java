@@ -23,7 +23,7 @@ public interface EditorAdministrationAsync {
 
 	void createValue(Contact contact, int propertyid, String content, AsyncCallback<Value> callback);
 
-	void deleteContact(int id, AsyncCallback<Void> callback);
+	void deleteContact(Contact contact, boolean owner, User user, AsyncCallback<Void> callback);
 
 	void deleteContactList(ContactList contactlist, AsyncCallback<Void> callback);
 
