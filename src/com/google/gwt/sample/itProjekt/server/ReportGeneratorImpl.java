@@ -125,7 +125,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				
 				
 				contactRow.addColumn(new Column(String.valueOf(owner.getEmail())));
-				contactRow.addColumn(new Column(String.valueOf(admin.getSourceToSharedContact(c, user).get(0).getEmail())));
+				contactRow.addColumn(new Column(String.valueOf(admin.getSourceToSharedContact(c, user).getEmail())));
 				contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 				contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
 				

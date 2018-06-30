@@ -380,27 +380,25 @@ public Vector<ContactList> getAllContactListsBySrcUID(User user){
 			}
 			return result;
 		}
-public Vector<User> getSourceUserByUIDAndCID(User user, Contact contact){
+public User getSourceUserByUIDAndCID(User user, Contact contact){
 	
 	Connection con = DBConnection.connection();
-	Vector<User> result = new Vector<User>();
 			
 			try{
 				Statement stmt = con.createStatement();
 				ResultSet rs = stmt.executeQuery("SELECT DISTINCT srcU_ID From T_Permission_Contact WHERE U_ID=" + user.getId()+ " AND C_ID=" + contact.getId() + " ORDER BY C_ID");
 				
-				while (rs.next()){
+				if (rs.next()){
 					User u = new User();
 					u.setId(rs.getInt("srcU_ID"));
 					
-									
-					result.addElement(UserMapper.userMapper().findByID(u.getId()));
+					return UserMapper.userMapper().findByID(u.getId());
+					
 				}		
 			}catch(SQLException e2){
 				e2.printStackTrace();
-				return result;
 			}
-			return result;
+			return null;
 		}
 public Vector<User> getSourceUsersByUIDAndCLID(User user, ContactList contact){
 	

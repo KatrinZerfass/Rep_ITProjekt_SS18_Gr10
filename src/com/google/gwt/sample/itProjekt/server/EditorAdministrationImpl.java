@@ -498,7 +498,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		return result;
 	}
 
-	public Vector<User> getSourceToSharedContact(Contact contact, User receivingUser) throws IllegalArgumentException {
+	public User getSourceToSharedContact(Contact contact, User receivingUser) throws IllegalArgumentException {
 		
 		return pmMapper.getSourceUserByUIDAndCID(receivingUser, contact);
 	}
