@@ -312,11 +312,12 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		
 		searchButton.addClickHandler(new SearchButtonClickHandler(searchTextBox));
 		searchLabel.setText("Durchsuchen Sie Ihre Kontaktlisten nach bestimmten Ausprägungen: ");
+		searchLabel.addStyleName("label_search");
 		searchLabel.setWidth("240px");
 		searchPanel.add(searchLabel);
 		
 		
-		searchButtonImg.setPixelSize(17, 17);
+		searchButtonImg.addStyleName("editorSearch");
 		searchButton.getUpFace().setImage(searchButtonImg);
 		
 		searchBox.add(searchTextBox);
