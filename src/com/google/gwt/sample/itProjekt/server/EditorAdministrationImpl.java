@@ -502,4 +502,11 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		
 		return pmMapper.getSourceUserByUIDAndCID(receivingUser, contact);
 	}
+
+
+	@Override
+	public Vector<Permission> getAllPermissions() throws IllegalArgumentException {
+
+		return pmMapper.findAll();
+	}
 }

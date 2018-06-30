@@ -300,7 +300,7 @@ body{
 	background-color: #18878B !important;
 	background-image:none !important;
 }
-.GPBYFDEO{
+.GPBYFDEO .GPBYFDEN{
 	background-color: #25A192 !important;
 	background-image:none !important;
 }
@@ -407,4 +407,25 @@ body{
     font-family: 'Roboto', sans-serif;
     font-weight: 700;
     font-size: 20px;
+}
+
+.gwt-SuggestBoxPopup{
+	visibility: visible;
+    background-color: rgb(215, 230, 224);
+    overflow: visible;
+    border: 1px solid grey;
+    border-radius
+    position: absolute;
+    left: 594px;
+    top: 434px;
+}
+
+.gwt-SuggestBox{
+	width: 100%;
+    padding: 7px 6px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
 }

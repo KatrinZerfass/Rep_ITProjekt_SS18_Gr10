@@ -67,7 +67,7 @@ public abstract class BusinessObject implements Serializable {
 		if (object != null && object instanceof BusinessObject) {
 		      BusinessObject bo = (BusinessObject) object;
 		      try {
-		        if (bo.getId() == this.id)
+		        if (bo.getId() == getId())
 		          return true;
 		    }
 		

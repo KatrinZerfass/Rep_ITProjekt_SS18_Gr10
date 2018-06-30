@@ -29,7 +29,9 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ValueBoxBase;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -816,69 +818,87 @@ public class ContactForm extends VerticalPanel {
 	
 	public class EmailDialogBox extends DialogBox{
 		
-		private String email;
+		private String input;
 		
-        private ValueTextBox tb = new ValueTextBox("Email");
+		Label dialogBoxLabel = new Label();
 		
+        private SuggestBox sb;
+        private MultiWordSuggestOracle oracle;
+        
+        Button ok = new Button("OK");
+        
 		public EmailDialogBox() {
-			setText("Teilen");
-			setAnimationEnabled(true);
-			setGlassEnabled(true);
+			setDialogBoxLabel("Bitte geben Sie die Email-Adresse des Nutzers ein mit dem Sie den Kontakt teilen möchten.");
 			
-			Window.alert("EmailDialogBox Konstruktor");
-			
-			Button ok = new Button("OK");
-	        ok.addClickHandler(new ClickHandler() {
-	        	public void onClick(ClickEvent event) {
-	        		if(!checkValue(tb)){
-						tb.setText("");				
+			editorAdministration.getAllUsers(new AsyncCallback<Vector<User>>() {
+				public void onFailure(Throwable arg0) {
+					Window.alert("Fehler beim holen aller User in der InputDialogBox");
+				}
+				@Override
+				public void onSuccess(Vector<User> arg0) {
+					
+					for(User loopUser : arg0) {
+						if (loopUser.equals(currentUser)) {
+							getOracle().add(loopUser.getEmail());
+						}
 					}
-	        		else {
-		        		checkValue(tb);
-		        		email = tb.getText();
-		        		
-		        		if (contactToDisplay == null) {
-		    				Window.alert("kein Kontakt ausgewählt!");
-		    			}
-		    			else {
-		    				editorAdministration.shareContact(currentUser, getEmail(), contactToDisplay, new AsyncCallback<Permission>() {
-		    					public void onFailure(Throwable arg0) {
-		    						Window.alert("Fehler beim teilen des Kontakts!");
-		    					}
-		    					public void onSuccess(Permission arg0) {
-		    						Window.alert("Kontakt erfolgreich geteilt.");
-		    					}
-		    				});
-		    			}
-		        		
-		            	EmailDialogBox.this.hide();
-	        		}
-	            }
-	        });
-	        
+					setSuggestBox(new SuggestBox(getOracle()));
+					
+					setText("Eingabe");
+					setAnimationEnabled(true);
+					setGlassEnabled(true);
+					
+					VerticalPanel panel = new VerticalPanel();
+					
+			        panel.setHeight("100");
+			        panel.setWidth("300");
+			        panel.setSpacing(10);
+			        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+			        panel.add(dialogBoxLabel);
+			        panel.add(getSuggestBox());
+			        panel.add(ok);
+			        
+			        setWidget(panel);
+			        
+			        show();
+				}
+			});
+		}
 
-			
-			Label label = new Label("Bitte geben Sie die Email-Adresse des Nutzers ein mit dem Sie teilen möchten.");
-			
-			VerticalPanel panel = new VerticalPanel();
-			
-	        panel.setHeight("100");
-	        panel.setWidth("300");
-	        panel.setSpacing(10);
-	        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
-	        panel.add(label);
-	        panel.add(tb);
-	        panel.add(ok);
+		public SuggestBox getSuggestBox() {
+			return sb;
+		}
 
-	        setWidget(panel);
+		public void setSuggestBox(SuggestBox sb) {
+			this.sb = sb;
+		}
+
+		public MultiWordSuggestOracle getOracle() {
+			return oracle;
+		}
+
+		public void setOracle(MultiWordSuggestOracle oracle) {
+			this.oracle = oracle;
+		}
+
+		public String getInput() {
+			return input;
+		}
+
+		public void setInput(String input) {
+			this.input = input;
+		}
+
+		public void setDialogBoxLabel(String labelString) {
+			this.dialogBoxLabel.setText(labelString);;
 		}
 		
-		public String getEmail() {
-			return this.email;
+		public Button getOKButton() {
+			return this.ok;
 		}
 		
-		public void setEmail(String email) {
-			this.email = email;
+		public void setOKButton(Button b) {
+			this.ok = b;
 		}
 	}
 
@@ -1081,6 +1101,8 @@ public class ContactForm extends VerticalPanel {
 	 */
 	private class ShareContactClickHandler implements ClickHandler{
 		
+		EmailDialogBox dialog = new EmailDialogBox();
+		
 		@Override
 		public void onClick(ClickEvent event) {
 			
@@ -1091,9 +1113,28 @@ public class ContactForm extends VerticalPanel {
 				/*
 				 * Über eine Instanz der inneren Klasse EmailDialogBox können Objekte mit anderen Nutzern geteilt werden.
 				 */
-				EmailDialogBox dialog = new EmailDialogBox();
+				
 				Window.alert("EmailDialogBox instanziert");
 				dialog.show();
+				
+				dialog.getOKButton().addClickHandler(new ClickHandler() {
+					public void onClick(ClickEvent event) {
+						
+						Window.alert(dialog.getSuggestBox().getText());
+						
+						editorAdministration.shareContact(currentUser, dialog.getSuggestBox().getText(), clctvm.getSelectedContact(), new AsyncCallback<Permission>() {
+
+							public void onFailure(Throwable arg0) {
+								Window.alert("Fehler beim Teilen des Kontakts!");
+								dialog.hide();
+							}
+							public void onSuccess(Permission arg0) {
+								Window.alert("Kontakt erfolgreich geteilt.");
+								dialog.hide();
+							}
+						});
+					}
+				});
 			}
 		}
 	}
