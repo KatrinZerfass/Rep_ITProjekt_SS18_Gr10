@@ -900,7 +900,9 @@ public class ContactForm extends VerticalPanel {
 		addNewPropertyButton.addStyleName("addNewPropertyButton");
 		newPropertyLabel.addStyleName("newPropertyLabel");
 		newPropertyListBox.addStyleName("newPropertyListBox");
+		
 		this.add(contactTable);
+		contactTable.getColumnFormatter().setWidth(0, "30px");
 		
 		editorAdministration.getAllPredefinedPropertiesOf(new AsyncCallback<Vector<Property>>(){
 			public void onFailure(Throwable t) {
@@ -909,6 +911,7 @@ public class ContactForm extends VerticalPanel {
 			}
 			
 			public void onSuccess(Vector<Property> properties) {
+				allPredefinedProperties.clear();
 				for (Property p : properties){
 					allPredefinedProperties.add(p);
 				}
@@ -1191,6 +1194,7 @@ public class ContactForm extends VerticalPanel {
 							public void onSuccess(Contact result) {
 								Window.alert("Kontakt erfolgreich angelegt.");
 								clctvm.addContactOfContactList(clctvm.getMyContactsContactList(), result);
+								Window.alert("Owner des neuen Kontakts: " + result.getOwner());
 							}
 						});
 						
@@ -1680,7 +1684,6 @@ public class ContactForm extends VerticalPanel {
 		buttonsPanel.clear();
 		sexListBox.clear();
 		newPropertyListBox.clear();
-		allPredefinedProperties.clear();
 		allValuesOfContact.clear();
 	
 		for(ValueTextBox vtb : allValueTextBoxes) {
@@ -1749,7 +1752,7 @@ public class ContactForm extends VerticalPanel {
 			 */
 			
 			
-			
+			Window.alert("Anzahl predefined Properties: " + ((Integer) allPredefinedProperties.size()).toString());
 			for (Property p : allPredefinedProperties) {
 				newPropertyListBox.addItem(p.getType());
 			}
@@ -1865,13 +1868,11 @@ public class ContactForm extends VerticalPanel {
 		int vtRow;
 		ValuePanel vp = null; //das ValuePanel der jeweiligen Eigenschaftsart
 		ValueTable vt = null;	 //die ValueTable der jeweiligen Eigenschaftsart
-		
-		Window.alert("in display-methode: " + ((Integer)allValuesOfContact.size()).toString());
+	
 		
 		int count = allValuesOfContact.size();
 		for(int i=0; i<count; i++) {
 			int pid = allValuesOfContact.get(i).getPropertyid();
-			Window.alert("pid vom aktuellen Value: " + ((Integer) pid).toString());
 		
 			
 			switch (pid) {
@@ -2042,12 +2043,12 @@ public class ContactForm extends VerticalPanel {
 						((ValueDisplay) contactTable.getWidget(3, 3)).getWidget(0).setWidth("105px");
 						((ValueDisplay) contactTable.getWidget(3,3)).setValue(allValuesOfContact.get(i));
 						
-						for(int a = 0; a<allPredefinedProperties.size(); a++) {
-							if (allPredefinedProperties.get(a).getType() == "Geburtstag") {
-								allPredefinedProperties.remove(a);
+						for (Property p : allPredefinedProperties) {
+							if(p.getType()== "Geburtstag") {
+								allPredefinedProperties.remove(p);
 								newPropertyListBox.clear();
-								for (Property p : allPredefinedProperties) {
-									newPropertyListBox.addItem(p.getType());
+								for (Property prop : allPredefinedProperties) {
+									newPropertyListBox.addItem(prop.getType());
 								}
 								newPropertyListBox.addItem("Sonstiges");
 							}
@@ -2215,7 +2216,6 @@ public class ContactForm extends VerticalPanel {
 						break;
 		
 				default: 
-					Window.alert("Springt in default der switch case");
 					row = contactTable.getRowCount();
 					if (pid > 10){
 						

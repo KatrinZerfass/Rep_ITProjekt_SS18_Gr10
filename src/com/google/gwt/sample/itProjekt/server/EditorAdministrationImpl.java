@@ -124,6 +124,21 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	}
 	
 	
+	public Vector<Contact> getAllContactsOfContactlistForUser(ContactList contactlist, User user) throws IllegalArgumentException {
+		
+		Vector<Contact> allContactsOfActiveUser = getAllContactsOfActiveUser(user);
+		Vector<Contact> allContactsOfContactList = getAllContactsOf(contactlist);
+		
+		Vector<Contact> result = new Vector<Contact>();
+		
+		for(Contact c : allContactsOfContactList){
+			if(allContactsOfActiveUser.contains(c)){
+				result.add(c);
+			}
+		}
+		return result;		
+	}
+	
 
 	@Override
 	public Vector<Contact> getAllContactsOf(ContactList contactlist) throws IllegalArgumentException {
