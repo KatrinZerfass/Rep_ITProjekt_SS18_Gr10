@@ -828,6 +828,9 @@ public class ContactForm extends VerticalPanel {
         Button ok = new Button("OK");
         
 		public EmailDialogBox() {
+			
+			oracle = new MultiWordSuggestOracle();
+			
 			setDialogBoxLabel("Bitte geben Sie die Email-Adresse des Nutzers ein mit dem Sie den Kontakt teilen möchten.");
 			
 			editorAdministration.getAllUsers(new AsyncCallback<Vector<User>>() {
@@ -1101,10 +1104,12 @@ public class ContactForm extends VerticalPanel {
 	 */
 	private class ShareContactClickHandler implements ClickHandler{
 		
-		EmailDialogBox dialog = new EmailDialogBox();
+		EmailDialogBox dialog;
 		
 		@Override
 		public void onClick(ClickEvent event) {
+			
+			dialog = new EmailDialogBox();
 			
 			if (contactToDisplay == null) {
 				Window.alert("kein Kontakt ausgewählt!");
@@ -1115,7 +1120,6 @@ public class ContactForm extends VerticalPanel {
 				 */
 				
 				Window.alert("EmailDialogBox instanziert");
-				dialog.show();
 				
 				dialog.getOKButton().addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {

@@ -525,8 +525,6 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		public void onClick(ClickEvent event) {
 			inputDB = new InputDialogBox(new MultiWordSuggestOracle());
 			
-			
-			
 			inputDB.getOKButton().addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
 					
