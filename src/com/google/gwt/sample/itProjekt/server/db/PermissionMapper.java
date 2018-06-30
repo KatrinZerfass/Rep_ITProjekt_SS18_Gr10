@@ -302,7 +302,7 @@ public Vector<Contact> getAllContactsByUID(User user){
 				}		
 			}catch(SQLException e2){
 				e2.printStackTrace();
-				return result;
+//				return result;
 			}
 			return result;
 		}
@@ -324,7 +324,7 @@ public Vector<Contact> getAllContactsBySrcUID(User user){
 				}		
 			}catch(SQLException e2){
 				e2.printStackTrace();
-				return result;
+//				return result;
 			}
 			return result;
 		}
