@@ -212,9 +212,9 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		
 		
 		report.addRow(headline);
-
+		System.out.println("vorher");
 		Vector<Contact> allContacts=this.admin.getAllSharedContactsOfUserWithOtherUser(owner, receiver.getEmail());
-		
+		System.out.println("nachher");
 		if(allContacts.size()!=0){
 			for (Contact c: allContacts) {
 				
@@ -462,6 +462,8 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			report.removeRow(headline);
 			SimpleParagraph errornote=new SimpleParagraph("Es wurden leider keine Kontakte mit der eingegebenen Eigenschaft gefunden");
 			header.addSubParagraph(errornote);	
+			report.setHeaderData(header);
+
 		}
 		return report;
 }
