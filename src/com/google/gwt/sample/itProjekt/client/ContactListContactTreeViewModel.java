@@ -307,7 +307,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 			 */	
 				
 			}else if(user.getId() == ((ContactList) value).getOwner())  {
-				editorAdministration.getAllContactsOf((ContactList) value, new AsyncCallback<Vector<Contact>>() {
+				editorAdministration.getAllContactsOfContactlistForUser((ContactList) value, user, new AsyncCallback<Vector<Contact>>() {
 					public void onFailure(Throwable t) {
 							Window.alert("Kontakte der Kontaktliste auslesen fehlgeschlagen");
 					}
