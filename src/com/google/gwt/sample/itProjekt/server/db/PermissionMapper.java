@@ -380,7 +380,7 @@ public Vector<ContactList> getAllContactListsBySrcUID(User user){
 			}
 			return result;
 		}
-public Vector<User> getAllContactsByUIDAndCID(User user, Contact contact){
+public Vector<User> getSourceUserByUIDAndCID(User user, Contact contact){
 	
 	Connection con = DBConnection.connection();
 	Vector<User> result = new Vector<User>();
@@ -402,7 +402,7 @@ public Vector<User> getAllContactsByUIDAndCID(User user, Contact contact){
 			}
 			return result;
 		}
-public Vector<User> getAllContactListsBySrcUIDAndUID(User user, Contact contact){
+public Vector<User> getSourceUsersByUIDAndCLID(User user, ContactList contact){
 	
 	Connection con = DBConnection.connection();
 	Vector<User> result = new Vector<User>();

@@ -217,15 +217,21 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	}
 
 	@Override
-	public Permission shareContactList(User sourceUser, User shareUser, ContactList shareContactList) throws IllegalArgumentException {
+	public Permission shareContactList(User sourceUser, String shareUserEmail, ContactList shareContactList) throws IllegalArgumentException {
 		
-		Permission newpermission = new Permission();
-		newpermission.setSourceUserID(sourceUser.getId());
-		newpermission.setParticipantID(shareUser.getId());
-		newpermission.setShareableObjectID(shareContactList.getId());
-		newpermission.setIsowner(false);
+		Vector<Contact> allContactsOfCL = clMapper.getAllContacts(shareContactList);
 		
-		return pmMapper.shareContactList(newpermission);
+		Permission newCLpermission = new Permission();
+		newCLpermission.setSourceUserID(sourceUser.getId());
+		newCLpermission.setParticipantID(uMapper.findByEMail(shareUserEmail).getId());
+		newCLpermission.setShareableObjectID(shareContactList.getId());
+		newCLpermission.setIsowner(false);
+		
+		for (Contact loopContact : allContactsOfCL) {
+			shareContact(sourceUser, shareUserEmail, loopContact);
+		}
+		
+		return pmMapper.shareContactList(newCLpermission);
 	}
 
 	@Override
@@ -469,5 +475,10 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		    }	
 		}
 		return result;
+	}
+
+	public Vector<User> getSourceToSharedContact(Contact contact, User receivingUser) throws IllegalArgumentException {
+		
+		return pmMapper.getSourceUserByUIDAndCID(receivingUser, contact);
 	}
 }
