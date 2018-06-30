@@ -462,6 +462,8 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			report.removeRow(headline);
 			SimpleParagraph errornote=new SimpleParagraph("Es wurden leider keine Kontakte mit der eingegebenen Eigenschaft gefunden");
 			header.addSubParagraph(errornote);	
+			report.setHeaderData(header);
+
 		}
 		return report;
 }
