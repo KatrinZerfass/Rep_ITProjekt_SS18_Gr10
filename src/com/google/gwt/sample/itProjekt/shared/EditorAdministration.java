@@ -26,6 +26,8 @@ public interface EditorAdministration extends RemoteService{
 	
 	public Vector<Contact> getAllOwnedContactsOf(String email) throws IllegalArgumentException;
 	
+	public Vector<Contact> getAllContactsOfContactlistForUser(ContactList contactlist, User user) throws IllegalArgumentException;
+	
 	public Vector<Contact> getAllSharedContactsOfUserWithOtherUser(User source, String receiver) throws IllegalArgumentException;
 	
 	public Vector<Contact> getAllSharedContactsWith(String email) throws IllegalArgumentException;
@@ -44,7 +46,7 @@ public interface EditorAdministration extends RemoteService{
 	
 	public Permission shareContact(User sourceUser, String shareUserEmail, Contact shareContact) throws IllegalArgumentException;
 	
-	public void deleteContact(int id) throws IllegalArgumentException;
+	public void deleteContact(Contact contact, boolean owner, User user) throws IllegalArgumentException;
 	
 	public ContactList createContactList(String name, User user) throws IllegalArgumentException;
 	

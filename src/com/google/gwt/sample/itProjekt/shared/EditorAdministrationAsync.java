@@ -23,7 +23,7 @@ public interface EditorAdministrationAsync {
 
 	void createValue(Contact contact, int propertyid, String content, AsyncCallback<Value> callback);
 
-	void deleteContact(int id, AsyncCallback<Void> callback);
+	void deleteContact(Contact contact, boolean owner, User user, AsyncCallback<Void> callback);
 
 	void deleteContactList(ContactList contactlist, AsyncCallback<Void> callback);
 
@@ -106,5 +106,8 @@ public interface EditorAdministrationAsync {
 	void getSourceToSharedContact(Contact contact, User receivingUser, AsyncCallback<Vector<User>> callback);
 
 	void getAllPermissions(AsyncCallback<Vector<Permission>> callback);
+
+	void getAllContactsOfContactlistForUser(ContactList contactlist, User user,
+			AsyncCallback<Vector<Contact>> callback);
 }
 

@@ -68,9 +68,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	public Vector<Contact> getAllContactsOfActiveUser(User user) throws IllegalArgumentException {
 		
 		Vector<Contact> result = cMapper.findAllByUID(user);
-		System.out.println(result.toString());
 		Vector<Contact> sharedContacts = pmMapper.getAllContactsByUID(user);
-		System.out.println(sharedContacts.toString());
 		
 		for (Contact c : sharedContacts) {
 			result.add(c);
@@ -124,10 +122,27 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 
 		return pmMapper.getAllContactsByUID(uMapper.findByEMail(email));
 	}
+	
+	
+	public Vector<Contact> getAllContactsOfContactlistForUser(ContactList contactlist, User user) throws IllegalArgumentException {
+		
+		Vector<Contact> allContactsOfActiveUser = getAllContactsOfActiveUser(user);
+		Vector<Contact> allContactsOfContactList = getAllContactsOf(contactlist);
+		
+		Vector<Contact> result = new Vector<Contact>();
+		
+		for(Contact c : allContactsOfContactList){
+			if(allContactsOfActiveUser.contains(c)){
+				result.add(c);
+			}
+		}
+		return result;		
+	}
+	
 
 	@Override
 	public Vector<Contact> getAllContactsOf(ContactList contactlist) throws IllegalArgumentException {
-
+		
 		return clMapper.getAllContacts(contactlist);
 	}
 
@@ -182,12 +197,18 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	}
 
 	@Override
-	public void deleteContact(int id) throws IllegalArgumentException {
+	public void deleteContact(Contact contact, boolean owner, User user) throws IllegalArgumentException {
+				
+		if(owner == true){
+			Contact deletedcontact = new Contact();
+			deletedcontact.setId(contact.getId());
+			System.out.println(contact.getFirstname());
+			cMapper.delete(deletedcontact);
 		
-		Contact deletedcontact = new Contact();
-		deletedcontact.setId(id);
+		}else{
+			deletePermission(user, contact);
+		}
 		
-		cMapper.delete(deletedcontact);
 	}
 
 	@Override
@@ -233,6 +254,8 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	@Override
 	public ContactList removeContactFromContactList(ContactList contactlist, Contact contact)
 			throws IllegalArgumentException {
+		
+		
 		
 		return clMapper.removeContact(contactlist, contact);
 	}
@@ -288,6 +311,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 
 	@Override
 	public void deletePermission(User user, BusinessObject bo) throws IllegalArgumentException {
+		
 		Permission permission = new Permission();
 		permission.setParticipantID(user.getId());
 		permission.setShareableObjectID(bo.getId());
