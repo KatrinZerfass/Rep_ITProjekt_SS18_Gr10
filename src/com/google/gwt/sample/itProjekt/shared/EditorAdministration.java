@@ -98,5 +98,7 @@ public interface EditorAdministration extends RemoteService{
 	
 	public Vector<User> getSourceToSharedContact(Contact contact, User receivingUser) throws IllegalArgumentException;
 	
-	public Vector<Permission> getAllPermissions() throws IllegalArgumentException; 
+	public Vector<Permission> getAllPermissions() throws IllegalArgumentException;
+
+	public User getOwnerOfContact(Contact c) throws IllegalArgumentException; 
 }
