@@ -109,5 +109,7 @@ public interface EditorAdministrationAsync {
 
 	void getAllContactsOfContactlistForUser(ContactList contactlist, User user,
 			AsyncCallback<Vector<Contact>> callback);
+
+	void getOwnerOfContact(Contact c, AsyncCallback<User> callback);
 }
 
