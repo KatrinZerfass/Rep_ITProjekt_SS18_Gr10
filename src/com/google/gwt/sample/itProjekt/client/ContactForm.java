@@ -987,14 +987,14 @@ public class ContactForm extends VerticalPanel {
 		DialogBox db = new DialogBox();
 		
 		public void onClick(ClickEvent event) {
-			/*
-			 * Ein neuer Button, der oben rechts erscheint, wenn man einen neuen Kontakt anlegen will.
-			 */
-//			contactTable.getFlexCellFormatter().setRowSpan(2, 4, 2);
-//			Button addContactButton = new Button("Kontakt-stamm anlegen");
-//			addContactButton.setWidth("60px");
-//			contactTable.setWidget(2, 4, addContactButton);
 			
+			if(firstnameTextBox.isEnabled()==false) {
+				firstnameTextBox.setEnabled(true);
+				lastnameTextBox.setEnabled(true);
+			}
+			if(sexListBox.isEnabled()==false) {
+				sexListBox.setEnabled(true);
+			}
 			/*
 			 * Bevor ein neuer Kontakt angelegt werden kann, muss der bestehende Kontakt aus dem Formular genommen werden.
 			 */
@@ -1525,13 +1525,13 @@ public class ContactForm extends VerticalPanel {
 		
 		switch(identifier) {
 			case "Name":
-				if (text.matches("(äöüÄÖÜß\\w)+")) {
+				//if (text.matches("(äöüÄÖÜß\\w)+")) {
 					return true;
-				}
-				else {
-					Window.alert("Ungültige Zeichen im Namen!");
-					return false;
-				}
+//				}
+//				else {
+//					Window.alert("Ungültige Zeichen im Namen!");
+//					return false;
+//				}
 			case "Straße":
 				if (text.matches("(äöüÄÖÜß\\w)+")) {
 					return true;
@@ -1634,6 +1634,8 @@ public class ContactForm extends VerticalPanel {
 	 * 
 	 */
 	public void clearContactForm() {
+		
+		this.onLoad();
 		setSelected(null);
 	}
 	
@@ -1646,7 +1648,6 @@ public class ContactForm extends VerticalPanel {
 	 * @author KatrinZerfass & JanNoller
 	 */
 	public void setSelected(Contact c) {
-		Window.alert("setSelected von ContactForm \nKatrin");
 		
 		if(newPropertyPanel.isVisible()==true) {
 			newPropertyPanel.setVisible(false);
@@ -1681,12 +1682,11 @@ public class ContactForm extends VerticalPanel {
 		}
 		
 	//	allValueTextBoxes = null;
-		Window.alert("alles anfängliche von setSelected durchgelaufen. \nKatrin");
 		if (c != null){
 			
 			contactToDisplay = c;
 			
-			Window.alert("Kontakt ungleich null. Ausgewählter Kontakt: " + contactToDisplay.getFirstname() + "\nKatrin");
+			
 			/*
 			 * Befüllen der Eigenschaften aus der Datenbank
 			 */
@@ -1741,9 +1741,12 @@ public class ContactForm extends VerticalPanel {
 					for(Value v: values) {
 						allValuesOfContact.add(v);
 					}
+					Window.alert("Alle Ausprägungen des Kontaktes ausgelesen. \n"
+							+ "Anzahl der Values im Vektor: " + ((Integer)allValuesOfContact.size()).toString());
+					
 					displayAllValuesOfContact();
 					
-					Window.alert("Alle Ausprägungen des Kontaktes ausgelesen. \nKatrin");
+					
 				}
 			});
 			
@@ -1809,18 +1812,15 @@ public class ContactForm extends VerticalPanel {
 		 * und sich jeweils in einer anderen Zeile der contactTable befinden, je nachdem um welche Eigenschaftsart es sich handelt.
 		 * 
 		 */ 
-		Window.alert("Size vom allValuesOfContact: " + ((Integer) allValuesOfContact.size()).toString() + ". \nKatrin");
+		
 		int row;
 		int vtRow;
 		ValuePanel vp = null; //das ValuePanel der jeweiligen Eigenschaftsart
-		ValueTable vt = null;
+		ValueTable vt = null;	 //die ValueTable der jeweiligen Eigenschaftsart
 		
 		for(int i=0; i<allValuesOfContact.size(); i++) {
-			int pid = allValuesOfContact.get(i).getPropertyid(); 
+			int pid = allValuesOfContact.get(i).getPropertyid();
 			Window.alert("pid vom aktuellen Value: " + ((Integer) pid).toString());
-			 //die ValueTable der jeweiligen Eigenschaftsart
-			
-			Window.alert("RowCount der ContactTable: " +((Integer) contactTable.getRowCount()).toString());
 		
 			
 			switch (pid) {
@@ -2087,18 +2087,20 @@ public class ContactForm extends VerticalPanel {
 							}
 							
 							public void onSuccess(Property result) {
+								allNewPropertiesOfContact = null;
+								allNewPropertiesOfContact = new Vector<Property>();
 								allNewPropertiesOfContact.add(result);
 								
 							}
 						});
 						
-						row = contactTable.getRowCount();
+			
 						
 						/*
 						 * Das korrekte ValuePanel und ValueTable werden gesetzt und im Folgenden auf ihnen operiert.
 						 */
 					if(vp == null) {
-						vp = new ValuePanel(pid, row, allNewPropertiesOfContact.get(i).getType() + ": ");
+						vp = new ValuePanel(pid, row, allNewPropertiesOfContact.get(0).getType() + ": ");
 						contactTable.setWidget(row, 0, vp);
 						contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
 						
@@ -2131,7 +2133,7 @@ public class ContactForm extends VerticalPanel {
 						Window.alert("Unbekannte Eigenschaft kann nicht hinzugefügt werden.");
 					}
 				}
-		}Window.alert("Auslesen aller Ausprägungen ist durchgelaufen \nKatrin");
+		}
 	}
 	
 	/**
