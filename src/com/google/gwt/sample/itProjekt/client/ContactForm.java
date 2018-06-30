@@ -1091,33 +1091,44 @@ public class ContactForm extends VerticalPanel {
 			
 			if (contactToDisplay == null) {
 				Window.alert("kein Kontakt ausgewählt");
-			}
-			else {	
-				if (compareUser()) {
-					editorAdministration.deleteContact(contactToDisplay.getId(), new AsyncCallback<Void>() {
-						public void onFailure(Throwable arg0) {
-							Window.alert("Fehler beim Löschen des Kontakts!");
-						}
-						public void onSuccess(Void arg0) {
-							Window.alert("Kontakt erfolgreich gelöscht.");
-							clctvm.removeContactOfContactList(clctvm.getSelectedContactList(), contactToDisplay);
-						}
-					});
-				}
-				else {
-					editorAdministration.deletePermission(currentUser, contactToDisplay, new AsyncCallback<Void>() {
-						@Override
-						public void onFailure(Throwable arg0) {
-							Window.alert("Fehler beim Löschen der Permission!");	
-						}
-						@Override
-						public void onSuccess(Void arg0) {
-							Window.alert("Kontakt-Teilhaberschaft erfolgreich entfernt.");
-							clctvm.removeContactOfContactList(clctvm.getSelectedContactList(), contactToDisplay);
-							
-						}
-					});
-				}
+			
+			}else{
+				
+				editorAdministration.deleteContact(contactToDisplay, compareUser(), currentUser, new AsyncCallback<Void>() {
+					public void onFailure(Throwable arg0) {
+						Window.alert("Fehler beim Löschen des Kontakts!");
+					}
+					public void onSuccess(Void arg0){
+						Window.alert("Kontakt erfolgreich gelöscht");
+						clctvm.removeContactOfContactList(clctvm.getSelectedContactList(), contactToDisplay);
+					}
+				});
+				
+//				if (compareUser()) {
+//					editorAdministration.deleteContact(contactToDisplay.getId(), new AsyncCallback<Void>() {
+//						public void onFailure(Throwable arg0) {
+//							Window.alert("Fehler beim Löschen des Kontakts!");
+//						}
+//						public void onSuccess(Void arg0) {
+//							Window.alert("Kontakt erfolgreich gelöscht.");
+//							clctvm.removeContactOfContactList(clctvm.getSelectedContactList(), contactToDisplay);
+//						}
+//					});
+//				}
+//				else {
+//					editorAdministration.deletePermission(currentUser, contactToDisplay, new AsyncCallback<Void>() {
+//						@Override
+//						public void onFailure(Throwable arg0) {
+//							Window.alert("Fehler beim Löschen der Permission!");	
+//						}
+//						@Override
+//						public void onSuccess(Void arg0) {
+//							Window.alert("Kontakt-Teilhaberschaft erfolgreich entfernt.");
+//							clctvm.removeContactOfContactList(clctvm.getSelectedContactList(), contactToDisplay);
+//							
+//						}
+//					});
+//				}
 				setSelected(null);
 			}
 		}
