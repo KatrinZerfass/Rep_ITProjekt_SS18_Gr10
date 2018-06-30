@@ -82,7 +82,7 @@ public class ContactForm extends VerticalPanel {
 	ValueTextBox plzTextBox;
 	ValueTextBox cityTextBox;
 	
-	Label newPropertyLabel = new Label("Eigenschaft hinzufügen  ");
+	Label newPropertyLabel = new Label("Eigenschaft hinzufügen");
 	Button addNewPropertyButton = new Button("Hinzufügen");
 	
 	/**Listbox für das Hinzufügen neuer Eigenschaften */
@@ -191,7 +191,7 @@ public class ContactForm extends VerticalPanel {
 						
 					}
 					public void onSuccess(Value v) {
-									
+					
 					}
 				});
 			}
@@ -751,7 +751,7 @@ public class ContactForm extends VerticalPanel {
 		 * @return den AddValueButton des ValuePanels
 		 */
 		public AddValueButton getAddValueButton() {
-			return (AddValueButton) getWidget(1);
+			return addValueButton;
 		}
 		
 	}
@@ -881,7 +881,9 @@ public class ContactForm extends VerticalPanel {
 		 */
 		
 		currentUser = ClientsideSettings.getUser();
-		
+		addNewPropertyButton.addStyleName("addNewPropertyButton");
+		newPropertyLabel.addStyleName("newPropertyLabel");
+		newPropertyListBox.addStyleName("newPropertyListBox");
 		this.add(contactTable);
 		
 		editorAdministration.getAllPredefinedPropertiesOf(new AsyncCallback<Vector<Property>>(){
@@ -989,7 +991,7 @@ public class ContactForm extends VerticalPanel {
 		DialogBox db = new DialogBox();
 		
 		public void onClick(ClickEvent event) {
-			clearContactForm();
+			setSelected(null);
 //			if(firstnameTextBox.isEnabled()==false) {
 //				firstnameTextBox.setEnabled(true);
 //				lastnameTextBox.setEnabled(true);
@@ -1116,7 +1118,7 @@ public class ContactForm extends VerticalPanel {
 						}
 					});
 				}
-				clearContactForm();
+				setSelected(null);
 			}
 		}
 	}
@@ -1379,6 +1381,7 @@ public class ContactForm extends VerticalPanel {
 			
 			if(ptype == "Geburtstag") {
 				//Abfrage, dass nur einmal hinzugefügt werden kann
+				//newPropertyListBox.removeItem(newPropertyListBox.getSelectedIndex());
 				VerticalPanel dbPanel = new VerticalPanel();
 				db.setText("Geburtsdatum eintragen");
 				inputTextBox = new TextBox();
@@ -1651,7 +1654,6 @@ public class ContactForm extends VerticalPanel {
 		
 		this.onLoad();
 		
-		setSelected(null);
 	}
 	
 	
@@ -1663,6 +1665,7 @@ public class ContactForm extends VerticalPanel {
 	 * @author KatrinZerfass & JanNoller
 	 */
 	public void setSelected(Contact c) {
+		clearContactForm();
 		
 		if(newPropertyPanel.isVisible()==true) {
 			newPropertyPanel.setVisible(false);
@@ -1801,6 +1804,7 @@ public class ContactForm extends VerticalPanel {
 		 * Placeholder gesetzt, die andeuten, was in diese TextBox einzutragen ist.
 		 */
 		}else {
+			contactToDisplay = null;
 			firstnameTextBox.getElement().setPropertyString("placeholder", "Vorname...");
 			firstnameTextBox.setText("");
 			lastnameTextBox.getElement().setPropertyString("placeholder", "Nachname...");
@@ -1842,22 +1846,33 @@ public class ContactForm extends VerticalPanel {
 							/*
 							 * Das korrekte ValuePanel und ValueTable werden gesetzt und im Folgenden auf ihnen operiert.
 							 */
+						if(contactTable.isCellPresent(row, 0)) {
+							if (contactTable.getWidget(row, 0) == null) {
+								contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Geschäftliche Telefonnummer: "));
+								contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+							}
+						}else {
+							contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Geschäftliche Telefonnummer: "));
+							contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+						}
+						vp = (ValuePanel) contactTable.getWidget(row, 0);
+										
 						
-						vp = new ValuePanel(pid, row, "Geschäftliche Telefonnummer: ");
-						contactTable.setWidget(row, 0, vp);
-						contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-						
-						if(vt == null) {	
-							vt = new ValueTable(pid);
+						if (contactTable.isCellPresent(row, 1)) {
+							if (contactTable.getWidget(row, 1) == null) {
+								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
+								contactTable.setWidget(row, 1, new ValueTable(pid));
+							}
+							
+						}else {
 							contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-							contactTable.setWidget(row, 1, vt);
-							Window.alert("Row nachdem valuetable gesetzt wurde: " +((Integer) row).toString());
-						}	
-						
-						
+							contactTable.setWidget(row, 1, new ValueTable(pid));
+						}
+						vt = (ValueTable) contactTable.getWidget(row, 1);
 						vtRow = vt.getRowCount();
 						vt.setWidget(vtRow, 0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
 						vt.getValueDisplay(vtRow).setValue(allValuesOfContact.get(i));
+						
 						
 						/*
 						 * Gleiches Prinzip wie gerade schon, nur jetzt für das soeben neu hinzugefügte ValueDisplay.
@@ -1869,6 +1884,7 @@ public class ContactForm extends VerticalPanel {
 						else {
 							vt.getValueDisplay(vtRow).disableButtons();
 							vp.getAddValueButton().setEnabled(false);
+							
 						}
 					
 						break;
@@ -1881,20 +1897,33 @@ public class ContactForm extends VerticalPanel {
 						 * Das korrekte ValuePanel und ValueTable werden gesetzt und im Folgenden auf ihnen operiert.
 						 */
 						
-						vp = new ValuePanel(pid, row, "Private Telefonnummer: ");
-						contactTable.setWidget(row, 0, vp);
-						contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+						if(contactTable.isCellPresent(row, 0)) {
+							if (contactTable.getWidget(row, 0) == null) {
+								contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Private Telefonnummer: "));
+								contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+							}
+						}else {
+							contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Private Telefonnummer: "));
+							contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+						}
+						vp = (ValuePanel) contactTable.getWidget(row, 0);
+										
 						
-						if(vt == null) {	
-							vt = new ValueTable(pid);
+						if (contactTable.isCellPresent(row, 1)) {
+							if (contactTable.getWidget(row, 1) == null) {
+								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
+								contactTable.setWidget(row, 1, new ValueTable(pid));
+							}
+							
+						}else {
 							contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-							contactTable.setWidget(row, 1, vt);
-							Window.alert("Row nachdem valuetable gesetzt wurde: " +((Integer) row).toString());
-						}	
-						
+							contactTable.setWidget(row, 1, new ValueTable(pid));
+						}
+						vt = (ValueTable) contactTable.getWidget(row, 1);
 						vtRow = vt.getRowCount();
 						vt.setWidget(vtRow, 0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
 						vt.getValueDisplay(vtRow).setValue(allValuesOfContact.get(i));
+						
 						
 						/*
 						 * Gleiches Prinzip wie gerade schon, nur jetzt für das soeben neu hinzugefügte ValueDisplay.
@@ -1909,7 +1938,6 @@ public class ContactForm extends VerticalPanel {
 						}
 					
 						break;
-								
 						
 				case 3:  // e-Mail
 						row = contactTable.getRowCount();
@@ -1918,19 +1946,33 @@ public class ContactForm extends VerticalPanel {
 						 * Das korrekte ValuePanel und ValueTable werden gesetzt und im Folgenden auf ihnen operiert.
 						 */
 						
-						vp = new ValuePanel(pid, row, "e-Mail-Adresse: ");
-						contactTable.setWidget(row, 0, vp);
-						contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-						if(vt == null) {	
-							vt = new ValueTable(pid);
-							contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-							contactTable.setWidget(row, 1, vt);
-							Window.alert("Row nachdem valuetable gesetzt wurde: " +((Integer) row).toString());
-						}	
+						if(contactTable.isCellPresent(row, 0)) {
+							if (contactTable.getWidget(row, 0) == null) {
+								contactTable.setWidget(row, 0, new ValuePanel(pid, row, "e-Mail-Adressen: "));
+								contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+							}
+						}else {
+							contactTable.setWidget(row, 0, new ValuePanel(pid, row, "e-Mail-Adressen: "));
+							contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+						}
+						vp = (ValuePanel) contactTable.getWidget(row, 0);
+										
 						
+						if (contactTable.isCellPresent(row, 1)) {
+							if (contactTable.getWidget(row, 1) == null) {
+								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
+								contactTable.setWidget(row, 1, new ValueTable(pid));
+							}
+							
+						}else {
+							contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
+							contactTable.setWidget(row, 1, new ValueTable(pid));
+						}
+						vt = (ValueTable) contactTable.getWidget(row, 1);
 						vtRow = vt.getRowCount();
 						vt.setWidget(vtRow, 0, new ValueDisplay(new ValueTextBox("Email")));
 						vt.getValueDisplay(vtRow).setValue(allValuesOfContact.get(i));
+						
 						
 						/*
 						 * Gleiches Prinzip wie gerade schon, nur jetzt für das soeben neu hinzugefügte ValueDisplay.
@@ -1958,6 +2000,18 @@ public class ContactForm extends VerticalPanel {
 						contactTable.setWidget(3, 3, new ValueDisplay(new ValueTextBox("Geburtstag")));
 						((ValueDisplay) contactTable.getWidget(3, 3)).getWidget(0).setWidth("105px");
 						((ValueDisplay) contactTable.getWidget(3,3)).setValue(allValuesOfContact.get(i));
+						
+						for(int a = 0; i<allPredefinedProperties.size(); a++) {
+							if (allPredefinedProperties.get(a).getType() == "Geburtstag") {
+								allPredefinedProperties.remove(a);
+								newPropertyListBox.clear();
+								for (Property p : allPredefinedProperties) {
+									newPropertyListBox.addItem(p.getType());
+								}
+								newPropertyListBox.addItem("Sonstiges");
+							}
+						}
+						
 						break;
 						
 						
@@ -1968,19 +2022,33 @@ public class ContactForm extends VerticalPanel {
 						 * Das korrekte ValuePanel und ValueTable werden gesetzt und im Folgenden auf ihnen operiert.
 						 */
 						
-						vp = new ValuePanel(pid, row, "Arbeitsplatz: ");
-						contactTable.setWidget(row, 0, vp);
-						contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-						if(vt == null) {
-							vt = new ValueTable(pid);
-							contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-							contactTable.setWidget(row, 1, vt);
-							Window.alert("Row nachdem valuetable gesetzt wurde: " +((Integer) row).toString());
-						}	
+						if(contactTable.isCellPresent(row, 0)) {
+							if (contactTable.getWidget(row, 0) == null) {
+								contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Arbeitsplatz: "));
+								contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+							}
+						}else {
+							contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Arbeitsplatz: "));
+							contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+						}
+						vp = (ValuePanel) contactTable.getWidget(row, 0);
+										
 						
+						if (contactTable.isCellPresent(row, 1)) {
+							if (contactTable.getWidget(row, 1) == null) {
+								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
+								contactTable.setWidget(row, 1, new ValueTable(pid));
+							}
+							
+						}else {
+							contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
+							contactTable.setWidget(row, 1, new ValueTable(pid));
+						}
+						vt = (ValueTable) contactTable.getWidget(row, 1);
 						vtRow = vt.getRowCount();
 						vt.setWidget(vtRow, 0, new ValueDisplay(new ValueTextBox("Arbeitsplatz")));
 						vt.getValueDisplay(vtRow).setValue(allValuesOfContact.get(i));
+						
 						
 						/*
 						 * Gleiches Prinzip wie gerade schon, nur jetzt für das soeben neu hinzugefügte ValueDisplay.
@@ -2063,19 +2131,33 @@ public class ContactForm extends VerticalPanel {
 						 * Das korrekte ValuePanel und ValueTable werden gesetzt und im Folgenden auf ihnen operiert.
 						 */
 						
-						vp = new ValuePanel(pid, row, "Homepage: ");
-						contactTable.setWidget(row, 0, vp);
-						contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-						if(vt == null) {
-							vt = new ValueTable(pid);
-							contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-							contactTable.setWidget(row, 1, vt);
-							Window.alert("Row nachdem valuetable gesetzt wurde: " +((Integer) row).toString());
-						}	
+						if(contactTable.isCellPresent(row, 0)) {
+							if (contactTable.getWidget(row, 0) == null) {
+								contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Homepage: "));
+								contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+							}
+						}else {
+							contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Homepage: "));
+							contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+						}
+						vp = (ValuePanel) contactTable.getWidget(row, 0);
+										
 						
+						if (contactTable.isCellPresent(row, 1)) {
+							if (contactTable.getWidget(row, 1) == null) {
+								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
+								contactTable.setWidget(row, 1, new ValueTable(pid));
+							}
+							
+						}else {
+							contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
+							contactTable.setWidget(row, 1, new ValueTable(pid));
+						}
+						vt = (ValueTable) contactTable.getWidget(row, 1);
 						vtRow = vt.getRowCount();
 						vt.setWidget(vtRow, 0, new ValueDisplay(new ValueTextBox("Homepage")));
 						vt.getValueDisplay(vtRow).setValue(allValuesOfContact.get(i));
+						
 						
 						/*
 						 * Gleiches Prinzip wie gerade schon, nur jetzt für das soeben neu hinzugefügte ValueDisplay.
@@ -2113,34 +2195,48 @@ public class ContactForm extends VerticalPanel {
 						/*
 						 * Das korrekte ValuePanel und ValueTable werden gesetzt und im Folgenden auf ihnen operiert.
 						 */
-				
-					vp = new ValuePanel(pid, row, allNewPropertiesOfContact.get(0).getType() + ": ");
-					contactTable.setWidget(row, 0, vp);
-					contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-					if(vt == null) {
-						vt = new ValueTable(pid);
-						contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-						contactTable.setWidget(row, 1, vt);
-						Window.alert("Row nachdem valuetable gesetzt wurde: " +((Integer) row).toString());
-					}	
+						if(contactTable.isCellPresent(row, 0)) {
+							if (contactTable.getWidget(row, 0) == null) {
+								contactTable.setWidget(row, 0, new ValuePanel(pid, row, allNewPropertiesOfContact.get(0).getType() + ": "));
+								contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+							}
+						}else {
+							contactTable.setWidget(row, 0, new ValuePanel(pid, row, allNewPropertiesOfContact.get(0).getType() + ": "));
+							contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+						}
+						vp = (ValuePanel) contactTable.getWidget(row, 0);
+										
+						
+						if (contactTable.isCellPresent(row, 1)) {
+							if (contactTable.getWidget(row, 1) == null) {
+								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
+								contactTable.setWidget(row, 1, new ValueTable(pid));
+							}
+							
+						}else {
+							contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
+							contactTable.setWidget(row, 1, new ValueTable(pid));
+						}
+						vt = (ValueTable) contactTable.getWidget(row, 1);
+						vtRow = vt.getRowCount();
+						vt.setWidget(vtRow, 0, new ValueDisplay(new ValueTextBox("Sonstiges")));
+						vt.getValueDisplay(vtRow).setValue(allValuesOfContact.get(i));
+						
+						
+						/*
+						 * Gleiches Prinzip wie gerade schon, nur jetzt für das soeben neu hinzugefügte ValueDisplay.
+						 */
+						if (compareUser()) {
+							vt.getValueDisplay(vtRow).enableButtons();
+							vp.getAddValueButton().setEnabled(true);
+						}
+						else {
+							vt.getValueDisplay(vtRow).disableButtons();
+							vp.getAddValueButton().setEnabled(false);
+						}
 					
-					vtRow = vt.getRowCount();
-					vt.setWidget(vtRow, 0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
-					vt.getValueDisplay(vtRow).setValue(allValuesOfContact.get(i));
-					
-					/*
-					 * Gleiches Prinzip wie gerade schon, nur jetzt für das soeben neu hinzugefügte ValueDisplay.
-					 */
-					if (compareUser()) {
-						vt.getValueDisplay(vtRow).enableButtons();
-						vp.getAddValueButton().setEnabled(true);
-					}
-					else {
-						vt.getValueDisplay(vtRow).disableButtons();
-						vp.getAddValueButton().setEnabled(false);
-					}
-				
-					break;
+						break;
+	
 					
 					
 					}else {

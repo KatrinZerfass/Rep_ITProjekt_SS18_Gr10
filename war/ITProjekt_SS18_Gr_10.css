@@ -322,7 +322,7 @@ body{
     margin: 9px 8px;
 }
 
-#PropertyPanel.gwt-Button{
+.addNewPropertyButton{
 	    background-color: #7dd286;
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
@@ -339,11 +339,11 @@ body{
     width: 90%;
 }
 
-#PropertyPanel.gwt-Button:hover{
+.addNewPropertyButton:hover{
 	background-color: #49ba8f;
 }
 
-#PropertyPanel.gwt-Label{
+.newPropertyLabel{
 	    margin: 14px;
 }
 
