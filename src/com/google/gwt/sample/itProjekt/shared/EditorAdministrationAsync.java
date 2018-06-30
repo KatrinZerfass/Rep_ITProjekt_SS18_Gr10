@@ -99,8 +99,8 @@ public interface EditorAdministrationAsync {
 	void getContactsOfValueSearchResult(User user, String textBox, ContactList selectedContactList,
 			AsyncCallback<Vector<Contact>> callback);
 
-	void getAllSharedContactsOfUser(String email, AsyncCallback<Vector<Contact>> callback);
-
 	void getUserByID(int ID, AsyncCallback<User> callback);
+
+	void getAllSharedContactsOfUserWithOtherUser(User source, String email, AsyncCallback<Vector<Contact>> callback);
 }
 

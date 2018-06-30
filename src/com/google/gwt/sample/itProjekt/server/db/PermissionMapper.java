@@ -236,6 +236,7 @@ public Permission update(Permission permission){
 		Connection con = DBConnection.connection();
 		
 		try{
+			System.out.println("test");
 			Statement stmt = con.createStatement();
 			
 				
@@ -250,16 +251,19 @@ public Permission update(Permission permission){
 						+ ")") ;
 			
 			ContactList cl= new ContactList();
-			cl.setId(permission.getParticipantID());	
-				cl = ContactListMapper.contactListMapper().findByID(cl);
+			cl.setId(permission.getShareableObjectID());
+						
 				Vector <Contact> c = ContactListMapper.contactListMapper().getAllContacts(cl);
+				
+				Permission p = new Permission();
+				if(c.size()>0){
 				for(Contact c1: c){
-					Permission p = new Permission();
+					
 					p.setParticipantID(permission.getParticipantID());
 					p.setSourceUserID(permission.getSourceUserID());
 					p.setShareableObjectID(c1.getId());
 					shareContact(p);
-				}
+				}}
 			
 			return permission;	
 				
@@ -302,6 +306,30 @@ public Vector<Contact> getAllContactsByUID(User user){
 			}
 			return result;
 		}
+
+public Vector<Contact> getAllContactsBySrcUID(User user){
+	
+	Connection con = DBConnection.connection();
+	Vector<Contact> result = new Vector<Contact>();
+			
+			try{
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT DISTINCT C_ID From T_Permission_Contact WHERE srcU_ID=" + user.getId()+ " ORDER BY C_ID");
+				
+				while (rs.next()){
+					Contact c = new Contact();
+					c.setId(rs.getInt("C_ID"));
+									
+					result.addElement(ContactMapper.contactMapper().findByID(c));
+				}		
+			}catch(SQLException e2){
+				e2.printStackTrace();
+				return result;
+			}
+			return result;
+		}
+
+
 
 /**
  * Gets the all contact lists by UID.

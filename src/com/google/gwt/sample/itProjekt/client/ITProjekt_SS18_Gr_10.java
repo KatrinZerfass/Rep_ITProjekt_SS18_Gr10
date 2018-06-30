@@ -312,11 +312,12 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		
 		searchButton.addClickHandler(new SearchButtonClickHandler(searchTextBox));
 		searchLabel.setText("Durchsuchen Sie Ihre Kontaktlisten nach bestimmten Ausprägungen: ");
+		searchLabel.addStyleName("label_search");
 		searchLabel.setWidth("240px");
 		searchPanel.add(searchLabel);
 		
 		
-		searchButtonImg.setPixelSize(17, 17);
+		searchButtonImg.addStyleName("editorSearch");
 		searchButton.getUpFace().setImage(searchButtonImg);
 		
 		searchBox.add(searchTextBox);
@@ -341,7 +342,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		 */
 		mccl.setName("Meine Kontakte");
 		mccl.setOwner(user.getId());
-//		mccl.setId(0);
+		mccl.setId(5);
 		
 		clctvm.setMyContactsContactList(mccl);
 
@@ -543,8 +544,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		@Override
 		public void onClick(ClickEvent arg0) {
 			
-			ContactList selectedContactList = clctvm.getSelectedContactList();
-			Window.alert(selectedContactList.getName());		
+			ContactList selectedContactList = clctvm.getSelectedContactList();		
 			
 			editorAdministration.getContactsOfNameSearchResult(user, searchTextBox.getText(), selectedContactList,  new AsyncCallback<Vector<Contact>>() {
 				@Override
