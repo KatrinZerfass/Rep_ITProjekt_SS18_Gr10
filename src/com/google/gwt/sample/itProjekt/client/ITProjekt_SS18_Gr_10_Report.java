@@ -195,7 +195,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 					Value v = new Value();
 					v.setContent(searchInput.getText());
 					 reportGenerator.generateAllContactsWithValueReport(user, v, new AsyncCallback<AllContactsWithValueReport>() {
-						 public void onFailure(Throwable caught) {	 				    
+						 public void onFailure(Throwable caught) {
 						 }
 						 public void onSuccess(AllContactsWithValueReport result) {
 								if (result!=null) {
@@ -208,7 +208,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 								}
 						 }
 					 });
-	   			}
+					}
 				else{
 					Window.alert("Suchleiste ist leer. Bitte füllen Sie einen Suchbegriff in das Suchfeld ein.");
 					
@@ -222,6 +222,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 					p.setType(searchInput.getText());
 					 reportGenerator.generateAllContactsWithPropertyReport(user, p, new AsyncCallback<AllContactsWithPropertyReport>() {
 						 public void onFailure(Throwable caught) {
+							 Window.alert("Es wurde kein Kontakt gefunden Property");
 						 }
 						 public void onSuccess(AllContactsWithPropertyReport result) {
 								if (result !=null) {

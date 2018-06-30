@@ -82,7 +82,7 @@ public class ContactForm extends VerticalPanel {
 	ValueTextBox plzTextBox;
 	ValueTextBox cityTextBox;
 	
-	Label newPropertyLabel = new Label("Eigenschaft hinzufügen  ");
+	Label newPropertyLabel = new Label("Eigenschaft hinzufügen");
 	Button addNewPropertyButton = new Button("Hinzufügen");
 	
 	/**Listbox für das Hinzufügen neuer Eigenschaften */
@@ -881,7 +881,9 @@ public class ContactForm extends VerticalPanel {
 		 */
 		
 		currentUser = ClientsideSettings.getUser();
-		
+		addNewPropertyButton.addStyleName("addNewPropertyButton");
+		newPropertyLabel.addStyleName("newPropertyLabel");
+		newPropertyListBox.addStyleName("newPropertyListBox");
 		this.add(contactTable);
 		
 		editorAdministration.getAllPredefinedPropertiesOf(new AsyncCallback<Vector<Property>>(){
