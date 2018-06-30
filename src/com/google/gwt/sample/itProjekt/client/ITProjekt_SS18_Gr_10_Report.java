@@ -38,7 +38,6 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	
 	//Relevante Attribute für LoginService
 	
-	static final int REFRESH_INTERVAL = 5000;
 	private LoginInfo loginInfo = null;
 	private VerticalPanel loginPanel = new VerticalPanel();
 	private Label loginLabel = new Label(
@@ -222,7 +221,8 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 					p.setType(searchInput.getText());
 					 reportGenerator.generateAllContactsWithPropertyReport(user, p, new AsyncCallback<AllContactsWithPropertyReport>() {
 						 public void onFailure(Throwable caught) {
-							 Window.alert("Es wurde kein Kontakt gefunden Property");
+							 RootPanel.get("reporttext").setVisible(false);
+							 Window.alert("Es wurde kein Kontakt mit der angegebenen Eigenschaft gefunden");
 						 }
 						 public void onSuccess(AllContactsWithPropertyReport result) {
 								if (result !=null) {
