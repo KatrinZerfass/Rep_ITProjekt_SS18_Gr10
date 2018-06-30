@@ -389,10 +389,10 @@ public User getSourceUserByUIDAndCID(User user, Contact contact){
 				ResultSet rs = stmt.executeQuery("SELECT srcU_ID FROM T_Permission_Contact WHERE U_ID=" + user.getId()+ " AND C_ID=" + contact.getId());
 				
 				if (rs.next()){
-					User u1 = new User();
-					u1.setId(rs.getInt("srcU_ID"));
+					User u = new User();
+					u.setId(rs.getInt("srcU_ID"));
 					
-					return UserMapper.userMapper().findByID(u1.getId());
+					return UserMapper.userMapper().findByID(u.getId());
 					
 				}		
 			}catch(SQLException e2){
