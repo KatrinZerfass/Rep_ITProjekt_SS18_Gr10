@@ -2303,7 +2303,6 @@ public class ContactForm extends VerticalPanel {
 		public void onSuccess(Property result) {
 			allNewPropertiesOfContact = new Vector<Property>();
 			allNewPropertiesOfContact.add(result);
-			Window.alert("Property der Value ausgelesen");
 			
 			if(contactTable.isCellPresent(row, 0)) {
 				if (contactTable.getWidget(row, 0) == null) {
