@@ -751,7 +751,7 @@ public class ContactForm extends VerticalPanel {
 		 * @return den AddValueButton des ValuePanels
 		 */
 		public AddValueButton getAddValueButton() {
-			return (AddValueButton) getWidget(1);
+			return addValueButton;
 		}
 		
 	}
@@ -989,7 +989,7 @@ public class ContactForm extends VerticalPanel {
 		DialogBox db = new DialogBox();
 		
 		public void onClick(ClickEvent event) {
-			clearContactForm();
+			setSelected(null);
 //			if(firstnameTextBox.isEnabled()==false) {
 //				firstnameTextBox.setEnabled(true);
 //				lastnameTextBox.setEnabled(true);
@@ -1116,7 +1116,7 @@ public class ContactForm extends VerticalPanel {
 						}
 					});
 				}
-				clearContactForm();
+				setSelected(null);
 			}
 		}
 	}
@@ -1379,6 +1379,7 @@ public class ContactForm extends VerticalPanel {
 			
 			if(ptype == "Geburtstag") {
 				//Abfrage, dass nur einmal hinzugefügt werden kann
+				//newPropertyListBox.removeItem(newPropertyListBox.getSelectedIndex());
 				VerticalPanel dbPanel = new VerticalPanel();
 				db.setText("Geburtsdatum eintragen");
 				inputTextBox = new TextBox();
@@ -1801,6 +1802,7 @@ public class ContactForm extends VerticalPanel {
 		 * Placeholder gesetzt, die andeuten, was in diese TextBox einzutragen ist.
 		 */
 		}else {
+			contactToDisplay = null;
 			firstnameTextBox.getElement().setPropertyString("placeholder", "Vorname...");
 			firstnameTextBox.setText("");
 			lastnameTextBox.getElement().setPropertyString("placeholder", "Nachname...");
@@ -1880,6 +1882,7 @@ public class ContactForm extends VerticalPanel {
 						else {
 							vt.getValueDisplay(vtRow).disableButtons();
 							vp.getAddValueButton().setEnabled(false);
+							
 						}
 					
 						break;
@@ -1995,6 +1998,18 @@ public class ContactForm extends VerticalPanel {
 						contactTable.setWidget(3, 3, new ValueDisplay(new ValueTextBox("Geburtstag")));
 						((ValueDisplay) contactTable.getWidget(3, 3)).getWidget(0).setWidth("105px");
 						((ValueDisplay) contactTable.getWidget(3,3)).setValue(allValuesOfContact.get(i));
+						
+						for(int a = 0; i<allPredefinedProperties.size(); a++) {
+							if (allPredefinedProperties.get(a).getType() == "Geburtstag") {
+								allPredefinedProperties.remove(a);
+								newPropertyListBox.clear();
+								for (Property p : allPredefinedProperties) {
+									newPropertyListBox.addItem(p.getType());
+								}
+								newPropertyListBox.addItem("Sonstiges");
+							}
+						}
+						
 						break;
 						
 						
