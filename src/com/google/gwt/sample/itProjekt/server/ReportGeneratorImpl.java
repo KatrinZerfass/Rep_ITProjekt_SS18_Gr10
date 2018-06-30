@@ -3,11 +3,11 @@ package com.google.gwt.sample.itProjekt.server;
 import java.util.Date;
 import java.util.Vector;
 import com.google.gwt.sample.itProjekt.shared.EditorAdministration;
-import com.gargoylesoftware.htmlunit.javascript.host.Window;
 import com.google.gwt.sample.itProjekt.server.EditorAdministrationImpl;
 import com.google.gwt.sample.itProjekt.shared.ReportGenerator;
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.sample.itProjekt.shared.bo.Property;
+import com.google.gwt.sample.itProjekt.shared.bo.Permission;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
 import com.google.gwt.sample.itProjekt.shared.bo.Value;
 import com.google.gwt.sample.itProjekt.shared.report.AllContactsOfUserReport;
@@ -122,8 +122,9 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				System.out.println(allValues.toString());
 				Row contactRow=new Row();
 				
-				contactRow.addColumn(new Column(String.valueOf((admin.getUserByID(admin.getContact(c.getId()).getOwner())).getEmail())));
 				
+				contactRow.addColumn(new Column(String.valueOf((admin.getUserByID(admin.getContact(c.getId()).getOwner())).getEmail())));
+				contactRow.addColumn(new Column(String.valueOf(admin.getSourceToSharedContact(c, user).get(0).getEmail())));
 				contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 				contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
 				
@@ -212,17 +213,16 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		
 		
 		report.addRow(headline);
-		System.out.println("vorher");
+
 		Vector<Contact> allContacts=this.admin.getAllSharedContactsOfUserWithOtherUser(owner, receiver.getEmail());
-		System.out.println("nachher");
+		
 		if(allContacts.size()!=0){
 			for (Contact c: allContacts) {
 				
 				Vector<Value> allValues=this.admin.getAllValuesOf(c);
 				Row contactRow=new Row();
-				System.out.println("test1");
+				
 				contactRow.addColumn(new Column(String.valueOf((admin.getUserByID(admin.getContact(c.getId()).getOwner())).getEmail())));
-				System.out.println("test2");
 				contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 				contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
 				
@@ -462,8 +462,6 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			report.removeRow(headline);
 			SimpleParagraph errornote=new SimpleParagraph("Es wurden leider keine Kontakte mit der eingegebenen Eigenschaft gefunden");
 			header.addSubParagraph(errornote);	
-			report.setHeaderData(header);
-
 		}
 		return report;
 }
