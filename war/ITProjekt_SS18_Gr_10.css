@@ -251,7 +251,7 @@ div#Trailer {
 
 .gwt-TextBox{
     width: 100%;
-    padding: 12px 20px;
+    padding: 12px 9px;
     margin: 8px 0;
     display: inline-block;
     border: 1px solid #ccc;
@@ -399,4 +399,12 @@ body{
     width: 1280px;
     height: 1000px;
     background-color: #73737352;
+}
+
+.Caption{
+	padding: 4px;
+    color: #18878B;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
 }

@@ -4,6 +4,7 @@ package com.google.gwt.sample.itProjekt.client;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.gwt.dev.jjs.impl.codesplitter.CfaLivenessPredicate;
 import com.google.gwt.sample.itProjekt.shared.EditorAdministrationAsync;
 import com.google.gwt.sample.itProjekt.shared.bo.BusinessObject;
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
@@ -294,6 +295,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 					public void onSuccess (Vector<Contact> contacts) {
 						for (Contact c : contacts) {
 							contactsProvider.getList().add(c);
+							contactForm.disableRemoveContactButton();
 						}
 					}
 				});
