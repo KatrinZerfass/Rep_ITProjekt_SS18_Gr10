@@ -197,6 +197,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 			contactsProvider.getList().add(c);
 		}
 		selectionModel.setSelected(c, true);
+		Window.alert("neuer Kontakt wurde ausgewählt");
 		
 	}
 	
