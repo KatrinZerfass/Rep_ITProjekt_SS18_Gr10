@@ -390,3 +390,13 @@ body{
 .dialog-button:hover{
 	background-color: #49ba8f;
 }
+
+.gwt-PopupPanelGlass{
+	position: absolute;
+    left: 0px;
+    top: 0px;
+    display: block;
+    width: 1280px;
+    height: 1000px;
+    background-color: #73737352;
+}
