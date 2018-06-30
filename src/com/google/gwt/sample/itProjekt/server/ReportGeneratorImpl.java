@@ -212,54 +212,54 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		Vector<Contact> allContacts=this.admin.getAllSharedContactsOfUserWithOtherUser(owner, receiver.getEmail());
 		
 		if(allContacts.size()!=0){
-		for (Contact c: allContacts) {
-			
-			Vector<Value> allValues=this.admin.getAllValuesOf(c);
-			Row contactRow=new Row();
-			
-			contactRow.addColumn(new Column(String.valueOf((admin.getUserByID(admin.getContact(c.getId()).getOwner())).getEmail())));
-			contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
-			contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
-			
-			
-			switch (c.getSex()){
-			case "f":
-			contactRow.addColumn(new Column("weiblich"));
-			break;
-			case "m":
-			contactRow.addColumn(new Column("männlich"));
-			break;
-			case "o":
-			contactRow.addColumn(new Column("sonstige"));
-			break;
-			}
-			
-			contactRow.addColumn(new Column(String.valueOf(c.getCreationDate())));
-			contactRow.addColumn(new Column(String.valueOf(c.getModificationDate())));
-		
-			report.addRow(contactRow);
-			if(allValues.size() != 0){
+			for (Contact c: allContacts) {
 				
-				if(headline.getNumColumns() < 8){
-				headline.addColumn(new Column("Eigenschaft"));
-				headline.addColumn(new Column("Ausprägung"));
+				Vector<Value> allValues=this.admin.getAllValuesOf(c);
+				Row contactRow=new Row();
 				
+				contactRow.addColumn(new Column(String.valueOf((admin.getUserByID(admin.getContact(c.getId()).getOwner())).getEmail())));
+				contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
+				contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
+				
+				
+				switch (c.getSex()){
+				case "f":
+				contactRow.addColumn(new Column("weiblich"));
+				break;
+				case "m":
+				contactRow.addColumn(new Column("männlich"));
+				break;
+				case "o":
+				contactRow.addColumn(new Column("sonstige"));
+				break;
 				}
 				
-			for (Value v: allValues){
-				Property p=this.admin.getPropertyOfValue(v);
-				Row valueRow=new Row();
-				
-				for(int i = 0; i < 6; i++){
-					valueRow.addColumn(new Column(""));
+				contactRow.addColumn(new Column(String.valueOf(c.getCreationDate())));
+				contactRow.addColumn(new Column(String.valueOf(c.getModificationDate())));
+			
+				report.addRow(contactRow);
+				if(allValues.size() != 0){
+					
+					if(headline.getNumColumns() < 8){
+					headline.addColumn(new Column("Eigenschaft"));
+					headline.addColumn(new Column("Ausprägung"));
+					
+					}
+					
+				for (Value v: allValues){
+					Property p=this.admin.getPropertyOfValue(v);
+					Row valueRow=new Row();
+					
+					for(int i = 0; i < 6; i++){
+						valueRow.addColumn(new Column(""));
+					}
+					
+					valueRow.addColumn(new Column(String.valueOf(p.getType())));
+					valueRow.addColumn(new Column(String.valueOf(v.getContent())));
+					
+					report.addRow(valueRow);
+					}
 				}
-				
-				valueRow.addColumn(new Column(String.valueOf(p.getType())));
-				valueRow.addColumn(new Column(String.valueOf(v.getContent())));
-				
-				report.addRow(valueRow);
-				}
-			}
 		}}
 		else{
 			report.removeRow(headline);
