@@ -508,4 +508,8 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 
 		return pmMapper.findAll();
 	}
+	
+//	public User getOwnerOfContact (Contact c) throws IllegalArgumentException {
+//		
+//	}
 }
