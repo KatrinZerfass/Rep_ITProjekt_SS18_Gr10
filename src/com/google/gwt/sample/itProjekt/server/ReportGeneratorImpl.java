@@ -211,6 +211,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 		Vector<Contact> allContacts=this.admin.getAllSharedContactsOfUserWithOtherUser(owner, receiver.getEmail());
 		
+		if(allContacts.size()!=0){
 		for (Contact c: allContacts) {
 			
 			Vector<Value> allValues=this.admin.getAllValuesOf(c);
@@ -259,6 +260,12 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				report.addRow(valueRow);
 				}
 			}
+		}}
+		else{
+			report.removeRow(headline);
+			SimpleParagraph errornote=new SimpleParagraph("Es wurden leider keine Kontakte mit der eingegebenen Ausprägung gefunden");
+			header.addSubParagraph(errornote);
+			report.setHeaderData(header);
 		}
 		return report;
 	}

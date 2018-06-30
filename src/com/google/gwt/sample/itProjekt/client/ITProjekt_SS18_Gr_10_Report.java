@@ -132,10 +132,10 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 		         public void onClick(ClickEvent event){
 		        	 reportGenerator.generateAllContactsOfUserReport(user, new AsyncCallback<AllContactsOfUserReport>() {
 	    						 public void onFailure(Throwable caught) {
-	   				 				    RootPanel.get("reporttext").setVisible(false);	
-	   				 				    Label errornote=new Label("Es Existieren leider keine Kontakte");
-	   				 				    errornote.addStyleName("errornote");
-	   				 				    mainPanel.add(errornote);
+//	   				 				    RootPanel.get("reporttext").setVisible(false);	
+//	   				 				    Label errornote=new Label("Es Existieren leider keine Kontakte");
+//	   				 				    errornote.addStyleName("errornote");
+//	   				 				    mainPanel.add(errornote);
 	    							 
 	    						 }
 	    						 public void onSuccess(AllContactsOfUserReport result) {
@@ -159,25 +159,30 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			allSharedContactsOfUserButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					User sharedUser=new User();
-					sharedUser.setEmail(searchInput.getText());
-					reportGenerator.generateAllSharedContactsOfUserReport(user, sharedUser, new AsyncCallback<AllSharedContactsOfUserReport>() {
-			 				    	public void onFailure(Throwable caught) {
-	   				 				    RootPanel.get("reporttext").setVisible(false);	
-	   				 				    Label errornote=new Label("Es Existieren leider keine geteilten Kontakte mit dem eingegebenen Nutzer");
-	   				 				    errornote.addStyleName("errornote");
-	   				 				    mainPanel.add(errornote);
-		   						 }
-		   						 public void onSuccess(AllSharedContactsOfUserReport result) {
-		 		 				    RootPanel.get("reporttext").setVisible(true);
-	   								if(result!=null){
-		   	   	    						 HTMLReportWriter writer=new HTMLReportWriter();
-	   	    								 writer.process(result);
-	   	    								 RootPanel.get("reporttext").clear();
-	   	    								 RootPanel.get("reporttext").add(new HTML(writer.getReportText()));	
-	   	    							 }	
-	   								 }
+					if(searchInput.getText() != ""){
+						User sharedUser=new User();
+						sharedUser.setEmail(searchInput.getText());
+						reportGenerator.generateAllSharedContactsOfUserReport(user, sharedUser, new AsyncCallback<AllSharedContactsOfUserReport>() {
+				 				    	public void onFailure(Throwable caught) {
+//		   				 				    RootPanel.get("reporttext").setVisible(false);	
+//		   				 				    Label errornote=new Label("Es Existieren leider keine geteilten Kontakte mit dem eingegebenen Nutzer");
+//		   				 				    errornote.addStyleName("errornote");
+//		   				 				    mainPanel.add(errornote);
+			   						 }
+			   						 public void onSuccess(AllSharedContactsOfUserReport result) {
+			 		 				    RootPanel.get("reporttext").setVisible(true);
+		   								if(result!=null){
+			   	   	    						 HTMLReportWriter writer=new HTMLReportWriter();
+		   	    								 writer.process(result);
+		   	    								 RootPanel.get("reporttext").clear();
+		   	    								 RootPanel.get("reporttext").add(new HTML(writer.getReportText()));	
+		   	    							 }	
+		   								 }
 		   					 });
+						}
+						else{
+							Window.alert("Suchleiste ist leer. Bitte füllen Sie einen Suchbegriff in das Suchfeld ein.");
+							}
 	   				 	}
 					});
 				
@@ -190,10 +195,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 					Value v = new Value();
 					v.setContent(searchInput.getText());
 					 reportGenerator.generateAllContactsWithValueReport(user, v, new AsyncCallback<AllContactsWithValueReport>() {
-						 public void onFailure(Throwable caught) {
-			 				    RootPanel.get("reporttext").setVisible(false);	
-			 				    Label errornote=new Label("Es Existieren leider keine Kontakte mit der angegebenen Ausprägung");
-			 				    mainPanel.add(errornote);			 				    
+						 public void onFailure(Throwable caught) {	 				    
 						 }
 						 public void onSuccess(AllContactsWithValueReport result) {
 								if (result!=null) {
@@ -220,10 +222,6 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 					p.setType(searchInput.getText());
 					 reportGenerator.generateAllContactsWithPropertyReport(user, p, new AsyncCallback<AllContactsWithPropertyReport>() {
 						 public void onFailure(Throwable caught) {
-			 				    RootPanel.get("reporttext").setVisible(false);	
-			 				    Label errornote=new Label("Es Existieren leider keine Kontakte mit der angegebenen Eigenschaft");
-			 				    mainPanel.add(errornote);
-			 				   
 						 }
 						 public void onSuccess(AllContactsWithPropertyReport result) {
 								if (result !=null) {
@@ -245,7 +243,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			addPanel.add(searchLabel);
 			addPanel.add(searchInput);
 			reportbuttonPanel.add(allContactsOfUserButton);
-			reportbuttonPanel.add(allSharedContactsOfUserButton);
+			addPanel.add(allSharedContactsOfUserButton);
 			addPanel.add(allContactsWithValueButton);
 			addPanel.add(allContactsWithPropertyButton);
 			
