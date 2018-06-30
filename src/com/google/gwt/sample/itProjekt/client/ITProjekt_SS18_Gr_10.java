@@ -34,8 +34,10 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -94,7 +96,9 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		
 		Label dialogBoxLabel = new Label();
 		
-        private TextBox tb = new TextBox();
+        private TextBox tb;
+        private SuggestBox sb;
+        private MultiWordSuggestOracle oracle;
         
         Button ok = new Button("OK");
 		
@@ -102,7 +106,9 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		 * Der Konstruktor von InputDialogBox
 		 * ?? was macht er ??
 		 */
-		public InputDialogBox() {
+		public InputDialogBox(TextBox inputtb) {
+			
+			setTextBox(inputtb);
 			
 			Window.alert("InputDialogBox instanziert");
 			
@@ -110,14 +116,6 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 			setAnimationEnabled(true);
 			setGlassEnabled(true);
 			
-			
-//	        ok.addClickHandler(new ClickHandler() {
-//	        	public void onClick(ClickEvent event) {
-//	        		input = tb.getText();
-//	        		
-//	            	InputDialogBox.this.hide();
-//	            }
-//	        });
 	        
 			VerticalPanel panel = new VerticalPanel();
 			
@@ -129,15 +127,47 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	        panel.add(tb);
 	        panel.add(ok);
 
-	        setWidget(panel);
-	        
-	        
-	        	
-	        }
+	        setWidget(panel);	
+	    }
+		
+		public InputDialogBox(MultiWordSuggestOracle inputOracle) {
+			
+			setOracle(inputOracle);
+			
+			editorAdministration.getAllUsers(new AsyncCallback<Vector<User>>() {
+				public void onFailure(Throwable arg0) {
+					Window.alert("Fehler beim holen aller User in der InputDialogBox");
+				}
+				@Override
+				public void onSuccess(Vector<User> arg0) {
+					for(User loopUser : arg0) {
+						if (loopUser != user) {
+							getOracle().add(loopUser.getEmail());
+						}
+					}
+					setSuggestBox(new SuggestBox(getOracle()));
+					
+					setText("Eingabe");
+					setAnimationEnabled(true);
+					setGlassEnabled(true);
+					
+			        
+					VerticalPanel panel = new VerticalPanel();
+					
+			        panel.setHeight("100");
+			        panel.setWidth("300");
+			        panel.setSpacing(10);
+			        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+			        panel.add(dialogBoxLabel);
+			        panel.add(getSuggestBox());
+			        panel.add(ok);
+				}
+			});
+		}
 		
 		public Button getOKButton() {
-				return this.ok;
-			}
+			return this.ok;
+		}
 		
 		public void setOKButton(Button b) {
 			this.ok = b;
@@ -185,6 +215,22 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		
 		public void setTextBox(TextBox tb) {
 			this.tb = tb;
+		}
+
+		public SuggestBox getSuggestBox() {
+			return sb;
+		}
+
+		public void setSuggestBox(SuggestBox sb) {
+			this.sb = sb;
+		}
+
+		public MultiWordSuggestOracle getOracle() {
+			return oracle;
+		}
+
+		public void setOracle(MultiWordSuggestOracle oracle) {
+			this.oracle = oracle;
 		}
 	}
 
@@ -388,7 +434,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		
 		
 		public void onClick(ClickEvent event) {
-			inputDB = new InputDialogBox();
+			inputDB = new InputDialogBox(new TextBox());
 			inputDB.setdialogBoxLabel("Bitte geben Sie den Namen der neuen Kontaktliste an.");
 			inputDB.show();
 			
@@ -466,63 +512,79 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	
 		InputDialogBox inputDB;
 		
-		Vector<User> allUsers = new Vector<User>();
-		User shareUser = new User();
+//		User shareUser = new User();
 		
 		public void onClick(ClickEvent event) {
-			inputDB = new InputDialogBox();
+			inputDB = new InputDialogBox(new MultiWordSuggestOracle());
 			inputDB.setdialogBoxLabel("Bitte geben Sie die Email-Adresse des Nutzers ein mit dem Sie die Kontaktliste teilen möchten.");
 			inputDB.show();
 			
-			editorAdministration.getAllUsers(new AsyncCallback<Vector<User>>() {
-				@Override
-				public void onFailure(Throwable arg0) {
-					Window.alert("Fehler beim holen der User aus der Datenbank im ShareContactListClickHandler!");
-				}
-				@Override
-				public void onSuccess(Vector<User> arg0) {
-					allUsers = arg0;
+			inputDB.getOKButton().addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event) {
+					
+					editorAdministration.shareContactList(user, inputDB.getSuggestBox().getText(), clctvm.getSelectedContactList(), new AsyncCallback<Permission>() {
+
+						public void onFailure(Throwable arg0) {
+							Window.alert("Fehler beim Teilen der Kontaktliste!");
+							inputDB.hide();
+						}
+						public void onSuccess(Permission arg0) {
+							Window.alert("Kontaktliste erfolgreich geteilt.");
+							inputDB.hide();
+						}
+					});
 				}
 			});
 			
-			inputDB.getOKButton().addClickHandler(new ClickHandler() {
-				
-				@Override
-				public void onClick(ClickEvent arg0) {
-					
-					editorAdministration.getUser(inputDB.getTextBox().getText(), new AsyncCallback<User>() {
-						@Override
-						public void onFailure(Throwable arg0) {
-							Window.alert("Fehler beim holen des Users für das teilen der Kontaktliste!");
-						}
-						@Override
-						public void onSuccess(User arg0) {
-							shareUser = arg0;
-							Window.alert("Email: shareUser " + shareUser.getEmail());
-							Window.alert(inputDB.getTextBox().getText());
-						}
-					});
-					
-					if(allUsers.contains(shareUser) && shareUser != user) {
-						editorAdministration.shareContactList(user, shareUser, clctvm.getSelectedContactList(), new AsyncCallback<Permission>() {
-							@Override
-							public void onFailure(Throwable arg0) {
-								Window.alert("Fehler beim Teilen der Kontaktliste!");
-								inputDB.hide();
-							}
-							@Override
-							public void onSuccess(Permission arg0) {
-								Window.alert("Kontaktliste erfolgreich geteilt.");
-								inputDB.hide();
-							}
-						});
-					}
-					else {
-						Window.alert("Ungültiger Benutzer!");
-						inputDB.hide();
-					}
-				}
-			});
+//			editorAdministration.getAllUsers(new AsyncCallback<Vector<User>>() {
+//				@Override
+//				public void onFailure(Throwable arg0) {
+//					Window.alert("Fehler beim holen der User aus der Datenbank im ShareContactListClickHandler!");
+//				}
+//				@Override
+//				public void onSuccess(Vector<User> arg0) {
+//					allUsers = arg0;
+//				}
+//			});
+//			
+//			inputDB.getOKButton().addClickHandler(new ClickHandler() {
+//				
+//				@Override
+//				public void onClick(ClickEvent arg0) {
+//					
+//					editorAdministration.getUser(inputDB.getTextBox().getText(), new AsyncCallback<User>() {
+//						@Override
+//						public void onFailure(Throwable arg0) {
+//							Window.alert("Fehler beim holen des Users für das teilen der Kontaktliste!");
+//						}
+//						@Override
+//						public void onSuccess(User arg0) {
+//							shareUser = arg0;
+//							Window.alert("Email: shareUser " + shareUser.getEmail());
+//							Window.alert(inputDB.getTextBox().getText());
+//						}
+//					});
+//					
+//					if(allUsers.contains(shareUser) && shareUser != user) {
+//						editorAdministration.shareContactList(user, shareUser, clctvm.getSelectedContactList(), new AsyncCallback<Permission>() {
+//							@Override
+//							public void onFailure(Throwable arg0) {
+//								Window.alert("Fehler beim Teilen der Kontaktliste!");
+//								inputDB.hide();
+//							}
+//							@Override
+//							public void onSuccess(Permission arg0) {
+//								Window.alert("Kontaktliste erfolgreich geteilt.");
+//								inputDB.hide();
+//							}
+//						});
+//					}
+//					else {
+//						Window.alert("Ungültiger Benutzer!");
+//						inputDB.hide();
+//					}
+//				}
+//			});
 		}
 	}
 	
