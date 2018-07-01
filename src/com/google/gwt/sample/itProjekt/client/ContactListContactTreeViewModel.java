@@ -186,6 +186,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 			contactDataProviders.remove(cl);
 			
 			contactListDataProvider.refresh();
+			contactListDataProvider.flush();
 			//TODO was tut refresh?
 		}
 	}
@@ -228,6 +229,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		selectionModel.setSelected(cl, true);
 		
 		contactListDataProvider.refresh();
+		contactListDataProvider.flush();
 		//TODO was tut refresh?
 	}
 	
