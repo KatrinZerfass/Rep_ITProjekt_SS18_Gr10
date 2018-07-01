@@ -1016,7 +1016,7 @@ public class ContactForm extends VerticalPanel {
 		addContactToContactListButton.addClickHandler(new AddContactToContactListClickHandler());
 		
 		removeContactFromContactListButton.addClickHandler(new RemoveContactFromContactListClickHandler());
-			
+		Window.alert("instantiieren eines neuen newPropertyClickHandlers");
 		addNewPropertyButton.addClickHandler(new NewPropertyClickHandler());
 	
 	} //Ende von onLoad()
@@ -1598,6 +1598,8 @@ public class ContactForm extends VerticalPanel {
 						
 					}
 				});
+				
+				Window.alert("Ende der if-else von Anschrift");
 				
 				/*
 				 * Da es sich bei der Anschrift nicht um ValueDisplays handelt, muss auf die beiden Buttons seperat
@@ -2200,7 +2202,9 @@ public class ContactForm extends VerticalPanel {
 									allPredefinedProperties.remove(p);
 									newPropertyListBox.clear();
 									for (Property prop : allPredefinedProperties) {
-										newPropertyListBox.addItem(prop.getType());
+										if(prop.getType()!="Straße" && p.getType()!= "Hausnummer" && p.getType()!= "PLZ" && p.getType()!= "Wohnort") {
+											newPropertyListBox.addItem(prop.getType());
+										}
 									}
 									newPropertyListBox.addItem("Anschrift");
 									newPropertyListBox.addItem("Sonstiges");
@@ -2282,6 +2286,11 @@ public class ContactForm extends VerticalPanel {
 							contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
 							contactTable.setWidget(row, 1, addressTable);
 							
+							streetTextBox = new ValueTextBox("Straße");
+							houseNrTextBox = new ValueTextBox("Hausnummer");
+							plzTextBox = new ValueTextBox("PLZ");
+							cityTextBox = new ValueTextBox("Stadt");
+				
 							addressTable.setWidget(0, 0, streetTextBox);
 							addressTable.setWidget(0, 1, houseNrTextBox);
 							addressTable.setWidget(1, 0, plzTextBox);
