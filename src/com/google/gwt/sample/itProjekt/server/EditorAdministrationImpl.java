@@ -202,10 +202,6 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	public void deleteContact(Contact contact, boolean owner, User user) throws IllegalArgumentException {
 				
 		if(owner == true){
-			Contact deletedcontact = new Contact();
-			deletedcontact.setId(contact.getId());
-			System.out.println(contact.getFirstname());
-			//why? neuer contact?
 			cMapper.delete(contact);
 		
 		}else{

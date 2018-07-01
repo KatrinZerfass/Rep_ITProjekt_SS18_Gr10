@@ -404,13 +404,13 @@ public class ValueMapper {
 		 *
 		 */
 		
-		public Vector<Value> findAllByPID(Property p, Contact c){
+		public Vector<Value> findAllByPID(Property property, Contact contact){
 			Connection con = DBConnection.connection();
 			Vector<Value> result = new Vector<Value>();
 					
 					try{
 						Statement stmt = con.createStatement();
-						ResultSet rs = stmt.executeQuery("SELECT DISTINCT V_ID, value, P_ID, isShared FROM T_Value WHERE P_ID=" + p.getId()+ " AND C_ID=" + c.getId() + " ORDER BY V_ID");
+						ResultSet rs = stmt.executeQuery("SELECT DISTINCT V_ID, value, P_ID, isShared FROM T_Value WHERE P_ID=" + property.getId()+ " AND C_ID=" + contact.getId() + " ORDER BY V_ID");
 						
 						while (rs.next()){
 							Value v = new Value();
