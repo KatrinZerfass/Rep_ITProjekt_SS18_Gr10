@@ -225,6 +225,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				Row contactRow=new Row();
 				
 				contactRow.addColumn(new Column(String.valueOf(contactowner.getEmail())));
+				contactRow.addColumn(new Column(String.valueOf(admin.getSourceToSharedContact(c, owner).getEmail())));
 				contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 				contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
 				
@@ -321,6 +322,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			owner=admin.getOwnerOfContact(c);
 
 			contactRow.addColumn(new Column(String.valueOf(owner.getEmail())));
+			contactRow.addColumn(new Column(String.valueOf(admin.getSourceToSharedContact(c, user).getEmail())));
 			contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 			contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
 			
@@ -421,6 +423,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			Row contactRow=new Row();
 			
 			contactRow.addColumn(new Column(String.valueOf(owner.getEmail())));
+			contactRow.addColumn(new Column(String.valueOf(admin.getSourceToSharedContact(c, user).getEmail())));
 			contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 			contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
 			
@@ -440,6 +443,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			contactRow.addColumn(new Column(String.valueOf(c.getModificationDate())));
 			
 			report.addRow(contactRow);
+			
 			if(allValues.size() != 0){
 
 				if(headline.getNumColumns() < 9){
