@@ -270,7 +270,7 @@ public class ContactForm extends VerticalPanel {
 								editorAdministration.deleteValue(allValuesOfContact.get(i), new AsyncCallback<Void>() {
 								
 									public void onFailure(Throwable t) {
-										Window.alert("Das Löschen der Ausprägung ist fehlgeschlagen.");
+										
 									}
 									
 									public void onSuccess(Void result) {	
@@ -510,7 +510,6 @@ public class ContactForm extends VerticalPanel {
 				this.tb = tb;
 				this.vt = vt;
 				this.pid = pid;
-				Window.alert("AddValueclickhandler instantiiert \nKatrin");
 						
 			}
 			
@@ -529,8 +528,6 @@ public class ContactForm extends VerticalPanel {
 							Window.alert("Ausprägung konnte nicht hinzugefügt werden. Versuchen Sie es erneut.");
 						}
 						public void onSuccess(Value v) {
-							Window.alert("Vorname vom contacttoDisplay: " + contactToDisplay.getFirstname()
-							+ "\n  Text aus der TextBox: " + tb.getText() + "\nKatrin");
 							Window.alert("Value aus der Datenbank: " + v.getContent() + "\nKatrin");
 							/*
 							 * War das Anlegen der Ausprägung auf dem Server erfolgreich, so wird sie auch im GUI als neue Zeile in
@@ -540,7 +537,6 @@ public class ContactForm extends VerticalPanel {
 							vt.setWidget(rowCount, 0, new ValueDisplay(new ValueTextBox(tb.getIdentifier())));
 							((ValueDisplay) vt.getWidget(rowCount ,0)).setValue(v);
 							((ValueDisplay) vt.getWidget(rowCount ,0)).enableButtons();
-							Window.alert("addvalueclikchandler durchgelaufen  \nKatrin");
 						}
 					});
 				
@@ -1039,38 +1035,39 @@ public class ContactForm extends VerticalPanel {
 		public void onClick(ClickEvent event) {
 			if(contactToDisplay != null) {
 				setSelected(null);
-			}
-			if(!checkValue(firstnameTextBox) || !checkValue(lastnameTextBox) ) {
-				firstnameTextBox.setText("");
-				lastnameTextBox.setText("");
-				Window.alert("Ihr Kontakt konnte nicht angelegt werden, bitte versuchen Sie es erneut.");
-				
-			}else if(checkValue(firstnameTextBox) && checkValue(lastnameTextBox)){
-				
-			String sex = "o";
-			switch(sexListBox.getSelectedItemText()) {
-				case "männlich": 
-					sex = "m";
-					break;
-				case "weiblich": 
-					sex = "f";
-					break;
-				case "Sonstiges": 
-					sex = "o";
-					break;
-			}
-
-			editorAdministration.createContact(firstnameTextBox.getText(), lastnameTextBox.getText(), sex, currentUser, new AsyncCallback<Contact>(){
-				public void onFailure(Throwable t) {
-					Window.alert("Fehler im Kontakt anlegen");
+			}else {
+				if(!checkValue(firstnameTextBox) || !checkValue(lastnameTextBox) ) {
+					firstnameTextBox.setText("");
+					lastnameTextBox.setText("");
+					Window.alert("Ihr Kontakt konnte nicht angelegt werden, bitte versuchen Sie es erneut.");
 					
+				}else if(checkValue(firstnameTextBox) && checkValue(lastnameTextBox)){
+					
+					String sex = "o";
+					switch(sexListBox.getSelectedItemText()) {
+						case "männlich": 
+							sex = "m";
+							break;
+						case "weiblich": 
+							sex = "f";
+							break;
+						case "Sonstiges": 
+							sex = "o";
+							break;
+					}
+	
+					editorAdministration.createContact(firstnameTextBox.getText(), lastnameTextBox.getText(), sex, currentUser, new AsyncCallback<Contact>(){
+						public void onFailure(Throwable t) {
+							Window.alert("Fehler im Kontakt anlegen");
+							
+						}
+						public void onSuccess(Contact result) {
+							Window.alert("Kontakt erfolgreich angelegt.");
+							clctvm.addContactOfContactList(clctvm.getMyContactsContactList(), result);
+							Window.alert("Owner des neuen Kontakts: " + result.getOwner());
+						}
+					});
 				}
-				public void onSuccess(Contact result) {
-					Window.alert("Kontakt erfolgreich angelegt.");
-					clctvm.addContactOfContactList(clctvm.getMyContactsContactList(), result);
-					Window.alert("Owner des neuen Kontakts: " + result.getOwner());
-				}
-			});
 			}
 //			if(firstnameTextBox.isEnabled()==false) {
 //				firstnameTextBox.setEnabled(true);
@@ -1171,8 +1168,13 @@ public class ContactForm extends VerticalPanel {
 								dialog.hide();
 							}
 							public void onSuccess(Permission arg0) {
-								Window.alert("Kontakt erfolgreich geteilt.");
-								dialog.hide();
+								if(arg0 != null) {
+									Window.alert("Kontakt erfolgreich geteilt.");
+									dialog.hide();
+								}
+								else {
+									Window.alert("User ist der Owner des Kontakts!");
+								}
 							}
 						});
 					}
@@ -1444,8 +1446,8 @@ public class ContactForm extends VerticalPanel {
 	private class NewPropertyClickHandler implements ClickHandler{
 		DialogBox db1;
 		DialogBox db2;
-		TextBox inputTextBox1 = new TextBox();
-		TextBox inputTextBox2 = new TextBox();
+		TextBox inputTextBox1;
+		TextBox inputTextBox2;
 		int pid;
 		String ptype;
 		int row;
@@ -1454,22 +1456,22 @@ public class ContactForm extends VerticalPanel {
 		public void onClick(ClickEvent event) {
 			ptype = newPropertyListBox.getSelectedItemText();
 			row = contactTable.getRowCount();
-			db1 = new DialogBox();
-			db2 = new DialogBox();
-			inputTextBox1 = new TextBox();
-			inputTextBox2 = new TextBox();
 			
 			if(ptype == "Geburtstag") {
+				db1 = new DialogBox();
+				inputTextBox1 = new TextBox();
 				VerticalPanel db1Panel = new VerticalPanel();
 				db1.setText("Geburtsdatum eintragen");
-				db1.show();
+			
 				Button addBirthdayButton = new Button("Geburtsdatum hinzufügen");
 				db1Panel.add(inputTextBox1);
 				db1Panel.add(addBirthdayButton);
 				db1.add(db1Panel);
+				db1.show();
 				
 				addBirthdayButton.addClickHandler(new ClickHandler(){
 					public void onClick(ClickEvent event) {
+						db1.hide();
 						db1.hide();
 						Window.alert("Dialogbox Titel: " + db1.getText());
 						
@@ -1496,8 +1498,9 @@ public class ContactForm extends VerticalPanel {
 				
 			}
 			else if(ptype == "Sonstiges") {
-			
-				db2.show();
+				db2 = new DialogBox();
+				inputTextBox2 = new TextBox();
+				
 				VerticalPanel db2Panel = new VerticalPanel();
 				db2.setText("Neue Eigenschaftsart hinzufügen");
 				
@@ -1505,12 +1508,14 @@ public class ContactForm extends VerticalPanel {
 				db2Panel.add(inputTextBox2);
 				db2Panel.add(addPropertyButton);
 				db2.add(db2Panel);
+				db2.show();
 				
 					
 				addPropertyButton.addClickHandler(new ClickHandler(){
 					public void onClick(ClickEvent event) {
 						db2.hide();
-						Window.alert("Dialogbox Titel: " + db1.getText());
+						db2.hide();
+						Window.alert("Dialogbox Titel: " + db2.getText());
 						
 						
 						editorAdministration.createProperty(contactToDisplay, inputTextBox2.getText(), new AsyncCallback<Property>() {
@@ -1537,11 +1542,15 @@ public class ContactForm extends VerticalPanel {
 				});
 			}
 			else if(ptype == "Straße" || ptype == "Hausnummer" || ptype== "PLZ" || ptype == "Wohnort") {
+				
+				Window.alert("Springt in Anschrift else if");
 				Label addressLabel = new Label("Anschrift: ");
 				contactTable.setWidget(row, 0, addressLabel);
+				Window.alert("row in die es die Anschrift-label setzt: " + ((Integer) row).toString());
 				
 				contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
 				contactTable.setWidget(row, 1, addressTable);
+				Window.alert("Addresstable in row " + ((Integer) row).toString() + " eingesetzt.");
 				
 				
 				streetTextBox = new ValueTextBox("Straße");
@@ -1561,6 +1570,27 @@ public class ContactForm extends VerticalPanel {
 				addressTable.getFlexCellFormatter().setRowSpan(0, 2, 2);
 				addressTable.setWidget(0, 2, new ValueDisplay(new ValueTextBox("Sonstiges")));
 				((ValueDisplay) addressTable.getWidget(0, 2)).remove(0);
+				
+				Button addAddressButton = new Button("Anschrift anlegen");
+				addressTable.setWidget(0,3, addAddressButton);
+				
+				addAddressButton.addClickHandler(new ClickHandler() {
+					public void onClick(ClickEvent event) {
+						editorAdministration.createAddress(streetTextBox.getText(), houseNrTextBox.getText(),
+								plzTextBox.getText(), cityTextBox.getText(), contactToDisplay, new AsyncCallback<Value>(){
+							public void onFailure(Throwable t) {
+								
+							}
+							public void onSuccess(Value street) {
+								streetTextBox.setValue(street);
+								((LockButton) addressTable.getWidget(0, 2)).setValue(street);
+								((DeleteValueButton) addressTable.getWidget(0,3)).setValue(street);
+							}
+						});
+
+						
+					}
+				});
 				
 				/*
 				 * Da es sich bei der Anschrift nicht um ValueDisplays handelt, muss auf die beiden Buttons seperat
@@ -1623,15 +1653,15 @@ public class ContactForm extends VerticalPanel {
 		
 		switch(identifier) {
 			case "Name":
-				//if (text.matches("(äöüÄÖÜß\\w)+")) {
+				if (text.matches("[A-ZÜÄÖ][a-züäöß]+")) {
 					return true;
-//				}
-//				else {
-//					Window.alert("Ungültige Zeichen im Namen!");
-//					return false;
-//				}
+				}
+				else {
+					Window.alert("Ungültige Zeichen im Namen!");
+					return false;
+				}
 			case "Straße":
-				if (text.matches("(äöüÄÖÜß\\w)+")) {
+				if (text.matches("[A-ZÜÄÖ][a-züäöß]+")) {
 					return true;
 				}
 				else {
@@ -1663,7 +1693,7 @@ public class ContactForm extends VerticalPanel {
 					return false;
 				}
 			case "Stadt":
-				if (text.matches("(äöüÄÖÜß\\w)+")) {
+				if (text.matches("[A-ZÜÄÖ][a-züäöß]+")) {
 					return true;
 				}
 				else {
@@ -1704,7 +1734,7 @@ public class ContactForm extends VerticalPanel {
 				}
 				
 			case "Arbeitsplatz":
-				if (text.matches("[(äöüÄÖÜß\\w)|\\s]*")) {
+				if (text.matches("[A-ZÜÄÖa-züäöß\\s]+")) {
 					return true;
 				}
 				else {

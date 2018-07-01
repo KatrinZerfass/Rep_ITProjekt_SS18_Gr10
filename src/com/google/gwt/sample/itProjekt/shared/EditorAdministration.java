@@ -101,4 +101,6 @@ public interface EditorAdministration extends RemoteService{
 	public Vector<Permission> getAllPermissions() throws IllegalArgumentException;
 
 	public User getOwnerOfContact(Contact c) throws IllegalArgumentException; 
+	
+	public Value createAddress(String street, String housenumber, String zip, String city, Contact contact) throws IllegalArgumentException;
 }
