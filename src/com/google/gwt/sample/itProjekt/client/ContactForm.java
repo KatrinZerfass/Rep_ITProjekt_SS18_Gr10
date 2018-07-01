@@ -528,8 +528,6 @@ public class ContactForm extends VerticalPanel {
 							Window.alert("Ausprägung konnte nicht hinzugefügt werden. Versuchen Sie es erneut.");
 						}
 						public void onSuccess(Value v) {
-							Window.alert("Vorname vom contacttoDisplay: " + contactToDisplay.getFirstname()
-							+ "\n  Text aus der TextBox: " + tb.getText() + "\nKatrin");
 							Window.alert("Value aus der Datenbank: " + v.getContent() + "\nKatrin");
 							/*
 							 * War das Anlegen der Ausprägung auf dem Server erfolgreich, so wird sie auch im GUI als neue Zeile in
@@ -1547,6 +1545,7 @@ public class ContactForm extends VerticalPanel {
 				
 				contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
 				contactTable.setWidget(row, 1, addressTable);
+				Window.alert("Addresstable in row " + ((Integer) row).toString() + " eingesetzt.");
 				
 				
 				streetTextBox = new ValueTextBox("Straße");
@@ -1566,6 +1565,27 @@ public class ContactForm extends VerticalPanel {
 				addressTable.getFlexCellFormatter().setRowSpan(0, 2, 2);
 				addressTable.setWidget(0, 2, new ValueDisplay(new ValueTextBox("Sonstiges")));
 				((ValueDisplay) addressTable.getWidget(0, 2)).remove(0);
+				
+				Button addAddressButton = new Button("Anschrift anlegen");
+				addressTable.setWidget(0,3, addAddressButton);
+				
+				addAddressButton.addClickHandler(new ClickHandler() {
+					public void onClick(ClickEvent event) {
+						editorAdministration.createAddress(streetTextBox.getText(), houseNrTextBox.getText(),
+								plzTextBox.getText(), cityTextBox.getText(), contactToDisplay, new AsyncCallback<Value>(){
+							public void onFailure(Throwable t) {
+								
+							}
+							public void onSuccess(Value street) {
+								streetTextBox.setValue(street);
+								((LockButton) addressTable.getWidget(0, 2)).setValue(street);
+								((DeleteValueButton) addressTable.getWidget(0,3)).setValue(street);
+							}
+						});
+
+						
+					}
+				});
 				
 				/*
 				 * Da es sich bei der Anschrift nicht um ValueDisplays handelt, muss auf die beiden Buttons seperat
