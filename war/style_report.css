@@ -146,6 +146,18 @@ h1 {
 .signout:hover {
 	background-color: #c05c5f;
 }
+.reportSuggetBox{
+	background-color: white;
+    background-image: url(searchicon.png);
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    padding-left: 40px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    margin: 0px 25px 14px 0px;
+    padding: 12px 65px;
+}
 
 /*Startseite CSS*/
 #startseiteLogo{

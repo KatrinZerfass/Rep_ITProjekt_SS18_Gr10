@@ -1658,7 +1658,7 @@ public class ContactForm extends VerticalPanel {
 		
 		switch(identifier) {
 			case "Name":
-				if (text.matches("[A-ZÜÄÖ][a-züäöß]+")) {
+				if (text.matches("[A-ZÜÄÖ][a-züäöß]*")) {
 					return true;
 				}
 				else {
@@ -1666,7 +1666,7 @@ public class ContactForm extends VerticalPanel {
 					return false;
 				}
 			case "Straße":
-				if (text.matches("[A-ZÜÄÖ][a-züäöß]+")) {
+				if (text.matches("[A-ZÜÄÖ][a-züäöß]*")) {
 					return true;
 				}
 				else {
@@ -1698,7 +1698,7 @@ public class ContactForm extends VerticalPanel {
 					return false;
 				}
 			case "Stadt":
-				if (text.matches("[A-ZÜÄÖ][a-züäöß]+")) {
+				if (text.matches("[A-ZÜÄÖ][a-züäöß]*")) {
 					return true;
 				}
 				else {
@@ -1739,7 +1739,7 @@ public class ContactForm extends VerticalPanel {
 				}
 				
 			case "Arbeitsplatz":
-				if (text.matches("[A-ZÜÄÖa-züäöß\\s]+")) {
+				if (text.matches("[A-ZÜÄÖa-züäöß\\s]*")) {
 					return true;
 				}
 				else {
