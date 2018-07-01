@@ -205,7 +205,7 @@ public class ContactForm extends VerticalPanel {
 									
 								}
 								public void onSuccess(Value v) {
-									Window.alert("Adresse zu \"nicht geteilt \" gesetzt");
+									
 												
 								}
 							});
@@ -2231,10 +2231,8 @@ public class ContactForm extends VerticalPanel {
 								if(p.getType()== "Geburtstag") {
 									allPredefinedProperties.remove(p);
 									newPropertyListBox.clear();
-									for (Property prop : allPredefinedProperties) {
-										if(prop.getType()!="Straße" && p.getType()!= "Hausnummer" && p.getType()!= "PLZ" && p.getType()!= "Wohnort") {
-											newPropertyListBox.addItem(prop.getType());
-										}
+									if(p.getType()!="Straße" && p.getType()!= "Hausnummer" && p.getType()!= "PLZ" && p.getType()!= "Wohnort") {
+										newPropertyListBox.addItem(p.getType());
 									}
 									newPropertyListBox.addItem("Anschrift");
 									newPropertyListBox.addItem("Sonstiges");
@@ -2438,8 +2436,6 @@ public class ContactForm extends VerticalPanel {
 							if (pid == p.getId()) {
 								ptype = p.getType();
 									
-							}else {
-								Window.alert("Fehler beim auslesen der ptype: " + ((Integer) pid).toString());
 							}
 						}
 					
