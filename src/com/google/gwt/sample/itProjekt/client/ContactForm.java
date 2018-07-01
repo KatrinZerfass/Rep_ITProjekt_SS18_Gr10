@@ -35,6 +35,8 @@ import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ValueBoxBase;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Die Klasse ContactForm dient zur Darstellung von Kontakten mit all ihren Eigenschaften und deren Ausprägungen.
@@ -1691,7 +1693,7 @@ public class ContactForm extends VerticalPanel {
 		
 		switch(identifier) {
 			case "Name":
-				if (text.matches("([A-ZÜÄÖ][a-züäöß]*)")) {
+				if (text.matches("([A-ZÜÄÖ][a-züäöß]*)") || text.matches("[A-ZÜÄÖ][a-züäöß]*")) {
 					return true;
 				}
 				else {
