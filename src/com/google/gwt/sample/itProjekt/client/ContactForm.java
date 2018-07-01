@@ -1693,7 +1693,7 @@ public class ContactForm extends VerticalPanel {
 		
 		switch(identifier) {
 			case "Name":
-				if (text.matches("([A-ZÜÄÖ][a-züäöß]*)") || text.matches("[A-ZÜÄÖ][a-züäöß]*")) {
+				if (!text.matches("\\d+")) {
 					return true;
 				}
 				else {
@@ -1701,7 +1701,7 @@ public class ContactForm extends VerticalPanel {
 					return false;
 				}
 			case "Straße":
-				if (text.matches("[A-ZÜÄÖ][a-züäöß]*")) {
+				if (!text.matches("\\d+")) {
 					return true;
 				}
 				else {
