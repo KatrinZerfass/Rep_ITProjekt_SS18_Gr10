@@ -161,7 +161,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 					
 					}
 					for (Value v: allValues){
-						
+						if(v.getIsShared()==true){
 						Property p=this.admin.getPropertyOfValue(v);
 						Row valueRow=new Row();
 						
@@ -173,7 +173,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 						valueRow.addColumn(new Column(String.valueOf(v.getContent())));
 						
 						report.addRow(valueRow);
-					}
+					}}
 				}
 				
 			}
@@ -275,6 +275,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 					}
 					
 				for (Value v: allValues){
+					if(v.getIsShared()==true){
 					Property p=this.admin.getPropertyOfValue(v);
 					Row valueRow=new Row();
 					
@@ -287,7 +288,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 					
 					report.addRow(valueRow);
 					}
-				}
+				}}
 		}}
 		else{
 			report.removeRow(headline);
@@ -383,6 +384,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				}
 				
 			for (Value val: allValues){
+				if(val.getIsShared()==true){
 				Property p=this.admin.getPropertyOfValue(val);
 				Row valueRow=new Row();
 				
@@ -395,7 +397,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				
 				report.addRow(valueRow);
 				}
-			}
+			}}
 			}
 			
 		}else{
@@ -499,6 +501,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				}
 				
 			for (Value val: allValues){
+				if(val.getIsShared()==true){
 				Property prop=this.admin.getPropertyOfValue(val);
 				Row valueRow=new Row();
 				
@@ -510,7 +513,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				valueRow.addColumn(new Column(String.valueOf(val.getContent())));
 				
 				report.addRow(valueRow);
-				}
+				}}
 			}
 		}
 		}else{
