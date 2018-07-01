@@ -115,7 +115,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 			}
 		}
 		
-		return sourceContacts;
+		return result;
 	}
 
 	@Override
