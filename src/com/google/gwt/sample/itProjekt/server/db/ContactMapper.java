@@ -272,7 +272,7 @@ Connection con = DBConnection.connection();
 			try{
 				
 				Statement stmt = con.createStatement();
-				stmt.executeUpdate("DELETE FROM T_Values WHERE C_ID =" +contact.getId());
+				stmt.executeUpdate("DELETE FROM T_Value WHERE C_ID =" +contact.getId());
 			}
 		
 		catch (SQLException e2){
