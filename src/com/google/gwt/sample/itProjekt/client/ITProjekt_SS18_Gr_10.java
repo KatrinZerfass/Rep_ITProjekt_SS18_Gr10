@@ -553,27 +553,32 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 //		User shareUser = new User();
 		
 		public void onClick(ClickEvent event) {
-			inputDB = new InputDialogBox(new MultiWordSuggestOracle());
-			
-			inputDB.getOKButton().addClickHandler(new ClickHandler() {
-				public void onClick(ClickEvent event) {
-					
-					Window.alert(inputDB.getSuggestBox().getText());
-					
-					editorAdministration.shareContactList(user, inputDB.getSuggestBox().getText(), clctvm.getSelectedContactList(), new AsyncCallback<Permission>() {
-
-						public void onFailure(Throwable arg0) {
+			if(clctvm.getSelectedContactList() == null) {
+				Window.alert("Keine Kontaktliste ausgewählt");
+			}else {
+				inputDB = new InputDialogBox(new MultiWordSuggestOracle());
+				inputDB.getOKButton().addClickHandler(new ClickHandler() {
+					public void onClick(ClickEvent event) {
+						if(inputDB.getSuggestBox().getText()== "") {
 							Window.alert("Fehler beim Teilen der Kontaktliste!");
-							inputDB.hide();
+						}else {
+							Window.alert(inputDB.getSuggestBox().getText());
+							
+							editorAdministration.shareContactList(user, inputDB.getSuggestBox().getText(), clctvm.getSelectedContactList(), new AsyncCallback<Permission>() {
+		
+								public void onFailure(Throwable arg0) {
+									Window.alert("Fehler beim Teilen der Kontaktliste!");
+									inputDB.hide();
+								}
+								public void onSuccess(Permission arg0) {
+									Window.alert("Kontaktliste erfolgreich geteilt.");
+									inputDB.hide();
+								}
+							});
 						}
-						public void onSuccess(Permission arg0) {
-							Window.alert("Kontaktliste erfolgreich geteilt.");
-							inputDB.hide();
-						}
-					});
-				}
-			});
-			
+					}
+				});
+			}
 //			editorAdministration.getAllUsers(new AsyncCallback<Vector<User>>() {
 //				@Override
 //				public void onFailure(Throwable arg0) {

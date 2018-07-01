@@ -2231,12 +2231,16 @@ public class ContactForm extends VerticalPanel {
 								if(p.getType()== "Geburtstag") {
 									allPredefinedProperties.remove(p);
 									newPropertyListBox.clear();
-									if(p.getType()!="Straße" && p.getType()!= "Hausnummer" && p.getType()!= "PLZ" && p.getType()!= "Wohnort") {
-										newPropertyListBox.addItem(p.getType());
+								
+									for (Property prop : allPredefinedProperties) {
+										if(prop.getType()!="Straße" && prop.getType()!= "Hausnummer" && prop.getType()!= "PLZ" && prop.getType()!= "Wohnort") {
+											newPropertyListBox.addItem(prop.getType());
+										}
 									}
-									newPropertyListBox.addItem("Anschrift");
-									newPropertyListBox.addItem("Sonstiges");
 								}
+								newPropertyListBox.addItem("Anschrift");
+								newPropertyListBox.addItem("Sonstiges");
+								
 							}
 						}
 						break;
