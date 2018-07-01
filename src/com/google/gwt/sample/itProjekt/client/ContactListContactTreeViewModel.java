@@ -182,6 +182,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	
 	public void removeContactList(ContactList cl) {
 		if (contactListDataProvider.getList().contains(cl) && cl != null && !cl.equals(myContactsContactList)) {
+			
 			contactListDataProvider.getList().remove(cl);
 			contactDataProviders.remove(cl);
 			
@@ -227,8 +228,9 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		if (!contactDataProviders.containsKey(cl)) {
 			return;
 		}
-		contactDataProviders.get(cl).getList().remove(c);
 		selectionModel.setSelected(cl, true);
+		contactDataProviders.get(cl).getList().remove(c);
+
 		
 		//contactListDataProvider.refresh();
 		//TODO was tut refresh?
