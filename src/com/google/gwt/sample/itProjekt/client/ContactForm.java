@@ -1440,8 +1440,10 @@ public class ContactForm extends VerticalPanel {
 	}
 	
 	private class NewPropertyClickHandler implements ClickHandler{
-		DialogBox db;
-		TextBox inputTextBox;
+		DialogBox db1 = new DialogBox();
+		DialogBox db2 = new DialogBox();
+		TextBox inputTextBox1 = new TextBox();
+		TextBox inputTextBox2 = new TextBox();
 		int pid;
 		String ptype;
 		int row;
@@ -1452,22 +1454,20 @@ public class ContactForm extends VerticalPanel {
 			row = contactTable.getRowCount();
 			
 			if(ptype == "Geburtstag") {
-				db = new DialogBox();
-				VerticalPanel dbPanel = new VerticalPanel();
-				db.setText("Geburtsdatum eintragen");
-				inputTextBox = new TextBox();
-				db.show();
+				VerticalPanel db1Panel = new VerticalPanel();
+				db1.setText("Geburtsdatum eintragen");
+				db1.show();
 				Button addBirthdayButton = new Button("Geburtsdatum hinzufügen");
-				dbPanel.add(inputTextBox);
-				dbPanel.add(addBirthdayButton);
-				db.add(dbPanel);
+				db1Panel.add(inputTextBox1);
+				db1Panel.add(addBirthdayButton);
+				db1.add(db1Panel);
 				
 				addBirthdayButton.addClickHandler(new ClickHandler(){
 					public void onClick(ClickEvent event) {
-						db.hide();
+						db1.hide();
 						
 						
-						editorAdministration.createValue(contactToDisplay, 4, inputTextBox.getText(), new AsyncCallback<Value>() {
+						editorAdministration.createValue(contactToDisplay, 4, inputTextBox1.getText(), new AsyncCallback<Value>() {
 							public void onFailure (Throwable t) {
 								Window.alert("Geburtsdatum anlegen gescheitert");
 							}
@@ -1481,31 +1481,30 @@ public class ContactForm extends VerticalPanel {
 								((ValueDisplay) contactTable.getWidget(3,3)).setValue(result);
 							}
 						});
-						db = null;
+					
 					}
 				});
 				
 				
 			}
 			else if(ptype == "Sonstiges") {
-				db = new DialogBox();
-				inputTextBox = new TextBox();
-				db.show();
-				VerticalPanel dbPanel = new VerticalPanel();
-				db.setText("Neue Eigenschaftsart hinzufügen");
+			
+				db2.show();
+				VerticalPanel db2Panel = new VerticalPanel();
+				db2.setText("Neue Eigenschaftsart hinzufügen");
 				
 				Button addPropertyButton = new Button("Eigenschaftsart anlegen");
-				dbPanel.add(inputTextBox);
-				dbPanel.add(addPropertyButton);
-				db.add(dbPanel);
+				db2Panel.add(inputTextBox2);
+				db2Panel.add(addPropertyButton);
+				db2.add(db2Panel);
 				
 					
 				addPropertyButton.addClickHandler(new ClickHandler(){
 					public void onClick(ClickEvent event) {
-						db.hide();
+						db2.hide();
 						
 						
-						editorAdministration.createProperty(contactToDisplay, inputTextBox.getText(), new AsyncCallback<Property>() {
+						editorAdministration.createProperty(contactToDisplay, inputTextBox2.getText(), new AsyncCallback<Property>() {
 							public void onFailure (Throwable t) {
 								Window.alert("Eigenschaft anlegen gescheitert");
 							}
@@ -1524,7 +1523,7 @@ public class ContactForm extends VerticalPanel {
 							}
 						
 						});
-						db = null;
+					
 					}
 				});
 			}
@@ -1850,6 +1849,10 @@ public class ContactForm extends VerticalPanel {
 					for(Value v: allValuesOfContact) {
 						if(v.getPropertyid() >10) {
 							editorAdministration.getPropertyOfValue(v, new GetPropertyOfValueCallback(v));
+						}else{
+							if(v == allValuesOfContact.lastElement()) {
+								displayAllValuesOfContact();
+							}
 						}
 					}
 					
@@ -1907,6 +1910,7 @@ public class ContactForm extends VerticalPanel {
 		}
 		
 		public void onFailure(Throwable t) {
+			Window.alert("Fehler beim Auslesen der neuen Eigenschaft");
 			
 		}
 		
