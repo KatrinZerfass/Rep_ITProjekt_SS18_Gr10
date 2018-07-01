@@ -243,12 +243,14 @@ public void delete (Property property){
 			}
 public Property findByType(Property property){
 	Connection con = DBConnection.connection();
+	Property p = new Property();
 	
 	try{
+		
 		Statement stmt = con.createStatement();
 		ResultSet rs = stmt.executeQuery("SELECT P_ID, type, C_ID FROM T_Property WHERE type ='"+ property.getType() + "' ORDER BY P_ID");
 		if (rs.next()){
-			Property p = new Property();
+			
 			p.setId(rs.getInt("P_ID"));
 			p.setType(rs.getString("type"));
 			p.setContactID(rs.getInt("C_ID"));
@@ -257,8 +259,8 @@ public Property findByType(Property property){
 	}
 	catch (SQLException e2){
 		e2.printStackTrace();
-		return null;
+		return p;
 	}
-	return null;
+	return p;
 }
 }

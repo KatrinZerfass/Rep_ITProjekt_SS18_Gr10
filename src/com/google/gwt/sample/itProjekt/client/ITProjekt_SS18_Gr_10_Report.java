@@ -297,6 +297,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 					p.setType(searchInput.getText());
 					 reportGenerator.generateAllContactsWithPropertyReport(user, p, new AsyncCallback<AllContactsWithPropertyReport>() {
 						 public void onFailure(Throwable caught) {
+							
 							 RootPanel.get("reporttext").setVisible(false);
 							 Window.alert("Es wurde kein Kontakt mit der angegebenen Eigenschaft gefunden");
 						 }

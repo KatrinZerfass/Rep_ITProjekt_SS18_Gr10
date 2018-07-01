@@ -108,22 +108,21 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			
 			report.addRow(headline);
 		
-			System.out.println(user.getEmail());
-			System.out.println(user.getId());
+			
 			
 			User owner=new User();
 			User sharedUser = new User();
 			
 			Vector<Contact> allContacts= this.admin.getAllContactsOfActiveUser(user);
-			System.out.println(allContacts.toString());
+			
 	
 			if(allContacts.size()!=0){
 				for (Contact c: allContacts) {
 				owner=admin.getOwnerOfContact(c);
 				sharedUser = admin.getSourceToSharedContact(c, user);
-				System.out.println(c.getFirstname() + c.getLastname());
+				
 				Vector<Value> allValues=this.admin.getAllValuesOf(c);
-				System.out.println(allValues.toString());
+				
 				Row contactRow=new Row();
 				
 				
@@ -415,7 +414,9 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
  */
 @Override
 	public AllContactsWithPropertyReport generateAllContactsWithPropertyReport(User user, Property property){
+	
 	if(this.getEditorAdministration()==null) {
+		
 		return null;
 	} 
 	else {
@@ -445,12 +446,17 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		
 		Vector<Contact> allContacts=this.admin.getContactsOfUserWithProperty(user, property);
 		
-		if(allContacts.size()!=0){
+		if(allContacts.size()>0){
 		for (Contact c: allContacts) {
+
 			
+
 			owner= admin.getOwnerOfContact(c);
-			sharedUser = admin.getSourceToSharedContact(c, user);
+
 			
+
+			sharedUser = admin.getSourceToSharedContact(c, user);
+
 			Vector<Value> allValues=this.admin.getAllValuesOf(c);
 			
 			
@@ -508,9 +514,11 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			}
 		}
 		}else{
+			
 			report.removeRow(headline);
 			SimpleParagraph errornote=new SimpleParagraph("Es wurden leider keine Kontakte mit der eingegebenen Eigenschaft gefunden");
 			header.addSubParagraph(errornote);	
+			report.setHeaderData(header);
 		}
 		return report;
 }
