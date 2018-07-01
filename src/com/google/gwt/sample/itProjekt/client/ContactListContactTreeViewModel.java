@@ -184,6 +184,9 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		if (contactListDataProvider.getList().contains(cl) && cl != null && !cl.equals(myContactsContactList)) {
 			contactListDataProvider.getList().remove(cl);
 			contactDataProviders.remove(cl);
+			
+			contactListDataProvider.refresh();
+			//TODO was tut refresh?
 		}
 	}
 	
@@ -223,6 +226,9 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		}
 		contactDataProviders.get(cl).getList().remove(c);
 		selectionModel.setSelected(cl, true);
+		
+		contactListDataProvider.refresh();
+		//TODO was tut refresh?
 	}
 	
 	public void addNameResults () {

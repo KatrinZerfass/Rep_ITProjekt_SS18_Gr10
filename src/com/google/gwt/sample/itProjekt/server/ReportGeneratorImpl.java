@@ -110,7 +110,9 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		
 			System.out.println(user.getEmail());
 			System.out.println(user.getId());
+			
 			User owner=new User();
+			User sharedUser = new User();
 			
 			Vector<Contact> allContacts= this.admin.getAllContactsOfActiveUser(user);
 			System.out.println(allContacts.toString());
@@ -118,6 +120,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			if(allContacts.size()!=0){
 				for (Contact c: allContacts) {
 				owner=admin.getOwnerOfContact(c);
+				sharedUser = admin.getSourceToSharedContact(c, user);
 				System.out.println(c.getFirstname() + c.getLastname());
 				Vector<Value> allValues=this.admin.getAllValuesOf(c);
 				System.out.println(allValues.toString());
@@ -125,7 +128,13 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				
 				
 				contactRow.addColumn(new Column(String.valueOf(owner.getEmail())));
-				contactRow.addColumn(new Column(String.valueOf(admin.getSourceToSharedContact(c, user).getEmail())));
+				
+				if (sharedUser.getEmail() != user.getEmail()){	
+				contactRow.addColumn(new Column(String.valueOf(sharedUser.getEmail())));
+				}else{
+					contactRow.addColumn(new Column(String.valueOf("")));
+				}
+				
 				contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 				contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
 				
@@ -214,18 +223,30 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		
 		
 		report.addRow(headline);
+		
 		User contactowner=new User();
-
+		User sharedUser = new User();
+		
 		Vector<Contact> allContacts=this.admin.getAllSharedContactsOfUserWithOtherUser(owner, receiver.getEmail());
 		
 		if(allContacts.size()!=0){
 			for (Contact c: allContacts) {
+				
 				contactowner=admin.getOwnerOfContact(c);
+				sharedUser = admin.getSourceToSharedContact(c, owner);
+
+				
 				Vector<Value> allValues=this.admin.getAllValuesOf(c);
 				Row contactRow=new Row();
 				
 				contactRow.addColumn(new Column(String.valueOf(contactowner.getEmail())));
-				contactRow.addColumn(new Column(String.valueOf(admin.getSourceToSharedContact(c, owner).getEmail())));
+				
+				if (sharedUser.getEmail() != owner.getEmail()){	
+					contactRow.addColumn(new Column(String.valueOf(sharedUser.getEmail())));
+					}else{
+						contactRow.addColumn(new Column(String.valueOf("")));
+					}
+				
 				contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 				contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
 				
@@ -311,7 +332,9 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 		
 		report.addRow(headline);
+		
 		User owner=new User();
+		User sharedUser = new User();
 
 		Vector<Contact> allContacts=this.admin.getAllContactsOfUserWithValue(user, value);
 		
@@ -319,10 +342,18 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			for (Contact c: allContacts) {
 			Vector<Value> allValues=this.admin.getAllValuesOf(c);
 			Row contactRow=new Row();
+			
 			owner=admin.getOwnerOfContact(c);
-
+			sharedUser = admin.getSourceToSharedContact(c, user);
+			
 			contactRow.addColumn(new Column(String.valueOf(owner.getEmail())));
-			contactRow.addColumn(new Column(String.valueOf(admin.getSourceToSharedContact(c, user).getEmail())));
+			
+			if (sharedUser.getEmail() != user.getEmail()){	
+				contactRow.addColumn(new Column(String.valueOf(sharedUser.getEmail())));
+				}else{
+					contactRow.addColumn(new Column(String.valueOf("")));
+				}
+			
 			contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 			contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
 			
@@ -412,22 +443,34 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		report.addRow(headline);
 
 		User owner=new User();
-
+		User sharedUser = new User();
 		
 		Vector<Contact> allContacts=this.admin.getContactsOfUserWithProperty(user, property);
 		
 		if(allContacts.size()>0){
 		for (Contact c: allContacts) {
+
 			System.out.println("soweit so gut");
+
 			owner= admin.getOwnerOfContact(c);
+
 			System.out.println("der Owner der ruasgeholt wird "+owner.getEmail());
+
+			sharedUser = admin.getSourceToSharedContact(c, user);
+
 			Vector<Value> allValues=this.admin.getAllValuesOf(c);
 			
 			
 			Row contactRow=new Row();
 			
 			contactRow.addColumn(new Column(String.valueOf(owner.getEmail())));
-			contactRow.addColumn(new Column(String.valueOf(admin.getSourceToSharedContact(c, user).getEmail())));
+
+			if (sharedUser.getEmail() != user.getEmail()){	
+				contactRow.addColumn(new Column(String.valueOf(sharedUser.getEmail())));
+				}else{
+					contactRow.addColumn(new Column(String.valueOf("")));
+				}
+			
 			contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 			contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
 			
