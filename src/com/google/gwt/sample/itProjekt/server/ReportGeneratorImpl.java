@@ -384,7 +384,9 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
  */
 @Override
 	public AllContactsWithPropertyReport generateAllContactsWithPropertyReport(User user, Property property){
+	System.out.println("Methode startet");
 	if(this.getEditorAdministration()==null) {
+		System.out.println("wtf");
 		return null;
 	} 
 	else {
