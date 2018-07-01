@@ -527,10 +527,11 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	
 	public Value createAddress(String street, String housenumber, String zip, String city, Contact contact) {
 		
+		Value streetValue = createValue(contact, 6, street);
 		createValue(contact, 7, housenumber);
 		createValue(contact, 8, zip);
 		createValue(contact, 9, city);
 		
-		return createValue(contact, 6, street);
+		return streetValue;
 	}
 }
