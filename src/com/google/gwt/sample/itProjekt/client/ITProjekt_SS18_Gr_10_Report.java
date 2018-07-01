@@ -20,9 +20,7 @@ import com.google.gwt.sample.itProjekt.shared.report.HTMLReportWriter;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
@@ -59,8 +57,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	
 	private User user = null;
 	private ReportGeneratorAsync reportGenerator=null;
-    private SuggestBox sb;
-    private MultiWordSuggestOracle oracle;
+	private TextSuggest sb=null;
 	
 	/*
 	 * Die notwendigen Buttons für den Navigationsteil 
@@ -74,57 +71,30 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	Button allContactsWithPropertyButton = new Button("Kontakte mit bestimmter Eigenschaft");
 
 	public class TextSuggest{
-		
-		private String input;
-		
-        private SuggestBox sb;
+
+		private SuggestBox sb;
         private MultiWordSuggestOracle oracle;
-        
-		
-		/**
-		 * Der Konstruktor von InputDialogBox
-		 * ?? was macht er ??
-		 */
-					
-		public TextSuggest(MultiWordSuggestOracle inputOracle) {
-			
-			setOracle(inputOracle);
-							
-			ClientsideSettings.getEditorAdministration().getAllUsers(new AsyncCallback<Vector<User>>() {
-				public void onFailure(Throwable arg0) {
-					Window.alert("Fehler beim holen aller User in der InputDialogBox");
-				}
-				@Override
-				public void onSuccess(Vector<User> arg0) {
-					
-					for(User loopUser : arg0) {
-						if (!loopUser.equals(user)) {
-							getOracle().add(loopUser.getEmail());
-						}
-					}
-					setSuggestBox(new SuggestBox(getOracle()));
-				
-				}
-			});
-		}
-				
-		/**
-		 * Getter von input.
-		 *
-		 * @return den Input
-		 */
-		public String getInput() {
-			return this.input;
-		}
-		
-		/**
-		 * Setter von input.
-		 *
-		 * @param input der Input
-		 */
-		public void setInput(String input) {
-			this.input = input;
-		}
+        public TextSuggest(MultiWordSuggestOracle inputOracle) {
+    		
+    		setOracle(inputOracle);
+    						
+    		reportGenerator.getAllUsers(new AsyncCallback<Vector<User>>() {
+    			public void onFailure(Throwable arg0) {
+    				Window.alert("Fehler beim holen aller User in der InputDialogBox");
+    			}
+    			@Override
+    			public void onSuccess(Vector<User> arg0) {
+    				
+    				for(User loopUser : arg0) {
+    					if (!loopUser.equals(user)) {
+    						getOracle().add(loopUser.getEmail());
+    					}
+    				}
+    				setSuggestBox(new SuggestBox(getOracle()));
+    			
+    			}
+    		});
+    	}		
 
 		public SuggestBox getSuggestBox() {
 			return sb;
@@ -150,6 +120,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 		searchheading.addStyleName("searchheading");
 		signOutLink.addStyleName("signout");
 		signInLink.addStyleName("reportbutton");
+		sb=new TextSuggest(new MultiWordSuggestOracle());
 
 		searchLabel.addStyleName("searchlabel");
 		reportbuttonPanel.addStyleName("top-buttons");
@@ -320,7 +291,6 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			descriptionPanel.add(searchheading);
 			addPanel.add(searchLabel);
 			addPanel.add(searchInput);
-			TextSuggest sb=new TextSuggest(new MultiWordSuggestOracle());
 			addPanel.add(sb.getSuggestBox());
 			reportbuttonPanel.add(allContactsOfUserButton);
 			addPanel.add(allSharedContactsOfUserButton);
@@ -337,7 +307,14 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			  
 		  }
 	 
-	 private void loadLogin() {
+	 /**
+	 * Der Konstruktor von InputDialogBox
+	 * ?? was macht er ??
+	 */
+				
+	
+
+	private void loadLogin() {
 		  
 		    signInLink.setHref(loginInfo.getLoginUrl());
 		    loginPanel.add(loginLabel);
