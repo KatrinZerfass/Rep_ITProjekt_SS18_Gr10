@@ -521,6 +521,9 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			report.setHeaderData(header);
 		}
 		return report;
+	}
 }
-}
+	public Vector<User> getAllUsers(){
+		return admin.getAllUsers();
+	}
 }
