@@ -68,12 +68,13 @@ public class UserMapper {
 	 */
 	public User findByEMail(String email){
 		Connection con = DBConnection.connection();
+		User u = new User();
 		
 		try{
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT U_ID, eMail FROM T_User WHERE eMail ='"+ email + "' ORDER BY U_ID");
 			if (rs.next()){
-				User u = new User();
+				
 				u.setId(rs.getInt("U_ID"));
 				u.setEmail(rs.getString("eMail"));
 	
@@ -82,10 +83,10 @@ public class UserMapper {
 		}
 		catch (SQLException e){
 			e.printStackTrace();
-//			return null;
+		return u;
 		}
 		
-		return null;
+		return u;
 	}
 	
 	/**
