@@ -584,14 +584,3 @@ body{
   height:5px;
 }
 
-.sonstigeinput{
-	background-color: white;
-    background-image: url(searchicon.png);
-    background-position: 10px 10px;
-    background-repeat: no-repeat;
-    -moz-border-radius: 4px;
-    -webkit-border-radius: 4px;
-    border-radius: 4px;
-    margin: 0px 40px 26px 9px;
-    padding: 12px 72px 12px 40px;
-}
