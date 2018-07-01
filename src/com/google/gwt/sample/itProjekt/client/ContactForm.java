@@ -1171,8 +1171,13 @@ public class ContactForm extends VerticalPanel {
 								dialog.hide();
 							}
 							public void onSuccess(Permission arg0) {
-								Window.alert("Kontakt erfolgreich geteilt.");
-								dialog.hide();
+								if(arg0 != null) {
+									Window.alert("Kontakt erfolgreich geteilt.");
+									dialog.hide();
+								}
+								else {
+									Window.alert("User ist der Owner des Kontakts!");
+								}
 							}
 						});
 					}
@@ -1623,15 +1628,15 @@ public class ContactForm extends VerticalPanel {
 		
 		switch(identifier) {
 			case "Name":
-				//if (text.matches("(äöüÄÖÜß\\w)+")) {
+				if (text.matches("[A-ZÜÄÖ][a-züäöß]+")) {
 					return true;
-//				}
-//				else {
-//					Window.alert("Ungültige Zeichen im Namen!");
-//					return false;
-//				}
+				}
+				else {
+					Window.alert("Ungültige Zeichen im Namen!");
+					return false;
+				}
 			case "Straße":
-				if (text.matches("(äöüÄÖÜß\\w)+")) {
+				if (text.matches("[A-ZÜÄÖ][a-züäöß]+")) {
 					return true;
 				}
 				else {
@@ -1663,7 +1668,7 @@ public class ContactForm extends VerticalPanel {
 					return false;
 				}
 			case "Stadt":
-				if (text.matches("(äöüÄÖÜß\\w)+")) {
+				if (text.matches("[A-ZÜÄÖ][a-züäöß]+")) {
 					return true;
 				}
 				else {
@@ -1704,7 +1709,7 @@ public class ContactForm extends VerticalPanel {
 				}
 				
 			case "Arbeitsplatz":
-				if (text.matches("[(äöüÄÖÜß\\w)|\\s]*")) {
+				if (text.matches("[A-ZÜÄÖa-züäöß\\s]+")) {
 					return true;
 				}
 				else {
