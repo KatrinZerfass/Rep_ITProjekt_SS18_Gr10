@@ -412,9 +412,11 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		
 		Vector<Contact> allContacts=this.admin.getContactsOfUserWithProperty(user, property);
 		
-		if(allContacts.size()!=0){
+		if(allContacts.size()>0){
 		for (Contact c: allContacts) {
+			System.out.println("soweit so gut");
 			owner= admin.getOwnerOfContact(c);
+			System.out.println("der Owner der ruasgeholt wird "+owner.getEmail());
 			Vector<Value> allValues=this.admin.getAllValuesOf(c);
 			
 			
@@ -464,9 +466,11 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			}
 		}
 		}else{
+			System.out.println("springt in die else");
 			report.removeRow(headline);
 			SimpleParagraph errornote=new SimpleParagraph("Es wurden leider keine Kontakte mit der eingegebenen Eigenschaft gefunden");
 			header.addSubParagraph(errornote);	
+			report.setHeaderData(header);
 		}
 		return report;
 }
