@@ -523,7 +523,13 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		return report;
 	}
 }
+
 	public Vector<User> getAllUsers(){
 		return admin.getAllUsers();
+	}
+	@Override
+	public Vector<Property> getAllPredefinedPropertiesOfReport() throws IllegalArgumentException {
+		
+		return admin.getAllPredefinedPropertiesOf();
 	}
 }

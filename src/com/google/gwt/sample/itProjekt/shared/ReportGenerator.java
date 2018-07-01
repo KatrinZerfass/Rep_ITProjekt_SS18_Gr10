@@ -64,5 +64,6 @@ public interface ReportGenerator extends RemoteService{
 
 	public abstract Vector<User> getAllUsers() throws IllegalArgumentException;
 
+	public abstract Vector<Property> getAllPredefinedPropertiesOfReport() throws IllegalArgumentException;
 
 }
