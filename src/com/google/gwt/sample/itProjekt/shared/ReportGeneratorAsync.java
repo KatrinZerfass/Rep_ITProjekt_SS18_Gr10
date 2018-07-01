@@ -1,5 +1,7 @@
 package com.google.gwt.sample.itProjekt.shared;
 
+import java.util.Vector;
+
 import com.google.gwt.sample.itProjekt.shared.bo.Property;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
 import com.google.gwt.sample.itProjekt.shared.bo.Value;
@@ -22,6 +24,8 @@ public interface ReportGeneratorAsync {
 	void generateAllSharedContactsOfUserReport(User owner, User receiver, AsyncCallback<AllSharedContactsOfUserReport> callback);
 
 	void generateAllContactsWithPropertyReport(User user, Property property, AsyncCallback<AllContactsWithPropertyReport> callback);
+
+	void getAllUsers(AsyncCallback<Vector<User>> asyncCallback);
 
 
 }

@@ -1,5 +1,7 @@
 package com.google.gwt.sample.itProjekt.shared;
 
+import java.util.Vector;
+
 import com.google.gwt.sample.itProjekt.shared.bo.Property;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
 import com.google.gwt.sample.itProjekt.shared.bo.Value;
@@ -59,6 +61,8 @@ public interface ReportGenerator extends RemoteService{
 	public abstract AllContactsWithPropertyReport generateAllContactsWithPropertyReport(User user, Property property) throws IllegalArgumentException;
 
 	public abstract AllContactsWithValueReport generateAllContactsWithValueReport(User user, Value value) throws IllegalArgumentException;
+
+	public abstract Vector<User> getAllUsers() throws IllegalArgumentException;
 
 
 }
