@@ -1295,13 +1295,11 @@ public class ContactForm extends VerticalPanel {
 				Window.alert("allValueTextBoxes toString: " +allValueTextBoxes.toString()+
 								"\n allValueTextBoxes size: " +allValueTextBoxes.size());
 				
+				
+				
 				for(ValueTextBox vtb : allValueTextBoxes) {
 					Window.alert("vtb Wert ist: " +vtb.getText()+
-									"\n vtb isChanged ist: " +vtb.getIsChanged());
-				}
-				
-				
-				for(ValueTextBox vtb : allValueTextBoxes) {
+							"\n vtb isChanged ist: " +vtb.getIsChanged());
 					/*
 					 * Wenn in einer ValueTextBox der Inhalt verändert wurde, so wird für diese Ausprägung die Methode editValue() aufgerufen.
 					 */
@@ -1314,6 +1312,7 @@ public class ContactForm extends VerticalPanel {
 							}
 							public void onSuccess(Value arg0) {
 								Window.alert("Die Änderungen wurden gespeichert.\n (Ausprägungen)");
+								Window.alert(arg0.getContent());
 							}
 						});
 					}
@@ -1857,7 +1856,8 @@ public class ContactForm extends VerticalPanel {
 		 */
 		
 		
-		
+		firstnameTextBox = new ValueTextBox("Name");
+		lastnameTextBox = new ValueTextBox("Name");
 		firstnameTextBox.setEnabled(true);
 		lastnameTextBox.setEnabled(true);
 		sexListBox.setEnabled(true);
@@ -2349,23 +2349,26 @@ public class ContactForm extends VerticalPanel {
 								((LockButton) addressTable.getWidget(0, 2)).setEnabled(false);
 								((DeleteValueButton) addressTable.getWidget(0,3)).setEnabled(false);
 							}
+							houseNrTextBox.setValue(allValuesOfContact.get(i));
+							plzTextBox.setValue(allValuesOfContact.get(i));
+							cityTextBox.setValue(allValuesOfContact.get(i));
 						}
 						break;
 		
-				case 7:  // Hausnummer
-						houseNrTextBox.setValue(allValuesOfContact.get(i));
-						break;
-						
-				
-				case 8:  // PLZ
-						plzTextBox.setValue(allValuesOfContact.get(i));
-						break;
-				
-				
-				case 9:  // Wohnort
-						cityTextBox.setValue(allValuesOfContact.get(i));
-						break;
-						
+//				case 7:  // Hausnummer
+//						houseNrTextBox.setValue(allValuesOfContact.get(i));
+//						break;
+//						
+//				
+//				case 8:  // PLZ
+//						plzTextBox.setValue(allValuesOfContact.get(i));
+//						break;
+//				
+//				
+//				case 9:  // Wohnort
+//						cityTextBox.setValue(allValuesOfContact.get(i));
+//						break;
+//						
 				
 				case 10:  // Homepage
 						row = contactTable.getRowCount();
