@@ -246,7 +246,7 @@ public Property findByType(Property property){
 	
 	try{
 		Statement stmt = con.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT P_ID, type, C_ID FROM T_Property WHERE type ='"+ property.getType() + "' AND C_ID=20000000 ORDER BY P_ID");
+		ResultSet rs = stmt.executeQuery("SELECT P_ID, type, C_ID FROM T_Property WHERE type ='"+ property.getType() + "' ORDER BY P_ID");
 		if (rs.next()){
 			Property p = new Property();
 			p.setId(rs.getInt("P_ID"));

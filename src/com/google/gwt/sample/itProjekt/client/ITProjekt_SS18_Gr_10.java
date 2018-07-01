@@ -299,6 +299,36 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 				loadApplication();
 				
 			}
+
+			/*
+			   * Die Methode loadApplication() wird aufgerufen, wenn der Benutzer eingeloggt ist. Sie beinhaltet 
+			   * die eigentliche Applikation.  
+			   */
+			  	public void loadUserInformation() {
+				    	
+					if(editorAdministration == null) {
+						editorAdministration = ClientsideSettings.getEditorAdministration();
+				    }
+					
+				    
+				    
+				    // Anlegen des User Objekts & Abspeichern in einer lokalen Variabel
+				    
+				    editorAdministration.getUserInformation(loginInfo.getEmailAddress(), new AsyncCallback<User>() {
+						
+				    	public void onFailure(Throwable caught) {
+				    		Window.alert("AsyncCallback fehlgeschlagen");			
+						}
+			
+						public void onSuccess(User result) {
+							ClientsideSettings.setUser(result);
+							user = result;
+							loadApplication();
+							
+						}
+						   		
+				    });
+			  	}
 			   		
 	    });
   	}	    				
