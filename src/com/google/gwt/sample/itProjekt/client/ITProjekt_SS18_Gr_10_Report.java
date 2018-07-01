@@ -25,6 +25,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
@@ -54,6 +55,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	HorizontalPanel reportbuttonPanel=new HorizontalPanel();
 	HorizontalPanel searchPanel=new HorizontalPanel();
 	HorizontalPanel descriptionPanel = new HorizontalPanel();
+	HorizontalPanel propertyPanel=new HorizontalPanel();
 	
 	HorizontalPanel addPanel = new HorizontalPanel();
 	
@@ -68,6 +70,8 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	Label searchheading = new Label("Hier können Sie Ihre Kontakte gefiltert nach Eigenschaft oder Ausprägung ausgeben.");
 	Label searchLabel = new Label("Suche: ");
 	TextBox searchInput = new TextBox();
+	TextBox propertyInput = new TextBox();
+	ListBox propertylistbox = new ListBox();
 	Button allContactsOfUserButton = new Button("Alle Kontakte eines Nutzers");
 	Button allSharedContactsOfUserButton = new Button("Alle geteilten Kontakte eines Nutzers");
 	Button allContactsWithValueButton = new Button("Kontakte mit bestimmter Ausprägung");
@@ -325,7 +329,8 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			reportbuttonPanel.add(allContactsOfUserButton);
 			addPanel.add(allSharedContactsOfUserButton);
 			addPanel.add(allContactsWithValueButton);
-			addPanel.add(allContactsWithPropertyButton);
+			propertyPanel.add(propertylistbox);
+			propertyPanel.add(allContactsWithPropertyButton);
 			
 			RootPanel.get("signout").add(signOutLink);
 			
@@ -333,7 +338,9 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			mainPanel.add(searchPanel);
 			mainPanel.add(descriptionPanel);
 			mainPanel.add(addPanel);
+			mainPanel.add(propertyPanel);
 			RootPanel.get("report").add(mainPanel);
+			
 			  
 		  }
 	 
