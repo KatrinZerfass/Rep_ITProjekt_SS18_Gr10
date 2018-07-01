@@ -268,6 +268,18 @@ Connection con = DBConnection.connection();
 				e2.printStackTrace();
 
 			}
+			
+			try{
+				
+				Statement stmt = con.createStatement();
+				stmt.executeUpdate("DELETE FROM T_Values WHERE C_ID =" +contact.getId());
+			}
+		
+		catch (SQLException e2){
+			e2.printStackTrace();
+			
+		}
+			
 			try{
 				
 				Statement stmt3 = con.createStatement();
@@ -278,6 +290,17 @@ Connection con = DBConnection.connection();
 			e2.printStackTrace();
 			
 		}
+			try{
+				
+				Statement stmt = con.createStatement();
+				stmt.executeUpdate("DELETE FROM T_Contact_Contactlist WHERE C_ID =" +contact.getId());
+			}
+		
+		catch (SQLException e2){
+			e2.printStackTrace();
+			
+		}
+				
 			
 			try{
 				
@@ -290,27 +313,7 @@ Connection con = DBConnection.connection();
 			
 		}
 			
-			try{
 			
-			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM T_Contact_Contactlist WHERE C_ID =" +contact.getId());
-		}
-	
-	catch (SQLException e2){
-		e2.printStackTrace();
-		
-	}
-			
-try{
-				
-				Statement stmt = con.createStatement();
-				stmt.executeUpdate("DELETE FROM T_Values WHERE C_ID =" +contact.getId());
-			}
-		
-		catch (SQLException e2){
-			e2.printStackTrace();
-			
-		}
 
 			
 		}
