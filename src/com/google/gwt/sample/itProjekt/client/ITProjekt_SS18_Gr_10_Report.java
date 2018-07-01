@@ -136,6 +136,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 		allSharedContactsOfUserButton.addStyleName("reportbutton");
 		allContactsWithValueButton.addStyleName("reportbutton");
 		allContactsWithPropertyButton.addStyleName("reportbutton");
+		propertyInput.addStyleName("sonstigeinput");
 		reportGenerator.getAllPredefinedPropertiesOfReport(new AsyncCallback<Vector<Property>>(){
 			public void onFailure(Throwable t) {
 				Window.alert("Auslesen aller vordefinierten Eigenschaften fehlgeschlagen");
