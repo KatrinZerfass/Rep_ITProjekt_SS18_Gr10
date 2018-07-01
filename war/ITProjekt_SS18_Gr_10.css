@@ -156,6 +156,10 @@ div#Trailer {
 	background-color: #49ba8f;
 }
 
+.addValueButton.disabled{
+	background-color: #d8d8d8;
+}
+
 .lockButton {
 	width: 17px;
     height: 17px;
