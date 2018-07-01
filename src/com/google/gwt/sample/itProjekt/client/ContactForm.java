@@ -1254,6 +1254,16 @@ public class ContactForm extends VerticalPanel {
 					
 			}
 			else {
+				
+				Window.alert("allValueTextBoxes toString: " +allValueTextBoxes.toString()+
+								"\n allValueTextBoxes size: " +allValueTextBoxes.size());
+				
+				for(ValueTextBox vtb : allValueTextBoxes) {
+					Window.alert("vtb Wert ist: " +vtb.getText()+
+									"\n vtb isChanged ist: " +vtb.getIsChanged());
+				}
+				
+				
 				for(ValueTextBox vtb : allValueTextBoxes) {
 					/*
 					 * Wenn in einer ValueTextBox der Inhalt verändert wurde, so wird für diese Ausprägung die Methode editValue() aufgerufen.
