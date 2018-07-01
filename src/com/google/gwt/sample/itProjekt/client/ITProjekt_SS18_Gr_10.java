@@ -146,7 +146,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 				public void onSuccess(Vector<User> arg0) {
 					
 					for(User loopUser : arg0) {
-						if (loopUser.equals(user)) {
+						if (!loopUser.equals(user)) {
 							getOracle().add(loopUser.getEmail());
 						}
 					}

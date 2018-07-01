@@ -261,7 +261,7 @@ div#Trailer {
 
 .gwt-ListBox{
 	    width: 100%;
-    padding: 6px 20px;
+    padding: 6px 6px;
     margin: 8px 0;
     display: inline-block;
     border: 1px solid #ccc;
@@ -296,14 +296,20 @@ body{
 	position: relative;
     width: 98%;
 }
-.GPBYFDEJ .GPBYFDEN{
+
+.GPBYFDEJ.GPBYFDEN{
 	background-color: #18878B !important;
 	background-image:none !important;
 }
-.GPBYFDEO .GPBYFDEN{
+.GPBYFDEO.GPBYFDEN{
 	background-color: #25A192 !important;
 	background-image:none !important;
 }
+
+.GPBYFDEO{
+	background-color: #25A192 !important;
+	background-image:none !important;
+} 
 
 .label_search{
 	width: 225px;

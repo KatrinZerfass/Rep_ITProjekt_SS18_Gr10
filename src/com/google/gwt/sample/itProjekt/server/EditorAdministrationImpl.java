@@ -7,6 +7,7 @@ import com.google.gwt.sample.itProjekt.shared.bo.*;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.google.gwt.sample.itProjekt.server.db.*;
 
+@SuppressWarnings("serial")
 public class EditorAdministrationImpl extends RemoteServiceServlet implements EditorAdministration{
 	
 	/**
@@ -201,7 +202,10 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	public void deleteContact(Contact contact, boolean owner, User user) throws IllegalArgumentException {
 				
 		if(owner == true){
-			cMapper.delete(contact);
+			Contact deletedcontact = new Contact();
+			deletedcontact.setId(contact.getId());
+			System.out.println(contact.getFirstname());
+			cMapper.delete(deletedcontact);
 		
 		}else{
 			deletePermission(user, contact);
@@ -214,7 +218,6 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 
 		ContactList newcontactlist = new ContactList();
 		newcontactlist.setName(name);
-		newcontactlist.setOwner(user.getId());
 		
 		return clMapper.insert(newcontactlist, user);
 	}
@@ -239,8 +242,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	@Override
 	public Permission shareContactList(User sourceUser, String shareUserEmail, ContactList shareContactList) throws IllegalArgumentException {
 		
-		Vector<Contact> allContactsOfCL = clMapper.getAllContacts(shareContactList);
-		
+
 		Permission newCLpermission = new Permission();
 		newCLpermission.setSourceUserID(sourceUser.getId());
 		newCLpermission.setParticipantID(uMapper.findByEMail(shareUserEmail).getId());
@@ -496,7 +498,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		return result;
 	}
 
-	public Vector<User> getSourceToSharedContact(Contact contact, User receivingUser) throws IllegalArgumentException {
+	public User getSourceToSharedContact(Contact contact, User receivingUser) throws IllegalArgumentException {
 		
 		return pmMapper.getSourceUserByUIDAndCID(receivingUser, contact);
 	}
@@ -508,7 +510,15 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		return pmMapper.findAll();
 	}
 	
-//	public User getOwnerOfContact (Contact c) throws IllegalArgumentException {
-//		
-//	}
+	@Override
+	public User getOwnerOfContact (Contact c) throws IllegalArgumentException {
+		User user= new User();
+		user=uMapper.findByID(c.getOwner());
+		if(user!=null){
+			return user;
+		}
+		else{
+			return null;
+		}
+		}
 }

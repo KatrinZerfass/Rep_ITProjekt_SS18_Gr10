@@ -7,7 +7,6 @@ import com.google.gwt.sample.itProjekt.server.EditorAdministrationImpl;
 import com.google.gwt.sample.itProjekt.shared.ReportGenerator;
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.sample.itProjekt.shared.bo.Property;
-import com.google.gwt.sample.itProjekt.shared.bo.Permission;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
 import com.google.gwt.sample.itProjekt.shared.bo.Value;
 import com.google.gwt.sample.itProjekt.shared.report.AllContactsOfUserReport;
@@ -18,7 +17,6 @@ import com.google.gwt.sample.itProjekt.shared.report.Column;
 import com.google.gwt.sample.itProjekt.shared.report.CompositeParagraph;
 import com.google.gwt.sample.itProjekt.shared.report.Row;
 import com.google.gwt.sample.itProjekt.shared.report.SimpleParagraph;
-import com.google.gwt.thirdparty.common.css.compiler.ast.CssCombinatorNode.Combinator;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 
@@ -93,7 +91,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			report.setCreated(new Date());
 			CompositeParagraph header=new CompositeParagraph();
 			SimpleParagraph sp = new SimpleParagraph("Nutzer: " + user.getEmail());
-
+			
 			header.addSubParagraph(sp);
 
 			report.setHeaderData(header);
@@ -112,19 +110,22 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		
 			System.out.println(user.getEmail());
 			System.out.println(user.getId());
+			User owner=new User();
+			
 			Vector<Contact> allContacts= this.admin.getAllContactsOfActiveUser(user);
 			System.out.println(allContacts.toString());
 	
 			if(allContacts.size()!=0){
 				for (Contact c: allContacts) {
+				owner=admin.getOwnerOfContact(c);
 				System.out.println(c.getFirstname() + c.getLastname());
 				Vector<Value> allValues=this.admin.getAllValuesOf(c);
 				System.out.println(allValues.toString());
 				Row contactRow=new Row();
 				
 				
-				contactRow.addColumn(new Column(String.valueOf((admin.getUserByID(admin.getContact(c.getId()).getOwner())).getEmail())));
-				contactRow.addColumn(new Column(String.valueOf(admin.getSourceToSharedContact(c, user).get(0).getEmail())));
+				contactRow.addColumn(new Column(String.valueOf(owner.getEmail())));
+				contactRow.addColumn(new Column(String.valueOf(admin.getSourceToSharedContact(c, user).getEmail())));
 				contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 				contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
 				
@@ -213,16 +214,17 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		
 		
 		report.addRow(headline);
+		User contactowner=new User();
 
 		Vector<Contact> allContacts=this.admin.getAllSharedContactsOfUserWithOtherUser(owner, receiver.getEmail());
 		
 		if(allContacts.size()!=0){
 			for (Contact c: allContacts) {
-				
+				contactowner=admin.getOwnerOfContact(c);
 				Vector<Value> allValues=this.admin.getAllValuesOf(c);
 				Row contactRow=new Row();
 				
-				contactRow.addColumn(new Column(String.valueOf((admin.getUserByID(admin.getContact(c.getId()).getOwner())).getEmail())));
+				contactRow.addColumn(new Column(String.valueOf(contactowner.getEmail())));
 				contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 				contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
 				
@@ -308,6 +310,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 		
 		report.addRow(headline);
+		User owner=new User();
 
 		Vector<Contact> allContacts=this.admin.getAllContactsOfUserWithValue(user, value);
 		
@@ -315,9 +318,9 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			for (Contact c: allContacts) {
 			Vector<Value> allValues=this.admin.getAllValuesOf(c);
 			Row contactRow=new Row();
-//			User owner=admin.getOwnerOfContact();
+			owner=admin.getOwnerOfContact(c);
 
-//			contactRow.addColumn(new Column(String.valueOf((owner)));
+			contactRow.addColumn(new Column(String.valueOf(owner.getEmail())));
 			contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 			contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
 			
@@ -387,7 +390,6 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		
 		report.setTitle("Alle Kontakte mit der Eigenschaft");
 		report.setCreated(new Date());
-			
 		CompositeParagraph header=new CompositeParagraph();	
 		header.addSubParagraph(new SimpleParagraph("Nutzer: " + user.getEmail()));
 		header.addSubParagraph(new SimpleParagraph("Gesuchte Eigenschaft: " + property.getType()));
@@ -402,20 +404,23 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		headline.addColumn(new Column("Geschlecht"));
 		headline.addColumn(new Column("Erstellungsdatum"));
 		headline.addColumn(new Column("Modifikationsdatum"));
-		
-		
+				
 		report.addRow(headline);
 
+		User owner=new User();
+
+		
 		Vector<Contact> allContacts=this.admin.getContactsOfUserWithProperty(user, property);
 		
 		if(allContacts.size()!=0){
 		for (Contact c: allContacts) {
+			owner= admin.getOwnerOfContact(c);
 			Vector<Value> allValues=this.admin.getAllValuesOf(c);
 			
 			
 			Row contactRow=new Row();
 			
-			contactRow.addColumn(new Column(String.valueOf((admin.getUserByID(admin.getContact(c.getId()).getOwner())).getEmail())));
+			contactRow.addColumn(new Column(String.valueOf(owner.getEmail())));
 			contactRow.addColumn(new Column(String.valueOf(c.getFirstname())));
 			contactRow.addColumn(new Column(String.valueOf(c.getLastname())));
 			

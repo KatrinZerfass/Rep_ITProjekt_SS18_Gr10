@@ -841,7 +841,7 @@ public class ContactForm extends VerticalPanel {
 				public void onSuccess(Vector<User> arg0) {
 					
 					for(User loopUser : arg0) {
-						if (loopUser.equals(currentUser)) {
+						if (!loopUser.equals(currentUser)) {
 							getOracle().add(loopUser.getEmail());
 						}
 					}
@@ -1030,10 +1030,42 @@ public class ContactForm extends VerticalPanel {
 	 * @author KatrinZerfass
 	 */
 	private class NewContactClickHandler implements ClickHandler{
-		DialogBox db = new DialogBox();
+	//	DialogBox db = new DialogBox();
 		
 		public void onClick(ClickEvent event) {
-			setSelected(null);
+			
+			if(!checkValue(firstnameTextBox) || !checkValue(lastnameTextBox) ) {
+				firstnameTextBox.setText("");
+				lastnameTextBox.setText("");
+				Window.alert("Ihr Kontakt konnte nicht angelegt werden, bitte versuchen Sie es erneut.");
+				
+			}else if(checkValue(firstnameTextBox) && checkValue(lastnameTextBox)){
+				
+			String sex = "o";
+			switch(sexListBox.getSelectedItemText()) {
+				case "männlich": 
+					sex = "m";
+					break;
+				case "weiblich": 
+					sex = "f";
+					break;
+				case "Sonstiges": 
+					sex = "o";
+					break;
+			}
+
+			editorAdministration.createContact(firstnameTextBox.getText(), lastnameTextBox.getText(), sex, currentUser, new AsyncCallback<Contact>(){
+				public void onFailure(Throwable t) {
+					Window.alert("Fehler im Kontakt anlegen");
+					
+				}
+				public void onSuccess(Contact result) {
+					Window.alert("Kontakt erfolgreich angelegt.");
+					clctvm.addContactOfContactList(clctvm.getMyContactsContactList(), result);
+					Window.alert("Owner des neuen Kontakts: " + result.getOwner());
+				}
+			});
+			}
 //			if(firstnameTextBox.isEnabled()==false) {
 //				firstnameTextBox.setEnabled(true);
 //				lastnameTextBox.setEnabled(true);
@@ -1041,34 +1073,34 @@ public class ContactForm extends VerticalPanel {
 //			if(sexListBox.isEnabled()==false) {
 //				sexListBox.setEnabled(true);
 //			}
-			/*
-			 * Bevor ein neuer Kontakt angelegt werden kann, muss der bestehende Kontakt aus dem Formular genommen werden.
-			 */
-			
-			
-			
-			/*
-			 * Die Dialogbox, die dem Benutzer sagt, was er tun muss, um einen neuen Kontakt anzulegen, wird konfiguriert.
-			 */
-			VerticalPanel vp = new VerticalPanel();
-			Label label = new Label("Tragen Sie im Formular die Daten des Kontakts ein und klicken Sie anschließend auf \"Änderungen speichern\".");
-			Button ok = new Button("Ok");
-			
-			vp.add(label);
-			vp.add(ok);
-			vp.setCellHorizontalAlignment(ok, ALIGN_RIGHT);
-			db.setTitle("Neuen Kontakt anlegen");
-			db.add(vp);
-			db.setWidth("250px");
-			db.setPopupPosition(500, 200);
-			db.show();
-		
-			ok.addClickHandler(new ClickHandler() {
-				public void onClick(ClickEvent event) {
-					db.hide();
-				}
-			});
-			
+//			/*
+//			 * Bevor ein neuer Kontakt angelegt werden kann, muss der bestehende Kontakt aus dem Formular genommen werden.
+//			 */
+//			
+//			
+//			
+//			/*
+//			 * Die Dialogbox, die dem Benutzer sagt, was er tun muss, um einen neuen Kontakt anzulegen, wird konfiguriert.
+//			 */
+//			VerticalPanel vp = new VerticalPanel();
+//			Label label = new Label("Tragen Sie im Formular die Daten des Kontakts ein und klicken Sie anschließend auf \"Änderungen speichern\".");
+//			Button ok = new Button("Ok");
+//			
+//			vp.add(label);
+//			vp.add(ok);
+//			vp.setCellHorizontalAlignment(ok, ALIGN_RIGHT);
+//			db.setTitle("Neuen Kontakt anlegen");
+//			db.add(vp);
+//			db.setWidth("250px");
+//			db.setPopupPosition(500, 200);
+//			db.show();
+//		
+//			ok.addClickHandler(new ClickHandler() {
+//				public void onClick(ClickEvent event) {
+//					db.hide();
+//				}
+//			});
+//			
 //			/*
 //			 * Mit Klick auf den neu entstandenen Button wird der Kontaktstamm im System angelegt. Anschließend wird der Kontakt selektiert.
 //			 */
@@ -1165,6 +1197,7 @@ public class ContactForm extends VerticalPanel {
 					public void onSuccess(Void arg0){
 						Window.alert("Kontakt erfolgreich gelöscht");
 						clctvm.removeContactOfContactList(clctvm.getSelectedContactList(), contactToDisplay);
+						clctvm.getNodeInfo(clctvm.getSelectedContactList());
 					}
 				});
 				
@@ -1210,38 +1243,9 @@ public class ContactForm extends VerticalPanel {
 		public void onClick(ClickEvent event) {
 			
 			if (contactToDisplay == null) {
-				if(firstnameTextBox.getText() == "" && lastnameTextBox.getText() == "") {
-					Window.alert("kein Kontakt ausgewählt");
-				}else {
-					if(!checkValue(firstnameTextBox) || !checkValue(lastnameTextBox) ) {
-						firstnameTextBox.setText("");
-						lastnameTextBox.setText("");
-						Window.alert("Ihr Kontakt konnte nicht angelegt werden, bitte versuchen Sie es erneut.");
+				Window.alert("kein Kontakt ausgewählt");
+				
 						
-					}else if (checkValue(firstnameTextBox) && checkValue(lastnameTextBox) ) {
-						String sex = "o";
-						switch(sexListBox.getSelectedItemText()) {
-							case "männlich": 
-								sex = "m";
-								break;
-							case "weiblich": 
-								sex = "f";
-								break;
-							case "Sonstiges": 
-								sex = "o";
-								break;
-						}
-						editorAdministration.createContact(firstnameTextBox.getText(), lastnameTextBox.getText(), sex, currentUser, new AsyncCallback<Contact>(){
-							public void onFailure(Throwable t) {
-								Window.alert("Fehler im Kontakt anlegen");
-								
-							}
-							public void onSuccess(Contact result) {
-								Window.alert("Kontakt erfolgreich angelegt.");
-								clctvm.addContactOfContactList(clctvm.getMyContactsContactList(), result);
-								Window.alert("Owner des neuen Kontakts: " + result.getOwner());
-							}
-						});
 						
 					
 //						for (final ValueTextBox vtb : allValueTextBoxes) {
@@ -1262,10 +1266,10 @@ public class ContactForm extends VerticalPanel {
 //							
 //						}
 						
-					}
 					
 					
-				}
+					
+				
 					
 			}
 			else {
@@ -1438,13 +1442,14 @@ public class ContactForm extends VerticalPanel {
 				public void onSuccess(ContactList arg0) {
 					Window.alert("Kontakt erfolgreich aus Kontaktliste entfernt.");
 					clctvm.removeContactOfContactList(arg0, contactToDisplay);
+					clctvm.getNodeInfo(clctvm.getSelectedContactList());
 				}
 			});
 		}
 	}
 	
 	private class NewPropertyClickHandler implements ClickHandler{
-		DialogBox db;
+		DialogBox db = new DialogBox();
 		TextBox inputTextBox;
 		int pid;
 		String ptype;
@@ -1456,9 +1461,7 @@ public class ContactForm extends VerticalPanel {
 			row = contactTable.getRowCount();
 			
 			if(ptype == "Geburtstag") {
-				db = new DialogBox();
-				//Abfrage, dass nur einmal hinzugefügt werden kann
-				//newPropertyListBox.removeItem(newPropertyListBox.getSelectedIndex());
+				
 				VerticalPanel dbPanel = new VerticalPanel();
 				db.setText("Geburtsdatum eintragen");
 				inputTextBox = new TextBox();
@@ -1492,7 +1495,6 @@ public class ContactForm extends VerticalPanel {
 				
 			}
 			else if(ptype == "Sonstiges") {
-				db = new DialogBox();
 				inputTextBox = new TextBox();
 				db.show();
 				VerticalPanel dbPanel = new VerticalPanel();
@@ -1846,6 +1848,7 @@ public class ContactForm extends VerticalPanel {
 					allValuesOfContact = new Vector<Value>();
 					for(Value v: values) {
 						allValuesOfContact.add(v);
+						Window.alert("isShared des Values " + v.getContent() + " = " + v.getIsShared()); 
 					}
 					Window.alert("Alle Ausprägungen des Kontaktes ausgelesen. \n"
 							+ "Anzahl der Values im Vektor: " + ((Integer)allValuesOfContact.size()).toString());
