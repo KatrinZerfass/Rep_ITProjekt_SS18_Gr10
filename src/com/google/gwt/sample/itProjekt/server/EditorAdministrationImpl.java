@@ -205,7 +205,8 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 			Contact deletedcontact = new Contact();
 			deletedcontact.setId(contact.getId());
 			System.out.println(contact.getFirstname());
-			cMapper.delete(deletedcontact);
+			//why? neuer contact?
+			cMapper.delete(contact);
 		
 		}else{
 			deletePermission(user, contact);
