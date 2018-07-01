@@ -185,9 +185,11 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 			contactListDataProvider.getList().remove(cl);
 			contactDataProviders.remove(cl);
 			
-			contactListDataProvider.refresh();
-			contactListDataProvider.flush();
+			//contactListDataProvider.refresh();
+			//contactListDataProvider.flush();
 			//TODO was tut refresh?
+			
+			contactListDataProvider.setList(contactListDataProvider.getList());
 		}
 	}
 	
@@ -228,9 +230,10 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		contactDataProviders.get(cl).getList().remove(c);
 		selectionModel.setSelected(cl, true);
 		
-		contactListDataProvider.refresh();
-		contactListDataProvider.flush();
+		//contactListDataProvider.refresh();
 		//TODO was tut refresh?
+		
+		contactListDataProvider.setList(contactListDataProvider.getList());
 	}
 	
 	public void addNameResults () {
