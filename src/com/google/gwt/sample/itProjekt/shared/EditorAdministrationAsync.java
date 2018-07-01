@@ -111,5 +111,8 @@ public interface EditorAdministrationAsync {
 			AsyncCallback<Vector<Contact>> callback);
 
 	void getOwnerOfContact(Contact c, AsyncCallback<User> callback);
+
+	void createAddress(String street, String housenumber, String zip, String city, Contact contact,
+			AsyncCallback<Value> callback);
 }
 

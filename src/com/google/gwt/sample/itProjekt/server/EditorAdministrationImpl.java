@@ -189,13 +189,18 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	@Override
 	public Permission shareContact(User sourceUser, String shareUserEmail, Contact shareContact) throws IllegalArgumentException {
 		
-		Permission newpermission = new Permission();
-		newpermission.setSourceUserID(sourceUser.getId());
-		newpermission.setParticipantID(uMapper.findByEMail(shareUserEmail).getId());
-		newpermission.setShareableObjectID(shareContact.getId());
-		newpermission.setIsowner(false);
+		if(uMapper.findByEMail(shareUserEmail).getId() != shareContact.getOwner()) {
+			Permission newpermission = new Permission();
+			newpermission.setSourceUserID(sourceUser.getId());
+			newpermission.setParticipantID(uMapper.findByEMail(shareUserEmail).getId());
+			newpermission.setShareableObjectID(shareContact.getId());
+			newpermission.setIsowner(false);
 		
-		return pmMapper.shareContact(newpermission);
+			return pmMapper.shareContact(newpermission);
+		}
+		else {
+			return null;
+		}
 	}
 
 	@Override
@@ -518,5 +523,14 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		else{
 			return null;
 		}
-		}
+	}
+	
+	public Value createAddress(String street, String housenumber, String zip, String city, Contact contact) {
+		
+		createValue(contact, 7, housenumber);
+		createValue(contact, 8, zip);
+		createValue(contact, 9, city);
+		
+		return createValue(contact, 6, street);
+	}
 }
