@@ -86,6 +86,7 @@ public class ContactForm extends VerticalPanel {
 	
 	Label newPropertyLabel = new Label("Eigenschaft hinzufügen");
 	Button addNewPropertyButton = new Button("Hinzufügen");
+	ClickHandler addPropertyClickHandler = null;
 	
 	/**Listbox für das Hinzufügen neuer Eigenschaften */
 	ListBox newPropertyListBox = new ListBox();
@@ -99,6 +100,30 @@ public class ContactForm extends VerticalPanel {
 	 */
 	Button saveChangesButton;
 	Button removeContactFromContactListButton;
+	
+	
+	public class CloseButton extends Button{
+		DialogBox db;
+		public CloseButton(DialogBox db) {
+			this.db = db;
+			this.addClickHandler(new CloseDBClickHandler(db)); 
+		}
+		
+		private class CloseDBClickHandler implements ClickHandler{
+			DialogBox db;
+			
+			public CloseDBClickHandler(DialogBox db) {
+				this.db=db;
+			}
+			
+			public void onClick(ClickEvent event) {
+				db.hide();
+			}
+			
+		}
+		
+	}
+	
 	
 	/**
 	 * Die innere Klasse LockButton.
@@ -1014,8 +1039,14 @@ public class ContactForm extends VerticalPanel {
 		addContactToContactListButton.addClickHandler(new AddContactToContactListClickHandler());
 		
 		removeContactFromContactListButton.addClickHandler(new RemoveContactFromContactListClickHandler());
-		Window.alert("instantiieren eines neuen newPropertyClickHandlers");
-		addNewPropertyButton.addClickHandler(new NewPropertyClickHandler());
+		
+		
+		if (addPropertyClickHandler == null) {
+			addPropertyClickHandler = new NewPropertyClickHandler();
+			addNewPropertyButton.addClickHandler(addPropertyClickHandler);
+			Window.alert("Setzen des addPropertyclickHandlers");
+		}
+		
 	
 	} //Ende von onLoad()
 	
