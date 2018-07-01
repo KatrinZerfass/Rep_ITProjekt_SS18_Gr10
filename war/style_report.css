@@ -183,3 +183,12 @@ h1 {
     margin: 0px 25px 14px 0px;
     padding: 12px 24px 12px 40px;
 }
+
+.gwt-ListBox{
+    padding: 9px 7px;
+    margin: 1px 26px 1px 73px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
