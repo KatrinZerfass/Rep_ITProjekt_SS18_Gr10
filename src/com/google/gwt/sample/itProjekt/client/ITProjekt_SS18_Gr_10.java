@@ -608,9 +608,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		public SearchButtonClickHandler(TextBox sTB) {
 			searchTextBox = sTB;
 		}
-		
-	
-		
+					
 		@Override
 		public void onClick(ClickEvent arg0) {
 			
@@ -640,7 +638,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 				public void onSuccess(Vector<Contact> arg0){
 					if(arg0.size() != 0){
 						clctvm.addValueResults();
-						clctvm.addContactOfSearchResultList(clctvm.getNameResultsCL(), arg0);
+						clctvm.addContactOfSearchResultList(clctvm.getValueResultsCL(), arg0);
 					}
 				}
 				
