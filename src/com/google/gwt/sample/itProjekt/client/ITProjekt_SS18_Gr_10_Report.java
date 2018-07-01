@@ -4,6 +4,8 @@ import java.util.Vector;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.sample.itProjekt.shared.LoginService;
@@ -134,7 +136,6 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 		allSharedContactsOfUserButton.addStyleName("reportbutton");
 		allContactsWithValueButton.addStyleName("reportbutton");
 		allContactsWithPropertyButton.addStyleName("reportbutton");
-	
 		reportGenerator.getAllPredefinedPropertiesOfReport(new AsyncCallback<Vector<Property>>(){
 			public void onFailure(Throwable t) {
 				Window.alert("Auslesen aller vordefinierten Eigenschaften fehlgeschlagen");
@@ -147,6 +148,18 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			}
 		});
 		
+		propertylistbox.addChangeHandler(new ChangeHandler() {
+            @Override
+            public void onChange(ChangeEvent event) {
+            	int size=propertylistbox.getItemCount();
+            	int Item = propertylistbox.getSelectedIndex();
+            	
+            	if(Item==(size-1)){
+            		propertyPanel.add(propertyInput);
+                	}
+            	
+
+            }});
 		LoginServiceAsync loginService = GWT.create(LoginService.class);
 	    loginService.login("https://it-projekt-gruppe-10-203610.appspot.com/ITProjekt_SS18_Gr_10_Report.html", new AsyncCallback<LoginInfo>() {
 	    	public void onFailure(Throwable error) {

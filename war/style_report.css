@@ -52,7 +52,7 @@ h1 {
 
 #reporttext {
 	position: relative;
-	top: 180px;
+	top: 280px;
 	background-color: #8080801a;
 	width: 100%;
 	padding: 10px 70px 70px;
@@ -146,18 +146,7 @@ h1 {
 .signout:hover {
 	background-color: #c05c5f;
 }
-.reportSuggetBox{
-	background-color: white;
-    background-image: url(searchicon.png);
-    background-position: 10px 10px;
-    background-repeat: no-repeat;
-    padding-left: 40px;
-    -moz-border-radius: 4px;
-    -webkit-border-radius: 4px;
-    border-radius: 4px;
-    margin: 0px 25px 14px 0px;
-    padding: 12px 65px;
-}
+
 
 /*Startseite CSS*/
 #startseiteLogo{
@@ -183,3 +172,23 @@ h1 {
     position: absolute;
 }
 
+.reportSuggestBox{
+	background-color: white;
+    background-image: url(searchicon.png);
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    margin: 0px 25px 14px 0px;
+    padding: 12px 24px 12px 40px;
+}
+
+.gwt-ListBox{
+    padding: 9px 7px;
+    margin: 1px 26px 1px 73px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
