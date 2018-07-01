@@ -205,6 +205,7 @@ public class ContactForm extends VerticalPanel {
 									
 								}
 								public void onSuccess(Value v) {
+									Window.alert("Adresse zu \"nicht geteilt \" gesetzt");
 												
 								}
 							});
@@ -2336,32 +2337,40 @@ public class ContactForm extends VerticalPanel {
 							 * vier Ausprägungen, die zur Anschrift gehören.
 							 */
 							streetTextBox.setValue(allValuesOfContact.get(i));
-							((LockButton) addressTable.getWidget(0, 2)).setValue(allValuesOfContact.get(i));
-							((DeleteValueButton) addressTable.getWidget(0,3)).setValue(allValuesOfContact.get(i));
+							((ValueDisplay) addressTable.getWidget(0, 2)).setValue(allValuesOfContact.get(i));
+							
 							
 							if(compareUser()) {
-								((LockButton) addressTable.getWidget(0, 2)).setEnabled(true);
-								((DeleteValueButton) addressTable.getWidget(0,3)).setEnabled(true);
+								((ValueDisplay) addressTable.getWidget(0, 2)).enableButtons();
+//								((LockButton) addressTable.getWidget(0, 2)).setEnabled(true);
+//								((DeleteValueButton) addressTable.getWidget(0,3)).setEnabled(true);
 							}
 							else {
-								((LockButton) addressTable.getWidget(0, 2)).setEnabled(false);
-								((DeleteValueButton) addressTable.getWidget(0,3)).setEnabled(false);
+								
+								((ValueDisplay) addressTable.getWidget(0, 2)).disableButtons();
+//								((LockButton) addressTable.getWidget(0, 2)).setEnabled(false);
+//								((DeleteValueButton) addressTable.getWidget(0,3)).setEnabled(false);
+							
 							}
 							
 						}
+						Window.alert("case 6 durchgelaufen");
 						break;
 		
 				case 7:  // Hausnummer
+					Window.alert("case 7");
 						houseNrTextBox.setValue(allValuesOfContact.get(i));
 						break;
 						
 				
 				case 8:  // PLZ
+					Window.alert("case 8");
 						plzTextBox.setValue(allValuesOfContact.get(i));
 						break;
 				
 				
 				case 9:  // Wohnort
+					Window.alert("case 9");
 						cityTextBox.setValue(allValuesOfContact.get(i));
 						break;
 						
@@ -2430,7 +2439,7 @@ public class ContactForm extends VerticalPanel {
 								ptype = p.getType();
 									
 							}else {
-								Window.alert("Fehler beim auslesen der ptype");
+								Window.alert("Fehler beim auslesen der ptype: " + ((Integer) pid).toString());
 							}
 						}
 					
