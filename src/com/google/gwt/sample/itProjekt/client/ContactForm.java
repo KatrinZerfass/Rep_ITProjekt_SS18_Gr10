@@ -1037,7 +1037,9 @@ public class ContactForm extends VerticalPanel {
 	//	DialogBox db = new DialogBox();
 		
 		public void onClick(ClickEvent event) {
-			
+			if(contactToDisplay != null) {
+				setSelected(null);
+			}
 			if(!checkValue(firstnameTextBox) || !checkValue(lastnameTextBox) ) {
 				firstnameTextBox.setText("");
 				lastnameTextBox.setText("");
@@ -1468,7 +1470,8 @@ public class ContactForm extends VerticalPanel {
 				
 				addBirthdayButton.addClickHandler(new ClickHandler(){
 					public void onClick(ClickEvent event) {
-						
+						db1.hide();
+						Window.alert("Dialogbox Titel: " + db1.getText());
 						
 						
 						editorAdministration.createValue(contactToDisplay, 4, inputTextBox1.getText(), new AsyncCallback<Value>() {
@@ -1477,7 +1480,7 @@ public class ContactForm extends VerticalPanel {
 							}
 							
 							public void onSuccess(Value result) {
-								db1.hide();
+							
 								Label birthdateLabel = new Label("Geburtsdatum: ");
 								contactTable.setWidget(3, 2, birthdateLabel);
 								
@@ -1506,7 +1509,8 @@ public class ContactForm extends VerticalPanel {
 					
 				addPropertyButton.addClickHandler(new ClickHandler(){
 					public void onClick(ClickEvent event) {
-						
+						db2.hide();
+						Window.alert("Dialogbox Titel: " + db1.getText());
 						
 						
 						editorAdministration.createProperty(contactToDisplay, inputTextBox2.getText(), new AsyncCallback<Property>() {
@@ -1515,7 +1519,7 @@ public class ContactForm extends VerticalPanel {
 							}
 							
 							public void onSuccess(Property result) {
-								db2.hide();
+								
 								ptype = result.getType();
 								pid = result.getId();
 								Window.alert("Eigenschaft anlegen erfolgreich");
@@ -1524,8 +1528,7 @@ public class ContactForm extends VerticalPanel {
 								
 								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
 								contactTable.setWidget(row, 1, new ValueTable(pid));
-								Window.alert("Reihe der neu hinzugefügten Eigenschaft: " +((Integer) row).toString() + "\nKatrin");
-								Window.alert("Pid der neuen ValueTable" + ((Integer) ((ValueTable)contactTable.getWidget(row, 1)).getPid()).toString() + "\nKatrin");
+								
 							}
 						
 						});
