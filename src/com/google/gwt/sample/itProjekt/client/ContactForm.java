@@ -1804,7 +1804,7 @@ public class ContactForm extends VerticalPanel {
 			 */
 			
 			
-			Window.alert("Anzahl predefined Properties: " + ((Integer) allPredefinedProperties.size()).toString());
+		
 			for (Property p : allPredefinedProperties) {
 				newPropertyListBox.addItem(p.getType());
 			}
@@ -1850,10 +1850,10 @@ public class ContactForm extends VerticalPanel {
 					allValuesOfContact = new Vector<Value>();
 					for(Value v: values) {
 						allValuesOfContact.add(v);
-						Window.alert("isShared des Values " + v.getContent() + " = " + v.getIsShared()); 
+					//	Window.alert("isShared des Values " + v.getContent() + " = " + v.getIsShared()); 
 					}
-					Window.alert("Alle Ausprägungen des Kontaktes ausgelesen. \n"
-							+ "Anzahl der Values im Vektor: " + ((Integer)allValuesOfContact.size()).toString());
+//					Window.alert("Alle Ausprägungen des Kontaktes ausgelesen. \n"
+//							+ "Anzahl der Values im Vektor: " + ((Integer)allValuesOfContact.size()).toString());
 					
 					for(Value v: allValuesOfContact) {
 						if(v.getPropertyid() >10) {
@@ -2360,7 +2360,6 @@ public class ContactForm extends VerticalPanel {
 								contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
 							}
 						}else {
-							Window.alert("else: neues Value Panel");
 							contactTable.setWidget(row, 0, new ValuePanel(pid, row, ptype + ": "));
 							contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
 						}
