@@ -102,19 +102,24 @@ public class ContactForm extends VerticalPanel {
 	 */
 	Button saveChangesButton;
 	Button removeContactFromContactListButton;
-	
+	public class OurDialogBox extends DialogBox{
+		public OurDialogBox(){
+			CloseButton close= new CloseButton(this);
+			this.add(close);
+		}
+	}
 	
 	public class CloseButton extends Button{
-		DialogBox db;
-		public CloseButton(DialogBox db) {
+		OurDialogBox db;
+		public CloseButton(OurDialogBox db) {
 			this.db = db;
 			this.addClickHandler(new CloseDBClickHandler(db)); 
 		}
 		
 		private class CloseDBClickHandler implements ClickHandler{
-			DialogBox db;
+			OurDialogBox db;
 			
-			public CloseDBClickHandler(DialogBox db) {
+			public CloseDBClickHandler(OurDialogBox db) {
 				this.db=db;
 			}
 			
@@ -442,7 +447,7 @@ public class ContactForm extends VerticalPanel {
 		 */
 		public void addValuePopUp(int pid, int row) {
 
-			DialogBox addValuePopUp = new DialogBox();
+			OurDialogBox addValuePopUp = new OurDialogBox();
 			addValuePopUp.setText("Neue Ausprägung hinzufügen");
 			addValuePopUp.setAnimationEnabled(true);
 			addValuePopUp.setGlassEnabled(true);
@@ -517,7 +522,7 @@ public class ContactForm extends VerticalPanel {
 		 * @author KatrinZerfass
 		 */
 		private class AddValueClickHandler implements ClickHandler {
-			DialogBox popup;
+			OurDialogBox popup;
 			ValueTextBox tb;
 			FlexTable vt;
 			int pid;
@@ -532,7 +537,7 @@ public class ContactForm extends VerticalPanel {
 			 * @param pid die ID der Eigenschaftsart des AddValueButtons
 			 * @param content der vom Nutzer eingetragene Inhalt der neuen Ausprägung
 			 */
-			public AddValueClickHandler(DialogBox popup, ValueTextBox tb, ValueTable vt, int pid) {
+			public AddValueClickHandler(OurDialogBox popup, ValueTextBox tb, ValueTable vt, int pid) {
 				this.popup = popup;
 				this.tb = tb;
 				this.vt = vt;
@@ -841,7 +846,7 @@ public class ContactForm extends VerticalPanel {
 	 * @author JanNoller
 	 */
 	
-	public class EmailDialogBox extends DialogBox{
+	public class EmailDialogBox extends OurDialogBox{
 		
 		private String input;
 		
@@ -1350,7 +1355,7 @@ public class ContactForm extends VerticalPanel {
 	 */
 	private class AddContactToContactListClickHandler implements ClickHandler {
 		
-		DialogBox db = new DialogBox();
+		OurDialogBox db = new OurDialogBox();
 	
 		ListBox listbox = new ListBox();
 		VerticalPanel panel= new VerticalPanel();
@@ -1476,8 +1481,8 @@ public class ContactForm extends VerticalPanel {
 	}
 	
 	private class NewPropertyClickHandler implements ClickHandler{
-		DialogBox db1;
-		DialogBox db2;
+		OurDialogBox db1;
+		OurDialogBox db2;
 		TextBox inputTextBox1;
 		TextBox inputTextBox2;
 		int pid;
@@ -1490,7 +1495,7 @@ public class ContactForm extends VerticalPanel {
 			row = contactTable.getRowCount();
 			
 			if(ptype == "Geburtstag") {
-				db1 = new DialogBox();
+				db1 = new OurDialogBox();
 				inputTextBox1 = new TextBox();
 				VerticalPanel db1Panel = new VerticalPanel();
 				db1.setText("Geburtsdatum eintragen");
@@ -1530,7 +1535,7 @@ public class ContactForm extends VerticalPanel {
 				
 			}
 			else if(ptype == "Sonstiges") {
-				db2 = new DialogBox();
+				db2 = new OurDialogBox();
 				inputTextBox2 = new TextBox();
 				
 				VerticalPanel db2Panel = new VerticalPanel();
