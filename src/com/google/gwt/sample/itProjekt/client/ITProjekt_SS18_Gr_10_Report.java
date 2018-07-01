@@ -4,6 +4,8 @@ import java.util.Vector;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.sample.itProjekt.shared.LoginService;
@@ -134,7 +136,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 		allSharedContactsOfUserButton.addStyleName("reportbutton");
 		allContactsWithValueButton.addStyleName("reportbutton");
 		allContactsWithPropertyButton.addStyleName("reportbutton");
-	
+		propertyInput.addStyleName("sonstigeinput");
 		reportGenerator.getAllPredefinedPropertiesOfReport(new AsyncCallback<Vector<Property>>(){
 			public void onFailure(Throwable t) {
 				Window.alert("Auslesen aller vordefinierten Eigenschaften fehlgeschlagen");
@@ -147,6 +149,18 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			}
 		});
 		
+		propertylistbox.addChangeHandler(new ChangeHandler() {
+            @Override
+            public void onChange(ChangeEvent event) {
+            	int size=propertylistbox.getItemCount();
+            	int Item = propertylistbox.getSelectedIndex();
+            	
+            	if(Item==(size-1)){
+            		propertyPanel.add(propertyInput);
+                	}
+            	
+
+            }});
 		LoginServiceAsync loginService = GWT.create(LoginService.class);
 	    loginService.login("https://it-projekt-gruppe-10-203610.appspot.com/ITProjekt_SS18_Gr_10_Report.html", new AsyncCallback<LoginInfo>() {
 	    	public void onFailure(Throwable error) {
@@ -279,9 +293,9 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			allContactsWithPropertyButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					if(sb.getSuggestBox().getText() != ""){
+					if(propertylistbox.getSelectedItemText() != "Sonstiges"){
 					Property p = new Property();
-					p.setType(sb.getSuggestBox().getText());
+					p.setType(propertylistbox.getSelectedItemText());
 					 reportGenerator.generateAllContactsWithPropertyReport(user, p, new AsyncCallback<AllContactsWithPropertyReport>() {
 						 public void onFailure(Throwable caught) {
 							
@@ -299,8 +313,29 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 						 }
 					 });
 	   			}else{
+	   				if(propertyInput.getText() != ""){
+	   				Property p = new Property();
+					p.setType(propertyInput.getText());
+					 reportGenerator.generateAllContactsWithPropertyReport(user, p, new AsyncCallback<AllContactsWithPropertyReport>() {
+						 public void onFailure(Throwable caught) {
+							
+							 RootPanel.get("reporttext").setVisible(false);
+							 Window.alert("Es wurde kein Kontakt mit der angegebenen Eigenschaft gefunden");
+						 }
+						 public void onSuccess(AllContactsWithPropertyReport result) {
+								if (result !=null) {
+				 				    RootPanel.get("reporttext").setVisible(true);
+				 				    HTMLReportWriter writer=new HTMLReportWriter();
+								 	writer.process(result);
+									RootPanel.get("reporttext").clear();
+									RootPanel.get("reporttext").add(new HTML(writer.getReportText()));
+								}
+						 }
+					 });
+	   			}else{
 	   				Window.alert("Suchleiste ist leer. Bitte füllen Sie einen Suchbegriff in das Suchfeld ein.");
 	   			}}
+	   			}
 			});
 			
 			

@@ -265,7 +265,7 @@ div#Trailer {
 }
 
 .gwt-ListBox{
-	    width: 100%;
+	width: 100%;
     padding: 6px 6px;
     margin: 8px 0;
     display: inline-block;
@@ -582,4 +582,16 @@ body{
   background: url(images/circles.png) no-repeat -5px -11px;
   width:5px;
   height:5px;
+}
+
+.sonstigeinput{
+	background-color: white;
+    background-image: url(searchicon.png);
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    margin: 0px 40px 26px 9px;
+    padding: 12px 72px 12px 40px;
 }
