@@ -184,6 +184,10 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		if (contactListDataProvider.getList().contains(cl) && cl != null && !cl.equals(myContactsContactList)) {
 			contactListDataProvider.getList().remove(cl);
 			contactDataProviders.remove(cl);
+			
+			contactListDataProvider.refresh();
+			contactListDataProvider.flush();
+			//TODO was tut refresh?
 		}
 	}
 	
@@ -211,7 +215,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		if(cl == valueResultsCL) {
 			valueResults = contacts;
 			contactListDataProvider.getList().add(cl);
-			selectionModel.setSelected(cl, true);
+			//selectionModel.setSelected(cl, true);
 		}
 		
 	}
@@ -223,6 +227,10 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		}
 		contactDataProviders.get(cl).getList().remove(c);
 		selectionModel.setSelected(cl, true);
+		
+		contactListDataProvider.refresh();
+		contactListDataProvider.flush();
+		//TODO was tut refresh?
 	}
 	
 	public void addNameResults () {
@@ -231,7 +239,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		contactListDataProvider.getList().remove(nameResultsCL);
 			
 		nameResultsCL = new ContactList();
-		// nameResultsCL.setId(1);
+		nameResultsCL.setId(0);
 		nameResultsCL.setName("Suchergebnis im Namen");
 		
 	}
@@ -241,7 +249,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		contactListDataProvider.getList().remove(valueResultsCL);
 		
 		valueResultsCL = new ContactList();
-		valueResultsCL.setId(2);
+		valueResultsCL.setId(0);
 		valueResultsCL.setName("Suchergebnis in den Eigenschaften");
 		
 	}
