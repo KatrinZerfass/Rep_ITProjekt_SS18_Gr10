@@ -57,7 +57,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	
 	private User user = null;
 	private ReportGeneratorAsync reportGenerator=null;
-
+	private TextSuggest sb=null;
 	
 	/*
 	 * Die notwendigen Buttons für den Navigationsteil 
@@ -72,7 +72,6 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 
 	public class TextSuggest{
 
-		private String input;
 		private SuggestBox sb;
         private MultiWordSuggestOracle oracle;
         public TextSuggest(MultiWordSuggestOracle inputOracle) {
@@ -96,23 +95,6 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
     			}
     		});
     	}		
-		/**
-		 * Getter von input.
-		 *
-		 * @return den Input
-		 */
-		public String getInput() {
-			return this.input;
-		}
-		
-		/**
-		 * Setter von input.
-		 *
-		 * @param input der Input
-		 */
-		public void setInput(String input) {
-			this.input = input;
-		}
 
 		public SuggestBox getSuggestBox() {
 			return sb;
@@ -138,6 +120,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 		searchheading.addStyleName("searchheading");
 		signOutLink.addStyleName("signout");
 		signInLink.addStyleName("reportbutton");
+		sb=new TextSuggest(new MultiWordSuggestOracle());
 
 		searchLabel.addStyleName("searchlabel");
 		reportbuttonPanel.addStyleName("top-buttons");
@@ -308,7 +291,6 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			descriptionPanel.add(searchheading);
 			addPanel.add(searchLabel);
 			addPanel.add(searchInput);
-			TextSuggest sb=new TextSuggest(new MultiWordSuggestOracle());
 			addPanel.add(sb.getSuggestBox());
 			reportbuttonPanel.add(allContactsOfUserButton);
 			addPanel.add(allSharedContactsOfUserButton);
