@@ -236,7 +236,7 @@ public Permission update(Permission permission){
 		Connection con = DBConnection.connection();
 		
 		try{
-			System.out.println("test");
+			
 			Statement stmt = con.createStatement();
 			
 				
