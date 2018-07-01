@@ -213,7 +213,11 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		if(cl == nameResultsCL) {
 			nameResults = contacts;
 			contactListDataProvider.getList().add(cl);
-			//selectionModel.setSelected(contactListDataProvider.getList().get(2), true);
+			selectionModel.setSelected(cl, true);
+			BusinessObject selection = selectionModel.getSelectedObject();
+			Window.alert(selection.toString());
+			setSelectedContactList((ContactList) selection);
+			
 		}
 		if(cl == valueResultsCL) {
 			valueResults = contacts;
@@ -228,14 +232,21 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		if (!contactDataProviders.containsKey(cl)) {
 			return;
 		}
-		selectionModel.setSelected(cl, true);
-		contactDataProviders.get(cl).getList().remove(c);
-
+		
+		BusinessObject selection = selectionModel.getSelectedObject();
+		setSelectedContactList((ContactList) selection);
+				
+		//int selectedIndex =  contactDataProviders.getList(cl).indexOf(selectionModel.getSelectedObject());
+		
+		//selectionModel.setSelected(cl, true);
+		//contactDataProviders.getList().remove(c);
+		
 		
 		//contactListDataProvider.refresh();
 		//TODO was tut refresh?
 		
-		contactListDataProvider.setList(contactListDataProvider.getList());
+		
+		//contactListDataProvider.setList(contactListDataProvider.getList());
 	}
 	
 	public void addNameResults () {
@@ -288,6 +299,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 					}
 				}
 			});
+			
 			return new DefaultNodeInfo<ContactList>(contactListDataProvider,
 				new ContactListCell(), selectionModel, null);
 			
