@@ -293,9 +293,9 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			allContactsWithPropertyButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					if(sb.getSuggestBox().getText() != ""){
+					if(propertylistbox.getSelectedItemText() != "Sonstiges"){
 					Property p = new Property();
-					p.setType(sb.getSuggestBox().getText());
+					p.setType(propertylistbox.getSelectedItemText());
 					 reportGenerator.generateAllContactsWithPropertyReport(user, p, new AsyncCallback<AllContactsWithPropertyReport>() {
 						 public void onFailure(Throwable caught) {
 							
@@ -313,8 +313,29 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 						 }
 					 });
 	   			}else{
+	   				if(propertyInput.getText() != ""){
+	   				Property p = new Property();
+					p.setType(propertyInput.getText());
+					 reportGenerator.generateAllContactsWithPropertyReport(user, p, new AsyncCallback<AllContactsWithPropertyReport>() {
+						 public void onFailure(Throwable caught) {
+							
+							 RootPanel.get("reporttext").setVisible(false);
+							 Window.alert("Es wurde kein Kontakt mit der angegebenen Eigenschaft gefunden");
+						 }
+						 public void onSuccess(AllContactsWithPropertyReport result) {
+								if (result !=null) {
+				 				    RootPanel.get("reporttext").setVisible(true);
+				 				    HTMLReportWriter writer=new HTMLReportWriter();
+								 	writer.process(result);
+									RootPanel.get("reporttext").clear();
+									RootPanel.get("reporttext").add(new HTML(writer.getReportText()));
+								}
+						 }
+					 });
+	   			}else{
 	   				Window.alert("Suchleiste ist leer. Bitte füllen Sie einen Suchbegriff in das Suchfeld ein.");
 	   			}}
+	   			}
 			});
 			
 			
