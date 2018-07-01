@@ -121,7 +121,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 		signOutLink.addStyleName("signout");
 		signInLink.addStyleName("reportbutton");
 		sb=new TextSuggest(new MultiWordSuggestOracle());
-
+		
 		searchLabel.addStyleName("searchlabel");
 		reportbuttonPanel.addStyleName("top-buttons");
 		allContactsOfUserButton.addStyleName("reportbutton");
@@ -205,9 +205,9 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			allSharedContactsOfUserButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					if(searchInput.getText() != ""){
+					if(sb.getSuggestBox().getText() != ""){
 						User sharedUser=new User();
-						sharedUser.setEmail(searchInput.getText());
+						sharedUser.setEmail(sb.getSuggestBox().getText());
 						reportGenerator.generateAllSharedContactsOfUserReport(user, sharedUser, new AsyncCallback<AllSharedContactsOfUserReport>() {
 				 				    	public void onFailure(Throwable caught) {
 //		   				 				    RootPanel.get("reporttext").setVisible(false);	
@@ -237,9 +237,9 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			allContactsWithValueButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					if(searchInput.getText() != ""){
+					if(sb.getSuggestBox().getText() != ""){
 					Value v = new Value();
-					v.setContent(searchInput.getText());
+					v.setContent(sb.getSuggestBox().getText());
 					 reportGenerator.generateAllContactsWithValueReport(user, v, new AsyncCallback<AllContactsWithValueReport>() {
 						 public void onFailure(Throwable caught) {
 						 }
@@ -263,9 +263,9 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			allContactsWithPropertyButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					if(searchInput.getText() != ""){
+					if(sb.getSuggestBox().getText() != ""){
 					Property p = new Property();
-					p.setType(searchInput.getText());
+					p.setType(sb.getSuggestBox().getText());
 					 reportGenerator.generateAllContactsWithPropertyReport(user, p, new AsyncCallback<AllContactsWithPropertyReport>() {
 						 public void onFailure(Throwable caught) {
 							
@@ -290,7 +290,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			
 			descriptionPanel.add(searchheading);
 			addPanel.add(searchLabel);
-			addPanel.add(searchInput);
+			sb.getSuggestBox().addStyleName("reportSuggestBox");
 			addPanel.add(sb.getSuggestBox());
 			reportbuttonPanel.add(allContactsOfUserButton);
 			addPanel.add(allSharedContactsOfUserButton);
