@@ -1541,8 +1541,8 @@ public class ContactForm extends VerticalPanel {
 					}
 				});
 			}
-			else if(ptype == "Straße" || ptype == "Hausnummer" || ptype== "PLZ" || ptype == "Wohnort") {
-				
+			//else if(ptype == "Straße" || ptype == "Hausnummer" || ptype== "PLZ" || ptype == "Wohnort") {
+			else if(ptype == "Anschrift") {
 				Window.alert("Springt in Anschrift else if");
 				Label addressLabel = new Label("Anschrift: ");
 				contactTable.setWidget(row, 0, addressLabel);
@@ -1571,20 +1571,25 @@ public class ContactForm extends VerticalPanel {
 				addressTable.setWidget(0, 2, new ValueDisplay(new ValueTextBox("Sonstiges")));
 				((ValueDisplay) addressTable.getWidget(0, 2)).remove(0);
 				
-				Button addAddressButton = new Button("Anschrift anlegen");
+				
+				Button addAddressButton = new Button("Anlegen");
+				addAddressButton.addStyleName("addNewPropertyButton");
 				addressTable.setWidget(0,3, addAddressButton);
 				
 				addAddressButton.addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {
+						addressTable.removeCell(0,3);
+						
 						editorAdministration.createAddress(streetTextBox.getText(), houseNrTextBox.getText(),
 								plzTextBox.getText(), cityTextBox.getText(), contactToDisplay, new AsyncCallback<Value>(){
 							public void onFailure(Throwable t) {
-								
+								Window.alert("Probleme beim Anlegen der Adresse");
 							}
 							public void onSuccess(Value street) {
 								streetTextBox.setValue(street);
 								((LockButton) addressTable.getWidget(0, 2)).setValue(street);
 								((DeleteValueButton) addressTable.getWidget(0,3)).setValue(street);
+								Window.alert("Adresse erfolgreich angelegt");
 							}
 						});
 
@@ -1763,6 +1768,7 @@ public class ContactForm extends VerticalPanel {
 	 */
 	public void clearContactForm() {
 		contactTable.clear();
+		contactTable.removeAllRows();
 		buttonsPanel.clear();
 		sexListBox.clear();
 		newPropertyListBox.clear();
@@ -1836,8 +1842,11 @@ public class ContactForm extends VerticalPanel {
 			
 		
 			for (Property p : allPredefinedProperties) {
+				if(p.getType()!="Straße" && p.getType()!= "Hausnummer" && p.getType()!= "PLZ" && p.getType()!= "Wohnort") {
 				newPropertyListBox.addItem(p.getType());
+				}
 			}
+			newPropertyListBox.addItem("Anschrift");
 			newPropertyListBox.addItem("Sonstiges");	
 			
 			
@@ -2191,6 +2200,7 @@ public class ContactForm extends VerticalPanel {
 									for (Property prop : allPredefinedProperties) {
 										newPropertyListBox.addItem(prop.getType());
 									}
+									newPropertyListBox.addItem("Anschrift");
 									newPropertyListBox.addItem("Sonstiges");
 								}
 							}
