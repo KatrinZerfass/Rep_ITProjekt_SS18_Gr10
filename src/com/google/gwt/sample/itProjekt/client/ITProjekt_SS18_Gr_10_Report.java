@@ -66,7 +66,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	 */
 	Label searchheading = new Label("Hier können Sie Ihre Kontakte gefiltert nach Eigenschaft oder Ausprägung ausgeben.");
 	Label searchLabel = new Label("Suche: ");
-	TextBox searchInput = new TextBox();
+	
 	TextBox propertyInput = new TextBox();
 	ListBox propertylistbox = new ListBox();
 	Button allContactsOfUserButton = new Button("Alle Kontakte eines Nutzers");
@@ -116,6 +116,8 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			this.oracle = oracle;
 		}
 	}
+
+			
 	
 	public void onModuleLoad() {
 		
@@ -132,8 +134,18 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 		allSharedContactsOfUserButton.addStyleName("reportbutton");
 		allContactsWithValueButton.addStyleName("reportbutton");
 		allContactsWithPropertyButton.addStyleName("reportbutton");
-		searchInput.addStyleName("inputReport");
-
+	
+		reportGenerator.getAllPredefinedPropertiesOfReport(new AsyncCallback<Vector<Property>>(){
+			public void onFailure(Throwable t) {
+				Window.alert("Auslesen aller vordefinierten Eigenschaften fehlgeschlagen");
+			}
+			public void onSuccess(Vector<Property> properties) {
+				for (Property p : properties) {
+					propertylistbox.addItem(p.getType());
+				}
+				propertylistbox.addItem("Sonstiges");	
+			}
+		});
 		
 		LoginServiceAsync loginService = GWT.create(LoginService.class);
 	    loginService.login("https://it-projekt-gruppe-10-203610.appspot.com/ITProjekt_SS18_Gr_10_Report.html", new AsyncCallback<LoginInfo>() {
