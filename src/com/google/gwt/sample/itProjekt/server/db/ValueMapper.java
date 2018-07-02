@@ -338,7 +338,7 @@ public class ValueMapper {
 			
 			try{
 				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT V_ID, value, P_ID, isShared FROM T_Value WHERE C_ID ="+ contact.getId()+ " ORDER BY C_ID");
+				ResultSet rs = stmt.executeQuery("SELECT V_ID, value, P_ID, isShared FROM T_Value WHERE C_ID ="+ contact.getId()+ " ORDER BY P_ID");
 
 				while (rs.next()){
 					Value v = new Value();
