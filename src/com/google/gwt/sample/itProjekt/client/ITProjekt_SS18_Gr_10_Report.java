@@ -205,6 +205,12 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 		/**
 		 * zusätzliche Klassennamen, die für das stylesheet benötigt werden.
 		**/
+		
+		/**
+		 * Instanziierung der SuggestBox für die Eingabe der Email.
+		**/
+		sb=new TextSuggest(new MultiWordSuggestOracle());
+		
 		searchheading.addStyleName("searchheading");
 		signOutLink.addStyleName("signout");
 		signInLink.addStyleName("reportbutton");
@@ -218,10 +224,6 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 		allContactsWithPropertyButton.addStyleName("reportbutton");
 		propertyInput.addStyleName("sonstigeinput");
 		
-		/**
-		 * Instanziierung der SuggestBox für die Eingabe der Email.
-		**/
-		sb=new TextSuggest(new MultiWordSuggestOracle());
 		
 		/**
 		 * Auslesen der vordefinierten Eigenschaften aus der Datenbank, um diese zur ListBox hinzuzufügen.
