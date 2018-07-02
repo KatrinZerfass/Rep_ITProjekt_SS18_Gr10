@@ -1888,7 +1888,6 @@ public class ContactForm extends VerticalPanel {
 				lastnameTextBox.setEnabled(false);
 				sexListBox.setEnabled(false);
 				newPropertyPanel.setVisible(false);
-				Window.alert("buttons wurden ausgegraut, weil der User nicht der Eigentümer ist. \nKatrin");
 			}
 			
 			/*
@@ -2040,6 +2039,14 @@ public class ContactForm extends VerticalPanel {
 								contactTable.setWidget(row, 1, new ValueTable(pid));
 								vt = (ValueTable) contactTable.getWidget(row, 1);
 								
+							}else if(i !=0 && allValuesOfContact.get(i-1).getPropertyid() == 1 && allValuesOfContact.get(i-1).getIsShared() ==false){
+								contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Geschäftliche Telefonnummern: "));
+								contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+								vp = (ValuePanel) contactTable.getWidget(row, 0);
+								
+								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
+								contactTable.setWidget(row, 1, new ValueTable(pid));
+								vt = (ValueTable) contactTable.getWidget(row, 1);
 							}else {
 								 
 								vp = (ValuePanel) contactTable.getWidget(row-1, 0);
@@ -2104,6 +2111,16 @@ public class ContactForm extends VerticalPanel {
 								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
 								contactTable.setWidget(row, 1, new ValueTable(pid));
 								vt = (ValueTable) contactTable.getWidget(row, 1);
+								
+							}else if(i !=0 && allValuesOfContact.get(i-1).getPropertyid() == 2 && allValuesOfContact.get(i-1).getIsShared() ==false){
+								contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Private Telefonnummern: "));
+								contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+								vp = (ValuePanel) contactTable.getWidget(row, 0);
+								
+								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
+								contactTable.setWidget(row, 1, new ValueTable(pid));
+								vt = (ValueTable) contactTable.getWidget(row, 1);	
+								
 							}else {
 								 
 								vp = (ValuePanel) contactTable.getWidget(row-1, 0);
@@ -2159,6 +2176,16 @@ public class ContactForm extends VerticalPanel {
 								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
 								contactTable.setWidget(row, 1, new ValueTable(pid));
 								vt = (ValueTable) contactTable.getWidget(row, 1);
+								
+							}else if(i !=0 && allValuesOfContact.get(i-1).getPropertyid() == 3 && allValuesOfContact.get(i-1).getIsShared() ==false){
+								contactTable.setWidget(row, 0, new ValuePanel(pid, row, "e-Mail-Adressen: "));
+								contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+								vp = (ValuePanel) contactTable.getWidget(row, 0);
+								
+								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
+								contactTable.setWidget(row, 1, new ValueTable(pid));
+								vt = (ValueTable) contactTable.getWidget(row, 1);	
+								
 								
 							}else {
 								 
@@ -2274,6 +2301,16 @@ public class ContactForm extends VerticalPanel {
 								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
 								contactTable.setWidget(row, 1, new ValueTable(pid));
 								vt = (ValueTable) contactTable.getWidget(row, 1);
+								
+							}else if(i !=0 && allValuesOfContact.get(i-1).getPropertyid() == 5 && allValuesOfContact.get(i-1).getIsShared() ==false){
+								contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Arbeitsplatz: "));
+								contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+								vp = (ValuePanel) contactTable.getWidget(row, 0);
+								
+								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
+								contactTable.setWidget(row, 1, new ValueTable(pid));
+								vt = (ValueTable) contactTable.getWidget(row, 1);	
+								
 								
 							}else {
 								 
@@ -2417,6 +2454,16 @@ public class ContactForm extends VerticalPanel {
 								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
 								contactTable.setWidget(row, 1, new ValueTable(pid));
 								vt = (ValueTable) contactTable.getWidget(row, 1);
+								
+							}else if(i !=0 && allValuesOfContact.get(i-1).getPropertyid() == 10 && allValuesOfContact.get(i-1).getIsShared() ==false){
+								contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Homapages: "));
+								contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+								vp = (ValuePanel) contactTable.getWidget(row, 0);
+								
+								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
+								contactTable.setWidget(row, 1, new ValueTable(pid));
+								vt = (ValueTable) contactTable.getWidget(row, 1);	
+								
 								
 							}else {
 								 

@@ -386,7 +386,6 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 			   */
 								
 			}else {
-					Window.alert("geteilte Kontakliste");
 					editorAdministration.getAllSharedContactsOfContactList((ContactList) value, user, new AsyncCallback<Vector<Contact>>() {
 						public void onFailure(Throwable t) {
 							
