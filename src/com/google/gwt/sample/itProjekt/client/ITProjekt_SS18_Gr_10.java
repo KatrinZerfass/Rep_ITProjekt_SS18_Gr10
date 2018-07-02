@@ -1,5 +1,6 @@
 package com.google.gwt.sample.itProjekt.client;
 
+import com.google.gwt.sample.itProjekt.client.ContactForm.CloseButton;
 import com.google.gwt.sample.itProjekt.client.ContactForm.EmailDialogBox;
 import com.google.gwt.sample.itProjekt.shared.CommonSettings;
 import com.google.gwt.sample.itProjekt.shared.EditorAdministrationAsync;
@@ -85,6 +86,31 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	/** Die Default-Kontaktliste MyContactsContactList mccl. */
 	ContactList mccl = new ContactList();
 	
+	public class CloseButton extends Button{
+		InputDialogBox db;
+		
+		public CloseButton(InputDialogBox db) {
+			this.db = db;
+			this.addClickHandler(new CloseDBClickHandler(db)); 
+			this.setText("X");
+			this.addStyleName("closebutton");
+		}
+		
+		private class CloseDBClickHandler implements ClickHandler{
+			InputDialogBox db;
+	
+			
+			public CloseDBClickHandler(InputDialogBox db) {
+				this.db=db;
+			}
+			
+			public void onClick(ClickEvent event) {
+				db.hide();
+			}
+			
+		}
+		
+	}
 	
 	/**
 	 * Die innere Klasse InputDialogBox.
@@ -120,13 +146,14 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 			
 	        
 			VerticalPanel panel = new VerticalPanel();
-			
+			CloseButton close= new CloseButton(this);
 	        panel.setHeight("100");
 	        panel.setWidth("300");
 	        panel.setSpacing(10);
 	        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 	        panel.add(dialogBoxLabel);
-	        panel.add(tb);
+			panel.add(close);
+			panel.add(tb);
 	        panel.add(ok);
 
 	        setWidget(panel);
@@ -159,13 +186,13 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 					setGlassEnabled(true);
 					
 					VerticalPanel panel = new VerticalPanel();
-					
+
 			        panel.setHeight("100");
 			        panel.setWidth("300");
 			        panel.setSpacing(10);
 			        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 			        panel.add(dialogBoxLabel);
-			        panel.add(getSuggestBox());
+					panel.add(getSuggestBox());
 			        panel.add(ok);
 			        
 			        setWidget(panel);
