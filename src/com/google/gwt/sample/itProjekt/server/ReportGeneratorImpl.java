@@ -160,7 +160,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 					
 					}
 					for (Value v: allValues){
-						if(v.getIsShared()==true){
+						if(v.getIsShared()==true || c.getOwner() == user.getId()){
 						Property p=this.admin.getPropertyOfValue(v);
 						Row valueRow=new Row();
 						
@@ -274,7 +274,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 					}
 					
 				for (Value v: allValues){
-					if(v.getIsShared()==true){
+					if(v.getIsShared()==true || c.getOwner() == owner.getId()){
 					Property p=this.admin.getPropertyOfValue(v);
 					Row valueRow=new Row();
 					
@@ -383,7 +383,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				}
 				
 			for (Value val: allValues){
-				if(val.getIsShared()==true){
+				if(val.getIsShared()==true || c.getOwner() == user.getId()){
 				Property p=this.admin.getPropertyOfValue(val);
 				Row valueRow=new Row();
 				
@@ -500,7 +500,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				}
 				
 			for (Value val: allValues){
-				if(val.getIsShared()==true){
+				if(val.getIsShared()==true || c.getOwner() == user.getId()){
 				Property prop=this.admin.getPropertyOfValue(val);
 				Row valueRow=new Row();
 				

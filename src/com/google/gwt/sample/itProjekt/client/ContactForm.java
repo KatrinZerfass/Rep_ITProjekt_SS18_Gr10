@@ -1053,7 +1053,6 @@ public class ContactForm extends VerticalPanel {
 		if (addPropertyClickHandler == null) {
 			addPropertyClickHandler = new NewPropertyClickHandler();
 			addNewPropertyButton.addClickHandler(addPropertyClickHandler);
-			Window.alert("Setzen des addPropertyclickHandlers");
 		}
 		
 	
@@ -1882,7 +1881,6 @@ public class ContactForm extends VerticalPanel {
 			 */
 			
 			
-		
 			for (Property p : allPredefinedProperties) {
 				if(p.getType()!="Straße" && p.getType()!= "Hausnummer" && p.getType()!= "PLZ" && p.getType()!= "Wohnort") {
 				newPropertyListBox.addItem(p.getType());
@@ -2235,23 +2233,25 @@ public class ContactForm extends VerticalPanel {
 								((ValueDisplay) contactTable.getWidget(3, 3)).disableButtons();
 							}
 							
+							newPropertyListBox.clear();
 							for (Property p : allPredefinedProperties) {
-								if(p.getType()== "Geburtstag") {
-									allPredefinedProperties.remove(p);
-									newPropertyListBox.clear();
-								
-									for (Property prop : allPredefinedProperties) {
-										if(prop.getType()!="Straße" && prop.getType()!= "Hausnummer" && prop.getType()!= "PLZ" && prop.getType()!= "Wohnort") {
-											newPropertyListBox.addItem(prop.getType());
-										}
-									}
+								if(p.getType()!= "Geburtstag" || p.getType()!="Straße" && p.getType()!= "Hausnummer" && p.getType()!= "PLZ" && p.getType()!= "Wohnort") {
+									newPropertyListBox.addItem(p.getType());
 								}
-								newPropertyListBox.addItem("Anschrift");
-								newPropertyListBox.addItem("Sonstiges");
 								
+								
+//									for (Property prop : allPredefinedProperties) {
+//										if(prop.getType()!="Straße" && prop.getType()!= "Hausnummer" && prop.getType()!= "PLZ" && prop.getType()!= "Wohnort") {
+//											newPropertyListBox.addItem(prop.getType());
+//										}
+//									}
+//								}
 							}
+							newPropertyListBox.addItem("Anschrift");
+							newPropertyListBox.addItem("Sonstiges");
 						}
 						break;
+					
 						
 						
 				case 5: // Arbeitsplatz
@@ -2364,23 +2364,22 @@ public class ContactForm extends VerticalPanel {
 							}
 							
 						}
-						Window.alert("case 6 durchgelaufen");
 						break;
 		
 				case 7:  // Hausnummer
-					Window.alert("case 7");
+					
 						houseNrTextBox.setValue(allValuesOfContact.get(i));
 						break;
 						
 				
 				case 8:  // PLZ
-					Window.alert("case 8");
+					
 						plzTextBox.setValue(allValuesOfContact.get(i));
 						break;
 				
 				
 				case 9:  // Wohnort
-					Window.alert("case 9");
+					
 						cityTextBox.setValue(allValuesOfContact.get(i));
 						break;
 						
