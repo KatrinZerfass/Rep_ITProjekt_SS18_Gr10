@@ -16,14 +16,15 @@ import com.google.gwt.user.client.Window;
  */
 public class ContactMapper {
 	
-	/** Konstruktor f�r den ContactMapper (Singleton) */
-	//static weil Singleton. Einzige Instanz dieser Klasse
+	/** Konstruktor für den ContactMapper (Singleton) 
+	* static weil Singleton. Einzige Instanz dieser Klasse
+	*/
 	private static ContactMapper  contactmapper = null;
 	
 	/**
 	 * ContactMapper.
 	 *
-	 *Falls noch kein ContactMapper existiert erstellt er ein neuen ContactMapper und gibt ihn zur�ck
+	 * Falls noch kein ContactMapper existiert wird ein neuen ContactMapper erstellt und gibt ihn zurück
 	 * 
 	 */
 	public static ContactMapper contactMapper() {
@@ -36,8 +37,9 @@ public class ContactMapper {
 	/**
 	 * FindByID.
 	 *
-	 * Findet Contacts durch eine C_ID und speichert die dazugeh�rigen Werte (C_ID, firstName, lastName, gender und U_ID) in einem COntact Objekt ab und gibt dieses wieder
+	 * Findet Contacts durch eine C_ID und speichert die dazugehörigen Werte (C_ID, firstName, lastName, gender und U_ID) in einem COntact Objekt ab und gibt dieses wieder
 	 * 
+	 * @param contact übergebenes Contact Objekt mit Attribut C_ID
 	 */
 	public Contact findByID(Contact contact){
 		Connection con = DBConnection.connection();
@@ -68,9 +70,9 @@ public class ContactMapper {
 	/**
 	 * FindAll.
 	 *
-	 *Gibt alle Contact Objekte zur�ck welche mit C_ID, firstName, lastName, geder und U_ID bef�llt sind
-	 *Hierf�r holen wir C_ID, firstName, lastName, geder und U_ID aus der T_Contact Tabelle und speichern diese in einem Contact Objekt ab und f�gen diese dem Vector hinzu
-	 *Diesen Vector bef�llt mit Contacts geben wir zur�ck
+	 * Gibt alle Contact Objekte zurück welche mit C_ID, firstName, lastName, geder und U_ID befüllt sind
+	 * Hierfür holen wir C_ID, firstName, lastName, geder und U_ID aus der T_Contact Tabelle und speichern diese in einem Contact Objekt ab und fügen diese dem Vector hinzu
+	 * Diesen Vector befüllt mit Contacts geben wir zurück
 	 *
 	 */
 	public Vector<Contact> findAll(){
@@ -101,9 +103,10 @@ Vector<Contact> result = new Vector<Contact>();
 	/**
 	 * FindByName.
 	 *
-	 * Findet Contacts durch einen Namen und speichert die dazugeh�rigen Werte (C_ID, firstName, lastName, gender und U_ID) in einem Contact Objekt ab
+	 * Findet Contacts durch einen Namen und speichert die dazugehörigen Werte (C_ID, firstName, lastName, gender und U_ID) in einem Contact Objekt ab
 	 * und Speichert dieses Objekt im Vector ab und gibt diesen wieder
 	 * 
+	 * @param contact übergebenes Contact Objekt mit Attributen firstName und lastName
 	 */
 	public Vector<Contact> findByName(Contact contact){
 		Connection con = DBConnection.connection();
@@ -135,9 +138,10 @@ Vector<Contact> result = new Vector<Contact>();
 	 * FindAllByUID.
 	 *
 	 * Findet alle Contacts die ein User erstellt hat durch seine U_ID
-	 * Alle Values werden aus T_Contact ausgelesen und in einem Contact Objekt gespeichert und einem Vector hinzugef�gt und zur�ckgegeben
-	 * Gibt ein Vector voller Contact Objekte zur�ck welche ein User erstellt hat
+	 * Alle Values werden aus T_Contact ausgelesen und in einem Contact Objekt gespeichert und einem Vector hinzugefügt und zurückgegeben
+	 * Gibt ein Vector voller Contact Objekte zurück welche ein User erstellt hat
 	 * 
+	 * @param user übergebenes User Objekt mit Attribut U_ID
 	 */
 	public Vector<Contact> findAllByUID(User user){
 		Connection con = DBConnection.connection();
@@ -169,9 +173,12 @@ Vector<Contact> result = new Vector<Contact>();
 	/**
 	 * Insert.
 	 *
-	 *Sucht nach der h�chsten C_ID um diese um eins zu erh�hen und als neue C_ID zu nutzen
-	 *Bef�llt T_Contact mit C_ID, firstName, lastName, gender, create_date, mod_date, U_ID
-	 *Ein Contact wird zur�ckgegeben
+	 * Sucht nach der höchsten C_ID um diese um eins zu erhöhen und als neue C_ID zu nutzen
+	 * Befüllt T_Contact mit C_ID, firstName, lastName, gender, create_date, mod_date, U_ID
+	 * Ein Contact wird zurückgegeben
+	 *
+	 * @param contact übergebenes Contact Objekt mit Attributen C_ID, firstName, lastName und gender
+	 * @param user übergebenes User Objekt mit Attribut U_ID
 	 */
 	public Contact insert(Contact contact, User user){
 		Connection con = DBConnection.connection();
@@ -201,7 +208,7 @@ Vector<Contact> result = new Vector<Contact>();
 				+ "')") ;
 						
 				return contact;	
-				// TODO: Timestamp testen...
+				
 				
 			}
 		}
@@ -217,10 +224,11 @@ Vector<Contact> result = new Vector<Contact>();
 		/**
 		 * Update.
 		 *
-		 * Update von Ver�nderungen falls sich die firstName, lastName und/oder gender �ndert
+		 * Update von Veränderungen falls sich die firstName, lastName und/oder gender ändert
 		 * Falls Updates vorgenommen werden wird ein neuer mod_date gesetzt
-		 * Gibt ein Contact zur�ck
+		 * Gibt ein Contact zurück
 		 * 
+		 * @param contact übergebenes Contact Objekt mit Attributen firstName, lastName, gender und C_ID
 		 */
 		public Contact update(Contact contact){
 			Connection con = DBConnection.connection();
@@ -250,10 +258,15 @@ Vector<Contact> result = new Vector<Contact>();
 		/**
 		 * Delete.
 		 *
-		 * Entfernt alles aus T_Permission_Contact wo die C_ID der ID des �bergebenen Objekts entspricht
-		 * Damit l�sen wir die Teilhaberschaft an einem Contact auf
-		 * der n�chste Schritt entfernt alles aus T_Contact wo die C_ID der ID des �bergebenen Objekts entspricht
+		 * Entfernt alles aus T_Permission_Contact wo die C_ID der ID des übergebenen Objekts entspricht
+		 * Entfernt alles aus T_Value wo die C_ID der ID des übergebenen Objekts entspricht
+		 * Entfernt alles aus T_Property wo die C_ID der ID des übergebenen Objekts entspricht
+		 * Entfernt alles aus T_Property wo die C_ID der ID des übergebenen Objekts entspricht
+		 * Entfernt alles aus T_Contact_Contactlist wo die C_ID der ID des übergebenen Objekts entspricht
+		 * Damit lösen wir die Teilhaberschaft an einem Contact auf
+		 * der nächste Schritt entfernt alles aus T_Contact wo die C_ID der ID des übergebenen Objekts entspricht
 		 * 
+		 * @param contact übergebenes Contact Objekt mit Attribut C_ID
 		 */
 		public void delete (Contact contact){
 Connection con = DBConnection.connection();
@@ -313,10 +326,17 @@ Connection con = DBConnection.connection();
 			
 		}
 			
-			
-
-			
 		}
+		
+		/**
+		 * findAllByName.
+		 *
+		 * Findet alle C_ID, firstName, lastName, gender, U_ID, create_date und mod_date wo der firstName oder lastName so ähnlich ist wie der eingegebene String ist (name)
+		 * Befüllt das Contact Objekt mit den Attributen und fügt dieses Objekt dem Vector hinzu
+		 * Gibt ein Vector voller Contact Objekte zurück
+		 * 
+		 * @param name übergebener String name
+		 */
 		
 		public Vector<Contact> findAllByName(String name){
 			Connection con = DBConnection.connection();
