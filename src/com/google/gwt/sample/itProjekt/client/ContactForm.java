@@ -1310,7 +1310,7 @@ public class ContactForm extends VerticalPanel {
 					 * Wenn in einer ValueTextBox der Inhalt verändert wurde, so wird für diese Ausprägung die Methode editValue() aufgerufen.
 					 */
 					if (vtb.getIsChanged() && vtb.getTextBoxValue() != null) {
-						editorAdministration.editValue(contactToDisplay, vtb.getTextBoxValue().getPropertyid(), vtb.getTextBoxValue(), vtb.getTextBoxValue().getContent(), 
+						editorAdministration.editValue(contactToDisplay, vtb.getTextBoxValue().getPropertyid(), vtb.getTextBoxValue(), vtb.getText(), 
 							vtb.getTextBoxValue().getIsShared(), new AsyncCallback<Value>() {
 							
 							public void onFailure(Throwable arg0) {	
@@ -1329,6 +1329,9 @@ public class ContactForm extends VerticalPanel {
 					 */
 					else if(vtb.getIsChanged() && (vtb.equals(firstnameTextBox) ||
 								vtb.equals(lastnameTextBox))){
+						Window.alert("firstnameTextBox.getText() = " + firstnameTextBox.getText() + "\n" +
+								"lastnameTextBox.getText() = " + lastnameTextBox.getText() + "\n" +
+								"vtb.getText() = " + vtb.getText());
 						editorAdministration.editContact(contactToDisplay.getId(), firstnameTextBox.getText(), lastnameTextBox.getText(), 
 							contactToDisplay.getSex(), new AsyncCallback<Contact>() {
 	
