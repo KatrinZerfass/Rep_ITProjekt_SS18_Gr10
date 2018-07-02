@@ -270,7 +270,7 @@ public Permission update(Permission permission){
 					p.setParticipantID(permission.getParticipantID());
 					p.setSourceUserID(permission.getSourceUserID());
 					p.setShareableObjectID(c1.getId());
-					if(c1.getOwner()== permission.getParticipantID()){
+					if(c1.getOwner()!= permission.getParticipantID()){
 					shareContact(p);
 					}
 				}}
@@ -313,7 +313,7 @@ public Vector<Contact> getAllContactsByUID(User user){
 				}		
 			}catch(SQLException e2){
 				e2.printStackTrace();
-//				return result;
+//			return result;
 			}
 			return result;
 		}
