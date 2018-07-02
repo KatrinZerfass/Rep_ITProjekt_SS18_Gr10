@@ -13,6 +13,8 @@ import com.google.gwt.sample.itProjekt.shared.bo.Value;
 
 import java.util.Vector;
 
+import org.apache.tools.ant.taskdefs.Sync.MyCopy;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -507,34 +509,39 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		
 		public void onClick(ClickEvent event) {
 			
-			if(clctvm.getSelectedContactList().getOwner() == user.getId()) {
-				editorAdministration.deleteContactList(clctvm.getSelectedContactList(), new AsyncCallback<Void>() {
-					@Override
-					public void onFailure(Throwable arg0) {
-						Window.alert("Fehler beim löschen der Kontaktliste!");
-					}
-					@Override
-					public void onSuccess(Void arg0) {
-						Window.alert(clctvm.getSelectedContactList().getName());
-						Window.alert("Kontaktliste erfolgreich gelöscht.");	
-						clctvm.removeContactList(clctvm.getSelectedContactList());
-						clctvm.setSelectedContactList(clctvm.getMyContactsContactList());
-					}
-				});
-				
-				
+			if(clctvm.getSelectedContactList() == clctvm.getMyContactsContactList()) {
+				Window.alert("Sie können die Liste all Ihrer Kontakte nicht löschen!");
 			}
 			else {
-				editorAdministration.deletePermission(user, clctvm.getSelectedContactList(), new AsyncCallback<Void>() {
-					@Override
-					public void onFailure(Throwable arg0) {
-						Window.alert("Fehler beim entfernen der Kontaktliste!");
-					}
-					@Override
-					public void onSuccess(Void arg0) {
-						Window.alert("Kontaktliste erfolgreich entfernt.");
-					}
-				});
+				if(clctvm.getSelectedContactList().getOwner() == user.getId()) {
+					editorAdministration.deleteContactList(clctvm.getSelectedContactList(), new AsyncCallback<Void>() {
+						@Override
+						public void onFailure(Throwable arg0) {
+							Window.alert("Fehler beim löschen der Kontaktliste!");
+						}
+						@Override
+						public void onSuccess(Void arg0) {
+							Window.alert(clctvm.getSelectedContactList().getName());
+							Window.alert("Kontaktliste erfolgreich gelöscht.");	
+							clctvm.removeContactList(clctvm.getSelectedContactList());
+							clctvm.setSelectedContactList(clctvm.getMyContactsContactList());
+						}
+					});
+					
+					
+				}
+				else {
+					editorAdministration.deletePermission(user, clctvm.getSelectedContactList(), new AsyncCallback<Void>() {
+						@Override
+						public void onFailure(Throwable arg0) {
+							Window.alert("Fehler beim entfernen der Kontaktliste!");
+						}
+						@Override
+						public void onSuccess(Void arg0) {
+							Window.alert("Kontaktliste erfolgreich entfernt.");
+						}
+					});
+				}
 			}
 		}
 	}
@@ -553,31 +560,36 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 //		User shareUser = new User();
 		
 		public void onClick(ClickEvent event) {
-			if(clctvm.getSelectedContactList() == null) {
-				Window.alert("Keine Kontaktliste ausgewählt");
-			}else {
-				inputDB = new InputDialogBox(new MultiWordSuggestOracle());
-				inputDB.getOKButton().addClickHandler(new ClickHandler() {
-					public void onClick(ClickEvent event) {
-						if(inputDB.getSuggestBox().getText()== "") {
-							Window.alert("Fehler beim Teilen der Kontaktliste!");
-						}else {
-							Window.alert(inputDB.getSuggestBox().getText());
-							
-							editorAdministration.shareContactList(user, inputDB.getSuggestBox().getText(), clctvm.getSelectedContactList(), new AsyncCallback<Permission>() {
-		
-								public void onFailure(Throwable arg0) {
-									Window.alert("Fehler beim Teilen der Kontaktliste!");
-									inputDB.hide();
-								}
-								public void onSuccess(Permission arg0) {
-									Window.alert("Kontaktliste erfolgreich geteilt.");
-									inputDB.hide();
-								}
-							});
+			if(clctvm.getSelectedContactList() == clctvm.getMyContactsContactList()) {
+				Window.alert("Sie können die Liste all Ihrer Kontakte nicht teilen!");
+			}
+			else {
+				if(clctvm.getSelectedContactList() == null) {
+					Window.alert("Keine Kontaktliste ausgewählt");
+				}else {
+					inputDB = new InputDialogBox(new MultiWordSuggestOracle());
+					inputDB.getOKButton().addClickHandler(new ClickHandler() {
+						public void onClick(ClickEvent event) {
+							if(inputDB.getSuggestBox().getText()== "") {
+								Window.alert("Fehler beim Teilen der Kontaktliste!");
+							}else {
+								Window.alert(inputDB.getSuggestBox().getText());
+								
+								editorAdministration.shareContactList(user, inputDB.getSuggestBox().getText(), clctvm.getSelectedContactList(), new AsyncCallback<Permission>() {
+			
+									public void onFailure(Throwable arg0) {
+										Window.alert("Fehler beim Teilen der Kontaktliste!");
+										inputDB.hide();
+									}
+									public void onSuccess(Permission arg0) {
+										Window.alert("Kontaktliste erfolgreich geteilt.");
+										inputDB.hide();
+									}
+								});
+							}
 						}
-					}
-				});
+					});
+				}
 			}
 //			editorAdministration.getAllUsers(new AsyncCallback<Vector<User>>() {
 //				@Override
