@@ -11,14 +11,15 @@ import com.google.gwt.sample.itProjekt.shared.bo.User;
 
 public class UserMapper {
 	
-	/** Konstruktor f�r den UserMapper (Singleton) */
-	//static weil Singleton. Einzige Instanz dieser Klasse
+	/** Konstruktor für den UserMapper (Singleton)
+	 * static weil Singleton. Einzige Instanz dieser Klasse
+	 */
 	private static UserMapper  usermapper = null;
 	
 	/**
 	 * UserMapper.
 	 *
-	 *Falls noch kein UserMapper existiert erstellt er ein neuen UserMapper und gibt ihn zur�ck
+	 * Falls noch kein UserMapper existiert erstellt er ein neuen UserMapper und gibt ihn zurück
 	 * 
 	 */
 	public static UserMapper userMapper() {
@@ -32,8 +33,9 @@ public class UserMapper {
 	/**
 	 * FindByID.
 	 * 
-	 * Findet User durch eine U_ID und speichert die dazugeh�rigen Werte (U_ID und email) in einem User Objekt ab und gibt dieses wieder
+	 * Findet User durch eine U_ID und speichert die dazugehörigen Werte (U_ID und email) in einem User Objekt ab und gibt dieses wieder
 	 * 
+	 * @param uid übergebener Integer der U_ID
 	 */
 	public User findByID(int uid){
 		Connection con = DBConnection.connection();
@@ -62,9 +64,10 @@ public class UserMapper {
 	/**
 	 * FindByEMail.
 	 *
-	 * Findet User durch eine EMail und speichert die dazugeh�rigen Werte (U_ID und eMail) in einem User Objekt ab 
+	 * Findet User durch eine EMail und speichert die dazugehörigen Werte (U_ID und eMail) in einem User Objekt ab 
 	 * und speichert dieses Objekt im Vector ab und gibt diesen wieder
-	 *  
+	 * 
+	 * @param email übergebener String der eMail
 	 */
 	public User findByEMail(String email){
 		Connection con = DBConnection.connection();
@@ -92,9 +95,9 @@ public class UserMapper {
 	/**
 	 * FindAll.
 	 *
-	 *Gibt alle User Objekte zur�ck welche mit U_ID und eMail bef�llt sind
-	 *Hierf�r holen wir U_ID und eMail aus der T_User Tabelle und speichern diese in einem User Objekt ab und f�gen diese dem Vector hinzu
-	 *Diesen Vector bef�llt mit User geben wir zur�ck
+	 * Gibt alle User Objekte zurück welche mit U_ID und eMail befüllt sind
+	 * Hierfür holen wir U_ID und eMail aus der T_User Tabelle und speichern diese in einem User Objekt ab und fügen diese dem Vector hinzu
+	 * Diesen Vector befüllt mit User geben wir zurück
 	 *
 	 */
 	public Vector<User> findAll(){
@@ -120,9 +123,11 @@ public class UserMapper {
 	/**
 	 * Insert.
 	 *
-	 *Sucht nach der h�chsten U_ID um diese um eins zu erh�hen und als neue U_ID zu nutzen
-	 *Bef�llt T_User mit U_ID und eMail
-	 *Ein value wird zur�ckgegeben
+	 * Sucht nach der höchsten U_ID um diese um eins zu erhöhen und als neue U_ID zu nutzen
+	 * Befüllt T_User mit U_ID und eMail
+	 * Ein value wird zurückgegeben
+	 *
+	 * @param user übergebenes User Objekt mit Attributen U_ID und eMail
 	 */
 	public User insert(User user){
 		Connection con = DBConnection.connection();
@@ -154,8 +159,10 @@ public class UserMapper {
 	/**
 	 * Update.
 	 *
-	 * Update von Ver�nderungen falls sich die eMail �ndert
-	 * Gibt ein User zur�ck
+	 * Update von Veränderungen falls sich die eMail ändert
+	 * Gibt ein User zurück
+	 * 
+	 * @param user übergebenes User Objekt mit Attributen U_ID und eMail
 	 */
 	public User update(User user){
 		Connection con = DBConnection.connection();
@@ -177,8 +184,9 @@ public class UserMapper {
 	/**
 	 * Delete.
 	 *
-	 * Entfernt alles aus T_User wo die U_ID der ID des �bergebenen Objekts entspricht
-	 *
+	 * Entfernt alles aus T_User wo die U_ID der ID des übergebenen Objekts entspricht
+	 * 
+	 * @param user übergebenes User Objekt mit Attribut U_ID
 	 */
 	public void delete (User user){
 		Connection con = DBConnection.connection();

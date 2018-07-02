@@ -14,14 +14,15 @@ import com.google.gwt.sample.itProjekt.shared.bo.User;
 
 public class PropertyMapper {
 
-	/** Konstruktor f�r den PropertyMapper (Singleton) */
-	//static weil Singleton. Einzige Instanz dieser Klasse
+	/** Konstruktor für den PropertyMapper (Singleton)
+	 * static weil Singleton. Einzige Instanz dieser Klasse
+	 */
 	private static PropertyMapper  propertymapper = null;
 	
 	/**
 	 * PropertyMapper.
 	 *
-	 *Falls noch kein ProperyMapper existiert erstellt er ein neuen PropertyMapper und gibt ihn zur�ck
+	 * Falls noch kein ProperyMapper existiert erstellt er ein neuen PropertyMapper und gibt ihn zurück
 	 * 
 	 */
 	public static PropertyMapper propertyMapper() {
@@ -35,8 +36,9 @@ public class PropertyMapper {
 /**
  * FindByID.
  *
- *Findet Property durch eine P_ID und speichert die dazugeh�rigen Werte (P_ID und type) in einem Property Objekt ab und gibt dieses wieder
- *
+ * Findet Property durch eine P_ID und speichert die dazugehörigen Werte (P_ID und type) in einem Property Objekt ab und gibt dieses wieder
+ * 
+ * @param property übergebenes Property Objekt mit Attribut P_ID
  */
 public Property findByID(Property property){
 	Connection con = DBConnection.connection();
@@ -62,9 +64,9 @@ public Property findByID(Property property){
 /**
  * FindAll.
  *
- * Gibt alle Property Objekte zur�ck welche mit P_ID, type und C_ID bef�llt sind
- * Hierf�r holen wir die Attribute aus der T_Property Tabelle und speichern diese in einem Property Objekt ab und f�gen diese dem Vector hinzu
- * Am Ende geben wir diesen Vector zur�ck
+ * Gibt alle Property Objekte zurück welche mit P_ID, type und C_ID befüllt sind
+ * Hierfür holen wir die Attribute aus der T_Property Tabelle und speichern diese in einem Property Objekt ab und fügen diese dem Vector hinzu
+ * Am Ende geben wir diesen Vector zurück
  *
  */
 
@@ -93,10 +95,11 @@ Vector<Property> result = new Vector<Property>();
 /**
  * FindAllByCID.
  * 
- * Findet alle P_ID, type und C_ID wo die C_ID der ID des �bergebenen Objekte entspricht
- * Bef�llt das Property Objekt mit den Attributen und f�gt dieses Objekt dem Vector hinzu
- * Gibt ein Vector voller Property Objekte zur�ck
+ * Findet alle P_ID, type und C_ID wo die C_ID der ID des übergebenen Objekte entspricht
+ * Befüllt das Property Objekt mit den Attributen und fügt dieses Objekt dem Vector hinzu
+ * Gibt ein Vector voller Property Objekte zurück
  *
+ * @param contact übergebenes Contact Objekt mit Attribut C_ID
  */
 
 public Vector<Property> findAllByCID(Contact contact){
@@ -126,11 +129,11 @@ Vector<Property> result = new Vector<Property>();
 /**
  * FindAllDefault.
  *
- * Gibt alle Proeprty Objekte zur�ck die mit den Default Werten bef�llt sind
- * Hierf�r sind alle Default Property Werte mit der C_ID von 20000000 verkn�pft
- * Alle Attribute die zu dieser C_ID von 20000000 geh�ren holen wir aus der T_Property Tabelle (P_ID, type und C_ID)
- * und speichern diese in einem Property Objekt ab und f�gen diese dem Vector hinzu
- * Am Ende geben wir diesen Vector zur�ck
+ * Gibt alle Proeprty Objekte zurück die mit den Default Werten befüllt sind
+ * Hierfür sind alle Default Property Werte mit der C_ID von 20000000 verknüpft
+ * Alle Attribute die zu dieser C_ID von 20000000 gehören holen wir aus der T_Property Tabelle (P_ID, type und C_ID)
+ * und speichern diese in einem Property Objekt ab und fügen diese dem Vector hinzu
+ * Am Ende geben wir diesen Vector zurück
  *
  */
 
@@ -159,10 +162,12 @@ Vector<Property> result = new Vector<Property>();
 /**
  * Insert.
  *
- * Sucht nach der h�chsten P_ID um diese um eins zu erh�hen und als neue P_ID zu nutzen
- * Bef�llt T_Property mit P_ID, type und C_ID
- * Eine Property wird zum Schluss zur�ckgegeben
- *
+ * Sucht nach der höchsten P_ID um diese um eins zu erhöhen und als neue P_ID zu nutzen
+ * Befüllt T_Property mit P_ID, type und C_ID
+ * Eine Property wird zum Schluss zurückgegeben
+ * 
+ * @param property übergebenes Property Objekt mit Attributen P_ID und type 
+ * @param contact übergebenes Contact Objekt mit Attribut C_ID
  */
 
 
@@ -198,9 +203,10 @@ public Property insert(Property property, Contact contact){
 /**
  * Update.
  *
- * Update von Ver�nderungen falls sich type �ndert
- * Gibt ein Property zur�ck
+ * Update von Veränderungen falls sich type ändert
+ * Gibt ein Property zurück
  * 
+ * @param property übergebenes Property Objekt mit Attributen P_ID und type
  */
 
 public Property update(Property property){
@@ -223,8 +229,9 @@ return property;}
 /**
  * Delete.
  *
- * Entfernt alles aus T_Property wo die P_ID der ID des �bergebenen Objekts entspricht
+ * Entfernt alles aus T_Property wo die P_ID der ID des übergebenen Objekts entspricht
  * 
+ * @param property übergebenes Property Objekt mit Attribut P_ID
  */
 
 public void delete (Property property){
@@ -241,6 +248,15 @@ public void delete (Property property){
 				e2.printStackTrace();
 				}
 			}
+
+/**
+ * findByType.
+ *
+ * Findet alle P_ID, type und C_ID wo der type dem type des übergebenen Objektes entspricht
+ * Befüllt das Property Objekt mit den Attributen und gint es wieder
+ * 
+ * @param property übergebenes Property Objekt mit Attribut type
+ */
 public Property findByType(Property property){
 	Connection con = DBConnection.connection();
 	Property p = new Property();

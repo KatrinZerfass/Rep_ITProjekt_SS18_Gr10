@@ -12,14 +12,15 @@ import com.google.gwt.sample.itProjekt.shared.bo.Property;
 
 public class ValueMapper {
 
-	/** Konstruktor f�r den ValueMapper (Singleton) */
-	//static weil Singleton. Einzige Instanz dieser Klasse
+	/** Konstruktor für den ValueMapper (Singleton) 
+	 * static weil Singleton. Einzige Instanz dieser Klasse
+	 */
 	private static ValueMapper valuemapper = null;
 	
 	/**
 	 * ValueMapper.
 	 *
-	 *Falls noch kein ValueMapper existiert erstellt er ein neuen ValueMapper und gibt ihn zur�ck
+	 * Falls noch kein ValueMapper existiert erstellt er ein neuen ValueMapper und gibt ihn zurück
 	 * 
 	 */
 	public static ValueMapper  valueMapper() {
@@ -33,9 +34,10 @@ public class ValueMapper {
 	 * FindAllByValue.
 	 * 
 	 * Findet alle V_ID durch ein value welches als Filterkriterium dient
-	 * Bef�llt ein Value Objekt mit V_ID und value und f�gt dieses Objekt dem Vector hinzu
-	 * Gibt ein Vector voller Value Objekte zur�ck
+	 * Befüllt ein Value Objekt mit V_ID und value und fügt dieses Objekt dem Vector hinzu
+	 * Gibt ein Vector voller Value Objekte zurück
 	 *
+	 * @param value übergebenes Value Objekt mit Attribut value
 	 */
 	public Vector<Value> findAllByValue(Value value){
 		Connection con = DBConnection.connection();
@@ -65,9 +67,10 @@ public class ValueMapper {
 	 * FindAllContactsByValue.
 	 *
 	 * Findet alle C_ID durch ein value welches als Filterkriterium dient
-	 * Mit dem Contact Objekt welches C_ID beinhaltet wird durch findByID im ContactMapper das Contact Objekt vollst�ndig bef�llt und f�gt diesen dem Vector hinzu
-	 * Gibt ein Vector voller Contact Objekte zur�ck welche eine bestimmte value besitzen
+	 * Mit dem Contact Objekt welches C_ID beinhaltet wird durch findByID im ContactMapper das Contact Objekt vollständig befüllt und fügt diesen dem Vector hinzu
+	 * Gibt ein Vector voller Contact Objekte zurück welche eine bestimmte value besitzen
 	 *
+	 * @param value übergebenes Value Objekt mit Attribut value
 	 */
 	public Vector<Contact> findAllContactsByValue(Value value){
 		Connection con = DBConnection.connection();
@@ -92,9 +95,9 @@ public class ValueMapper {
 	/**
 	 * FindAll.
 	 *
-	 *Gibt alle Value Objekte zur�ck welche mit V_ID und value bef�llt sind
-	 *Hierf�r holen wir V_ID und value aus der T_Value Tabelle und speichern diese in einem Value Objekt ab und f�gen diese dem Vector hinzu
-	 *Am Ende geben wir diesen Vector zur�ck
+	 * Gibt alle Value Objekte zurück welche mit V_ID und value befüllt sind
+	 * Hierfür holen wir V_ID und value aus der T_Value Tabelle und speichern diese in einem Value Objekt ab und fügen diese dem Vector hinzu
+	 * Am Ende geben wir diesen Vector zurück
 	 *
 	 */
 	public Vector<Value> findAll(){
@@ -125,11 +128,14 @@ public class ValueMapper {
 	/**
 	 * Insert.
 	 *
-	 *Sucht nach der h�chsten V_ID um diese um eins zu erh�hen und als neue V_ID zu nutzen
-	 *Bef�llt T_Value mit V_ID, P_ID, value, C_ID und isShared
-	 *Mit dem isShared legen wir fest ob die value True oder False ist bzw. ob es geteilt ist oder nicht
-	 *Eine value wird zum Schluss zur�ckgegeben
+	 * Sucht nach der höchsten V_ID um diese um eins zu erhöhen und als neue V_ID zu nutzen
+	 * Befüllt T_Value mit V_ID, P_ID, value, C_ID und isShared
+	 * Mit dem isShared legen wir fest ob die value True oder False ist bzw. ob es geteilt ist oder nicht
+	 * Eine value wird zum Schluss zurückgegeben
 	 *
+	 * @param value übergebenes Value Objekt mit Attributen V_ID, value und isShared
+	 * @param contact übergebenes Contact Objekt mit Attribut C_ID
+	 * @param property übergebenes Property Objekt mit Attribut P_ID
 	 */
 	public Value insert(Value value, Contact contact, Property property){
 		Connection con = DBConnection.connection();
@@ -153,13 +159,14 @@ public class ValueMapper {
 				+ ", " 
 				+ value.getIsShared()
 				+ ")") ;
-						
+				
+				Contact c2 = new Contact();
+				c2 = ContactMapper.contactMapper().findByID(contact);
+				ContactMapper.contactMapper().update(c2);
 				return value;	
 				
 			}
-			Contact c2 = new Contact();
-			c2 = ContactMapper.contactMapper().findByID(contact);
-			ContactMapper.contactMapper().update(c2);
+			
 		}
 		catch (SQLException e2){
 			e2.printStackTrace();
@@ -170,9 +177,12 @@ public class ValueMapper {
 		/**
 		 * Update.
 		 *
-		 *Update von Ver�nderungen falls sich value, P_ID, C_ID oder isShared �ndert
-		 *Gibt ein value zur�ck
+		 * Update von Veränderungen falls sich value, P_ID, C_ID oder isShared ändert
+		 * Gibt ein value zurück
 		 * 
+		 * @param value übergebenes Value Objekt mit Attributen V_ID, value und isShared
+		 * @param contact übergebenes Contact Objekt mit Attribut C_ID
+		 * @param property übergebenes Property Objekt mit Attribut P_ID
 		 */
 		public Value update(Value value, Contact contact, Property property){
 			Connection con = DBConnection.connection();
@@ -197,14 +207,19 @@ public class ValueMapper {
 		/**
 		 * Delete.
 		 *
-		 *Entfernt alles aus T_Value wo die V_ID der ID des �bergebenen Objekts entspricht
+		 * Entfernt alles aus T_Value wo die V_ID der ID des übergebenen Objekts entspricht
+		 * Falls das Value Objekt das letzte Objekt war welches der P_ID zugewiesen war,
+		 * wird auch die dazugehörige Property gelöscht mit dem aufruf der delete Methode im PropertyMapper
 		 * 
+		 * @param value übergebenes Value Objekt mit Attribut V_ID
 		 */
-		//TODO kommentar erg�nzen
 		public void delete (Value value){
 			Connection con = DBConnection.connection();
 			
 			try{
+				Contact c2 = new Contact();
+				c2 = ContactMapper.contactMapper().findByID(findContactByVID(value));
+				ContactMapper.contactMapper().update(c2);
 				
 				Statement stmt = con.createStatement();
 				
@@ -232,7 +247,15 @@ public class ValueMapper {
 			
 		}
 }
-		
+		/**
+		 * findAllContactsByVID.
+		 *
+		 * Gibt ein Contact welche eine bestimmte V_ID habt zurück
+		 * Hierfür suchen wir nach C_ID in der T_Value Tabelle wo die V_ID der ID des übergebenen Objekts entspricht
+		 * Mit der C_ID befüllen wir ein Contact Objekt mit der Methode findByID und geben ihn zurück
+		 *
+		 * @param value übergebenes Value Objekt mit Attribut V_ID
+		 */
 		
 		public Contact findContactByVID(Value value){
 			
@@ -259,14 +282,14 @@ public class ValueMapper {
 		/**
 		 * getAllContactsByPID.
 		 *
-		 *Bef�llt ein Vector mit Contacts welche eine bestimmte Property haben und gibt diesen Vactor zur�ck
-		 *Hierf�r suchen wir nach C_ID in der T_Value Tabelle wo die P_ID der ID des �bergebenen Objekts entspricht
-		 *Mit der C_ID bef�llen wir ein Contact Objekt mit der Methode findByID und f�gen diesen dem Vector hinzu
+		 * Befüllt ein Vector mit Contacts welche eine bestimmte Property haben und gibt diesen Vector zurück
+		 * Hierfür suchen wir nach C_ID in der T_Value Tabelle wo die P_ID der ID des übergebenen Objekts entspricht
+		 * Mit der C_ID befüllen wir ein Contact Objekt mit der Methode findByID und fügen diesen dem Vector hinzu
 		 *
-		 *
+		 * @param property übergebenes Property Objekt mit Attribut P_ID
 		 */
 		public Vector<Contact> getAllContactsByPID(Property property){
-			//TODO: Brauchen wir diese Methode?
+
 			Connection con = DBConnection.connection();
 			Vector<Contact> result = new Vector<Contact>();
 					
@@ -287,50 +310,15 @@ public class ValueMapper {
 					return result;
 				}
 		
-		/**
-		 * getAllPropertiesByCID.
-		 *
-		 *Bef�llt ein Vector mit Property welche eine bestimmter Contact hat und gibt diesen Vactor zur�ck
-		 *Hierf�r suchen wir nach P_ID in der T_Value Tabelle wo die C_ID der ID des �bergebenen Objekts entspricht
-		 *Mit dieser P_ID werden alle type und P_ID aus T_Property geholt und in einem neuen Property Objekt gespeichert und den Vector hinzugef�gt
-		 *
-		 */
-		public Vector <Property> getAllPropertiesByCID (Contact contact){
-			Connection con = DBConnection.connection();
-			Vector <Property> result=new Vector <Property>();
-			
-			try{
-				Statement stmt = con.createStatement();
-				Statement stmt2 = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT P_ID FROM T_Value WHERE C_ID ="+ contact.getId()+ " ORDER BY C_ID");
-
-				while (rs.next()){
-					ResultSet rs2 = stmt2.executeQuery ("SELECT P_ID, type FROM T_Property WHERE P_ID =" + rs.getInt("P_ID")+ " ORDER BY C_ID");
-					Property p = new Property();
-					p.setId(rs2.getInt("P_ID"));
-					p.setType(rs2.getString("type"));
-	
-					result.addElement(p);
-				}
-				
-			}
-			catch (SQLException e2){
-				e2.printStackTrace();
-				return result;
-			}
-			return result;
-		}	
-		
-		
-		
 		
 		/**
 		 * getAllValueByCID.
 		 *
-		 * Bef�llt ein Vector mit Value welche eine bestimmter Contact hat und gibt diesen Vactor zur�ck
-		 * Hierf�r suchen wir nach V_ID, value, P_ID und isShared in der T_Value Tabelle wo die C_ID der ID des �bergebenen Objekts entspricht
-		 * Wir bef�llen diese Daten in ein Value Objekt welches wir dem Vector hinzuf�gen
-		 *
+		 * Befüllt ein Vector mit Value welche eine bestimmter Contact hat und gibt diesen Vector zurück
+		 * Hierfür suchen wir nach V_ID, value, P_ID und isShared in der T_Value Tabelle wo die C_ID der ID des übergebenen Objekts entspricht
+		 * Wir befüllen diese Daten in ein Value Objekt welches wir dem Vector hinzufügen
+		 * 
+		 * @param contact übergebenes Contact Objekt mit Attribut C_ID
 		 */
 		public Vector <Value> getAllValueByCID (Contact contact){
 			Connection con = DBConnection.connection();
@@ -362,10 +350,11 @@ public class ValueMapper {
 		/**
 		 * getAllSharedValueByCID.
 		 *
-		 * Bef�llt ein Vector mit Value welche eine bestimmter Contact hat und geteilt ist und gibt diesen Vactor zur�ck
-		 * Hierf�r suchen wir nach V_ID, value, P_ID und isShared in der T_Value Tabelle wo die C_ID der ID des �bergebenen Objekts entspricht und isShared 1 (TRUE) entspricht
-		 * Wir bef�llen diese Daten in ein Value Objekt welches wir dem Vector hinzuf�gen
-		 *
+		 * Befüllt ein Vector mit Value welche eine bestimmter Contact hat und geteilt ist und gibt diesen Vactor zurück
+		 * Hierfür suchen wir nach V_ID, value, P_ID und isShared in der T_Value Tabelle wo die C_ID der ID des übergebenen Objekts entspricht und isShared 1 (TRUE) entspricht
+		 * Wir befüllen diese Daten in ein Value Objekt welches wir dem Vector hinzufügen
+		 * 
+		 * @param contact übergebenes Contact Objekt mit Attributen C_ID und isShared
 		 */
 		
 		public Vector <Value> getAllSharedValueByCID (Contact contact){
@@ -398,10 +387,12 @@ public class ValueMapper {
 		/**
 		 * FindAllByPID.
 		 * 
-		 * Findet alle V_ID, value, P_ID und isShared wo die P_ID und die C_ID der ID der beiden �bergebenen Objekte entspricht
-		 * Bef�llt das Value Objekt mit den Attributen und f�gt dieses Objekt dem Vector hinzu
-		 * Gibt ein Vector voller Value Objekte zur�ck
-		 *
+		 * Findet alle V_ID, value, P_ID und isShared wo die P_ID und die C_ID der ID der beiden übergebenen Objekte entspricht
+		 * Befüllt das Value Objekt mit den Attributen und fügt dieses Objekt dem Vector hinzu
+		 * Gibt ein Vector voller Value Objekte zurück
+		 * 
+		 * @param property übergebenes Property Objekt mit Attribut P_ID
+		 * @param contact übergebenes Contact Objekt mit Attribut C_ID
 		 */
 		
 		public Vector<Value> findAllByPID(Property property, Contact contact){
