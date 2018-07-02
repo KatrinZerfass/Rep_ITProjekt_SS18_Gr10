@@ -1330,7 +1330,7 @@ public class ContactForm extends VerticalPanel {
 								vtb.equals(lastnameTextBox))){
 						editorAdministration.editContact(contactToDisplay.getId(), firstnameTextBox.getText(), lastnameTextBox.getText(), 
 							contactToDisplay.getSex(), new AsyncCallback<Contact>() {
-	
+								//TODO evtl sind timestamps rigged
 							public void onFailure(Throwable arg0) {
 								Window.alert("Fehler beim Änderungen speichern. \n (Kontaktstamm)");
 							}

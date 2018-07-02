@@ -125,10 +125,20 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 		
 		reportGenerator=ClientsideSettings.getReportGenerator();
 		RootPanel.get("reporttext").setVisible(false);
+
+		/**
+		 * zusätzliche Klassennamen, die für das stylesheet benötigt werden.
+		**/
+		
+		/**
+		 * Instanziierung der SuggestBox für die Eingabe der Email.
+		**/
+		sb=new TextSuggest(new MultiWordSuggestOracle());
+
 		searchheading.addStyleName("searchheading");
 		signOutLink.addStyleName("signout");
 		signInLink.addStyleName("reportbutton");
-		sb=new TextSuggest(new MultiWordSuggestOracle());
+
 		
 		searchLabel.addStyleName("searchlabel");
 		reportbuttonPanel.addStyleName("top-buttons");
@@ -137,6 +147,13 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 		allContactsWithValueButton.addStyleName("reportbutton");
 		allContactsWithPropertyButton.addStyleName("reportbutton");
 		propertyInput.addStyleName("sonstigeinput");
+
+		
+		
+		/**
+		 * Auslesen der vordefinierten Eigenschaften aus der Datenbank, um diese zur ListBox hinzuzufügen.
+		**/
+		
 		reportGenerator.getAllPredefinedPropertiesOfReport(new AsyncCallback<Vector<Property>>(){
 			public void onFailure(Throwable t) {
 				Window.alert("Auslesen aller vordefinierten Eigenschaften fehlgeschlagen");
