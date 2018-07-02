@@ -153,13 +153,14 @@ public class ValueMapper {
 				+ ", " 
 				+ value.getIsShared()
 				+ ")") ;
-						
+				
+				Contact c2 = new Contact();
+				c2 = ContactMapper.contactMapper().findByID(contact);
+				ContactMapper.contactMapper().update(c2);
 				return value;	
 				
 			}
-			Contact c2 = new Contact();
-			c2 = ContactMapper.contactMapper().findByID(contact);
-			ContactMapper.contactMapper().update(c2);
+			
 		}
 		catch (SQLException e2){
 			e2.printStackTrace();
@@ -205,6 +206,9 @@ public class ValueMapper {
 			Connection con = DBConnection.connection();
 			
 			try{
+				Contact c2 = new Contact();
+				c2 = ContactMapper.contactMapper().findByID(findContactByVID(value));
+				ContactMapper.contactMapper().update(c2);
 				
 				Statement stmt = con.createStatement();
 				
