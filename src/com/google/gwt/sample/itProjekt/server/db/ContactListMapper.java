@@ -16,14 +16,15 @@ import com.google.gwt.sample.itProjekt.shared.bo.User;
  */
 public class ContactListMapper {
 	
-	/** Konstruktor f�r den ContactListMapper (Singleton) */
-	//static weil Singleton. Einzige Instanz dieser Klasse
+	/** Konstruktor für den ContactListMapper (Singleton) 
+	* static weil Singleton. Einzige Instanz dieser Klasse
+	*/
 	private static ContactListMapper  contactlistmapper = null;
 	
 	/**
 	 * ContactListMapper.
 	 *
-	 * Falls noch kein ContactListMapper existiert erstellt er ein neuen ContactListMapper und gibt ihn zur�ck
+	 * Falls noch kein ContactListMapper existiert erstellt er ein neuen ContactListMapper und gibt ihn zurück
 	 * 
 	 */
 	public static ContactListMapper contactListMapper() {
@@ -36,7 +37,9 @@ public class ContactListMapper {
 	/**
 	 * FindByID.
 	 *
-	 * Findet ContactList durch eine CL_ID und speichert die dazugeh�rigen Werte (CL_ID, listname und U_ID) in einem ContactList Objekt ab und gibt dieses wieder
+	 * Findet ContactList durch eine CL_ID und speichert die dazugehörigen Werte (CL_ID, listname und U_ID) in einem ContactList Objekt ab und gibt dieses wieder
+	 * 
+	 * @param contactlist übergebenes ContactList Objekt mit Attribut CL_ID
 	 */
 	public ContactList findByID(ContactList contactlist){
 		Connection con = DBConnection.connection();
@@ -66,9 +69,9 @@ public class ContactListMapper {
 	/**
 	 * FindAll.
 	 *
-	 *Gibt alle ContactList Objekte zur�ck welche mit CL_ID, listname und U_ID bef�llt sind
-	 *Hierf�r holen wir CL_ID, listname und U_ID aus der T_ContactList Tabelle und speichern diese in einem ContactList Objekt ab und f�gen diese dem Vector hinzu
-	 *Am Ende geben wir diesen Vector zur�ck
+	 * Gibt alle ContactList Objekte zurück welche mit CL_ID, listname und U_ID befüllt sind
+	 * Hierfür holen wir CL_ID, listname und U_ID aus der T_ContactList Tabelle und speichern diese in einem ContactList Objekt ab und fügen diese dem Vector hinzu
+	 * Am Ende geben wir diesen Vector zurück
 	 *
 	 */
 	public Vector<ContactList> findAll(){
@@ -95,9 +98,10 @@ public class ContactListMapper {
 	/**
 	 * FindByName.
 	 *
-	 * Findet ContactLists durch einen Namen und speichert die dazugeh�rigen Werte (CL_ID, listname und U_ID) in einem ContactList Objekt ab
+	 * Findet ContactLists durch einen Namen und speichert die dazugehörigen Werte (CL_ID, listname und U_ID) in einem ContactList Objekt ab
 	 * und Speichert dieses Objekt im Vector ab und gibt diesen wieder
 	 * 
+	 * @param name übergebener String listname
 	 */
 	public Vector <ContactList> findByName(String name){
 		Connection con = DBConnection.connection();
@@ -125,9 +129,10 @@ public class ContactListMapper {
 	 * FindAllByUID.
 	 *
 	 * Findet alle ContactLists die ein User erstellt hat durch seine U_ID
-	 * Alle Values werden aus T_ContactList ausgelesen und in einem ContactList Objekt gespeichert und einem Vector hinzugef�gt und zur�ckgegeben
-	 * Gibt ein Vector voller ContactList Objekte zur�ck welche ein User erstellt hat
+	 * Alle Values werden aus T_ContactList ausgelesen und in einem ContactList Objekt gespeichert und einem Vector hinzugefügt und zurückgegeben
+	 * Gibt ein Vector voller ContactList Objekte zurück welche ein User erstellt hat
 	 * 
+	 * @param user übergebenes User Objekt mit Attribut U_ID
 	 */
 	public Vector <ContactList> findAllByUID(User user){
 		Connection con = DBConnection.connection();
@@ -150,7 +155,16 @@ public class ContactListMapper {
 		}
 		return result;
 	}
-	//TODO: Robert hier Kommentar pls
+	
+	/**
+	 * FindAllByCID.
+	 * 
+	 * Findet alle CL_ID wo die C_ID der ID der übergebenen Objekte entspricht
+	 * Befüllt das ContactList Objekt mit den Attributen und fügt dieses Objekt dem Vector hinzu
+	 * Gibt ein Vector voller ContactList Objekte zurück
+	 *
+	 * @param contact übergebenes Contact Objekt mit Attributen C_ID
+	 */
 	public Vector <ContactList> findAllByCID(Contact contact){
 		Connection con = DBConnection.connection();
 		Vector<ContactList> result = new Vector<ContactList>();
@@ -175,10 +189,12 @@ public class ContactListMapper {
 	/**
 	 * Insert.
 	 *
-	 *Sucht nach der h�chsten CL_ID um diese um eins zu erh�hen und als neue CL_ID zu nutzen
-	 *Bef�llt T_ContactList mit CL_ID, listname und U_ID
-	 *Ein ContactList wird zur�ckgegeben
+	 * Sucht nach der höchsten CL_ID um diese um eins zu erhöhen und als neue CL_ID zu nutzen
+	 * Befüllt T_ContactList mit CL_ID, listname und U_ID
+	 * Ein ContactList wird zurückgegeben
 	 *
+	 * @param contactlist übergebenes ContactList Objekt mit Attributen CL_ID und listname
+	 * @param user übergebenes User Objekt mit Attribut U_ID
 	 */
 	public ContactList insert(ContactList contactlist, User user){
 		Connection con = DBConnection.connection();
@@ -212,8 +228,10 @@ public class ContactListMapper {
 		/**
 		 * Update.
 		 *
-		 * Update von Ver�nderungen falls sich der listname �ndert
-		 * Gibt ein ContactList zur�ck
+		 * Update von Veränderungen falls sich der listname ändert
+		 * Gibt ein ContactList zurück
+		 * 
+		 * @param contactlist übergebenes ContactList Objekt mit Attributen listname und CL_ID
 		 */
 		public ContactList update(ContactList contactlist){
 			Connection con = DBConnection.connection();
@@ -232,10 +250,12 @@ public class ContactListMapper {
 		/**
 		 * Delete.
 		 *
-		 * Entfernt alles aus T_Permission_Contactlist wo die CL_ID der ID des �bergebenen Objekts entspricht
-		 * Damit l�sen wir die Teilhaberschaft an einem ContactList auf
-		 * der n�chste Schritt entfernt alles aus T_ContactList wo die CL_ID der ID des �bergebenen Objekts entspricht
+		 * Entfernt alles aus T_Permission_Contactlist wo die CL_ID der ID des übergebenen Objekts entspricht
+		 * Entfernt alles aus T_Permission_Contact wo die C_ID der ID des übergebenen Objekts entspricht
+		 * Damit lösen wir die Teilhaberschaft an einem ContactList auf
+		 * der nächste Schritt entfernt alles aus T_ContactList wo die CL_ID der ID des übergebenen Objekts entspricht
 		 * 
+		 * @param contactlist übergebenes ContactList Objekt mit Attribut CL_ID
 		 */
 		public void delete (ContactList contactlist){
 Connection con = DBConnection.connection();
@@ -280,11 +300,12 @@ Connection con = DBConnection.connection();
 		/**
 		 * GetAllContacts.
 		 *
-		 * Bef�llt den Vector mit Contacts die in einer ContactList enthalten sind
-		 * Hierf�r durchsuchen wir die T_Contact_ContactList Tabelle nach C_ID wo die CL_ID der ID des �bergebenen Objektes entspricht
+		 * Befüllt den Vector mit Contacts die in einer ContactList enthalten sind
+		 * Hierfür durchsuchen wir die T_Contact_ContactList Tabelle nach C_ID wo die CL_ID der ID des übergebenen Objektes entspricht
 		 * Diese C_ID nutzen wir um die C_ID, firstName, lastName, gender und U_ID aus der T_Contact zu holen wo die C_ID der ID des ResultSets entspricht (Die C_ID welche wir aus T_Contact_Contactlist erhalten haben)
-		 * Die Werte aus der T_Contact speichern wir in einem Contact Objekt ab und geben den Vector zur�ck
-		 *
+		 * Die Werte aus der T_Contact speichern wir in einem Contact Objekt ab und geben den Vector zurück
+		 * 
+		 * @param contactlist übergebenes ContactList Objekt mit Attribut CL_ID
 		 */
 		public Vector <Contact> getAllContacts(ContactList contactlist){
 			Connection con = DBConnection.connection();
@@ -315,10 +336,11 @@ Connection con = DBConnection.connection();
 		/**
 		 * AddContact.
 		 *
-		 * F�gt der ContactList einen Contact hinzu
-		 * Hierf�r f�gen wir der T_Contact_ContactList die CL_ID und C_ID hinzu und geben die ContactList zur�ck
+		 * Fügt der ContactList einen Contact hinzu
+		 * Hierfür fügen wir der T_Contact_ContactList die CL_ID und C_ID hinzu und geben die ContactList zurück
 		 * 
-		 * 
+		 * @param contactlist übergebenes ContactList Objekt mit Attribut CL_ID
+		 * @param contact übergebenes Contact Objekt mit Attributen C_ID
 		 */
 		public ContactList addContact(ContactList contactlist, Contact contact){
 			Connection con = DBConnection.connection();
@@ -345,9 +367,10 @@ Connection con = DBConnection.connection();
 		 * RemoveContact.
 		 * 
 		 * Entfernt einen Contact aus der ContactList
-		 * Hierf�r l�schen wir den Eintag aus T_Contact_ContactList wo die CL_ID der CL_ID des �bergebenen Objektes entspricht
+		 * Hierfür löschen wir den Eintag aus T_Contact_ContactList wo die CL_ID der CL_ID des übergebenen Objektes entspricht
 		 * 
-		 * 
+		 * @param contactlist übergebenes ContactList Objekt mit Attribut CL_ID
+		 * @param contact übergebenes Contact Objekt mit Attribut C_ID
 		 */
 		public ContactList removeContact(ContactList contactlist, Contact contact){
 			Connection con = DBConnection.connection();
