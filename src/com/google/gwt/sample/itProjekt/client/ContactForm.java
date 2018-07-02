@@ -2084,6 +2084,12 @@ public class ContactForm extends VerticalPanel {
 								vp.getAddValueButton().setEnabled(false);
 								
 							}
+							
+							for(int c=0; c<newPropertyListBox.getItemCount(); c++) {
+								if (newPropertyListBox.getItemText(c) == "Telefonnummer geschäftlich") {
+									newPropertyListBox.removeItem(c);
+								}
+							}
 						}
 					
 						break;
@@ -2131,6 +2137,11 @@ public class ContactForm extends VerticalPanel {
 								vt.getValueDisplay(vtRow).disableButtons();
 								vp.getAddValueButton().setEnabled(false);
 							}
+							for(int c=0; c<newPropertyListBox.getItemCount(); c++) {
+								if (newPropertyListBox.getItemText(c) == "Telefonnummer privat") {
+									newPropertyListBox.removeItem(c);
+								}
+							}
 						}
 						break;
 						
@@ -2174,6 +2185,11 @@ public class ContactForm extends VerticalPanel {
 								vt.getValueDisplay(vtRow).disableButtons();
 								vp.getAddValueButton().setEnabled(false);
 							}
+							for(int c=0; c<newPropertyListBox.getItemCount(); c++) {
+								if (newPropertyListBox.getItemText(c) == "E-Mail Adresse") {
+									newPropertyListBox.removeItem(c);
+								}
+							}
 						}
 						break;
 						
@@ -2205,22 +2221,27 @@ public class ContactForm extends VerticalPanel {
 								((ValueDisplay) contactTable.getWidget(3, 3)).disableButtons();
 							}
 							
-							newPropertyListBox.clear();
-							for (Property p : allPredefinedProperties) {
-								if(p.getType()!= "Geburtstag" && p.getType()!="Straße" && p.getType()!= "Hausnummer" && p.getType()!= "PLZ" && p.getType()!= "Wohnort") {
-									newPropertyListBox.addItem(p.getType());
+							for(int c=0; c<newPropertyListBox.getItemCount(); c++) {
+								if (newPropertyListBox.getItemText(c) == "Geburtstag") {
+									newPropertyListBox.removeItem(c);
 								}
-								
-								
-//									for (Property prop : allPredefinedProperties) {
-//										if(prop.getType()!="Straße" && prop.getType()!= "Hausnummer" && prop.getType()!= "PLZ" && prop.getType()!= "Wohnort") {
-//											newPropertyListBox.addItem(prop.getType());
-//										}
-//									}
-//								}
 							}
-							newPropertyListBox.addItem("Anschrift");
-							newPropertyListBox.addItem("Sonstiges");
+//							newPropertyListBox.clear();
+//							for (Property p : allPredefinedProperties) {
+//								if(p.getType()!= "Geburtstag" && p.getType()!="Straße" && p.getType()!= "Hausnummer" && p.getType()!= "PLZ" && p.getType()!= "Wohnort") {
+//									newPropertyListBox.addItem(p.getType());
+//								}
+//								
+//								
+////									for (Property prop : allPredefinedProperties) {
+////										if(prop.getType()!="Straße" && prop.getType()!= "Hausnummer" && prop.getType()!= "PLZ" && prop.getType()!= "Wohnort") {
+////											newPropertyListBox.addItem(prop.getType());
+////										}
+////									}
+////								}
+//							}
+//							newPropertyListBox.addItem("Anschrift");
+//							newPropertyListBox.addItem("Sonstiges");
 						}
 						break;
 					
@@ -2268,6 +2289,11 @@ public class ContactForm extends VerticalPanel {
 							else {
 								vt.getValueDisplay(vtRow).disableButtons();
 								vp.getAddValueButton().setEnabled(false);
+							}
+							for(int c=0; c<newPropertyListBox.getItemCount(); c++) {
+								if (newPropertyListBox.getItemText(c) == "Arbeitsplatz") {
+									newPropertyListBox.removeItem(c);
+								}
 							}
 						}
 						break;
@@ -2392,6 +2418,11 @@ public class ContactForm extends VerticalPanel {
 							else {
 								vt.getValueDisplay(vtRow).disableButtons();
 								vp.getAddValueButton().setEnabled(false);
+							}
+							for(int c=0; c<newPropertyListBox.getItemCount(); c++) {
+								if (newPropertyListBox.getItemText(c) == "Homepage") {
+									newPropertyListBox.removeItem(c);
+								}
 							}
 						}
 						break;
