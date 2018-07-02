@@ -102,10 +102,12 @@ public class ContactForm extends VerticalPanel {
 	 */
 	Button saveChangesButton;
 	Button removeContactFromContactListButton;
+	
 	public class OurDialogBox extends DialogBox{
-		public OurDialogBox(){
+		public OurDialogBox(VerticalPanel panel){
 			CloseButton close= new CloseButton(this);
-			this.add(close);
+			panel.add(close);
+			this.add(panel);
 		}
 	}
 	
@@ -448,12 +450,12 @@ public class ContactForm extends VerticalPanel {
 		 */
 		public void addValuePopUp(int pid, int row) {
 
-			OurDialogBox addValuePopUp = new OurDialogBox();
+			VerticalPanel addValueDialogBoxPanel = new VerticalPanel();
+			OurDialogBox addValuePopUp = new OurDialogBox(addValueDialogBoxPanel);
 			addValuePopUp.setText("Neue Ausprägung hinzufügen");
 			addValuePopUp.setAnimationEnabled(true);
-			addValuePopUp.setGlassEnabled(true);
+			addValuePopUp.setGlassEnabled(true);			
 			
-			VerticalPanel addValueDialogBoxPanel = new VerticalPanel();
 			addValueDialogBoxPanel.setHeight("100px");
 			addValueDialogBoxPanel.setWidth("230px");
 		    addValueDialogBoxPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
@@ -847,7 +849,7 @@ public class ContactForm extends VerticalPanel {
 	 * @author JanNoller
 	 */
 	
-	public class EmailDialogBox extends OurDialogBox{
+	public class EmailDialogBox extends DialogBox{
 		
 		private String input;
 		
@@ -857,7 +859,7 @@ public class ContactForm extends VerticalPanel {
         private MultiWordSuggestOracle oracle;
         
         Button ok = new Button("OK");
-        
+
 		public EmailDialogBox() {
 			
 			oracle = new MultiWordSuggestOracle();
@@ -883,7 +885,6 @@ public class ContactForm extends VerticalPanel {
 					setGlassEnabled(true);
 					
 					VerticalPanel panel = new VerticalPanel();
-					
 			        panel.setHeight("100");
 			        panel.setWidth("300");
 			        panel.setSpacing(10);
@@ -1354,11 +1355,10 @@ public class ContactForm extends VerticalPanel {
 	 * @author JanNoller (& KatrinZerfass)
 	 */
 	private class AddContactToContactListClickHandler implements ClickHandler {
-		
-		OurDialogBox db = new OurDialogBox();
+		VerticalPanel panel= new VerticalPanel();
+		OurDialogBox db = new OurDialogBox(panel);
 	
 		ListBox listbox = new ListBox();
-		VerticalPanel panel= new VerticalPanel();
 		ContactList choice;
 		
         Vector<ContactList> contactLists;
@@ -1495,9 +1495,9 @@ public class ContactForm extends VerticalPanel {
 			row = contactTable.getRowCount();
 			
 			if(ptype == "Geburtstag") {
-				db1 = new OurDialogBox();
-				inputTextBox1 = new TextBox();
 				VerticalPanel db1Panel = new VerticalPanel();
+				db1 = new OurDialogBox(db1Panel);
+				inputTextBox1 = new TextBox();
 				db1.setText("Geburtsdatum eintragen");
 			
 				Button addBirthdayButton = new Button("Geburtsdatum hinzufügen");
@@ -1535,10 +1535,10 @@ public class ContactForm extends VerticalPanel {
 				
 			}
 			else if(ptype == "Sonstiges") {
-				db2 = new OurDialogBox();
+				VerticalPanel db2Panel = new VerticalPanel();
+				db2 = new OurDialogBox(db2Panel);
 				inputTextBox2 = new TextBox();
 				
-				VerticalPanel db2Panel = new VerticalPanel();
 				db2.setText("Neue Eigenschaftsart hinzufügen");
 				
 				Button addPropertyButton = new Button("Eigenschaftsart anlegen");

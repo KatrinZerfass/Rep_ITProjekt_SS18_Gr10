@@ -20,8 +20,7 @@ import com.google.gwt.sample.itProjekt.shared.report.SimpleParagraph;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 
-// 
-// 
+ 
 /**
  * Die ReportGeneratorImpl Klasse.
  */
@@ -56,7 +55,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	/**
 	 * Getter für das EditorAdministrationsobjekt.
 	 *
-	 * @return the editor administration
+	 * @return das editor administrations objekt
 	 */
 	protected EditorAdministration getEditorAdministration() {
 		return this.admin;
@@ -527,9 +526,16 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	}
 }
 
+	/* (non-Javadoc)
+	 * @see com.google.gwt.sample.itProjekt.shared.ReportGenerator#getAllUsers()
+	 */
 	public Vector<User> getAllUsers(){
 		return admin.getAllUsers();
 	}
+	
+	/* (non-Javadoc)
+	 * @see com.google.gwt.sample.itProjekt.shared.ReportGenerator#getAllPredefinedPropertiesOfReport()
+	 */
 	@Override
 	public Vector<Property> getAllPredefinedPropertiesOfReport() throws IllegalArgumentException {
 		
