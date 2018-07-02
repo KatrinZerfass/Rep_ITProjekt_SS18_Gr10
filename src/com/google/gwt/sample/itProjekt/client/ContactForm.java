@@ -511,7 +511,7 @@ public class ContactForm extends VerticalPanel {
 			
 			addValueDialogBoxPanel.add(addValueTextBox);
 			addValueDialogBoxPanel.add(addValueButton);
-			addValuePopUp.add(addValueDialogBoxPanel);
+			//addValuePopUp.add(addValueDialogBoxPanel);
 			addValuePopUp.show();
 			
 			
@@ -1382,7 +1382,7 @@ public class ContactForm extends VerticalPanel {
 		        panel.add(listbox);
 		        panel.add(ok);
 		        
-		        db.add(panel);
+		      //  db.add(panel);
 		    	db.show();
 	
 		        editorAdministration.getAllOwnedContactListsOfActiveUser(currentUser, new AsyncCallback<Vector<ContactList>>() {
@@ -1503,7 +1503,7 @@ public class ContactForm extends VerticalPanel {
 				Button addBirthdayButton = new Button("Geburtsdatum hinzufügen");
 				db1Panel.add(inputTextBox1);
 				db1Panel.add(addBirthdayButton);
-				db1.add(db1Panel);
+			//	db1.add(db1Panel);
 				db1.show();
 				
 				addBirthdayButton.addClickHandler(new ClickHandler(){
@@ -1544,7 +1544,7 @@ public class ContactForm extends VerticalPanel {
 				Button addPropertyButton = new Button("Eigenschaftsart anlegen");
 				db2Panel.add(inputTextBox2);
 				db2Panel.add(addPropertyButton);
-				db2.add(db2Panel);
+			//	db2.add(db2Panel);
 				db2.show();
 				
 					
