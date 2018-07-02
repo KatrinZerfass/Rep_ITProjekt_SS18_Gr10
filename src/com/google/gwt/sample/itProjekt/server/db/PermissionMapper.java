@@ -270,7 +270,9 @@ public Permission update(Permission permission){
 					p.setParticipantID(permission.getParticipantID());
 					p.setSourceUserID(permission.getSourceUserID());
 					p.setShareableObjectID(c1.getId());
+					if(c1.getOwner()== permission.getParticipantID()){
 					shareContact(p);
+					}
 				}}
 			
 			return permission;	
