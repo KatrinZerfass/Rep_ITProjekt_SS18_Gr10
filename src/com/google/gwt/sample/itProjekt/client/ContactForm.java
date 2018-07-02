@@ -112,14 +112,21 @@ public class ContactForm extends VerticalPanel {
 	}
 	
 	public class CloseButton extends Button{
+		private Image closebutton = new Image("close-button.png");
+
 		OurDialogBox db;
+		
 		public CloseButton(OurDialogBox db) {
 			this.db = db;
 			this.addClickHandler(new CloseDBClickHandler(db)); 
+			closebutton.setPixelSize(20, 20);
+			this.getElement().appendChild(closebutton.getElement());
+			this.addStyleName("closebutton");
 		}
 		
 		private class CloseDBClickHandler implements ClickHandler{
 			OurDialogBox db;
+	
 			
 			public CloseDBClickHandler(OurDialogBox db) {
 				this.db=db;
