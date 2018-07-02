@@ -2156,7 +2156,7 @@ public class ContactForm extends VerticalPanel {
 						if(compareUser() || (!compareUser() && allValuesOfContact.get(i).getIsShared()==true)) {
 							Window.alert("PropertyID vom vorherigen Wert: " +((Integer)allValuesOfContact.get(i-1).getPropertyid()).toString());
 							
-							if(allValuesOfContact.get(i-1).getPropertyid() != 3) {
+							if(allValuesOfContact.get(i-1).getPropertyid() != 3 || i ==0) {
 								Window.alert("in if: neues panel und table wird angelegt");
 								contactTable.setWidget(row, 0, new ValuePanel(pid, row, "e-Mail-Adressen: "));
 								contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
