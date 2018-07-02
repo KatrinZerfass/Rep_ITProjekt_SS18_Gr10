@@ -245,14 +245,18 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	@Override
 	public Permission shareContactList(User sourceUser, String shareUserEmail, ContactList shareContactList) throws IllegalArgumentException {
 		
-
-		Permission newCLpermission = new Permission();
-		newCLpermission.setSourceUserID(sourceUser.getId());
-		newCLpermission.setParticipantID(uMapper.findByEMail(shareUserEmail).getId());
-		newCLpermission.setShareableObjectID(shareContactList.getId());
-		newCLpermission.setIsowner(false);
-		
-		return pmMapper.shareContactList(newCLpermission);
+		if(uMapper.findByEMail(shareUserEmail).getId() != shareContactList.getOwner()) {
+			Permission newCLpermission = new Permission();
+			newCLpermission.setSourceUserID(sourceUser.getId());
+			newCLpermission.setParticipantID(uMapper.findByEMail(shareUserEmail).getId());
+			newCLpermission.setShareableObjectID(shareContactList.getId());
+			newCLpermission.setIsowner(false);
+			
+			return pmMapper.shareContactList(newCLpermission);
+		}
+		else {
+			return null;
+		}
 	}
 
 	@Override
