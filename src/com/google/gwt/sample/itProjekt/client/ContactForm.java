@@ -1310,7 +1310,7 @@ public class ContactForm extends VerticalPanel {
 					 * Wenn in einer ValueTextBox der Inhalt verändert wurde, so wird für diese Ausprägung die Methode editValue() aufgerufen.
 					 */
 					if (vtb.getIsChanged() && vtb.getTextBoxValue() != null) {
-						editorAdministration.editValue(contactToDisplay, vtb.getTextBoxValue().getPropertyid(), vtb.getTextBoxValue(), vtb.getText(), 
+						editorAdministration.editValue(contactToDisplay, vtb.getTextBoxValue().getPropertyid(), vtb.getTextBoxValue(), vtb.getTextBoxValue().getContent(), 
 							vtb.getTextBoxValue().getIsShared(), new AsyncCallback<Value>() {
 							
 							public void onFailure(Throwable arg0) {	
@@ -1329,9 +1329,6 @@ public class ContactForm extends VerticalPanel {
 					 */
 					else if(vtb.getIsChanged() && (vtb.equals(firstnameTextBox) ||
 								vtb.equals(lastnameTextBox))){
-						Window.alert("firstnameTextBox.getText() = " + firstnameTextBox.getText() + "\n" +
-								"lastnameTextBox.getText() = " + lastnameTextBox.getText() + "\n" +
-								"vtb.getText() = " + vtb.getText());
 						editorAdministration.editContact(contactToDisplay.getId(), firstnameTextBox.getText(), lastnameTextBox.getText(), 
 							contactToDisplay.getSex(), new AsyncCallback<Contact>() {
 								//TODO evtl sind timestamps rigged
@@ -2012,7 +2009,7 @@ public class ContactForm extends VerticalPanel {
 	
 	public void displayAllValuesOfContact() {
 		
-		allValueTextBoxes = new Vector<ValueTextBox>();
+		//allValueTextBoxes = new Vector<ValueTextBox>();
 		/*
 		 * Der Vector allValuesOfContact, welcher alle Ausprägungen des anzuzeigenden Kontaktes enthält, wird durchiteriert
 		 * und jede Ausprägung wird im dazugehörigen ValueDisplay der jeweiligen Eigenschaftsart angezeigt.
@@ -2235,7 +2232,7 @@ public class ContactForm extends VerticalPanel {
 							
 							newPropertyListBox.clear();
 							for (Property p : allPredefinedProperties) {
-								if(p.getType()!= "Geburtstag" || p.getType()!="Straße" && p.getType()!= "Hausnummer" && p.getType()!= "PLZ" && p.getType()!= "Wohnort") {
+								if(p.getType()!= "Geburtstag" && p.getType()!="Straße" && p.getType()!= "Hausnummer" && p.getType()!= "PLZ" && p.getType()!= "Wohnort") {
 									newPropertyListBox.addItem(p.getType());
 								}
 								

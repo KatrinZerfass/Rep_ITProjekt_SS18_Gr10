@@ -233,8 +233,10 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 			return;
 		}
 		
-		BusinessObject selection = selectionModel.getSelectedObject();
-		setSelectedContactList((ContactList) selection);
+		ListDataProvider<Contact> contactsProvider = contactDataProviders.get(cl);
+		Window.alert(contactsProvider.getList().toString());
+		contactsProvider.getList().remove(contactsProvider.getKey(c));
+		contactListDataProvider.flush();
 				
 		//int selectedIndex =  contactDataProviders.getList(cl).indexOf(selectionModel.getSelectedObject());
 		
