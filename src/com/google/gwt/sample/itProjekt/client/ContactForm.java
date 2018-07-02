@@ -573,7 +573,6 @@ public class ContactForm extends VerticalPanel {
 							Window.alert("Ausprägung konnte nicht hinzugefügt werden. Versuchen Sie es erneut.");
 						}
 						public void onSuccess(Value v) {
-							Window.alert("Value aus der Datenbank: " + v.getContent() + "\nKatrin");
 							/*
 							 * War das Anlegen der Ausprägung auf dem Server erfolgreich, so wird sie auch im GUI als neue Zeile in
 							 * der jeweiligen ValueTable angezeigt.
@@ -1055,8 +1054,8 @@ public class ContactForm extends VerticalPanel {
 		
 		if(saveChangesClickHandler ==null) {
 			saveChangesClickHandler = new SaveChangesClickHandler();
-			saveChangesButton.addClickHandler(saveChangesClickHandler);
 		}
+		saveChangesButton.addClickHandler(saveChangesClickHandler);
 	
 		addContactToContactListButton.addClickHandler(new AddContactToContactListClickHandler());
 		
@@ -1116,7 +1115,6 @@ public class ContactForm extends VerticalPanel {
 						public void onSuccess(Contact result) {
 							Window.alert("Kontakt erfolgreich angelegt.");
 							clctvm.addContactOfContactList(clctvm.getMyContactsContactList(), result);
-							Window.alert("Owner des neuen Kontakts: " + result.getOwner());
 						}
 					});
 				}
@@ -1206,12 +1204,9 @@ public class ContactForm extends VerticalPanel {
 				 * Über eine Instanz der inneren Klasse EmailDialogBox können Objekte mit anderen Nutzern geteilt werden.
 				 */
 				
-				Window.alert("EmailDialogBox instanziert");
 				
 				dialog.getOKButton().addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {
-						
-						Window.alert("dialog.getSuggestBox().getText() = " + dialog.getSuggestBox().getText());
 						
 						editorAdministration.shareContact(currentUser, dialog.getSuggestBox().getText(), clctvm.getSelectedContact(), new AsyncCallback<Permission>() {
 
@@ -1226,6 +1221,7 @@ public class ContactForm extends VerticalPanel {
 								}
 								else {
 									Window.alert("User ist der Owner des Kontakts!");
+									dialog.hide();
 								}
 							}
 						});
@@ -1563,16 +1559,12 @@ public class ContactForm extends VerticalPanel {
 					}
 				});
 			}
-			//else if(ptype == "Straße" || ptype == "Hausnummer" || ptype== "PLZ" || ptype == "Wohnort") {
 			else if(ptype == "Anschrift") {
-				Window.alert("Springt in Anschrift else if");
 				Label addressLabel = new Label("Anschrift: ");
 				contactTable.setWidget(row, 0, addressLabel);
-				Window.alert("row in die es die Anschrift-label setzt: " + ((Integer) row).toString());
 				
 				contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
 				contactTable.setWidget(row, 1, addressTable);
-				Window.alert("Addresstable in row " + ((Integer) row).toString() + " eingesetzt.");
 				
 				
 				streetTextBox = new ValueTextBox("Straße");
@@ -1596,6 +1588,7 @@ public class ContactForm extends VerticalPanel {
 				
 				Button addAddressButton = new Button("Anlegen");
 				addAddressButton.addStyleName("addNewPropertyButton");
+				addressTable.getFlexCellFormatter().setRowSpan(0, 3, 2);
 				addressTable.setWidget(0,3, addAddressButton);
 				
 				addAddressButton.addClickHandler(new ClickHandler() {
@@ -1619,7 +1612,6 @@ public class ContactForm extends VerticalPanel {
 					}
 				});
 				
-				Window.alert("Ende der if-else von Anschrift");
 				
 				/*
 				 * Da es sich bei der Anschrift nicht um ValueDisplays handelt, muss auf die beiden Buttons seperat
@@ -2014,7 +2006,7 @@ public class ContactForm extends VerticalPanel {
 		
 		
 		int count = allValuesOfContact.size();
-		for(int i=0; i<count; i++) {
+		for(int i=0; i<=count; i++) {
 			int pid = allValuesOfContact.get(i).getPropertyid();
 			
 		
@@ -2418,7 +2410,7 @@ public class ContactForm extends VerticalPanel {
 								vt = (ValueTable) contactTable.getWidget(row, 1);
 								
 							}else if(i !=0 && allValuesOfContact.get(i-1).getPropertyid() != 10 ){
-								contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Geschäftliche Telefonnummern: "));
+								contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Homepages: "));
 								contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
 								vp = (ValuePanel) contactTable.getWidget(row, 0);
 								

@@ -397,7 +397,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		//Das Suchfeld
 		
 		searchButton.addClickHandler(new SearchButtonClickHandler(searchTextBox));
-		searchLabel.setText("Durchsuchen Sie Ihre Kontaktlisten nach bestimmten Ausprägungen: ");
+		searchLabel.setText("Durchsuchen Sie die ausgewählte Kontaktliste nach bestimmten Kontakten oder Ausprägungen");
 		searchLabel.addStyleName("label_search");
 		searchLabel.setWidth("240px");
 		searchPanel.add(searchLabel);
