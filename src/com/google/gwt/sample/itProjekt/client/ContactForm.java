@@ -113,13 +113,17 @@ public class ContactForm extends VerticalPanel {
 	
 	public class CloseButton extends Button{
 		OurDialogBox db;
+		
 		public CloseButton(OurDialogBox db) {
 			this.db = db;
 			this.addClickHandler(new CloseDBClickHandler(db)); 
+			this.setText("X");
+			this.addStyleName("closebutton");
 		}
 		
 		private class CloseDBClickHandler implements ClickHandler{
 			OurDialogBox db;
+	
 			
 			public CloseDBClickHandler(OurDialogBox db) {
 				this.db=db;
