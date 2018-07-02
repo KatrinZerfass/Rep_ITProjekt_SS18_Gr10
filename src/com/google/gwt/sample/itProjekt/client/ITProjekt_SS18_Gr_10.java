@@ -397,7 +397,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		VerticalPanel contactListButtonsPanel = new VerticalPanel();
 		contactListButtonsPanel.setStyleName("contactListButtonPanel");
 		
-		Button newContactListButton = new Button("Neue Kontaktliste anlegen");
+		Button newContactListButton = new Button("Neue Kontaktliste");
 		newContactListButton.addStyleName("buttonPanel");
 		Button deleteContactListButton = new Button("Kontaktliste löschen");
 		deleteContactListButton.addStyleName("buttonPanel");
@@ -426,7 +426,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		searchButton.addClickHandler(new SearchButtonClickHandler(searchTextBox));
 		searchLabel.setText("Durchsuchen Sie die ausgewählte Kontaktliste nach bestimmten Kontakten oder Ausprägungen");
 		searchLabel.addStyleName("label_search");
-		searchLabel.setWidth("240px");
+		searchLabel.setWidth("210px");
 		searchPanel.add(searchLabel);
 		
 		

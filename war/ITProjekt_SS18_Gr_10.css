@@ -61,8 +61,8 @@ div#App {
 div#Navigator {
 	float: left;
 	clear: left;
-	width: 464px;
-	height: 25em;
+    width: 414px;
+    height: 25em;
 	padding: 5px;
 	background-color: #D7E6E0;
 	border-right: 3px solid #00868B;
@@ -71,7 +71,7 @@ div#Navigator {
 div#Contactlist {
     float: left;
     clear: left;
-    width: 464px;
+    width: 414px;
     position: absolute;
     height: 7.9em;
     background-color: #D7E6E0;
@@ -201,7 +201,7 @@ div#Trailer {
 
 .contactListButtonPanel .gwt-Button {
 	margin: 0px 5px 5px 0px;
-	width: 190px;
+    width: 150px;
 }
 
 .cellBordersBlack {
