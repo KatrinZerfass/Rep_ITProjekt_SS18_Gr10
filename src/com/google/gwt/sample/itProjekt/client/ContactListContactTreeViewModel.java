@@ -254,7 +254,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	public void addNameResults () {
 		
 		
-		contactListDataProvider.getList().remove(nameResultsCL);
+		deleteNameResults();
 			
 		nameResultsCL = new ContactList();
 		nameResultsCL.setId(0);
@@ -264,12 +264,20 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	
 	public void addValueResults () {
 		
-		contactListDataProvider.getList().remove(valueResultsCL);
+		deleteValueResults();
 		
 		valueResultsCL = new ContactList();
-		valueResultsCL.setId(0);
+		valueResultsCL.setId(1);
 		valueResultsCL.setName("Suchergebnis in den Eigenschaften");
 		
+	}
+	
+	public void deleteNameResults () {
+		contactListDataProvider.getList().remove(nameResultsCL);
+	}
+	
+	public void deleteValueResults () {
+		contactListDataProvider.getList().remove(valueResultsCL);
 	}
 	
 	
@@ -424,8 +432,6 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		this.valueResultsCL = valueResultsCL;
 	}
 
-	
-	
 
 
 }

@@ -671,7 +671,10 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 					if(arg0.size() != 0) {
 						clctvm.addNameResults();
 						clctvm.addContactOfSearchResultList(clctvm.getNameResultsCL(), arg0);
+					}else{
+						clctvm.deleteNameResults();
 					}
+					
 				}
 				
 			});	
@@ -686,6 +689,8 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 					if(arg0.size() != 0){
 						clctvm.addValueResults();
 						clctvm.addContactOfSearchResultList(clctvm.getValueResultsCL(), arg0);
+					}else{
+						clctvm.deleteValueResults();
 					}
 				}
 				
