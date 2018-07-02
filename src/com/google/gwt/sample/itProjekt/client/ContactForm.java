@@ -275,7 +275,7 @@ public class ContactForm extends VerticalPanel {
 	public class DeleteValueButton extends PushButton{
 		
 		/** Die Ausprägung, auf welche der jeweilige DeleteValueButton referenziert */
-		private Value value;
+		private Value value = null;
 		
 		private Image bin = new Image("bin.png");
 		
@@ -319,19 +319,25 @@ public class ContactForm extends VerticalPanel {
 					}
 					
 					else{
+//						editorAdministration.deleteValue(value, new AsyncCallback<Void>() {
+//					
+//							public void onFailure(Throwable t) {
+//								Window.alert("Das Löschen der Ausprägung ist fehlgeschlagen.");
+//							}
+//							
+//							public void onSuccess(Void result) {	
+//								Window.alert("Die Ausprägung wurde gelöscht.");
+//								
+//								
+//							}
+//
+//						});
 						editorAdministration.deleteValue(value, new AsyncCallback<Void>() {
-					
-							public void onFailure(Throwable t) {
-								Window.alert("Das Löschen der Ausprägung ist fehlgeschlagen.");
-							}
-							
-							public void onSuccess(Void result) {	
-								Window.alert("Die Ausprägung wurde gelöscht.");
-								
-								
-							}
-
-						});
+							public void onFailure(Throwable arg0) {Window.alert("Das Löschen der Ausprägung ist fehlgeschlagen.");};
+							{Window.alert("Das Löschen der Ausprägung ist fehlgeschlagen 2.");};
+							public void onSuccess(Void arg0) {Window.alert("Die Ausprägung wurde gelöscht.");}; 
+							{Window.alert("Die Ausprägung wurde gelöscht. 2");};
+						});//TODO WTF is this?!
 					}
 				}
 			});
