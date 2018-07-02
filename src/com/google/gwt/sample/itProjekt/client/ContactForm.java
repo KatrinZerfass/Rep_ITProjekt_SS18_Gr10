@@ -1203,7 +1203,7 @@ public class ContactForm extends VerticalPanel {
 				dialog.getOKButton().addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {
 						
-						Window.alert(dialog.getSuggestBox().getText());
+						Window.alert("dialog.getSuggestBox().getText() = " + dialog.getSuggestBox().getText());
 						
 						editorAdministration.shareContact(currentUser, dialog.getSuggestBox().getText(), clctvm.getSelectedContact(), new AsyncCallback<Permission>() {
 
@@ -1315,7 +1315,7 @@ public class ContactForm extends VerticalPanel {
 					 * Wenn in einer ValueTextBox der Inhalt verändert wurde, so wird für diese Ausprägung die Methode editValue() aufgerufen.
 					 */
 					if (vtb.getIsChanged() && vtb.getTextBoxValue() != null) {
-						editorAdministration.editValue(contactToDisplay, vtb.getTextBoxValue().getPropertyid(), vtb.getTextBoxValue(), vtb.getTextBoxValue().getContent(), 
+						editorAdministration.editValue(contactToDisplay, vtb.getTextBoxValue().getPropertyid(), vtb.getTextBoxValue(), vtb.getText(), 
 							vtb.getTextBoxValue().getIsShared(), new AsyncCallback<Value>() {
 							
 							public void onFailure(Throwable arg0) {	
@@ -1323,7 +1323,7 @@ public class ContactForm extends VerticalPanel {
 							}
 							public void onSuccess(Value arg0) {
 								Window.alert("Die Änderungen wurden gespeichert.\n (Ausprägungen)");
-								Window.alert(arg0.getContent());
+								Window.alert("Value aus der DB: " + arg0.getContent());
 							}
 						});
 					}
