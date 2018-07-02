@@ -1560,12 +1560,18 @@ public class ContactForm extends VerticalPanel {
 				});
 			}
 			else if(ptype == "Anschrift") {
+				VerticalPanel addressPanel = new VerticalPanel();
+				contactTable.setWidget(row, 0, addressPanel);
+				
 				Label addressLabel = new Label("Anschrift: ");
-				contactTable.setWidget(row, 0, addressLabel);
+				addressPanel.add(addressLabel);
+				
+				Button addAddressButton = new Button("Anlegen");
+				addAddressButton.addStyleName("addNewPropertyButton");
+				addressPanel.add(addAddressButton);
 				
 				contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
 				contactTable.setWidget(row, 1, addressTable);
-				
 				
 				streetTextBox = new ValueTextBox("Straße");
 				houseNrTextBox = new ValueTextBox("Hausnummer");
@@ -1586,14 +1592,11 @@ public class ContactForm extends VerticalPanel {
 				((ValueDisplay) addressTable.getWidget(0, 2)).remove(0);
 				
 				
-				Button addAddressButton = new Button("Anlegen");
-				addAddressButton.addStyleName("addNewPropertyButton");
-				addressTable.getFlexCellFormatter().setRowSpan(0, 3, 2);
-				addressTable.setWidget(0,3, addAddressButton);
+				
 				
 				addAddressButton.addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {
-						addressTable.removeCell(0,3);
+						((VerticalPanel) contactTable.getWidget(row,0)).remove(1);
 						
 						editorAdministration.createAddress(streetTextBox.getText(), houseNrTextBox.getText(),
 								plzTextBox.getText(), cityTextBox.getText(), contactToDisplay, new AsyncCallback<Value>(){
