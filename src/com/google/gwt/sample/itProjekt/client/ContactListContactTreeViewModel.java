@@ -224,9 +224,8 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 			return;
 		}
 		
-	
-		
-		
+
+				
 //		ListDataProvider<Contact> contactsProvider = contactDataProviders.get(cl);
 //		Window.alert(contactsProvider.getList().toString());
 //		contactsProvider.getList().remove(contactsProvider.getKey(c));
