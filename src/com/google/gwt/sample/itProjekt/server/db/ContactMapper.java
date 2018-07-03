@@ -234,6 +234,7 @@ Vector<Contact> result = new Vector<Contact>();
 			Connection con = DBConnection.connection();
 			
 			try{
+				System.out.println("startet update");
 				Statement stmt = con.createStatement();
 				stmt.executeUpdate("UPDATE T_Contact SET firstName ='" 
 				+ contact.getFirstname()
@@ -248,10 +249,12 @@ Vector<Contact> result = new Vector<Contact>();
 				+ new Timestamp(System.currentTimeMillis()) 
 				+ "'"
 				+ " WHERE C_ID =" + contact.getId());
+				System.out.println("update complete");
 			}
 		
 		catch (SQLException e2){
 			e2.printStackTrace();
+			System.out.println("catch blok");
 			return contact;
 		}
 		return contact;}
