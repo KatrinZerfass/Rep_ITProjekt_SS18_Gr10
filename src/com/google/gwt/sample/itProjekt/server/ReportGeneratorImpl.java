@@ -151,6 +151,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				
 				
 				report.addRow(contactRow);
+				
 				if(allValues.size()!= 0){
 					
 					if(headline.getNumColumns() < 10){
@@ -189,11 +190,14 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 						contactRow.addColumn(new Column(String.valueOf(u.getEmail())));
 				}
 						
-						
-						headline.addColumn(new Column("Erstellungsdatum"));
-						headline.addColumn(new Column("Modifikationsdatum"));
-						
-						
+				if(headline.getNumColumns() < 10){
+					
+					headline.addColumn(new Column("Erstellungsdatum"));
+					headline.addColumn(new Column("Modifikationsdatum"));
+					contactRow.addColumn(new Column(""));
+					contactRow.addColumn(new Column(""));
+				
+				}
 						
 						
 						contactRow.addColumn(new Column(String.valueOf(c.getCreationDate())));
@@ -310,9 +314,14 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 					}
 				}}
 
-				headline.addColumn(new Column("Erstellungsdatum"));
-				headline.addColumn(new Column("Modifikationsdatum"));
-
+				if(headline.getNumColumns() < 10){
+					
+					headline.addColumn(new Column("Erstellungsdatum"));
+					headline.addColumn(new Column("Modifikationsdatum"));
+					contactRow.addColumn(new Column(""));
+					contactRow.addColumn(new Column(""));
+				}
+				
 				contactRow.addColumn(new Column(String.valueOf(c.getCreationDate())));
 				contactRow.addColumn(new Column(String.valueOf(c.getModificationDate())));
 				
@@ -423,8 +432,15 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				}
 			}
 			}
-			headline.addColumn(new Column("Erstellungsdatum"));
-			headline.addColumn(new Column("Modifikationsdatum"));
+
+			if(headline.getNumColumns() < 10){
+				
+				headline.addColumn(new Column("Erstellungsdatum"));
+				headline.addColumn(new Column("Modifikationsdatum"));
+				contactRow.addColumn(new Column(""));
+				contactRow.addColumn(new Column(""));
+			
+			}
 
 			contactRow.addColumn(new Column(String.valueOf(c.getCreationDate())));
 			contactRow.addColumn(new Column(String.valueOf(c.getModificationDate())));
@@ -543,9 +559,15 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				report.addRow(valueRow);
 				}}
 			}
-
+			
+			if(headline.getNumColumns() < 10){
+				
 				headline.addColumn(new Column("Erstellungsdatum"));
 				headline.addColumn(new Column("Modifikationsdatum"));
+				contactRow.addColumn(new Column(""));
+				contactRow.addColumn(new Column(""));
+			
+			}
 
 				contactRow.addColumn(new Column(String.valueOf(c.getCreationDate())));
 				contactRow.addColumn(new Column(String.valueOf(c.getModificationDate())));
