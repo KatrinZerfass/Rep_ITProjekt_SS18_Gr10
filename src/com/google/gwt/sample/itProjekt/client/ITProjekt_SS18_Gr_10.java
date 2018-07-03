@@ -609,9 +609,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 						public void onClick(ClickEvent event) {
 							if(inputDB.getSuggestBox().getText()== "") {
 								Window.alert("Fehler beim Teilen der Kontaktliste!");
-							}else {
-								Window.alert(inputDB.getSuggestBox().getText());
-								
+							}else {								
 								editorAdministration.shareContactList(user, inputDB.getSuggestBox().getText(), clctvm.getSelectedContactList(), new AsyncCallback<Permission>() {
 			
 									public void onFailure(Throwable arg0) {
@@ -620,11 +618,11 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 									}
 									public void onSuccess(Permission arg0) {
 										if(arg0 != null) {
-											Window.alert("Kontakt erfolgreich geteilt.");
+											Window.alert("Kontaktliste erfolgreich geteilt.");
 											inputDB.hide();
 										}
 										else {
-											Window.alert("User ist der Owner des Kontakts!");
+											Window.alert("User ist der Owner der Kontaktliste!");
 											inputDB.hide();
 										}
 										
