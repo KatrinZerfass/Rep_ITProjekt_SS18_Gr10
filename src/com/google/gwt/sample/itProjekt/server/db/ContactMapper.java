@@ -205,10 +205,10 @@ Vector<Contact> result = new Vector<Contact>();
 				+ "', '" 
 				+ contact.getSex() 
 				+ "', '" 
-				+ ts
+				+ new Timestamp(System.currentTimeMillis())
 				+ "', '"
 				//+ "CURRENT_TIMESTAMP"
-				+ ts
+				+ new Timestamp(System.currentTimeMillis())
 				+ "', " 
 				+ user.getId()
 				+ ")") ;
@@ -258,7 +258,7 @@ Vector<Contact> result = new Vector<Contact>();
 				+ contact.getSex() 
 				+ "'"
 				+ "mod_date ='" 
-				+ s
+				+ new Timestamp(System.currentTimeMillis())
 				+ "' WHERE C_ID =" + contact.getId());
 				System.out.println("update complete");
 			}
