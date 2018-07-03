@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Vector;
 
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
@@ -185,6 +186,10 @@ Vector<Contact> result = new Vector<Contact>();
 		
 		try{
 			Statement stmt = con.createStatement();
+			
+			Timestamp ts = new Timestamp(System.currentTimeMillis());
+			String s = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(ts);
+			
 			ResultSet rs = stmt.executeQuery("SELECT MAX(C_ID) AS maxcid FROM T_Contact");
 			if (rs.next()){
 				
@@ -200,12 +205,13 @@ Vector<Contact> result = new Vector<Contact>();
 				+ "', '" 
 				+ contact.getSex() 
 				+ "', '" 
-				+ new Timestamp(System.currentTimeMillis())  
+				+ new Timestamp(System.currentTimeMillis())
 				+ "', '"
-				+ new Timestamp(System.currentTimeMillis()) 
-				+ "', '" 
+				//+ "CURRENT_TIMESTAMP"
+				+ new Timestamp(System.currentTimeMillis())
+				+ "', " 
 				+ user.getId()
-				+ "')") ;
+				+ ")") ;
 						
 				return contact;	
 				
@@ -234,6 +240,13 @@ Vector<Contact> result = new Vector<Contact>();
 			Connection con = DBConnection.connection();
 			
 			try{
+				Timestamp ts = new Timestamp(System.currentTimeMillis());
+				System.out.println(ts.toString());
+				String s = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(ts);
+				System.out.println(s.toString());
+				System.out.println(s);
+				
+				System.out.println("startet update");
 				Statement stmt = con.createStatement();
 				stmt.executeUpdate("UPDATE T_Contact SET firstName ='" 
 				+ contact.getFirstname()
@@ -244,11 +257,15 @@ Vector<Contact> result = new Vector<Contact>();
 				+ "gender='" 
 				+ contact.getSex() 
 				+ "'"
-				+ " WHERE C_ID =" + contact.getId());
+				+ "mod_date ='" 
+				+ new Timestamp(System.currentTimeMillis())
+				+ "' WHERE C_ID =" + contact.getId());
+				System.out.println("update complete");
 			}
 		
 		catch (SQLException e2){
 			e2.printStackTrace();
+			System.out.println("catch blok");
 			return contact;
 		}
 		return contact;}

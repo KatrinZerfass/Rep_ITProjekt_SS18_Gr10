@@ -4,8 +4,10 @@ import java.util.Date;
 import java.util.Vector;
 import com.google.gwt.sample.itProjekt.shared.EditorAdministration;
 import com.google.gwt.sample.itProjekt.server.EditorAdministrationImpl;
+import com.google.gwt.sample.itProjekt.server.db.UserMapper;
 import com.google.gwt.sample.itProjekt.shared.ReportGenerator;
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
+import com.google.gwt.sample.itProjekt.shared.bo.Permission;
 import com.google.gwt.sample.itProjekt.shared.bo.Property;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
 import com.google.gwt.sample.itProjekt.shared.bo.Value;
@@ -98,12 +100,10 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			Row headline = new Row();
 
 			headline.addColumn(new Column("Besitzer"));
-			headline.addColumn(new Column("Teilender Nutzer"));
+			headline.addColumn(new Column("Erhalten von"));
 			headline.addColumn(new Column("Vorname"));
 			headline.addColumn(new Column("Nachname"));
 			headline.addColumn(new Column("Geschlecht"));
-			headline.addColumn(new Column("Erstellungsdatum"));
-			headline.addColumn(new Column("Modifikationsdatum"));
 			
 			report.addRow(headline);
 		
@@ -121,6 +121,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				sharedUser = admin.getSourceToSharedContact(c, user);
 				
 				Vector<Value> allValues=this.admin.getAllValuesOf(c);
+				Vector<Permission> allPermissions = this.admin.getAllPermissions();
 				
 				Row contactRow=new Row();
 				
@@ -148,15 +149,15 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 					break;
 				}
 				
-				contactRow.addColumn(new Column(String.valueOf(c.getCreationDate())));
-				contactRow.addColumn(new Column(String.valueOf(c.getModificationDate())));
 				
 				report.addRow(contactRow);
+				
 				if(allValues.size()!= 0){
 					
-					if(headline.getNumColumns() < 9){
-					headline.addColumn(new Column("Eigenschaft"));
-					headline.addColumn(new Column("Ausprägung"));
+					if(headline.getNumColumns() < 10){
+						
+						headline.addColumn(new Column("Eigenschaft"));
+						headline.addColumn(new Column("Ausprägung"));
 					
 					}
 					for (Value v: allValues){
@@ -164,7 +165,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 						Property p=this.admin.getPropertyOfValue(v);
 						Row valueRow=new Row();
 						
-						for(int i = 0; i < 7; i++){
+						for(int i = 0; i < 5; i++){
 							valueRow.addColumn(new Column(""));
 						}
 						
@@ -172,8 +173,37 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 						valueRow.addColumn(new Column(String.valueOf(v.getContent())));
 						
 						report.addRow(valueRow);
+					}
 					}}
+				
+				if(allPermissions.size()> 0){
+					
+					User u = new User();
+					headline.addColumn(new Column("Teilhaber"));
+					for (Permission p: allPermissions){
+						
+						if(p.getShareableObjectID() == c.getId() && c.getOwner() == user.getId()){
+							
+						for(int i = 0; i < 1; i++){
+							contactRow.addColumn(new Column(""));
+						}
+						
+						u = this.admin.getUserByID(p.getParticipantID());
+					}
+						contactRow.addColumn(new Column(String.valueOf(u.getEmail())));
+				}}
+						
+				if(headline.getNumColumns() < 10){
+					
+					headline.addColumn(new Column("Erstellungsdatum"));
+					headline.addColumn(new Column("Modifikationsdatum"));
+				
 				}
+						
+						
+						contactRow.addColumn(new Column(String.valueOf(c.getCreationDate())));
+						contactRow.addColumn(new Column(String.valueOf(c.getModificationDate())));
+						
 				
 			}
 			}
@@ -212,12 +242,10 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		Row headline = new Row();
 
 		headline.addColumn(new Column("Besitzer"));
-		headline.addColumn(new Column("Teilender Nutzer"));
+		headline.addColumn(new Column("Erhalten von"));
 		headline.addColumn(new Column("Vorname"));
 		headline.addColumn(new Column("Nachname"));
 		headline.addColumn(new Column("Geschlecht"));
-		headline.addColumn(new Column("Erstellungsdatum"));
-		headline.addColumn(new Column("Modifikationsdatum"));
 		
 		
 		report.addRow(headline);
@@ -261,8 +289,6 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				break;
 				}
 				
-				contactRow.addColumn(new Column(String.valueOf(c.getCreationDate())));
-				contactRow.addColumn(new Column(String.valueOf(c.getModificationDate())));
 			
 				report.addRow(contactRow);
 				if(allValues.size() != 0){
@@ -278,7 +304,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 					Property p=this.admin.getPropertyOfValue(v);
 					Row valueRow=new Row();
 					
-					for(int i = 0; i < 7; i++){
+					for(int i = 0; i < 5; i++){
 						valueRow.addColumn(new Column(""));
 					}
 					
@@ -288,6 +314,19 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 					report.addRow(valueRow);
 					}
 				}}
+
+				if(headline.getNumColumns() < 9){
+					
+					headline.addColumn(new Column("Erstellungsdatum"));
+					headline.addColumn(new Column("Modifikationsdatum"));
+					contactRow.addColumn(new Column(""));
+					contactRow.addColumn(new Column(""));
+				}
+				
+				contactRow.addColumn(new Column(String.valueOf(c.getCreationDate())));
+				contactRow.addColumn(new Column(String.valueOf(c.getModificationDate())));
+				
+				
 		}}
 		else{
 			report.removeRow(headline);
@@ -322,12 +361,10 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		Row headline = new Row();
 
 		headline.addColumn(new Column("Besitzer"));
-		headline.addColumn(new Column("Teilender Nutzer"));
+		headline.addColumn(new Column("Erhalten von"));
 		headline.addColumn(new Column("Vorname"));
 		headline.addColumn(new Column("Nachname"));
 		headline.addColumn(new Column("Geschlecht"));
-		headline.addColumn(new Column("Erstellungsdatum"));
-		headline.addColumn(new Column("Modifikationsdatum"));
 
 		
 		report.addRow(headline);
@@ -369,8 +406,6 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				break;
 			}
 			
-			contactRow.addColumn(new Column(String.valueOf(c.getCreationDate())));
-			contactRow.addColumn(new Column(String.valueOf(c.getModificationDate())));
 			
 			report.addRow(contactRow);
 			
@@ -387,7 +422,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				Property p=this.admin.getPropertyOfValue(val);
 				Row valueRow=new Row();
 				
-				for(int i = 0; i < 7; i++){
+				for(int i = 0; i < 5; i++){
 					valueRow.addColumn(new Column(""));
 				}
 				
@@ -396,7 +431,22 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				
 				report.addRow(valueRow);
 				}
-			}}
+			}
+			}
+
+			if(headline.getNumColumns() < 9){
+				
+				headline.addColumn(new Column("Erstellungsdatum"));
+				headline.addColumn(new Column("Modifikationsdatum"));
+				contactRow.addColumn(new Column(""));
+				contactRow.addColumn(new Column(""));
+			
+			}
+
+			contactRow.addColumn(new Column(String.valueOf(c.getCreationDate())));
+			contactRow.addColumn(new Column(String.valueOf(c.getModificationDate())));
+			
+			
 			}
 			
 		}else{
@@ -433,12 +483,10 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		Row headline = new Row();
 
 		headline.addColumn(new Column("Besitzer"));
-		headline.addColumn(new Column("Teilender Nutzer"));
+		headline.addColumn(new Column("Erhalten von"));
 		headline.addColumn(new Column("Vorname"));
 		headline.addColumn(new Column("Nachname"));
 		headline.addColumn(new Column("Geschlecht"));
-		headline.addColumn(new Column("Erstellungsdatum"));
-		headline.addColumn(new Column("Modifikationsdatum"));
 				
 		report.addRow(headline);
 
@@ -486,8 +534,6 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				break;
 			}
 			
-			contactRow.addColumn(new Column(String.valueOf(c.getCreationDate())));
-			contactRow.addColumn(new Column(String.valueOf(c.getModificationDate())));
 			
 			report.addRow(contactRow);
 			
@@ -504,7 +550,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				Property prop=this.admin.getPropertyOfValue(val);
 				Row valueRow=new Row();
 				
-				for(int i = 0; i < 7; i++){
+				for(int i = 0; i < 5; i++){
 					valueRow.addColumn(new Column(""));
 				}
 				
@@ -514,6 +560,19 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				report.addRow(valueRow);
 				}}
 			}
+			
+			if(headline.getNumColumns() < 9){
+				
+				headline.addColumn(new Column("Erstellungsdatum"));
+				headline.addColumn(new Column("Modifikationsdatum"));
+				contactRow.addColumn(new Column(""));
+				contactRow.addColumn(new Column(""));
+			
+			}
+
+				contactRow.addColumn(new Column(String.valueOf(c.getCreationDate())));
+				contactRow.addColumn(new Column(String.valueOf(c.getModificationDate())));
+				
 		}
 		}else{
 			

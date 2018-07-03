@@ -162,7 +162,7 @@ public class ValueMapper {
 				
 				Contact c2 = new Contact();
 				c2 = ContactMapper.contactMapper().findByID(contact);
-				ContactMapper.contactMapper().update(c2);
+				ContactMapper.contactMapper().update(contact);
 				return value;	
 				
 			}
@@ -191,10 +191,14 @@ public class ValueMapper {
 				Statement stmt = con.createStatement();
 				stmt.executeUpdate("UPDATE T_Value SET P_ID ="+property.getId()+", value ='" + value.getContent()+ "', C_ID=" + contact.getId() +", isShared="
 						+ value.getIsShared() + " WHERE V_ID=" + value.getId());
-
-				Contact c2 = new Contact();				
+				System.out.println("1. kommt so weit");
+				Contact c2 = new Contact();
+				System.out.println("die ID des übergebenen contact "+contact);
 				c2 = ContactMapper.contactMapper().findByID(contact);
+				System.out.println(c2.toString());
+				System.out.println("die ID des gesetzten contactes "+c2.getId());
 				ContactMapper.contactMapper().update(c2);
+				System.out.println("durchgelaufen");
 			}
 			
 		

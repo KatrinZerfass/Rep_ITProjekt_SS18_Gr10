@@ -613,6 +613,16 @@ body{
     text-decoration: none;
     float: right;
 }
+.anlegenbutton{
+    padding: 4px 10px;
+    text-decoration: none;
+    margin: 7px -4px;
+    width:none;
+}
+
+.okbutton:hover{
+	background-color:#10585a;
+}
 
 .closebutton{
 	background-color: #8c8c8c;
@@ -629,4 +639,8 @@ body{
     text-decoration: none;
     float: right;
     margin-right: 10px;
+}
+
+.closebutton:hover{
+	background-color: #636363;
 }

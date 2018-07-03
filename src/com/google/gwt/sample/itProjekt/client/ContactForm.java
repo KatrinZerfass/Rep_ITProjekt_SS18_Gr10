@@ -104,29 +104,29 @@ public class ContactForm extends VerticalPanel {
 	Button saveChangesButton;
 	Button removeContactFromContactListButton;
 	
-	public class OurDialogBox extends DialogBox{
-		public OurDialogBox(VerticalPanel panel){
-			CloseButton close= new CloseButton(this);
-			panel.add(close);
-			this.add(panel);
-		}
-	}
+//	public class OurDialogBox extends DialogBox{
+//		public OurDialogBox(VerticalPanel panel){
+//			CloseButton close= new CloseButton(this);
+//			panel.add(close);
+//			this.add(panel);
+//		}
+//	}
 	
 	public class CloseButton extends Button{
-		OurDialogBox db;
+		DialogBox db;
 		
-		public CloseButton(OurDialogBox db) {
+		public CloseButton(DialogBox db) {
 			this.db = db;
 			this.addClickHandler(new CloseDBClickHandler(db)); 
-			this.setText("X");
+			this.setText("Abbrechen");
 			this.addStyleName("closebutton");
 		}
 		
 		private class CloseDBClickHandler implements ClickHandler{
-			OurDialogBox db;
+			DialogBox db;
 	
 			
-			public CloseDBClickHandler(OurDialogBox db) {
+			public CloseDBClickHandler(DialogBox db) {
 				this.db=db;
 			}
 			
@@ -462,7 +462,8 @@ public class ContactForm extends VerticalPanel {
 		public void addValuePopUp(int pid, int row) {
 
 			VerticalPanel addValueDialogBoxPanel = new VerticalPanel();
-			OurDialogBox addValuePopUp = new OurDialogBox(addValueDialogBoxPanel);
+			DialogBox addValuePopUp = new DialogBox();
+			CloseButton close=new CloseButton(addValuePopUp);
 			addValuePopUp.setText("Neue Ausprägung hinzufügen");
 			addValuePopUp.setAnimationEnabled(true);
 			addValuePopUp.setGlassEnabled(true);			
@@ -475,6 +476,9 @@ public class ContactForm extends VerticalPanel {
 			Label addValueLabel = new Label();
 			ValueTextBox addValueTextBox = null;
 			Button addValueButton = new Button("Hinzufügen");
+			HorizontalPanel hpanel=new HorizontalPanel();
+			hpanel.add(close);
+			hpanel.add(addValueButton);
 			addValueButton.addStyleName("okbutton");
 			addValueDialogBoxPanel.add(addValueLabel);
 			
@@ -522,7 +526,9 @@ public class ContactForm extends VerticalPanel {
 			}
 			
 			addValueDialogBoxPanel.add(addValueTextBox);
-			addValueDialogBoxPanel.add(addValueButton);
+			addValueDialogBoxPanel.add(hpanel);
+			
+			addValuePopUp.add(addValueDialogBoxPanel);
 			addValuePopUp.show();
 			
 			
@@ -536,7 +542,7 @@ public class ContactForm extends VerticalPanel {
 		 * @author KatrinZerfass
 		 */
 		private class AddValueClickHandler implements ClickHandler {
-			OurDialogBox popup;
+			DialogBox popup;
 			ValueTextBox tb;
 			FlexTable vt;
 			int pid;
@@ -551,7 +557,7 @@ public class ContactForm extends VerticalPanel {
 			 * @param pid die ID der Eigenschaftsart des AddValueButtons
 			 * @param content der vom Nutzer eingetragene Inhalt der neuen Ausprägung
 			 */
-			public AddValueClickHandler(OurDialogBox popup, ValueTextBox tb, ValueTable vt, int pid) {
+			public AddValueClickHandler(DialogBox popup, ValueTextBox tb, ValueTable vt, int pid) {
 				this.popup = popup;
 				this.tb = tb;
 				this.vt = vt;
@@ -867,7 +873,8 @@ public class ContactForm extends VerticalPanel {
 		
         private SuggestBox sb;
         private MultiWordSuggestOracle oracle;
-        
+        CloseButton close=new CloseButton(this);
+
         Button ok = new Button("OK");
         
 
@@ -875,7 +882,6 @@ public class ContactForm extends VerticalPanel {
 			
 			oracle = new MultiWordSuggestOracle();
 			ok.addStyleName("okbutton");
-			
 			setDialogBoxLabel("Bitte geben Sie die Email-Adresse des Nutzers ein mit dem Sie den Kontakt teilen möchten.");
 			
 			editorAdministration.getAllUsers(new AsyncCallback<Vector<User>>() {
@@ -897,17 +903,22 @@ public class ContactForm extends VerticalPanel {
 					setGlassEnabled(true);
 					
 					VerticalPanel panel = new VerticalPanel();
+					HorizontalPanel hpanel=new HorizontalPanel();
 			        panel.setHeight("100");
 			        panel.setWidth("300");
 			        panel.setSpacing(10);
 			        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 			        panel.add(dialogBoxLabel);
 			        panel.add(getSuggestBox());
-			        panel.add(ok);
+			        hpanel.add(close);
+			        hpanel.add(ok);
+			        panel.add(hpanel);
 			        
 			        setWidget(panel);
 			        
+			        
 			        show();
+			       
 				}
 			});
 		}
@@ -1194,22 +1205,29 @@ public class ContactForm extends VerticalPanel {
 		
 		EmailDialogBox dialog;
 		
+		
 		@Override
 		public void onClick(ClickEvent event) {
 			
-			dialog = new EmailDialogBox();
+			
 			
 			if (contactToDisplay == null) {
 				Window.alert("kein Kontakt ausgewählt!");
 			}
 			else {
+				dialog = new EmailDialogBox();
 				/*
 				 * Über eine Instanz der inneren Klasse EmailDialogBox können Objekte mit anderen Nutzern geteilt werden.
 				 */
 				
+				dialog.show();
 				
 				dialog.getOKButton().addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {
+						
+						if(dialog.getSuggestBox().getText()== "") {
+							Window.alert("Fehler beim Teilen des Kontakts!");
+						}
 						
 						editorAdministration.shareContact(currentUser, dialog.getSuggestBox().getText(), clctvm.getSelectedContact(), new AsyncCallback<Permission>() {
 
@@ -1338,8 +1356,8 @@ public class ContactForm extends VerticalPanel {
 	 */
 	private class AddContactToContactListClickHandler implements ClickHandler {
 		VerticalPanel panel= new VerticalPanel();
-		OurDialogBox db = new OurDialogBox(panel);
-	
+		DialogBox db = new DialogBox();
+		HorizontalPanel hpanel= new HorizontalPanel();
 		ListBox listbox = new ListBox();
 		ContactList choice;
 		
@@ -1359,11 +1377,15 @@ public class ContactForm extends VerticalPanel {
 		        
 		        Label label = new Label("Bitte wählen Sie die Kontaktliste aus.");
 		        final Button ok = new Button("OK");
+		        ok.addStyleName("okbutton");
+				CloseButton close= new CloseButton(db);
 		        
 		        panel.add(label);
 		        panel.add(listbox);
-		        panel.add(ok);
-		       		     
+		        hpanel.add(close);
+		        hpanel.add(ok);
+		        panel.add(hpanel);
+		       	db.add(panel);	     
 		    	db.show();
 	
 		        editorAdministration.getAllOwnedContactListsOfActiveUser(currentUser, new AsyncCallback<Vector<ContactList>>() {
@@ -1470,13 +1492,15 @@ public class ContactForm extends VerticalPanel {
 	}
 	
 	private class NewPropertyClickHandler implements ClickHandler{
-		OurDialogBox db1;
-		OurDialogBox db2;
+		DialogBox db1;
+		DialogBox db2;
 		TextBox inputTextBox1;
 		TextBox inputTextBox2;
 		int pid;
 		String ptype;
 		int row;
+		HorizontalPanel hpanel1;
+		HorizontalPanel hpanel2;
 		
 		
 		public void onClick(ClickEvent event) {
@@ -1485,20 +1509,24 @@ public class ContactForm extends VerticalPanel {
 			
 			if(ptype == "Geburtstag") {
 				VerticalPanel db1Panel = new VerticalPanel();
-				db1 = new OurDialogBox(db1Panel);
+				hpanel1 = new HorizontalPanel();
+				db1 = new DialogBox();
 				inputTextBox1 = new TextBox();
 				db1.setText("Geburtsdatum eintragen");
 			
-				Button addBirthdayButton = new Button("Geburtsdatum hinzufügen");
+				Button addBirthdayButton = new Button("Hinzufügen");
+				addBirthdayButton.addStyleName("okbutton");
+				CloseButton close1=new CloseButton(db1);
 				db1Panel.add(inputTextBox1);
-				db1Panel.add(addBirthdayButton);
+				hpanel1.add(close1);
+				hpanel1.add(addBirthdayButton);
+				db1Panel.add(hpanel1);
+				db1.add(db1Panel);
 				db1.show();
 				
 				addBirthdayButton.addClickHandler(new ClickHandler(){
 					public void onClick(ClickEvent event) {
 						db1.hide();
-						db1.hide();
-						Window.alert("Dialogbox Titel: " + db1.getText());
 						
 						
 						editorAdministration.createValue(contactToDisplay, 4, inputTextBox1.getText(), new AsyncCallback<Value>() {
@@ -1524,22 +1552,27 @@ public class ContactForm extends VerticalPanel {
 			}
 			else if(ptype == "Sonstiges") {
 				VerticalPanel db2Panel = new VerticalPanel();
-				db2 = new OurDialogBox(db2Panel);
+				hpanel2 = new HorizontalPanel();
+				db2 = new DialogBox();
 				inputTextBox2 = new TextBox();
 				
 				db2.setText("Neue Eigenschaftsart hinzufügen");
 				
-				Button addPropertyButton = new Button("Eigenschaftsart anlegen");
+				Button addPropertyButton = new Button("Hinzufügen");
+				addPropertyButton.addStyleName("okbutton");
+				CloseButton close2= new CloseButton(db2);
+				
 				db2Panel.add(inputTextBox2);
-				db2Panel.add(addPropertyButton);
+				hpanel2.add(close2);
+				hpanel2.add(addPropertyButton);
+				db2Panel.add(hpanel2);
+				db2.add(db2Panel);
 				db2.show();
 				
 					
 				addPropertyButton.addClickHandler(new ClickHandler(){
 					public void onClick(ClickEvent event) {
 						db2.hide();
-						db2.hide();
-						Window.alert("Dialogbox Titel: " + db2.getText());
 						
 						
 						editorAdministration.createProperty(contactToDisplay, inputTextBox2.getText(), new AsyncCallback<Property>() {
@@ -1574,6 +1607,7 @@ public class ContactForm extends VerticalPanel {
 				
 				Button addAddressButton = new Button("Anlegen");
 				addAddressButton.addStyleName("addNewPropertyButton");
+				addAddressButton.addStyleName("anlegenbutton");
 				addressPanel.add(addAddressButton);
 				
 				contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
@@ -1684,8 +1718,10 @@ public class ContactForm extends VerticalPanel {
 		switch(identifier) {
 			case "Name":
 				if (!text.matches("\\d+")) {
-					if(text != "") {
+					if(!text.isEmpty()) {
 						return true;
+					}else {
+						return false;
 					}
 				}
 				else {

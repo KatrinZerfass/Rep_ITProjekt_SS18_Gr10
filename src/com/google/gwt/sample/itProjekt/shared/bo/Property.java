@@ -1,39 +1,44 @@
 package com.google.gwt.sample.itProjekt.shared.bo;
 
 /**
- * Die Klasse Property, Datenstruktur f�r die Eigenschaften eines Kontakts.
- * @author JanNoller
- * 
+ * Die Klasse Property, Datenstruktur für die Eigenschaften eines Kontakts.
  */
 public class Property extends BusinessObject {
+
+	private static final long serialVersionUID = 1L;
 
 	/** Die Art der Eigenschaft (Email-Adresse, Telefonnummer, etc.). */
 	private String type;
 	
+	/** Der Kontakt, der die Eigenschaften besitzt. */
 	private int contactID;
 
 	/**
-	 * Getter f�r die Eigenschaftsart.
-	 *
-	 * @return die Eigenschaftsart
+	 *Auslesen der Eigenschaftsart. 
 	 */
 	public String getType() {
 		return type;
 	}
 
 	/**
-	 * Setter f�r die Eigenschaftsart.
-	 *
-	 * @param type die neue Eigenschaftsart
+	 * Setzen der Eigenschaftsart. 
 	 */
 	public void setType(String type) {
 		this.type = type;
 	}
+	
+	/** 
+	 * Auslesen des Kontakts. 
+	 */
 
 	public int getContactID() {
 		return contactID;
 	}
 
+	/** 
+	 * Setzen des Kontakts. 
+	 */
+	
 	public void setContactID(int contactID) {
 		this.contactID = contactID;
 	}
