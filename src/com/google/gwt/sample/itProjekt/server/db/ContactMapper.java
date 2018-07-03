@@ -203,15 +203,15 @@ Vector<Contact> result = new Vector<Contact>();
 	 * @author Egor Krämer
 	 * @author Robert Mattheis
 	 */
-	@SuppressWarnings("deprecation")
+	
 	public Contact insert(Contact contact, User user){
 		Connection con = DBConnection.connection();
 		
 		try{
 			Statement stmt = con.createStatement();
 			
-			Timestamp ts = new Timestamp(System.currentTimeMillis());
-			ts.setHours(ts.getHours()+14);
+			Timestamp ts = new Timestamp(System.currentTimeMillis()+ 7200000);
+			
 			String s = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(ts);
 			
 			ResultSet rs = stmt.executeQuery("SELECT MAX(C_ID) AS maxcid FROM T_Contact");
@@ -263,23 +263,18 @@ Vector<Contact> result = new Vector<Contact>();
 		 * @author Egor Krämer
 		 * @author Robert Mattheis
 		 */
-		@SuppressWarnings("deprecation")
+		
 		public Contact update(Contact contact){
 			Connection con = DBConnection.connection();
 			
 			try{
-				Timestamp ts = new Timestamp(System.currentTimeMillis());
-				
-				ts.setHours(ts.getHours()+14);
+				Timestamp ts = new Timestamp(System.currentTimeMillis()+ 7200000);
 				
 				
-				
-				System.out.println(ts.toString());
 				String s = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(ts);
-				System.out.println(s.toString());
-				System.out.println(s);
 				
-				System.out.println("startet update");
+				
+				
 				Statement stmt = con.createStatement();
 				stmt.executeUpdate("UPDATE T_Contact SET firstName ='" 
 				+ contact.getFirstname()
