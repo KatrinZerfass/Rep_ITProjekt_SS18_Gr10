@@ -165,6 +165,23 @@ public Permission update(Permission permission){
 				catch (SQLException e2){
 					e2.printStackTrace();
 			}
+					
+					try{
+					ContactList cl = new ContactList();
+					cl.setId(permission.getShareableObjectID());
+					
+					Vector <Contact> cl2 = ContactListMapper.contactListMapper().getAllContacts(cl);
+					
+					if(cl2.size()>0){
+						for(Contact c1: cl2){
+					
+						Statement stmt3 = con.createStatement();
+						stmt3.executeUpdate("DELETE FROM T_Permission_Contact WHERE C_ID =" + c1.getId());
+					}}}
+				
+				catch (SQLException e2){
+					e2.printStackTrace();
+				}
 		}
 	}
 	
