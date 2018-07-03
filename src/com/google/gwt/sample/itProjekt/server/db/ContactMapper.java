@@ -205,9 +205,10 @@ Vector<Contact> result = new Vector<Contact>();
 				+ "', '" 
 				+ contact.getSex() 
 				+ "', '" 
-				+ "CURRENT_TIMESTAMP"
+				+ ts
 				+ "', '"
-				+ "CURRENT_TIMESTAMP"
+				//+ "CURRENT_TIMESTAMP"
+				+ ts
 				+ "', " 
 				+ user.getId()
 				+ ")") ;
@@ -256,9 +257,9 @@ Vector<Contact> result = new Vector<Contact>();
 				+ "gender='" 
 				+ contact.getSex() 
 				+ "'"
-				+ "mod_date =" 
-				+ "CURRENT_TIMESTAMP"
-				+ " WHERE C_ID =" + contact.getId());
+				+ "mod_date ='" 
+				+ s
+				+ "' WHERE C_ID =" + contact.getId());
 				System.out.println("update complete");
 			}
 		
