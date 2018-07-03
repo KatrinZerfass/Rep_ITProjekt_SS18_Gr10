@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Vector;
 
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
@@ -234,6 +235,12 @@ Vector<Contact> result = new Vector<Contact>();
 			Connection con = DBConnection.connection();
 			
 			try{
+				Timestamp ts = new Timestamp(System.currentTimeMillis());
+				System.out.println(ts.toString());
+				String s = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(ts);
+				System.out.println(s.toString());
+				System.out.println(s);
+				
 				System.out.println("startet update");
 				Statement stmt = con.createStatement();
 				stmt.executeUpdate("UPDATE T_Contact SET firstName ='" 
@@ -246,7 +253,7 @@ Vector<Contact> result = new Vector<Contact>();
 				+ contact.getSex() 
 				+ "'"
 				+ "mod_date ='" 
-				+ new Timestamp(System.currentTimeMillis()) 
+				+ s
 				+ "'"
 				+ " WHERE C_ID =" + contact.getId());
 				System.out.println("update complete");
