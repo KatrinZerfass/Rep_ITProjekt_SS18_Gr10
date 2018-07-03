@@ -179,10 +179,10 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 					
 					User u = new User();
 					
-					headline.addColumn(new Column("Teilhaber"));
-					
 					for (Permission p: allPermissions){
-						if(p.getShareableObjectID() == c.getId())
+						if(p.getShareableObjectID() == c.getId() && c.getOwner() == user.getId())
+						
+							headline.addColumn(new Column("Teilhaber"));
 						
 						u = this.admin.getUserByID(p.getParticipantID());
 					}
