@@ -160,13 +160,8 @@ public Permission update(Permission permission){
 					try{
 					Statement stmt2 = con.createStatement();
 					stmt2.executeUpdate("DELETE FROM T_Permission_Contactlist WHERE CL_ID =" + permission.getShareableObjectID()+ " AND U_ID ="+ permission.getParticipantID());
-				}
+				
 			
-				catch (SQLException e2){
-					e2.printStackTrace();
-			}
-					
-					try{
 					ContactList cl = new ContactList();
 					cl.setId(permission.getShareableObjectID());
 					
@@ -174,9 +169,12 @@ public Permission update(Permission permission){
 					
 					if(c1.size()>0){
 						for(Contact c2: c1){
-					
-						Statement stmt3 = con.createStatement();
-						stmt3.executeUpdate("DELETE FROM T_Permission_Contact WHERE C_ID =" + c2.getId() + " AND U_ID=" + permission.getParticipantID());
+							
+							Permission p = new Permission();
+							p.setShareableObjectID(c2.getId());
+							p.setParticipantID(permission.getParticipantID());
+							
+						PermissionMapper.permissionMapper().delete(p);
 					}}}
 				
 				catch (SQLException e2){
