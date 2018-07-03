@@ -8,7 +8,7 @@ import java.io.Serializable;
  * Darstellung des Reportes von allen Kontakten eines Nutzers.
  * 
  */
-public class AllContactsOfUserReport extends Report implements Serializable {
+public class AllContactsOfUserReport extends CompositeReport implements Serializable {
 	
 	/** Die Konstante serialVersionUID, welche als Versionsnummer bei der Serialisierung dient. */
 	private static final long serialVersionUID=1L;
