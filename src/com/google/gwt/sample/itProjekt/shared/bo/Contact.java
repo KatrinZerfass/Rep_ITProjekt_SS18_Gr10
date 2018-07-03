@@ -2,13 +2,13 @@ package com.google.gwt.sample.itProjekt.shared.bo;
 
 import java.sql.Timestamp;
 
-
 /**
- * Die Klasse Contact, Datenstruktur f�r das Kontakt Business Objekt.
- * @author JanNoller
- * 
+ * Die Klasse Contact, Datenstruktur für das Kontakt Business Objekt.
  */
+
 public class Contact extends BusinessObject {
+
+	private static final long serialVersionUID = 1L;
 
 	/** Der Vorname des Kontakts. */
 	private String firstname;
@@ -23,110 +23,99 @@ public class Contact extends BusinessObject {
 	private int owner;
 	
 	/** Erstellungsdatum des Kontakts. */
-	//private Timestamp creationdate;
 	private Timestamp creationdate;
-	
-	
-	
-	
+		
 	/** Modifikationsdatum des Kontakts. */
-	//private Timestamp modificationdate;
 	private Timestamp modificationdate;
 	
-	/**
-	 * TODO vielleicht Konstruktor(en)?
-
-	
-	public Contact() {}
-	public Contact(String newfirstname, String newlastname, String newsex) {
-		this.setFirstname(newfirstname);
-		this.setLastname(newlastname);
-		this.setSex(newsex);
-	}
-	public Contact(int newid, String newfirstname, String newlastname, String newsex) {
-		super(newid);
-		this.setFirstname(newfirstname);
-		this.setLastname(newlastname);
-		this.setSex(newsex);
-	}
-	
-	 */
 	
 	/**
-	 * Getter f�r den Vornamen.
-	 *
-	 * @return der Vorname
+	 * Auslesen des Vornamens.  
 	 */
 	public String getFirstname() {
 		return firstname;
 	}
 	
 	/**
-	 * Setter f�r Vorname.
-	 *
-	 * @param firstname der neue Vorname
+	 * Setzen des Vornamens.   
 	 */
 	public void setFirstname(String firstname) {
 		this.firstname = firstname;
 	}
 	
 	/**
-	 * Getter f�r Nachnamen.
-	 *
-	 * @return der Nachname
+	 * Auslesen des Nachnamens. 
 	 */
 	public String getLastname() {
 		return lastname;
 	}
 	
 	/**
-	 * Setter f�r Nachname.
-	 *
-	 * @param lastname der neue Nachname
+	 *Setzen des Nachnamens. 
 	 */
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
 	}
 	
 	/**
-	 * Getter f�r Geschlecht.
-	 *
-	 * @return das Geschlecht
+	 * Auslesen des Geschlechts. 
 	 */
 	public String getSex() {
 		return sex;
 	}
 	
 	/**
-	 * Setter f�r Geschlecht.
-	 *
-	 * @param sex das neue Geschlecht
+	 * Setzen des Geschlechts. 
 	 */
 	public void setSex(String sex) {
 		this.sex = sex;
 	}
+	
+	/**
+	 *Auslesen des Owners.  
+	 */
 
 	public int getOwner() {
 		return owner;
 	}
+	
+	/**
+	 *Setzen des Owners. 
+	 */
 
 	public void setOwner(int owner) {
 		this.owner = owner;
 	}
+	
+	/**
+	 *Setzen des Erstellungsdatums. 
+	 */
 	
 	public void setCreationDate(Timestamp creationdate){
 		this.creationdate = creationdate;
 		
 	}
 	
+	/**
+	 *Auslesen des Erstellungsdatums. 
+	 */
+	
 	public Timestamp getCreationDate(){
 		return creationdate;
 	}
+	
+	/**
+	 *Setzen des Modifikationsdatums. 
+	 */
 	
 	public void setModificationDate(Timestamp modificationdate){
 		this.modificationdate = modificationdate;
 	}
 	
+	/**
+	 *Auslesen des Modifikationsdatums. 
+	 */
+		
 	public Timestamp getModificationDate(){
 		return modificationdate;
 	}

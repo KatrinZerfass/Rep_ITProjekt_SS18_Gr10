@@ -4,11 +4,12 @@ import java.io.Serializable;
 
 /**
  * Basisklasse für alle Business Objekte.
- * @author JanNoller
- *
  */
 
 public abstract class BusinessObject implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+	
 	
 	/**
 	 * Eindeutige Identifikationsnummer einer Instanz dieser Klasse und Möglichkeit zur Indetifizierung, 
