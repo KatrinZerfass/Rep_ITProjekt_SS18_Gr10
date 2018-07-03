@@ -176,7 +176,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 					}
 					}}
 				
-				if(allPermissions.size()!= 0){
+				if(allPermissions.size()> 0){
 					
 					User u = new User();
 					headline.addColumn(new Column("Teilhaber"));

@@ -195,7 +195,6 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 			newpermission.setSourceUserID(sourceUser.getId());
 			newpermission.setParticipantID(uMapper.findByEMail(shareUserEmail).getId());
 			newpermission.setShareableObjectID(shareContact.getId());
-			newpermission.setIsowner(false);
 		
 			return pmMapper.shareContact(newpermission);
 		}
@@ -253,7 +252,6 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 			newCLpermission.setSourceUserID(sourceUser.getId());
 			newCLpermission.setParticipantID(uMapper.findByEMail(shareUserEmail).getId());
 			newCLpermission.setShareableObjectID(shareContactList.getId());
-			newCLpermission.setIsowner(false);
 			
 			return pmMapper.shareContactList(newCLpermission);
 		}
