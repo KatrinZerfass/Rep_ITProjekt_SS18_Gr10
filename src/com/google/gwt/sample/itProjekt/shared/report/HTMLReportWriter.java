@@ -46,22 +46,22 @@ public class HTMLReportWriter extends ReportWriter{
 		result.append("<tr></tr><td>" + r.getCreated().toString()+ "</td></tr><tr></tr></table>");
 		
 		Vector<Row> rows=r.getRows();
-		result.append("<table>");
+		result.append("<table class=\"reporttable\">");
 		
 		for (int i=0; i < rows.size();i++) {
 			Row row=rows.elementAt(i);
 			result.append("<tr>");
 			for(int k=0; k<row.getNumColumns();k++) {
 				if (i==0) {
-					result.append("<td class=\"reporttd\" \"columnhead\">" + row.getColumnAt(k)
+					result.append("<td class=\"columnhead\">" + row.getColumnAt(k)
 		              + "</td>");
 				}
 				else {
 					if(i>1) {
-						result.append("<td valign=\"top\">" + row.getColumnAt(k)+ "</td>");
+						result.append("<td class=\"reporttd\" valign=\"top\">" + row.getColumnAt(k)+ "</td>");
 					}
 					else {
-						result.append("<td valign=\"top\">" + row.getColumnAt(k)+ "</td>");
+						result.append("<td class=\"reporttd\" valign=\"top\">" + row.getColumnAt(k)+ "</td>");
 					}
 				}
 			}
@@ -92,7 +92,7 @@ public class HTMLReportWriter extends ReportWriter{
 			result.append("<tr>");
 			for(int k=0; k<row.getNumColumns();k++) {
 				if (i==0) {
-					result.append("<td  class=\"reporttd\" \"columnhead\">" + row.getColumnAt(k)
+					result.append("<td class=\"columnhead\">" + row.getColumnAt(k)
 		              + "</td>");
 				}
 				else {
@@ -130,15 +130,15 @@ public class HTMLReportWriter extends ReportWriter{
 			result.append("<tr>");
 			for(int k=0; k<row.getNumColumns();k++) {
 				if (i==0) {
-					result.append("<td  class=\"reporttd\" \"columnhead\">" + row.getColumnAt(k)
+					result.append("<td  class= \"columnhead\">" + row.getColumnAt(k)
 		              + "</td>");
 				}
 				else {
 					if(i>1) {
-						result.append("<td valign=\"top\">" + row.getColumnAt(k)+ "</td>");
+						result.append("<td class=\"reporttd\" valign=\"top\">" + row.getColumnAt(k)+ "</td>");
 					}
 					else {
-						result.append("<td valign=\"top\">" + row.getColumnAt(k)+ "</td>");
+						result.append("<td class=\"reporttd\" valign=\"top\">" + row.getColumnAt(k)+ "</td>");
 					}
 				}
 			}
@@ -167,15 +167,15 @@ public class HTMLReportWriter extends ReportWriter{
 			result.append("<tr>");
 			for(int k=0; k<row.getNumColumns();k++) {
 				if (i==0) {
-					result.append("<td  class=\"reporttd\" \"columnhead\">" + row.getColumnAt(k)
+					result.append("<td  class=\"columnhead\">" + row.getColumnAt(k)
 		              + "</td>");
 				}
 				else {
 					if(i>1) {
-						result.append("<td valign=\"top\">" + row.getColumnAt(k)+ "</td>");
+						result.append("<td class=\"reporttd\" valign=\"top\">" + row.getColumnAt(k)+ "</td>");
 					}
 					else {
-						result.append("<td valign=\"top\">" + row.getColumnAt(k)+ "</td>");
+						result.append("<td class=\"reporttd\" valign=\"top\">" + row.getColumnAt(k)+ "</td>");
 					}
 				}
 			}

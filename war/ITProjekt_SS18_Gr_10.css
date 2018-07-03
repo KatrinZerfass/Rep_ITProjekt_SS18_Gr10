@@ -61,8 +61,8 @@ div#App {
 div#Navigator {
 	float: left;
 	clear: left;
-	width: 464px;
-	height: 25em;
+    width: 414px;
+    height: 25em;
 	padding: 5px;
 	background-color: #D7E6E0;
 	border-right: 3px solid #00868B;
@@ -71,7 +71,7 @@ div#Navigator {
 div#Contactlist {
     float: left;
     clear: left;
-    width: 464px;
+    width: 414px;
     position: absolute;
     height: 7.9em;
     background-color: #D7E6E0;
@@ -201,7 +201,7 @@ div#Trailer {
 
 .contactListButtonPanel .gwt-Button {
 	margin: 0px 5px 5px 0px;
-	width: 190px;
+    width: 150px;
 }
 
 .cellBordersBlack {
@@ -358,7 +358,21 @@ body{
 	    margin: 14px;
 }
 
-
+.gwt-DialogBox.gwt-Button{
+    background-color: #18878b;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    border: none;
+    display: inline-block;
+    cursor: pointer;
+    color: #ffffff;
+    font-family: 'Lato', sans-serif;
+    font-size: 15px;
+    padding: 9px 9px;
+    text-decoration: none;
+	}
+	
 .gwt-DialogBox{
 	 left: 500px;
     top: 200px;
@@ -584,18 +598,35 @@ body{
   height:5px;
 }
 
-.closebutton{
-	background-color: #ccc;
+.okbutton{
+	background-color: #18878b;
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
     border-radius: 4px;
     border: none;
     display: inline-block;
     cursor: pointer;
-    color: #4e4e4e;
+    color: #fff;
     font-family: 'Lato', sans-serif;
     font-size: 15px;
     padding: 4px 8px;
     text-decoration: none;
-    float:right;
+    float: right;
+}
+
+.closebutton{
+	background-color: #8c8c8c;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    border: none;
+    display: inline-block;
+    cursor: pointer;
+    color: #fff;
+    font-family: 'Lato', sans-serif;
+    font-size: 15px;
+    padding: 4px 8px;
+    text-decoration: none;
+    float: right;
+    margin-right: 10px;
 }
