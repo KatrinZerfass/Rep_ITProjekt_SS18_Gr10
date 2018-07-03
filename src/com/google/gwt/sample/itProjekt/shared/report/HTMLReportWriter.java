@@ -1,15 +1,39 @@
 package com.google.gwt.sample.itProjekt.shared.report;
 
+import java.io.Serializable;
 import java.util.Vector;
 
-public class HTMLReportWriter extends ReportWriter{
+/**
+ * Ein ReportWriter, der Reports mittels HTML formatiert. Das im Zielformat
+ * vorliegende Ergebnis wird in der Variable reportText abgelegt und kann nach
+ * Aufruf der entsprechenden Prozessierungsmethode mit getReportText()
+ * ausgelesen werden.
+ * 
+ * @author Thies
+ */
 
+public class HTMLReportWriter implements Serializable{
+
+	/** Die Konstante serialVersionUID, welche als Versionsnummer bei der Serialisierung dient. */
+	private static final long serialVersionUID=1L;
+	
+	/** Der String zum Reporttext. */
 	private String reportText= "";
 	
+	/**
+	 * Zurücksetzen des String Reporttext.
+	 */
 	public void resetReportText() {
 		this.reportText="";
 	}
 	
+	/**
+	 * Die Methode p2HTML, welche einen Paragraphen, egal ob Simple oder CompositeParagraph, 
+	 * in einen String umwandelt und diesen zurückgibt.
+	 *
+	 * @param p the p
+	 * @return the string
+	 */
 	public String p2HTML(Paragraph p) {
 	    if (p instanceof CompositeParagraph) {
 	      return this.p2HTML((CompositeParagraph) p);
@@ -19,6 +43,12 @@ public class HTMLReportWriter extends ReportWriter{
 	    }
 	  }
 	
+	/**
+	 * P 2 HTML.
+	 *
+	 * @param p the p
+	 * @return the string
+	 */
 	public String p2HTML(CompositeParagraph p) {
 		StringBuffer resultParagraph=new StringBuffer();
 		
@@ -29,13 +59,20 @@ public class HTMLReportWriter extends ReportWriter{
 		return resultParagraph.toString();
 	}
 	
+	/**
+	 * P 2 HTML.
+	 *
+	 * @param p the p
+	 * @return the string
+	 */
 	public String p2HTML(SimpleParagraph p) {
 		return "<p>" + p.toString() + "</p>";
 	}
 		
-	@Override
+	/* (non-Javadoc)
+	 * @see com.google.gwt.sample.itProjekt.shared.report.ReportWriter#process(com.google.gwt.sample.itProjekt.shared.report.AllContactsOfUserReport)
+	 */
 	public void process(AllContactsOfUserReport r) {
-		// TODO Auto-generated method stub
 		this.resetReportText();
 		
 		StringBuffer result=new StringBuffer();
@@ -73,7 +110,6 @@ public class HTMLReportWriter extends ReportWriter{
 	
 	
 
-	@Override
 	public void process(AllSharedContactsOfUserReport r) {
 		this.resetReportText();
 		
@@ -111,7 +147,6 @@ public class HTMLReportWriter extends ReportWriter{
 	}
 	
 	
-	@Override
 	public void process(AllContactsWithValueReport r) {
 		this.resetReportText();
 		
@@ -148,7 +183,6 @@ public class HTMLReportWriter extends ReportWriter{
 	    this.reportText = result.toString();
 	}
 	
-	@Override
 	public void process(AllContactsWithPropertyReport r) {
 		this.resetReportText();
 		
@@ -185,6 +219,11 @@ public class HTMLReportWriter extends ReportWriter{
 	    this.reportText = result.toString();
 	}
 	
+	/**
+	 * Auslesen the report text.
+	 *
+	 * @return the report text
+	 */
 	public String getReportText() {
 		return "<html><head><title>Report</title></head><body>" + this.reportText + "</body></html>";
 	}

@@ -186,6 +186,10 @@ Vector<Contact> result = new Vector<Contact>();
 		
 		try{
 			Statement stmt = con.createStatement();
+			
+			Timestamp ts = new Timestamp(System.currentTimeMillis());
+			String s = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(ts);
+			
 			ResultSet rs = stmt.executeQuery("SELECT MAX(C_ID) AS maxcid FROM T_Contact");
 			if (rs.next()){
 				
@@ -201,12 +205,12 @@ Vector<Contact> result = new Vector<Contact>();
 				+ "', '" 
 				+ contact.getSex() 
 				+ "', '" 
-				+ new Timestamp(System.currentTimeMillis())  
+				+ "CURRENT_TIMESTAMP"
 				+ "', '"
-				+ new Timestamp(System.currentTimeMillis()) 
-				+ "', '" 
+				+ "CURRENT_TIMESTAMP"
+				+ "', " 
 				+ user.getId()
-				+ "')") ;
+				+ ")") ;
 						
 				return contact;	
 				
@@ -252,9 +256,8 @@ Vector<Contact> result = new Vector<Contact>();
 				+ "gender='" 
 				+ contact.getSex() 
 				+ "'"
-				+ "mod_date ='" 
-				+ s
-				+ "'"
+				+ "mod_date =" 
+				+ "CURRENT_TIMESTAMP"
 				+ " WHERE C_ID =" + contact.getId());
 				System.out.println("update complete");
 			}

@@ -10,7 +10,7 @@ import java.util.Vector;
  */
 public abstract class Report implements Serializable {
 	
-	/** The Constant serialVersionUID. */
+	/** Die Konstante serialVersionUID, welche als Versionsnummer bei der Serialisierung dient. */
 	private static final long serialVersionUID=1L;
 	
 	/** Der String title. */
@@ -19,17 +19,17 @@ public abstract class Report implements Serializable {
 	/** Das Erstellungsdatum created. */
 	private Date created;
 	
-	/** Der Paragraph mit den header data. */
+	/** Der Paragraph mit den Kopfdaten. */
 	private Paragraph headerData;
 	
-	/** Die Variable "table" mit allen enthaltenen Reihen. */
+	/** Die Variable table mit allen enthaltenen Reihen. */
 	private Vector<Row> table = new Vector<Row>();
 	
-	/** The content. */
+	/** Der Paragraph der den Inhalt enthält. */
 	private Paragraph content;
 	
 	/**
-	 * Sets the content.
+	 * Setzen des Inhalts.
 	 *
 	 * @param c the new content
 	 */
@@ -38,7 +38,7 @@ public abstract class Report implements Serializable {
 	}
 	
 	/**
-	 * Getter f�r den Inhalt.
+	 * Auslesen des Inhalts.
 	 *
 	 * @return the content
 	 */
@@ -47,7 +47,7 @@ public abstract class Report implements Serializable {
 	}
 	
 	/**
-	 * Setter f�r die Kopfdaten header data.
+	 * Setzen der Kopfdaten header data.
 	 *
 	 * @param headerData the new header data
 	 */
@@ -56,7 +56,7 @@ public abstract class Report implements Serializable {
 	}
 	
 	/**
-	 * Getter f�r die Kopfdaten header data.
+	 * Auslesen der Kopfdaten header data.
 	 *
 	 * @return the header data
 	 */
@@ -65,7 +65,7 @@ public abstract class Report implements Serializable {
 	}
 	
 	/**
-	 * Setter des String title.
+	 * Setzen des String title.
 	 *
 	 * @param title the new title
 	 */
@@ -74,7 +74,7 @@ public abstract class Report implements Serializable {
 	}
 	
 	/**
-	 * Getter von title.
+	 * Auslesen des Titles title.
 	 *
 	 * @return the title
 	 */
@@ -83,7 +83,7 @@ public abstract class Report implements Serializable {
 	}
 	
 	/**
-	 * Setter des Erstellungsdatums.
+	 * Setzen des Erstellungsdatums.
 	 *
 	 * @param created the new created
 	 */
@@ -92,7 +92,7 @@ public abstract class Report implements Serializable {
 	}
 	
 	/**
-	 * Getter des Erstellungsdatums.
+	 * Auslesen des Erstellungsdatums.
 	 *
 	 * @return the created
 	 */
@@ -101,7 +101,7 @@ public abstract class Report implements Serializable {
 	}
 	
 	/**
-	 * Hinzuf�gen von Spalten zum Report.
+	 * Hinzufügen von Zeilen zum Report.
 	 *
 	 * @param r the r
 	 */
@@ -110,7 +110,7 @@ public abstract class Report implements Serializable {
 	}
 	
 	/**
-	 * Entfernen von Spalten zum Report.
+	 * Entfernen von Zeilen zum Report.
 	 *
 	 * @param r the r
 	 */
@@ -119,7 +119,7 @@ public abstract class Report implements Serializable {
 	}
 	
 	/**
-	 * Getter  der Tabelle.
+	 * Auslesen der Tabelle.
 	 *
 	 * @return the rows
 	 */

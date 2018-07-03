@@ -4,12 +4,12 @@ import java.io.Serializable;
 
 // 
 /**
- * Die Klasse AllSharedContactsOfUserReport für die statische 
+ * Die Klasse AllSharedContactsOfUserReport fÃ¼r die statische 
  * Darstellung des Reportes von allen geteilten Kontakten eines Nutzers.
  * 
- * @author Anna-MariaGmeiner
  */
 public class AllSharedContactsOfUserReport extends Report implements Serializable {
-	/** The Constant serialVersionUID. */
+
+	/** Die Konstante serialVersionUID, welche als Versionsnummer bei der Serialisierung dient. */
 	private static final long serialVersionUID= 1L;
 }
