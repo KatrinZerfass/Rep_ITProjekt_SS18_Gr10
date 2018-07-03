@@ -186,6 +186,10 @@ Vector<Contact> result = new Vector<Contact>();
 		
 		try{
 			Statement stmt = con.createStatement();
+			
+			Timestamp ts = new Timestamp(System.currentTimeMillis());
+			String s = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(ts);
+			
 			ResultSet rs = stmt.executeQuery("SELECT MAX(C_ID) AS maxcid FROM T_Contact");
 			if (rs.next()){
 				
@@ -201,9 +205,9 @@ Vector<Contact> result = new Vector<Contact>();
 				+ "', '" 
 				+ contact.getSex() 
 				+ "', '" 
-				+ new Timestamp(System.currentTimeMillis())  
+				+ s 
 				+ "', '"
-				+ new Timestamp(System.currentTimeMillis()) 
+				+ s
 				+ "', '" 
 				+ user.getId()
 				+ "')") ;
