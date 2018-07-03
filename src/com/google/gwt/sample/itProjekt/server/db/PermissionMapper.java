@@ -170,13 +170,13 @@ public Permission update(Permission permission){
 					ContactList cl = new ContactList();
 					cl.setId(permission.getShareableObjectID());
 					
-					Vector <Contact> cl2 = ContactListMapper.contactListMapper().getAllContacts(cl);
+					Vector <Contact> c1 = ContactListMapper.contactListMapper().getAllContacts(cl);
 					
-					if(cl2.size()>0){
-						for(Contact c1: cl2){
+					if(c1.size()>0){
+						for(Contact c2: c1){
 					
 						Statement stmt3 = con.createStatement();
-						stmt3.executeUpdate("DELETE FROM T_Permission_Contact WHERE C_ID =" + c1.getId());
+						stmt3.executeUpdate("DELETE FROM T_Permission_Contact WHERE C_ID =" + c2.getId() + " AND U_ID=" + permission.getParticipantID());
 					}}}
 				
 				catch (SQLException e2){
