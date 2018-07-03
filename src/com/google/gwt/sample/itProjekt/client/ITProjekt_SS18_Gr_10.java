@@ -464,6 +464,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		mccl.setName("Meine Kontakte");
 		mccl.setOwner(user.getId());
 		mccl.setId(5);
+		mccl.setMyContactsFlag(true);
 		
 		clctvm.setMyContactsContactList(mccl);
 
@@ -550,35 +551,33 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 				Window.alert("Sie können die Liste all Ihrer Kontakte nicht löschen!");
 			}
 			else {
-				if(clctvm.getSelectedContactList().getOwner() == user.getId()) {
-					editorAdministration.deleteContactList(clctvm.getSelectedContactList(), new AsyncCallback<Void>() {
-						@Override
-						public void onFailure(Throwable arg0) {
-							Window.alert("Fehler beim löschen der Kontaktliste!");
-						}
-						@Override
-						public void onSuccess(Void arg0) {
-							Window.alert(clctvm.getSelectedContactList().getName());
-							Window.alert("Kontaktliste erfolgreich gelöscht.");	
-							clctvm.removeContactList(clctvm.getSelectedContactList());
-							clctvm.setSelectedContactList(clctvm.getMyContactsContactList());
-						}
-					});
+			
+				editorAdministration.deleteContactList(clctvm.getSelectedContactList(), compareUser(), user, new AsyncCallback<Void>() {
+					@Override
+					public void onFailure(Throwable arg0) {
+						Window.alert("Fehler beim löschen der Kontaktliste!");
+					}
+					@Override
+					public void onSuccess(Void arg0) {
+						Window.alert(clctvm.getSelectedContactList().getName());
+						Window.alert("Kontaktliste erfolgreich gelöscht.");	
+						clctvm.removeContactList(clctvm.getSelectedContactList());
+						clctvm.setSelectedContactList(clctvm.getMyContactsContactList());
+					}
+				});
 					
-					
-				}
-				else {
-					editorAdministration.deletePermission(user, clctvm.getSelectedContactList(), new AsyncCallback<Void>() {
-						@Override
-						public void onFailure(Throwable arg0) {
-							Window.alert("Fehler beim entfernen der Kontaktliste!");
-						}
-						@Override
-						public void onSuccess(Void arg0) {
-							Window.alert("Kontaktliste erfolgreich entfernt.");
-						}
-					});
-				}
+//				else {
+//					editorAdministration.deletePermission(user, clctvm.getSelectedContactList(), new AsyncCallback<Void>() {
+//						@Override
+//						public void onFailure(Throwable arg0) {
+//							Window.alert("Fehler beim entfernen der Kontaktliste!");
+//						}
+//						@Override
+//						public void onSuccess(Void arg0) {
+//							Window.alert("Kontaktliste erfolgreich entfernt.");
+//						}
+//					});
+//				}
 			}
 		}
 	}
@@ -703,7 +702,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 			
 			ContactList selectedContactList = clctvm.getSelectedContactList();		
 			
-			editorAdministration.getContactsOfNameSearchResult(user, searchTextBox.getText(), selectedContactList,  new AsyncCallback<Vector<Contact>>() {
+			editorAdministration.getContactsOfNameSearchResult(user, searchTextBox.getText(), selectedContactList,   new AsyncCallback<Vector<Contact>>() {
 				@Override
 				public void onFailure(Throwable arg0) {
 					Window.alert("Fehler beim Füllen des allContactsOfUser Vectors!");
@@ -845,6 +844,22 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 //				clctvm.removeContactList(clctvm.getNameResultsCL());
 //				clctvm.removeContactList(clctvm.getValueResultsCL());
 //			}
+		}
+	}
+	
+	/**
+	 * Die Methode compareUser() vergleicht den aktuell angemeldeten Nutzer mit dem Eigentümer des Kontakts.
+	 * 
+	 * @return true= Eigentümer oder false= Teilhaber
+	 * @author JanNoller
+	 */
+	public boolean compareUser () {
+			
+		if (user.getId() == clctvm.getSelectedContact().getOwner()) {
+			return true;
+		}
+		else {
+			return false;
 		}
 	}
 }	 

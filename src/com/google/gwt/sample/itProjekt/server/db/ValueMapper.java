@@ -14,6 +14,9 @@ public class ValueMapper {
 
 	/** Konstruktor für den ValueMapper (Singleton) 
 	 * static weil Singleton. Einzige Instanz dieser Klasse
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
 	 */
 	private static ValueMapper valuemapper = null;
 	
@@ -22,6 +25,8 @@ public class ValueMapper {
 	 *
 	 * Falls noch kein ValueMapper existiert erstellt er ein neuen ValueMapper und gibt ihn zurück
 	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
 	 */
 	public static ValueMapper  valueMapper() {
 		if (valuemapper == null){
@@ -38,6 +43,9 @@ public class ValueMapper {
 	 * Gibt ein Vector voller Value Objekte zurück
 	 *
 	 * @param value übergebenes Value Objekt mit Attribut value
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
 	 */
 	public Vector<Value> findAllByValue(Value value){
 		Connection con = DBConnection.connection();
@@ -71,6 +79,9 @@ public class ValueMapper {
 	 * Gibt ein Vector voller Contact Objekte zurück welche eine bestimmte value besitzen
 	 *
 	 * @param value übergebenes Value Objekt mit Attribut value
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
 	 */
 	public Vector<Contact> findAllContactsByValue(Value value){
 		Connection con = DBConnection.connection();
@@ -98,7 +109,9 @@ public class ValueMapper {
 	 * Gibt alle Value Objekte zurück welche mit V_ID und value befüllt sind
 	 * Hierfür holen wir V_ID und value aus der T_Value Tabelle und speichern diese in einem Value Objekt ab und fügen diese dem Vector hinzu
 	 * Am Ende geben wir diesen Vector zurück
-	 *
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
 	 */
 	public Vector<Value> findAll(){
 		Connection con = DBConnection.connection();
@@ -136,6 +149,9 @@ public class ValueMapper {
 	 * @param value übergebenes Value Objekt mit Attributen V_ID, value und isShared
 	 * @param contact übergebenes Contact Objekt mit Attribut C_ID
 	 * @param property übergebenes Property Objekt mit Attribut P_ID
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
 	 */
 	public Value insert(Value value, Contact contact, Property property){
 		Connection con = DBConnection.connection();
@@ -183,6 +199,9 @@ public class ValueMapper {
 		 * @param value übergebenes Value Objekt mit Attributen V_ID, value und isShared
 		 * @param contact übergebenes Contact Objekt mit Attribut C_ID
 		 * @param property übergebenes Property Objekt mit Attribut P_ID
+		 * 
+		 * @author Egor Krämer
+		 * @author Robert Mattheis
 		 */
 		public Value update(Value value, Contact contact, Property property){
 			Connection con = DBConnection.connection();
@@ -216,6 +235,9 @@ public class ValueMapper {
 		 * wird auch die dazugehörige Property gelöscht mit dem aufruf der delete Methode im PropertyMapper
 		 * 
 		 * @param value übergebenes Value Objekt mit Attribut V_ID
+		 * 
+		 * @author Egor Krämer
+		 * @author Robert Mattheis
 		 */
 		public void delete (Value value){
 			Connection con = DBConnection.connection();
@@ -259,6 +281,9 @@ public class ValueMapper {
 		 * Mit der C_ID befüllen wir ein Contact Objekt mit der Methode findByID und geben ihn zurück
 		 *
 		 * @param value übergebenes Value Objekt mit Attribut V_ID
+		 * 
+		 * @author Egor Krämer
+		 * @author Robert Mattheis
 		 */
 		
 		public Contact findContactByVID(Value value){
@@ -291,6 +316,9 @@ public class ValueMapper {
 		 * Mit der C_ID befüllen wir ein Contact Objekt mit der Methode findByID und fügen diesen dem Vector hinzu
 		 *
 		 * @param property übergebenes Property Objekt mit Attribut P_ID
+		 * 
+		 * @author Egor Krämer
+		 * @author Robert Mattheis
 		 */
 		public Vector<Contact> getAllContactsByPID(Property property){
 
@@ -323,6 +351,9 @@ public class ValueMapper {
 		 * Wir befüllen diese Daten in ein Value Objekt welches wir dem Vector hinzufügen
 		 * 
 		 * @param contact übergebenes Contact Objekt mit Attribut C_ID
+		 * 
+		 * @author Egor Krämer
+		 * @author Robert Mattheis
 		 */
 		public Vector <Value> getAllValueByCID (Contact contact){
 			Connection con = DBConnection.connection();
@@ -359,6 +390,9 @@ public class ValueMapper {
 		 * Wir befüllen diese Daten in ein Value Objekt welches wir dem Vector hinzufügen
 		 * 
 		 * @param contact übergebenes Contact Objekt mit Attributen C_ID und isShared
+		 * 
+		 * @author Egor Krämer
+		 * @author Robert Mattheis
 		 */
 		
 		public Vector <Value> getAllSharedValueByCID (Contact contact){
@@ -397,6 +431,9 @@ public class ValueMapper {
 		 * 
 		 * @param property übergebenes Property Objekt mit Attribut P_ID
 		 * @param contact übergebenes Contact Objekt mit Attribut C_ID
+		 * 
+		 * @author Egor Krämer
+		 * @author Robert Mattheis
 		 */
 		
 		public Vector<Value> findAllByPID(Property property, Contact contact){

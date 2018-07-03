@@ -14,11 +14,17 @@ import com.google.gwt.user.client.Window;
 
 /**
  * The Class ContactMapper.
+ * 
+ * @author Egor Krämer
+ * @author Robert Mattheis
  */
 public class ContactMapper {
 	
 	/** Konstruktor für den ContactMapper (Singleton) 
 	* static weil Singleton. Einzige Instanz dieser Klasse
+	* 
+	* @author Egor Krämer
+	* @author Robert Mattheis
 	*/
 	private static ContactMapper  contactmapper = null;
 	
@@ -27,6 +33,8 @@ public class ContactMapper {
 	 *
 	 * Falls noch kein ContactMapper existiert wird ein neuen ContactMapper erstellt und gibt ihn zurück
 	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
 	 */
 	public static ContactMapper contactMapper() {
 		if (contactmapper == null){
@@ -41,6 +49,9 @@ public class ContactMapper {
 	 * Findet Contacts durch eine C_ID und speichert die dazugehörigen Werte (C_ID, firstName, lastName, gender und U_ID) in einem COntact Objekt ab und gibt dieses wieder
 	 * 
 	 * @param contact übergebenes Contact Objekt mit Attribut C_ID
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
 	 */
 	public Contact findByID(Contact contact){
 		Connection con = DBConnection.connection();
@@ -74,7 +85,9 @@ public class ContactMapper {
 	 * Gibt alle Contact Objekte zurück welche mit C_ID, firstName, lastName, geder und U_ID befüllt sind
 	 * Hierfür holen wir C_ID, firstName, lastName, geder und U_ID aus der T_Contact Tabelle und speichern diese in einem Contact Objekt ab und fügen diese dem Vector hinzu
 	 * Diesen Vector befüllt mit Contacts geben wir zurück
-	 *
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
 	 */
 	public Vector<Contact> findAll(){
 Connection con = DBConnection.connection();
@@ -108,6 +121,9 @@ Vector<Contact> result = new Vector<Contact>();
 	 * und Speichert dieses Objekt im Vector ab und gibt diesen wieder
 	 * 
 	 * @param contact übergebenes Contact Objekt mit Attributen firstName und lastName
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
 	 */
 	public Vector<Contact> findByName(Contact contact){
 		Connection con = DBConnection.connection();
@@ -143,6 +159,9 @@ Vector<Contact> result = new Vector<Contact>();
 	 * Gibt ein Vector voller Contact Objekte zurück welche ein User erstellt hat
 	 * 
 	 * @param user übergebenes User Objekt mit Attribut U_ID
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
 	 */
 	public Vector<Contact> findAllByUID(User user){
 		Connection con = DBConnection.connection();
@@ -180,12 +199,21 @@ Vector<Contact> result = new Vector<Contact>();
 	 *
 	 * @param contact übergebenes Contact Objekt mit Attributen C_ID, firstName, lastName und gender
 	 * @param user übergebenes User Objekt mit Attribut U_ID
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
 	 */
+	@SuppressWarnings("deprecation")
 	public Contact insert(Contact contact, User user){
 		Connection con = DBConnection.connection();
 		
 		try{
 			Statement stmt = con.createStatement();
+			
+			Timestamp ts = new Timestamp(System.currentTimeMillis());
+			ts.setHours(ts.getHours()+2);
+			String s = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(ts);
+			
 			ResultSet rs = stmt.executeQuery("SELECT MAX(C_ID) AS maxcid FROM T_Contact");
 			if (rs.next()){
 				
@@ -201,12 +229,13 @@ Vector<Contact> result = new Vector<Contact>();
 				+ "', '" 
 				+ contact.getSex() 
 				+ "', '" 
-				+ new Timestamp(System.currentTimeMillis())  
+				+ s
 				+ "', '"
-				+ new Timestamp(System.currentTimeMillis()) 
-				+ "', '" 
+				//+ "CURRENT_TIMESTAMP"
+				+ s
+				+ "', " 
 				+ user.getId()
-				+ "')") ;
+				+ ")") ;
 						
 				return contact;	
 				
@@ -230,12 +259,19 @@ Vector<Contact> result = new Vector<Contact>();
 		 * Gibt ein Contact zurück
 		 * 
 		 * @param contact übergebenes Contact Objekt mit Attributen firstName, lastName, gender und C_ID
+		 * 
+		 * @author Egor Krämer
+		 * @author Robert Mattheis
 		 */
+		@SuppressWarnings("deprecation")
 		public Contact update(Contact contact){
 			Connection con = DBConnection.connection();
 			
 			try{
 				Timestamp ts = new Timestamp(System.currentTimeMillis());
+				ts.setHours(ts.getHours()+2);
+				
+				
 				System.out.println(ts.toString());
 				String s = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(ts);
 				System.out.println(s.toString());
@@ -251,11 +287,10 @@ Vector<Contact> result = new Vector<Contact>();
 				+ "', " 
 				+ "gender='" 
 				+ contact.getSex() 
-				+ "'"
+				+ "', "
 				+ "mod_date ='" 
 				+ s
-				+ "'"
-				+ " WHERE C_ID =" + contact.getId());
+				+ "' WHERE C_ID =" + contact.getId());
 				System.out.println("update complete");
 			}
 		
@@ -278,6 +313,9 @@ Vector<Contact> result = new Vector<Contact>();
 		 * der nächste Schritt entfernt alles aus T_Contact wo die C_ID der ID des übergebenen Objekts entspricht
 		 * 
 		 * @param contact übergebenes Contact Objekt mit Attribut C_ID
+		 * 
+		 * @author Egor Krämer
+		 * @author Robert Mattheis
 		 */
 		public void delete (Contact contact){
 Connection con = DBConnection.connection();
@@ -347,6 +385,9 @@ Connection con = DBConnection.connection();
 		 * Gibt ein Vector voller Contact Objekte zurück
 		 * 
 		 * @param name übergebener String name
+		 * 
+		 * @author Egor Krämer
+		 * @author Robert Mattheis
 		 */
 		
 		public Vector<Contact> findAllByName(String name){
