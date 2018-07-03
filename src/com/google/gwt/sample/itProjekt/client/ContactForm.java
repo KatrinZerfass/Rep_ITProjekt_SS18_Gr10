@@ -916,7 +916,9 @@ public class ContactForm extends VerticalPanel {
 			        
 			        setWidget(panel);
 			        
+			        
 			        show();
+			       
 				}
 			});
 		}
@@ -1203,19 +1205,22 @@ public class ContactForm extends VerticalPanel {
 		
 		EmailDialogBox dialog;
 		
+		
 		@Override
 		public void onClick(ClickEvent event) {
 			
-			dialog = new EmailDialogBox();
+			
 			
 			if (contactToDisplay == null) {
 				Window.alert("kein Kontakt ausgewählt!");
 			}
 			else {
+				dialog = new EmailDialogBox();
 				/*
 				 * Über eine Instanz der inneren Klasse EmailDialogBox können Objekte mit anderen Nutzern geteilt werden.
 				 */
 				
+				dialog.show();
 				
 				dialog.getOKButton().addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {
@@ -1500,6 +1505,7 @@ public class ContactForm extends VerticalPanel {
 			
 			if(ptype == "Geburtstag") {
 				VerticalPanel db1Panel = new VerticalPanel();
+				hpanel1 = new HorizontalPanel();
 				db1 = new DialogBox();
 				inputTextBox1 = new TextBox();
 				db1.setText("Geburtsdatum eintragen");
@@ -1507,8 +1513,8 @@ public class ContactForm extends VerticalPanel {
 				Button addBirthdayButton = new Button("Hinzufügen");
 				CloseButton close1=new CloseButton(db1);
 				db1Panel.add(inputTextBox1);
-				hpanel1.add(addBirthdayButton);
 				hpanel1.add(close1);
+				hpanel1.add(addBirthdayButton);
 				db1Panel.add(hpanel1);
 				db1.add(db1Panel);
 				db1.show();
@@ -1516,8 +1522,6 @@ public class ContactForm extends VerticalPanel {
 				addBirthdayButton.addClickHandler(new ClickHandler(){
 					public void onClick(ClickEvent event) {
 						db1.hide();
-						db1.hide();
-						Window.alert("Dialogbox Titel: " + db1.getText());
 						
 						
 						editorAdministration.createValue(contactToDisplay, 4, inputTextBox1.getText(), new AsyncCallback<Value>() {
@@ -1543,6 +1547,7 @@ public class ContactForm extends VerticalPanel {
 			}
 			else if(ptype == "Sonstiges") {
 				VerticalPanel db2Panel = new VerticalPanel();
+				hpanel2 = new HorizontalPanel();
 				db2 = new DialogBox();
 				inputTextBox2 = new TextBox();
 				
@@ -1563,8 +1568,6 @@ public class ContactForm extends VerticalPanel {
 				addPropertyButton.addClickHandler(new ClickHandler(){
 					public void onClick(ClickEvent event) {
 						db2.hide();
-						db2.hide();
-						Window.alert("Dialogbox Titel: " + db2.getText());
 						
 						
 						editorAdministration.createProperty(contactToDisplay, inputTextBox2.getText(), new AsyncCallback<Property>() {
@@ -1709,8 +1712,10 @@ public class ContactForm extends VerticalPanel {
 		switch(identifier) {
 			case "Name":
 				if (!text.matches("\\d+")) {
-					if(text != "") {
+					if(!text.isEmpty()) {
 						return true;
+					}else {
+						return false;
 					}
 				}
 				else {
