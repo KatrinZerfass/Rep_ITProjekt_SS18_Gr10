@@ -120,7 +120,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				owner=admin.getOwnerOfContact(c);
 				sharedUser = admin.getSourceToSharedContact(c, user);
 				
-				Vector<Value> allValues=this.admin.getAllValuesOf(c);
+				Vector<Value> allValues=this.admin.getAllValuesOfContact(c);
 				Vector<Permission> allPermissions = this.admin.getAllPermissions();
 				
 				Row contactRow=new Row();
@@ -262,7 +262,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				sharedUser = admin.getSourceToSharedContact(c, owner);
 
 				
-				Vector<Value> allValues=this.admin.getAllValuesOf(c);
+				Vector<Value> allValues=this.admin.getAllValuesOfContact(c);
 				Row contactRow=new Row();
 				
 				contactRow.addColumn(new Column(String.valueOf(contactowner.getEmail())));
@@ -376,7 +376,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		
 		if(allContacts.size()!=0){
 			for (Contact c: allContacts) {
-			Vector<Value> allValues=this.admin.getAllValuesOf(c);
+			Vector<Value> allValues=this.admin.getAllValuesOfContact(c);
 			Row contactRow=new Row();
 			
 			owner=admin.getOwnerOfContact(c);
@@ -506,7 +506,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 			sharedUser = admin.getSourceToSharedContact(c, user);
 
-			Vector<Value> allValues=this.admin.getAllValuesOf(c);
+			Vector<Value> allValues=this.admin.getAllValuesOfContact(c);
 			
 			
 			Row contactRow=new Row();
