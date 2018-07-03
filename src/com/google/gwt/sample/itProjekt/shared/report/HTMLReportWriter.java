@@ -46,7 +46,7 @@ public class HTMLReportWriter extends ReportWriter{
 		result.append("<tr></tr><td>" + r.getCreated().toString()+ "</td></tr><tr></tr></table>");
 		
 		Vector<Row> rows=r.getRows();
-		result.append("<table>");
+		result.append("<table class=\"reporttable\">");
 		
 		for (int i=0; i < rows.size();i++) {
 			Row row=rows.elementAt(i);

@@ -475,6 +475,7 @@ public class ContactForm extends VerticalPanel {
 			Label addValueLabel = new Label();
 			ValueTextBox addValueTextBox = null;
 			Button addValueButton = new Button("Hinzufügen");
+			addValueButton.addStyleName("okbutton");
 			addValueDialogBoxPanel.add(addValueLabel);
 			
 			
@@ -868,10 +869,12 @@ public class ContactForm extends VerticalPanel {
         private MultiWordSuggestOracle oracle;
         
         Button ok = new Button("OK");
+        
 
 		public EmailDialogBox() {
 			
 			oracle = new MultiWordSuggestOracle();
+			ok.addStyleName("okbutton");
 			
 			setDialogBoxLabel("Bitte geben Sie die Email-Adresse des Nutzers ein mit dem Sie den Kontakt teilen möchten.");
 			

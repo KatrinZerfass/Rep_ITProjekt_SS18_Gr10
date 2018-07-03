@@ -92,7 +92,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		public CloseButton(InputDialogBox db) {
 			this.db = db;
 			this.addClickHandler(new CloseDBClickHandler(db)); 
-			this.setText("X");
+			this.setText("Abbrechen");
 			this.addStyleName("closebutton");
 		}
 		
@@ -127,7 +127,8 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
         private TextBox tb;
         private SuggestBox sb;
         private MultiWordSuggestOracle oracle;
-        
+		CloseButton close=new CloseButton(this);
+
         Button ok = new Button("OK");
 		
 		/**
@@ -137,7 +138,8 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		public InputDialogBox(TextBox inputtb) {
 			
 			setTextBox(inputtb);
-			
+	        ok.addStyleName("okbutton");
+
 			Window.alert("InputDialogBox instanziert");
 			
 			setText("Eingabe");
@@ -146,15 +148,16 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 			
 	        
 			VerticalPanel panel = new VerticalPanel();
-			CloseButton close= new CloseButton(this);
 	        panel.setHeight("100");
 	        panel.setWidth("300");
 	        panel.setSpacing(10);
 	        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 	        panel.add(dialogBoxLabel);
-			panel.add(close);
-			panel.add(tb);
-	        panel.add(ok);
+			HorizontalPanel hpanel=new HorizontalPanel();
+			hpanel.add(close);
+	        hpanel.add(ok);
+	        panel.add(tb);
+	        panel.add(hpanel);
 
 	        setWidget(panel);
 	        
@@ -164,7 +167,8 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		public InputDialogBox(MultiWordSuggestOracle inputOracle) {
 			
 			setOracle(inputOracle);
-			
+	        ok.addStyleName("okbutton");
+
 			setdialogBoxLabel("Bitte geben Sie die Email-Adresse des Nutzers ein mit dem Sie die Kontaktliste teilen möchten.");
 			
 			editorAdministration.getAllUsers(new AsyncCallback<Vector<User>>() {
@@ -193,6 +197,8 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 			        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 			        panel.add(dialogBoxLabel);
 					panel.add(getSuggestBox());
+					HorizontalPanel hpanel= new HorizontalPanel();
+			        hpanel.add(close);
 			        panel.add(ok);
 			        
 			        setWidget(panel);
