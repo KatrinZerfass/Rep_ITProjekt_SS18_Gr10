@@ -517,6 +517,8 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 						}
 						public void onSuccess(ContactList result) {
 							Window.alert("Kontaktliste erfolgreich erstellt.");
+							clctvm.deleteNameResults();
+							clctvm.deleteValueResults();
 							clctvm.addContactList(result);
 							inputDB.hide();
 						}
