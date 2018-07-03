@@ -1515,6 +1515,7 @@ public class ContactForm extends VerticalPanel {
 				db1.setText("Geburtsdatum eintragen");
 			
 				Button addBirthdayButton = new Button("Hinzufügen");
+				addBirthdayButton.addStyleName("okbutton");
 				CloseButton close1=new CloseButton(db1);
 				db1Panel.add(inputTextBox1);
 				hpanel1.add(close1);
@@ -1562,8 +1563,8 @@ public class ContactForm extends VerticalPanel {
 				CloseButton close2= new CloseButton(db2);
 				
 				db2Panel.add(inputTextBox2);
-				hpanel2.add(addPropertyButton);
 				hpanel2.add(close2);
+				hpanel2.add(addPropertyButton);
 				db2Panel.add(hpanel2);
 				db2.add(db2Panel);
 				db2.show();
@@ -1606,6 +1607,7 @@ public class ContactForm extends VerticalPanel {
 				
 				Button addAddressButton = new Button("Anlegen");
 				addAddressButton.addStyleName("addNewPropertyButton");
+				addAddressButton.addStyleName("anlegenbutton");
 				addressPanel.add(addAddressButton);
 				
 				contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
