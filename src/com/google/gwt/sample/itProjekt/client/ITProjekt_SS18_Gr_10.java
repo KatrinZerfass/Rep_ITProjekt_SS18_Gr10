@@ -1,5 +1,6 @@
 package com.google.gwt.sample.itProjekt.client;
 
+import com.google.gwt.sample.itProjekt.client.ContactForm.CloseButton;
 import com.google.gwt.sample.itProjekt.client.ContactForm.EmailDialogBox;
 import com.google.gwt.sample.itProjekt.shared.CommonSettings;
 import com.google.gwt.sample.itProjekt.shared.EditorAdministrationAsync;
@@ -85,6 +86,31 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	/** Die Default-Kontaktliste MyContactsContactList mccl. */
 	ContactList mccl = new ContactList();
 	
+	public class CloseButton extends Button{
+		InputDialogBox db;
+		
+		public CloseButton(InputDialogBox db) {
+			this.db = db;
+			this.addClickHandler(new CloseDBClickHandler(db)); 
+			this.setText("Abbrechen");
+			this.addStyleName("closebutton");
+		}
+		
+		private class CloseDBClickHandler implements ClickHandler{
+			InputDialogBox db;
+	
+			
+			public CloseDBClickHandler(InputDialogBox db) {
+				this.db=db;
+			}
+			
+			public void onClick(ClickEvent event) {
+				db.hide();
+			}
+			
+		}
+		
+	}
 	
 	/**
 	 * Die innere Klasse InputDialogBox.
@@ -101,7 +127,8 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
         private TextBox tb;
         private SuggestBox sb;
         private MultiWordSuggestOracle oracle;
-        
+		CloseButton close=new CloseButton(this);
+
         Button ok = new Button("OK");
 		
 		/**
@@ -111,7 +138,8 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		public InputDialogBox(TextBox inputtb) {
 			
 			setTextBox(inputtb);
-			
+	        ok.addStyleName("okbutton");
+
 			Window.alert("InputDialogBox instanziert");
 			
 			setText("Eingabe");
@@ -120,14 +148,16 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 			
 	        
 			VerticalPanel panel = new VerticalPanel();
-			
 	        panel.setHeight("100");
 	        panel.setWidth("300");
 	        panel.setSpacing(10);
 	        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 	        panel.add(dialogBoxLabel);
+			HorizontalPanel hpanel=new HorizontalPanel();
+			hpanel.add(close);
+	        hpanel.add(ok);
 	        panel.add(tb);
-	        panel.add(ok);
+	        panel.add(hpanel);
 
 	        setWidget(panel);
 	        
@@ -137,7 +167,8 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		public InputDialogBox(MultiWordSuggestOracle inputOracle) {
 			
 			setOracle(inputOracle);
-			
+	        ok.addStyleName("okbutton");
+
 			setdialogBoxLabel("Bitte geben Sie die Email-Adresse des Nutzers ein mit dem Sie die Kontaktliste teilen möchten.");
 			
 			editorAdministration.getAllUsers(new AsyncCallback<Vector<User>>() {
@@ -159,13 +190,15 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 					setGlassEnabled(true);
 					
 					VerticalPanel panel = new VerticalPanel();
-					
+
 			        panel.setHeight("100");
 			        panel.setWidth("300");
 			        panel.setSpacing(10);
 			        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 			        panel.add(dialogBoxLabel);
-			        panel.add(getSuggestBox());
+					panel.add(getSuggestBox());
+					HorizontalPanel hpanel= new HorizontalPanel();
+			        hpanel.add(close);
 			        panel.add(ok);
 			        
 			        setWidget(panel);
@@ -370,7 +403,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		VerticalPanel contactListButtonsPanel = new VerticalPanel();
 		contactListButtonsPanel.setStyleName("contactListButtonPanel");
 		
-		Button newContactListButton = new Button("Neue Kontaktliste anlegen");
+		Button newContactListButton = new Button("Neue Kontaktliste");
 		newContactListButton.addStyleName("buttonPanel");
 		Button deleteContactListButton = new Button("Kontaktliste löschen");
 		deleteContactListButton.addStyleName("buttonPanel");
@@ -397,9 +430,9 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		//Das Suchfeld
 		
 		searchButton.addClickHandler(new SearchButtonClickHandler(searchTextBox));
-		searchLabel.setText("Durchsuchen Sie Ihre Kontaktlisten nach bestimmten Ausprägungen: ");
+		searchLabel.setText("Durchsuchen Sie die ausgewählte Kontaktliste nach bestimmten Kontakten oder Ausprägungen");
 		searchLabel.addStyleName("label_search");
-		searchLabel.setWidth("240px");
+		searchLabel.setWidth("210px");
 		searchPanel.add(searchLabel);
 		
 		
@@ -490,6 +523,8 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 						}
 						public void onSuccess(ContactList result) {
 							Window.alert("Kontaktliste erfolgreich erstellt.");
+							clctvm.deleteNameResults();
+							clctvm.deleteValueResults();
 							clctvm.addContactList(result);
 							inputDB.hide();
 						}
@@ -671,7 +706,10 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 					if(arg0.size() != 0) {
 						clctvm.addNameResults();
 						clctvm.addContactOfSearchResultList(clctvm.getNameResultsCL(), arg0);
+					}else{
+						clctvm.deleteNameResults();
 					}
+					
 				}
 				
 			});	
@@ -686,6 +724,8 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 					if(arg0.size() != 0){
 						clctvm.addValueResults();
 						clctvm.addContactOfSearchResultList(clctvm.getValueResultsCL(), arg0);
+					}else{
+						clctvm.deleteValueResults();
 					}
 				}
 				

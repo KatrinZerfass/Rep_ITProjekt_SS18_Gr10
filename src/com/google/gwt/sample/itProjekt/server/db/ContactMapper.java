@@ -244,6 +244,9 @@ Vector<Contact> result = new Vector<Contact>();
 				+ "gender='" 
 				+ contact.getSex() 
 				+ "'"
+				+ "mod_date ='" 
+				+ new Timestamp(System.currentTimeMillis()) 
+				+ "'"
 				+ " WHERE C_ID =" + contact.getId());
 			}
 		

@@ -292,3 +292,8 @@ h1 {
   width:5px;
   height:5px;
 }
+
+.reporttable, .reporttd{
+  border-collapse: collapse;
+  border: 1px solid #80808047;
+}

@@ -2,8 +2,9 @@
 package com.google.gwt.sample.itProjekt.client;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
+import java.util.Vector;
 import com.google.gwt.dev.jjs.impl.codesplitter.CfaLivenessPredicate;
 import com.google.gwt.sample.itProjekt.shared.EditorAdministrationAsync;
 import com.google.gwt.sample.itProjekt.shared.bo.BusinessObject;
@@ -19,7 +20,6 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.gwt.view.client.TreeViewModel;
 import com.google.gwt.view.client.TreeViewModel.DefaultNodeInfo;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import java.util.Vector;
 
 
 /**
@@ -34,6 +34,8 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	private User user = null;
 	
 	private ContactForm contactForm =null;
+	
+	/** Selektierte Kontakte oder Kontaktlisten im CellBrowser werden in selectedContactList oder selectedContact gespeichert*/
 
 	private ContactList selectedContactList = null;
 	private Contact selectedContact = null;
@@ -47,15 +49,17 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	/** Der contactDataProvider vom Typ Map verbindet je eine Kontaktliste mit einem ListDataProvider von Kontakten.  */
 	private Map<ContactList, ListDataProvider<Contact>> contactDataProviders = null;
 	
+	/** nameRestultsCL und valueResultsCL repräsentieren die 'virtuellen' Kontaktlisten der Suchergebnisse. */
 	private ContactList nameResultsCL = new ContactList();
 	private ContactList valueResultsCL = new ContactList();
+	
+	/** Die Ergebnisse der Suchanfrage werden in nameResults und valueResults gespeichert. */
 	private Vector<Contact> nameResults = null;
 	private Vector<Contact> valueResults = null;
 
 	/**
 	 * Die innere Klasse BusinessObjectKeyProvider
 	 * Sie weißt jedem BusinessObject eine eindeutige id zu.
-	 * ?? Für was brauchen wir die ?? 
 	 */
 	private class BusinessObjectKeyProvider implements
 	ProvidesKey<BusinessObject> {
@@ -101,7 +105,6 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	
 	/**
 	 * Konstruktor von ContactListContactTreeViewModel.
-	 * Die vorher deklarierten 
 	 */
 	public ContactListContactTreeViewModel() {
 		editorAdministration= ClientsideSettings.getEditorAdministration();
@@ -110,14 +113,12 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		selectionModel = new SingleSelectionModel<BusinessObject>(boKeyProvider);
 		selectionModel.addSelectionChangeHandler(new SelectionChangeEventHandler());
 		contactDataProviders = new HashMap<ContactList, ListDataProvider<Contact>>();
-		
-		
+			
 	}
 
+	/** Getter und Setter */ 
 	
-	/* 
-	 * Getter und Setter für ContactForm, selectedContactList, selectedContact und myContactContactList
-	 */
+	
 	public void setContactForm(ContactForm cf) {
 		contactForm = cf;
 	}
@@ -134,7 +135,6 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		
 	}
 	
-	
 	public Contact getSelectedContact() {
 		return selectedContact;
 	}
@@ -143,9 +143,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		selectedContact = c;
 		contactForm.setSelected(selectedContact);
 		
-	//muss dan auch die dazugehörige Kontaktliste ausgewählt werden?! --> siehe R&T
 	}
-
 	
 	public ContactList getMyContactsContactList() {
 		return this.myContactsContactList;
@@ -159,40 +157,33 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	}
 	
 
-	/*
+	/**
 	 * GUI Funktionalitäten
 	 */
 	
 	
 	/**
-	 * Wir eine neue Kontaktliste erstellt, wird diese dem ListDataProvider hinzugefügt und selektiert.
-	 * @param cl die neue Kontaktliste
+	 * Eine neu erstellte Kontaktliste wird dem contactListDataProvider hinzugefügt und selektiert.  
 	 */
 	public void addContactList(ContactList cl) {
 		contactListDataProvider.getList().add(cl);
-		
-		//nachfolgende Zeile steht nirgends bei R&T ?!
-		//contactDataProviders.put(cl, new ListDataProvider<Contact>());
-		
 		selectionModel.setSelected(cl, true);
-			
-		
+				
 	}
 	
+	/**
+	 * Beim Löschen der Kontaktliste wird die selektierte Liste aus dem contactListDataProvider entfernt und die 
+	 * Verknüpfung zwischen der Kontaktliste und dem ListDataProvider aufgelöst. 
+	 * @param cl
+	 */
 	
 	public void removeContactList(ContactList cl) {
 		if (contactListDataProvider.getList().contains(cl) && cl != null && !cl.equals(myContactsContactList)) {
-			
 			contactListDataProvider.getList().remove(cl);
 			contactDataProviders.remove(cl);
-			
-			//contactListDataProvider.refresh();
-			//contactListDataProvider.flush();
-			//TODO was tut refresh?
-			
-			contactListDataProvider.setList(contactListDataProvider.getList());
 		}
 	}
+	
 	
 	public void addContactOfContactList(ContactList cl, Contact c) {
 		if (!contactDataProviders.containsKey(cl)) {
@@ -228,15 +219,17 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	}
 	
 	
-	public void removeContactOfContactList(ContactList cl, Contact c) {
+	public void removeContactOfContactList(ContactList cl, Contact contact) {
 		if (!contactDataProviders.containsKey(cl)) {
 			return;
 		}
 		
-		ListDataProvider<Contact> contactsProvider = contactDataProviders.get(cl);
-		Window.alert(contactsProvider.getList().toString());
-		contactsProvider.getList().remove(contactsProvider.getKey(c));
-		contactListDataProvider.flush();
+
+				
+//		ListDataProvider<Contact> contactsProvider = contactDataProviders.get(cl);
+//		Window.alert(contactsProvider.getList().toString());
+//		contactsProvider.getList().remove(contactsProvider.getKey(c));
+//		contactListDataProvider.flush();
 				
 		//int selectedIndex =  contactDataProviders.getList(cl).indexOf(selectionModel.getSelectedObject());
 		
@@ -244,7 +237,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		//contactDataProviders.getList().remove(c);
 		
 		
-		//contactListDataProvider.refresh();
+		contactListDataProvider.refresh();
 		//TODO was tut refresh?
 		
 		
@@ -254,7 +247,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	public void addNameResults () {
 		
 		
-		contactListDataProvider.getList().remove(nameResultsCL);
+		deleteNameResults();
 			
 		nameResultsCL = new ContactList();
 		nameResultsCL.setId(0);
@@ -264,12 +257,20 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	
 	public void addValueResults () {
 		
-		contactListDataProvider.getList().remove(valueResultsCL);
+		deleteValueResults();
 		
 		valueResultsCL = new ContactList();
-		valueResultsCL.setId(0);
+		valueResultsCL.setId(1);
 		valueResultsCL.setName("Suchergebnis in den Eigenschaften");
 		
+	}
+	
+	public void deleteNameResults () {
+		contactListDataProvider.getList().remove(nameResultsCL);
+	}
+	
+	public void deleteValueResults () {
+		contactListDataProvider.getList().remove(valueResultsCL);
 	}
 	
 	
@@ -378,7 +379,6 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 			   */
 								
 			}else {
-					Window.alert("geteilte Kontakliste");
 					editorAdministration.getAllSharedContactsOfContactList((ContactList) value, user, new AsyncCallback<Vector<Contact>>() {
 						public void onFailure(Throwable t) {
 							
@@ -424,8 +424,6 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		this.valueResultsCL = valueResultsCL;
 	}
 
-	
-	
 
 
 }

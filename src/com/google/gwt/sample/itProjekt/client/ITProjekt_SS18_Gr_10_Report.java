@@ -72,7 +72,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	TextBox propertyInput = new TextBox();
 	ListBox propertylistbox = new ListBox();
 	Button allContactsOfUserButton = new Button("Alle Kontakte eines Nutzers");
-	Button allSharedContactsOfUserButton = new Button("Alle geteilten Kontakte eines Nutzers");
+	Button allSharedContactsOfUserButton = new Button("Alle mit einem Nutzer geteilten Kontakte");
 	Button allContactsWithValueButton = new Button("Kontakte mit bestimmter Ausprägung");
 	Button allContactsWithPropertyButton = new Button("Kontakte mit bestimmter Eigenschaft");
 
