@@ -176,26 +176,27 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 					}
 					}}
 				
-				if(allPermissions.size()!= 0){
+				if(allPermissions.size()> 0){
 					
 					User u = new User();
-					
+					headline.addColumn(new Column("Teilhaber"));
 					for (Permission p: allPermissions){
-						if(p.getShareableObjectID() == c.getId() && c.getOwner() == user.getId())
 						
-							headline.addColumn(new Column("Teilhaber"));
+						if(p.getShareableObjectID() == c.getId() && c.getOwner() == user.getId()){
+							
+						for(int i = 0; i < 1; i++){
+							contactRow.addColumn(new Column(""));
+						}
 						
 						u = this.admin.getUserByID(p.getParticipantID());
 					}
 						contactRow.addColumn(new Column(String.valueOf(u.getEmail())));
-				}
+				}}
 						
 				if(headline.getNumColumns() < 10){
 					
 					headline.addColumn(new Column("Erstellungsdatum"));
 					headline.addColumn(new Column("Modifikationsdatum"));
-					contactRow.addColumn(new Column(""));
-					contactRow.addColumn(new Column(""));
 				
 				}
 						
@@ -314,7 +315,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 					}
 				}}
 
-				if(headline.getNumColumns() < 10){
+				if(headline.getNumColumns() < 9){
 					
 					headline.addColumn(new Column("Erstellungsdatum"));
 					headline.addColumn(new Column("Modifikationsdatum"));
@@ -433,7 +434,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			}
 			}
 
-			if(headline.getNumColumns() < 10){
+			if(headline.getNumColumns() < 9){
 				
 				headline.addColumn(new Column("Erstellungsdatum"));
 				headline.addColumn(new Column("Modifikationsdatum"));
@@ -560,7 +561,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				}}
 			}
 			
-			if(headline.getNumColumns() < 10){
+			if(headline.getNumColumns() < 9){
 				
 				headline.addColumn(new Column("Erstellungsdatum"));
 				headline.addColumn(new Column("Modifikationsdatum"));
