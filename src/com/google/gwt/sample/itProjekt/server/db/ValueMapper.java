@@ -160,8 +160,8 @@ public class ValueMapper {
 				+ value.getIsShared()
 				+ ")") ;
 				
-				//Contact c2 = new Contact();
-				//c2 = ContactMapper.contactMapper().findByID(contact);
+				Contact c2 = new Contact();
+				c2 = ContactMapper.contactMapper().findByID(contact);
 				ContactMapper.contactMapper().update(contact);
 				return value;	
 				
