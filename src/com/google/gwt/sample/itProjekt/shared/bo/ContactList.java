@@ -2,7 +2,7 @@ package com.google.gwt.sample.itProjekt.shared.bo;
 
 // TODO: Auto-generated Javadoc
 /**
- * Die Klasse ContactList, Datenstruktur für das Kontaktlisten Business Objekt.
+ * Die Klasse ContactList, Datenstruktur fï¿½r das Kontaktlisten Business Objekt.
  * @author JanNoller
  * 
  */
@@ -12,9 +12,11 @@ public class ContactList extends BusinessObject {
 	private String name;
 	
 	private int owner;
+	
+	private boolean myContactsFlag = false; 
 
 	/**
-	 * Getter für den Namen.
+	 * Getter fï¿½r den Namen.
 	 *
 	 * @return der Name
 	 */
@@ -23,7 +25,7 @@ public class ContactList extends BusinessObject {
 	}
 
 	/**
-	 * Setter für den Namen.
+	 * Setter fï¿½r den Namen.
 	 *
 	 * @param name der neue Name
 	 */
@@ -37,5 +39,13 @@ public class ContactList extends BusinessObject {
 
 	public void setOwner(int owner) {
 		this.owner = owner;
+	}
+
+	public boolean getMyContactsFlag() {
+		return myContactsFlag;
+	}
+
+	public void setMyContactsFlag(boolean myContactsFlag) {
+		this.myContactsFlag = myContactsFlag;
 	}
 }

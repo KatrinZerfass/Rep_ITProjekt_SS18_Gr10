@@ -148,12 +148,6 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	}
 
 	@Override
-	public Vector<Contact> getAllContactsWith(Value value) throws IllegalArgumentException {
-		
-		return vMapper.findAllContactsByValue(value);
-	}
-
-	@Override
 	public Contact getContact(int id) throws IllegalArgumentException {
 
 		Contact contact = new Contact();
@@ -262,16 +256,18 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	@Override
 	public ContactList removeContactFromContactList(ContactList contactlist, Contact contact)
 			throws IllegalArgumentException {
-		
-		
-		
+
 		return clMapper.removeContact(contactlist, contact);
 	}
 
 	@Override
-	public void deleteContactList(ContactList contactlist) throws IllegalArgumentException {
+	public void deleteContactList(ContactList contactlist, boolean owner, User user) throws IllegalArgumentException {
 		
-		clMapper.delete(contactlist);
+		if(owner == true){
+			clMapper.delete(contactlist);
+		}else{
+			deletePermission(user, contactlist);
+		}	
 	}
 
 	@Override
@@ -459,7 +455,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		allContactsOfList = getAllContactsOf(selectedContactList);
 		nameResults = getAllContactsWithName(textBox);
 		
-			if(selectedContactList.getId() == 5) {
+			if(selectedContactList.getMyContactsFlag()) {
 				for (Contact c : nameResults) {
 					if (allContactsOfUser.contains(c)) {
 						result.add(c);
@@ -489,7 +485,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		allContactsOfList = getAllContactsOf(selectedContactList); 
 		valueResults = getAllContactsWithValue(textBox);
 		
-		if(selectedContactList.getId() == 5) {
+		if(selectedContactList.getMyContactsFlag()) {
 			for (Contact c : valueResults) {
 				if (allContactsOfUser.contains(c)) {
 					result.add(c);

@@ -25,7 +25,7 @@ public interface EditorAdministrationAsync {
 
 	void deleteContact(Contact contact, boolean owner, User user, AsyncCallback<Void> callback);
 
-	void deleteContactList(ContactList contactlist, AsyncCallback<Void> callback);
+	void deleteContactList(ContactList contactlist, boolean owner, User user, AsyncCallback<Void> callback);
 
 	void deleteValue(Value value, AsyncCallback<Void> callback);
 
@@ -41,8 +41,6 @@ public interface EditorAdministrationAsync {
 	void getAllContactsOf(ContactList contactlist, AsyncCallback<Vector<Contact>> callback);
 
 	void getAllContactsOfActiveUser(User user, AsyncCallback<Vector<Contact>> callback);
-
-	void getAllContactsWith(Value value, AsyncCallback<Vector<Contact>> callback);
 
 	void getAllOwnedContactsOf(String email, AsyncCallback<Vector<Contact>> callback);
 
