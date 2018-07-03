@@ -621,7 +621,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 											Window.alert("Kontaktliste erfolgreich geteilt.");
 											inputDB.hide();
 										}
-										else {
+										else if(arg0 == null) {
 											Window.alert("User ist der Owner der Kontaktliste!");
 											inputDB.hide();
 										}
