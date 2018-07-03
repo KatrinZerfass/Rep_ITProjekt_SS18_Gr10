@@ -236,6 +236,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		ListDataProvider<Contact> contactsProvider = contactDataProviders.get(cl);
 		Window.alert(contactsProvider.getList().toString());
 		contactsProvider.getList().remove(contactsProvider.getKey(c));
+		//contactsProvider nochmal neu setzen
 		contactListDataProvider.flush();
 				
 		//int selectedIndex =  contactDataProviders.getList(cl).indexOf(selectionModel.getSelectedObject());

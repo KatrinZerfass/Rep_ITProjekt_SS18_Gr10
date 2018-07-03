@@ -1445,6 +1445,9 @@ public class ContactForm extends VerticalPanel {
 			if(clctvm.getSelectedContactList() == clctvm.getMyContactsContactList()) {
 				Window.alert("Sie können Kontakte in dieser Kontaktliste nur löschen, nicht entfernen!");
 			}
+			else if(clctvm.getSelectedContactList().getOwner() != currentUser.getId()) {
+				Window.alert("Sie können den Kontakt aus dieser Liste nicht entfernen, da es eine geteilte List ist.");
+			}
 			else {	
 				clearContactForm();
 				editorAdministration.removeContactFromContactList(clctvm.getSelectedContactList(), contactToDisplay, new AsyncCallback<ContactList>() {
@@ -1678,7 +1681,9 @@ public class ContactForm extends VerticalPanel {
 		switch(identifier) {
 			case "Name":
 				if (!text.matches("\\d+")) {
-					return true;
+					if(text != "") {
+						return true;
+					}
 				}
 				else {
 					Window.alert("Ungültige Zeichen im Namen!");
@@ -1886,7 +1891,7 @@ public class ContactForm extends VerticalPanel {
 			
 			if(!compareUser()) {
 				saveChangesButton.setEnabled(false);
-				removeContactFromContactListButton.setEnabled(false);
+			//	removeContactFromContactListButton.setEnabled(false);
 				firstnameTextBox.setEnabled(false);
 				lastnameTextBox.setEnabled(false);
 				sexListBox.setEnabled(false);
@@ -2459,7 +2464,7 @@ public class ContactForm extends VerticalPanel {
 								vt = (ValueTable) contactTable.getWidget(row, 1);
 								
 							}else if(i !=0 && allValuesOfContact.get(i-1).getPropertyid() == 10 && allValuesOfContact.get(i-1).getIsShared() ==false){
-								contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Homapages: "));
+								contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Homepages: "));
 								contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
 								vp = (ValuePanel) contactTable.getWidget(row, 0);
 								
@@ -2515,8 +2520,26 @@ public class ContactForm extends VerticalPanel {
 						}
 					
 				
-						if(allValuesOfContact.get(i-1).getPropertyid() != pid || i ==0) {
+						if(i ==0) {
 							 
+							contactTable.setWidget(row, 0, new ValuePanel(pid, row, ptype + ": "));
+							contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+							vp = (ValuePanel) contactTable.getWidget(row, 0);
+							
+							contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
+							contactTable.setWidget(row, 1, new ValueTable(pid));
+							vt = (ValueTable) contactTable.getWidget(row, 1);
+							
+						}else if(i!=0 && allValuesOfContact.get(i-1).getPropertyid() != pid) {
+							contactTable.setWidget(row, 0, new ValuePanel(pid, row, ptype + ": "));
+							contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+							vp = (ValuePanel) contactTable.getWidget(row, 0);
+							
+							contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
+							contactTable.setWidget(row, 1, new ValueTable(pid));
+							vt = (ValueTable) contactTable.getWidget(row, 1);
+						
+						}else if(i !=0 && allValuesOfContact.get(i-1).getPropertyid() == pid && allValuesOfContact.get(i-1).getIsShared() ==false) {
 							contactTable.setWidget(row, 0, new ValuePanel(pid, row, ptype + ": "));
 							contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
 							vp = (ValuePanel) contactTable.getWidget(row, 0);
