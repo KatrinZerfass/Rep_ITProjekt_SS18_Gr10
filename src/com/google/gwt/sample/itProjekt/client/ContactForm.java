@@ -1225,6 +1225,10 @@ public class ContactForm extends VerticalPanel {
 				dialog.getOKButton().addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {
 						
+						if(dialog.getSuggestBox().getText()== "") {
+							Window.alert("Fehler beim Teilen des Kontakts!");
+						}
+						
 						editorAdministration.shareContact(currentUser, dialog.getSuggestBox().getText(), clctvm.getSelectedContact(), new AsyncCallback<Permission>() {
 
 							public void onFailure(Throwable arg0) {
