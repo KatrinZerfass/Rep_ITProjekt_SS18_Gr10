@@ -118,7 +118,7 @@ public class ContactForm extends VerticalPanel {
 		public CloseButton(DialogBox db) {
 			this.db = db;
 			this.addClickHandler(new CloseDBClickHandler(db)); 
-			this.setText("X");
+			this.setText("Abbrechen");
 			this.addStyleName("closebutton");
 		}
 		
@@ -882,7 +882,6 @@ public class ContactForm extends VerticalPanel {
 			
 			oracle = new MultiWordSuggestOracle();
 			ok.addStyleName("okbutton");
-			close.addStyleName("closebutton");
 			setDialogBoxLabel("Bitte geben Sie die Email-Adresse des Nutzers ein mit dem Sie den Kontakt teilen möchten.");
 			
 			editorAdministration.getAllUsers(new AsyncCallback<Vector<User>>() {
@@ -1371,7 +1370,6 @@ public class ContactForm extends VerticalPanel {
 		        final Button ok = new Button("OK");
 		        ok.addStyleName("okbutton");
 				CloseButton close= new CloseButton(db);
-				close.addStyleName("closebutton");
 		        
 		        panel.add(label);
 		        panel.add(listbox);
@@ -1553,7 +1551,6 @@ public class ContactForm extends VerticalPanel {
 				Button addPropertyButton = new Button("Hinzufügen");
 				addPropertyButton.addStyleName("okbutton");
 				CloseButton close2= new CloseButton(db2);
-				close2.addStyleName("closebutton");
 				
 				db2Panel.add(inputTextBox2);
 				hpanel2.add(addPropertyButton);
