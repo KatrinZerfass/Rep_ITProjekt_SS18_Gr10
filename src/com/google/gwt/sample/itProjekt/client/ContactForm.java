@@ -907,7 +907,9 @@ public class ContactForm extends VerticalPanel {
 			        
 			        setWidget(panel);
 			        
+			        
 			        show();
+			       
 				}
 			});
 		}
@@ -1194,19 +1196,22 @@ public class ContactForm extends VerticalPanel {
 		
 		EmailDialogBox dialog;
 		
+		
 		@Override
 		public void onClick(ClickEvent event) {
 			
-			dialog = new EmailDialogBox();
+			
 			
 			if (contactToDisplay == null) {
 				Window.alert("kein Kontakt ausgewählt!");
 			}
 			else {
+				dialog = new EmailDialogBox();
 				/*
 				 * Über eine Instanz der inneren Klasse EmailDialogBox können Objekte mit anderen Nutzern geteilt werden.
 				 */
 				
+				dialog.show();
 				
 				dialog.getOKButton().addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {
@@ -1684,8 +1689,10 @@ public class ContactForm extends VerticalPanel {
 		switch(identifier) {
 			case "Name":
 				if (!text.matches("\\d+")) {
-					if(text != "") {
+					if(!text.isEmpty()) {
 						return true;
+					}else {
+						return false;
 					}
 				}
 				else {
