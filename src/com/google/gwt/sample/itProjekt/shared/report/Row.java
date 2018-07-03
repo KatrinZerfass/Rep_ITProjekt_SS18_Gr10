@@ -5,20 +5,21 @@ import java.util.Vector;
 
 // 
 /**
- *  Die Klasse Row, Datenstruktur f�r Report Objekt.
- *  @author Anna-MariaGmeiner
+ *  Die Klasse Row, welche Teil der Datenstruktur für das Report Objekt ist. 
+ *  Diese wird benötigt um die Spalten in einer Zeile zu speichern. 
+ *  Anschließend können dann die Zeilen zum Report hinzugefügt werden
  *  @see Column 
  */
 public class Row implements Serializable{
 	
-	/** The Constant serialVersionUID. */
+	/** Die Konstante serialVersionUID, welche als Versionsnummer bei der Serialisierung dient. */
 	private static final long serialVersionUID=1L;
 	
-	/** The columns. */
+	/** Der Vektor, welche alle Spalten (columns) einer Reihe beinhaltet. */
 	private Vector<Column> columns=new Vector<Column>();
 	public Row(){};
 	/**
-	 * Hinzuf�gen einer Spalte.
+	 * Hinzufügen einer Spalte zur Zeile .
 	 *
 	 * @param c the c
 	 */
@@ -36,7 +37,7 @@ public class Row implements Serializable{
 	}
 	
 	/**
-	 * Getter f�r die Spalten.
+	 * Auslesen der Spalten.
 	 *
 	 * @return the columns
 	 */
@@ -45,7 +46,7 @@ public class Row implements Serializable{
 	}
 	
 	/**
-	 * Getter f�r die Anzahl der Spalten.
+	 * Auslesen der Anzahl der Spalten.
 	 *
 	 * @return Anzahl columns
 	 */
@@ -54,7 +55,7 @@ public class Row implements Serializable{
 	}
 	
 	/**
-	 * Getter f�r bestimmte Spalte mit index i.
+	 * Auslesen einer bestimmten Spalte mit dem Index i.
 	 *
 	 * @param i the i
 	 * @return the column at

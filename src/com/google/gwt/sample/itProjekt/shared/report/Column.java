@@ -1,9 +1,9 @@
 package com.google.gwt.sample.itProjekt.shared.report;
 
 /**
- * Die Klasse Column, Datenstruktur für Report. 
+ * Die Klasse Column, welche Teil der Datenstruktur fÃ¼r den Report ist. 
  * @see Row
- * @author Anna-MariaGmeiner
+ *
  */
 
 import java.io.Serializable;
@@ -12,14 +12,17 @@ import java.io.Serializable;
 
 public class Column implements Serializable {
 	
-	/** The Constant serialVersionUID. */
+	/** Die Konstante serialVersionUID, welche als Versionsnummer bei der Serialisierung dient. */
 	private static final long serialVersionUID=1L;
 	
 	/** der String "value" */
 	private String value;
 	
 	/**
-	 * Instantiates a new column.
+	 * Die Konstruktoren der Klasse Column, welche ermÃ¶glichen, 
+	 * dass ein Column-Objekt mit einem String instanziiert kann. 
+	 * Trotzdem kann eine Instanz der Column Klasse auch ohne String instanziiert werden. 
+	 * Dieser kann anschlieÃŸend mit setValue gesetzt werden. 
 	 *
 	 * @param v the v
 	 */
@@ -30,7 +33,7 @@ public class Column implements Serializable {
 		
 	}
 	/**
-	 * Setter für die Variable value.
+	 * Setzen der Variable value.
 	 *
 	 * @param v the new value
 	 */
@@ -39,7 +42,7 @@ public class Column implements Serializable {
 	}
 	
 	/**
-	 * Getter für die Variable value
+	 * Auslesen der Variable value
 	 *
 	 * @return the value
 	 */
@@ -48,7 +51,7 @@ public class Column implements Serializable {
 	}
 	
 	/** 
-	 * wandelt das value Objekt in einen String um. 
+	 * Umwandeln des Column-Onjekts in einen String.
 	 * @return den Wert als String
 	 */
 @Override 

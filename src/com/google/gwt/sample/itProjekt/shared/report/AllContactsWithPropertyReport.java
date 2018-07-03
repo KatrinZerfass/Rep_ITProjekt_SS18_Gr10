@@ -4,11 +4,12 @@ import java.io.Serializable;
 
 //
 /**
-* Die Klasse AllContactsWithPropertyReport f�r die statische 
-* Darstellung des Reportes von allen Kontakten mit einer bestimmten Auspr�gung.
-* @author Anna-MariaGmeiner
+* Die Klasse AllContactsWithPropertyReport für die statische 
+* Darstellung des Reportes von allen Kontakten mit einer bestimmten Eigenschaft.
+* 
 */
 public class AllContactsWithPropertyReport extends Report implements Serializable {
-	/** The Constant serialVersionUID. */
+	
+	/** Die Konstante serialVersionUID, welche als Versionsnummer bei der Serialisierung dient. */
 	private static final long serialVersionUID=1L;
 }
