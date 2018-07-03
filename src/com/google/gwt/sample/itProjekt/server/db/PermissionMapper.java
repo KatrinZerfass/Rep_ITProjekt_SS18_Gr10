@@ -13,11 +13,17 @@ import com.google.gwt.sample.itProjekt.shared.bo.User;
 
 /**
  * The Class PermissionMapper.
+ * 
+ * @author Egor Krämer
+ * @author Robert Mattheis
  */
 public class PermissionMapper {
 
 	/** Konstruktor für den PermissionMapper (Singleton)
 	 * static weil Singleton. Einzige Instanz dieser Klasse
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
 	 */
 	private static PermissionMapper  permissionmapper = null;
 	
@@ -26,6 +32,8 @@ public class PermissionMapper {
 	 *
 	 * Falls noch kein PermissionMapper existiert erstellt er ein neuen PermissionMapper und gibt ihn zurück
 	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
 	 */
 	public static PermissionMapper permissionMapper() {
 		if (permissionmapper == null){
@@ -44,7 +52,8 @@ public class PermissionMapper {
 	 * zudem setzen wir die C_ID in einem neuen Contact Objekt und ein Shareableobject durch das aufrufen der findByID Methode im ContactMapper 
 	 * Das selbe führen wir für ContactList durch und fügen das Permission Objekt dem Vector hinzu
 	 * 
-	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
 	 */
 	public Vector<Permission> findAll(){
 		Connection con = DBConnection.connection();
@@ -93,6 +102,9 @@ public class PermissionMapper {
  * Gibt ein permission zurück
  * 
  * @param permission übergebenes Permission Objekt mit Attributen C_ID oder CL_ID und U_ID
+ * 
+ * @author Egor Krämer
+ * @author Robert Mattheis
  */
 public Permission update(Permission permission){
 		
@@ -139,6 +151,9 @@ public Permission update(Permission permission){
 	 * wo die U_ID und C_ID der ID des Participants und des Shareableobjects entspricht
 	 * 
 	 * @param permission übergebenes Permission Objekt mit Attributen C_ID und U_ID
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
 	 */
 	public void delete (Permission permission){
 		
@@ -190,6 +205,9 @@ public Permission update(Permission permission){
 	 * Hierfür wird die T_Permission_Contactlist nach der CL_ID durchsucht wo sie der ID der ContactList entspricht welches wir übergeben bekommen haben
 	 * 
 	 * @param contactlist übergebenes ContactList Objekt mit Attribut CL_ID
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
 	 */
 	public void deleteAllByCLID (ContactList contactlist){
 		
@@ -214,6 +232,9 @@ public Permission update(Permission permission){
 	 * und gibt die permission zurück
 	 * 
 	 * @param permission übergebenes Permission Objekt mit Attributen C_ID, U_ID und srcU_ID
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
 	 */
 	public Permission shareContact(Permission permission){
 		
@@ -252,6 +273,9 @@ public Permission update(Permission permission){
 	 * und gibt die permission zurück
 	 * 
 	 * @param permission übergebenes Permission Objekt mit Attributen CL_ID, U_ID und srcU_ID
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
 	 */
 	public Permission shareContactList(Permission permission){
 		
@@ -310,6 +334,9 @@ public Permission update(Permission permission){
  * Zum Schluss geben wir den Vector zurück
  * 
  * @param user übergebenes User Objekt mit Attribut U_ID
+ * 
+ * @author Egor Krämer
+ * @author Robert Mattheis
  */
 public Vector<Contact> getAllContactsByUID(User user){
 	
@@ -343,6 +370,9 @@ public Vector<Contact> getAllContactsByUID(User user){
  * Zum Schluss geben wir den Vector zurück
  * 
  * @param user übergebenes User Objekt mit Attribut srcU_ID
+ * 
+ * @author Egor Krämer
+ * @author Robert Mattheis
  */
 public Vector<Contact> getAllContactsBySrcUID(User user){
 	
@@ -378,6 +408,9 @@ public Vector<Contact> getAllContactsBySrcUID(User user){
  * Zum Schluss geben wir den Vector zurück
  * 
  * @param user übergebenes User Objekt mit Attribut U_ID
+ * 
+ * @author Egor Krämer
+ * @author Robert Mattheis
  */
 public Vector<ContactList> getAllContactListsByUID(User user){
 	
@@ -410,6 +443,9 @@ public Vector<ContactList> getAllContactListsByUID(User user){
  * Zum Schluss geben wir den Vector zurück
  * 
  * @param user übergebenes User Objekt mit Attribut srcU_ID
+ * 
+ * @author Egor Krämer
+ * @author Robert Mattheis
  */
 public Vector<ContactList> getAllContactListsBySrcUID(User user){
 	
@@ -443,6 +479,9 @@ public Vector<ContactList> getAllContactListsBySrcUID(User user){
  * 
  * @param user übergebenes User Objekt mit Attribut U_ID
  * @param contact übergebenes Contact Objekt mit Attribut C_ID
+ * 
+ * @author Egor Krämer
+ * @author Robert Mattheis
  */
 public User getSourceUserByUIDAndCID(User user, Contact contact){
 	
@@ -465,26 +504,4 @@ public User getSourceUserByUIDAndCID(User user, Contact contact){
 			return user;
 		}
 
-// Methode wird nicht genutzt
-public Vector<User> getSourceUsersByUIDAndCLID(User user, ContactList contact){
-	
-	Connection con = DBConnection.connection();
-	Vector<User> result = new Vector<User>();
-			
-			try{
-				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT CL_ID FROM T_Permission_Contactlist WHERE U_ID=" + user.getId()+ " AND C_ID= " + contact.getId());
-				
-				while (rs.next()){
-					User u = new User();
-					u.setId(rs.getInt("srcU_ID"));
-									
-					result.addElement(UserMapper.userMapper().findByID(u.getId()));
-				}		
-			}catch(SQLException e2){
-				e2.printStackTrace();
-			}
-			return result;
-		}
 }
-

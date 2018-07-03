@@ -13,11 +13,17 @@ import com.google.gwt.sample.itProjekt.shared.bo.User;
 
 /**
  * The Class ContactListMapper.
+ * 
+ * @author Egor Krämer
+ * @author Robert Mattheis
  */
 public class ContactListMapper {
 	
 	/** Konstruktor für den ContactListMapper (Singleton) 
 	* static weil Singleton. Einzige Instanz dieser Klasse
+	* 
+	* @author Egor Krämer
+	* @author Robert Mattheis
 	*/
 	private static ContactListMapper  contactlistmapper = null;
 	
@@ -26,6 +32,8 @@ public class ContactListMapper {
 	 *
 	 * Falls noch kein ContactListMapper existiert erstellt er ein neuen ContactListMapper und gibt ihn zurück
 	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
 	 */
 	public static ContactListMapper contactListMapper() {
 		if (contactlistmapper == null){
@@ -40,6 +48,9 @@ public class ContactListMapper {
 	 * Findet ContactList durch eine CL_ID und speichert die dazugehörigen Werte (CL_ID, listname und U_ID) in einem ContactList Objekt ab und gibt dieses wieder
 	 * 
 	 * @param contactlist übergebenes ContactList Objekt mit Attribut CL_ID
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
 	 */
 	public ContactList findByID(ContactList contactlist){
 		Connection con = DBConnection.connection();
@@ -72,7 +83,9 @@ public class ContactListMapper {
 	 * Gibt alle ContactList Objekte zurück welche mit CL_ID, listname und U_ID befüllt sind
 	 * Hierfür holen wir CL_ID, listname und U_ID aus der T_ContactList Tabelle und speichern diese in einem ContactList Objekt ab und fügen diese dem Vector hinzu
 	 * Am Ende geben wir diesen Vector zurück
-	 *
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
 	 */
 	public Vector<ContactList> findAll(){
 		Connection con = DBConnection.connection();
@@ -102,6 +115,9 @@ public class ContactListMapper {
 	 * und Speichert dieses Objekt im Vector ab und gibt diesen wieder
 	 * 
 	 * @param name übergebener String listname
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
 	 */
 	public Vector <ContactList> findByName(String name){
 		Connection con = DBConnection.connection();
@@ -133,6 +149,9 @@ public class ContactListMapper {
 	 * Gibt ein Vector voller ContactList Objekte zurück welche ein User erstellt hat
 	 * 
 	 * @param user übergebenes User Objekt mit Attribut U_ID
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
 	 */
 	public Vector <ContactList> findAllByUID(User user){
 		Connection con = DBConnection.connection();
@@ -164,6 +183,9 @@ public class ContactListMapper {
 	 * Gibt ein Vector voller ContactList Objekte zurück
 	 *
 	 * @param contact übergebenes Contact Objekt mit Attributen C_ID
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
 	 */
 	public Vector <ContactList> findAllByCID(Contact contact){
 		Connection con = DBConnection.connection();
@@ -195,6 +217,9 @@ public class ContactListMapper {
 	 *
 	 * @param contactlist übergebenes ContactList Objekt mit Attributen CL_ID und listname
 	 * @param user übergebenes User Objekt mit Attribut U_ID
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
 	 */
 	public ContactList insert(ContactList contactlist, User user){
 		Connection con = DBConnection.connection();
@@ -232,6 +257,9 @@ public class ContactListMapper {
 		 * Gibt ein ContactList zurück
 		 * 
 		 * @param contactlist übergebenes ContactList Objekt mit Attributen listname und CL_ID
+		 * 
+		 * @author Egor Krämer
+		 * @author Robert Mattheis
 		 */
 		public ContactList update(ContactList contactlist){
 			Connection con = DBConnection.connection();
@@ -256,6 +284,9 @@ public class ContactListMapper {
 		 * der nächste Schritt entfernt alles aus T_ContactList wo die CL_ID der ID des übergebenen Objekts entspricht
 		 * 
 		 * @param contactlist übergebenes ContactList Objekt mit Attribut CL_ID
+		 * 
+		 * @author Egor Krämer
+		 * @author Robert Mattheis
 		 */
 		public void delete (ContactList contactlist){
 Connection con = DBConnection.connection();
@@ -306,6 +337,9 @@ Connection con = DBConnection.connection();
 		 * Die Werte aus der T_Contact speichern wir in einem Contact Objekt ab und geben den Vector zurück
 		 * 
 		 * @param contactlist übergebenes ContactList Objekt mit Attribut CL_ID
+		 * 
+		 * @author Egor Krämer
+		 * @author Robert Mattheis
 		 */
 		public Vector <Contact> getAllContacts(ContactList contactlist){
 			Connection con = DBConnection.connection();
@@ -341,6 +375,9 @@ Connection con = DBConnection.connection();
 		 * 
 		 * @param contactlist übergebenes ContactList Objekt mit Attribut CL_ID
 		 * @param contact übergebenes Contact Objekt mit Attributen C_ID
+		 * 
+		 * @author Egor Krämer
+		 * @author Robert Mattheis
 		 */
 		public ContactList addContact(ContactList contactlist, Contact contact){
 			Connection con = DBConnection.connection();
@@ -371,6 +408,9 @@ Connection con = DBConnection.connection();
 		 * 
 		 * @param contactlist übergebenes ContactList Objekt mit Attribut CL_ID
 		 * @param contact übergebenes Contact Objekt mit Attribut C_ID
+		 * 
+		 * @author Egor Krämer
+		 * @author Robert Mattheis
 		 */
 		public ContactList removeContact(ContactList contactlist, Contact contact){
 			Connection con = DBConnection.connection();

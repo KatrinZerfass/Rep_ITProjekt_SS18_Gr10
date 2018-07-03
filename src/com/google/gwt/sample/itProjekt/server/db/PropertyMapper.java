@@ -16,6 +16,9 @@ public class PropertyMapper {
 
 	/** Konstruktor für den PropertyMapper (Singleton)
 	 * static weil Singleton. Einzige Instanz dieser Klasse
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
 	 */
 	private static PropertyMapper  propertymapper = null;
 	
@@ -24,6 +27,8 @@ public class PropertyMapper {
 	 *
 	 * Falls noch kein ProperyMapper existiert erstellt er ein neuen PropertyMapper und gibt ihn zurück
 	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
 	 */
 	public static PropertyMapper propertyMapper() {
 		if (propertymapper == null){
@@ -39,6 +44,9 @@ public class PropertyMapper {
  * Findet Property durch eine P_ID und speichert die dazugehörigen Werte (P_ID und type) in einem Property Objekt ab und gibt dieses wieder
  * 
  * @param property übergebenes Property Objekt mit Attribut P_ID
+ * 
+ * @author Egor Krämer
+ * @author Robert Mattheis
  */
 public Property findByID(Property property){
 	Connection con = DBConnection.connection();
@@ -67,7 +75,9 @@ public Property findByID(Property property){
  * Gibt alle Property Objekte zurück welche mit P_ID, type und C_ID befüllt sind
  * Hierfür holen wir die Attribute aus der T_Property Tabelle und speichern diese in einem Property Objekt ab und fügen diese dem Vector hinzu
  * Am Ende geben wir diesen Vector zurück
- *
+ * 
+ * @author Egor Krämer
+ * @author Robert Mattheis
  */
 
 public Vector<Property> findAll(){
@@ -100,6 +110,9 @@ Vector<Property> result = new Vector<Property>();
  * Gibt ein Vector voller Property Objekte zurück
  *
  * @param contact übergebenes Contact Objekt mit Attribut C_ID
+ * 
+ * @author Egor Krämer
+ * @author Robert Mattheis
  */
 
 public Vector<Property> findAllByCID(Contact contact){
@@ -134,7 +147,9 @@ Vector<Property> result = new Vector<Property>();
  * Alle Attribute die zu dieser C_ID von 20000000 gehören holen wir aus der T_Property Tabelle (P_ID, type und C_ID)
  * und speichern diese in einem Property Objekt ab und fügen diese dem Vector hinzu
  * Am Ende geben wir diesen Vector zurück
- *
+ * 
+ * @author Egor Krämer
+ * @author Robert Mattheis
  */
 
 public Vector<Property> findAllDefault(){
@@ -168,6 +183,9 @@ Vector<Property> result = new Vector<Property>();
  * 
  * @param property übergebenes Property Objekt mit Attributen P_ID und type 
  * @param contact übergebenes Contact Objekt mit Attribut C_ID
+ * 
+ * @author Egor Krämer
+ * @author Robert Mattheis
  */
 
 
@@ -207,6 +225,9 @@ public Property insert(Property property, Contact contact){
  * Gibt ein Property zurück
  * 
  * @param property übergebenes Property Objekt mit Attributen P_ID und type
+ * 
+ * @author Egor Krämer
+ * @author Robert Mattheis
  */
 
 public Property update(Property property){
@@ -232,6 +253,9 @@ return property;}
  * Entfernt alles aus T_Property wo die P_ID der ID des übergebenen Objekts entspricht
  * 
  * @param property übergebenes Property Objekt mit Attribut P_ID
+ * 
+ * @author Egor Krämer
+ * @author Robert Mattheis
  */
 
 public void delete (Property property){
@@ -256,6 +280,9 @@ public void delete (Property property){
  * Befüllt das Property Objekt mit den Attributen und gint es wieder
  * 
  * @param property übergebenes Property Objekt mit Attribut type
+ * 
+ * @author Egor Krämer
+ * @author Robert Mattheis
  */
 public Property findByType(Property property){
 	Connection con = DBConnection.connection();
