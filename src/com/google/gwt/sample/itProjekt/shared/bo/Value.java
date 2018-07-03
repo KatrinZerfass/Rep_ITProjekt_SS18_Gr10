@@ -1,50 +1,64 @@
 package com.google.gwt.sample.itProjekt.shared.bo;
 
-// TODO: Auto-generated Javadoc
 /**
- * Die Klasse Value, Datenstruktur für die Ausprägungen der Eigenschaften eines Kontakts.
- * @author JanNoller
- * .
+ * Die Klasse Value, Datenstruktur fÃ¼r die AusprÃ¤gungen der Eigenschaften eines Kontakts.
  */
 public class Value extends BusinessObject {
 
-	/** Der Inhalt einer Ausprägung. */
+	private static final long serialVersionUID = 1L;
+
+	/** Der Inhalt einer AusprÃ¤gung. */
 	private String content;
 	
+	/** Bei isShared = true wird die AusprÃ¤gung des Kontakts mitgeteilt.
+	 * 	Bei isShared = false wird die AusprÃ¤gung nicht mitgeteilt. 
+	 * */
 	private boolean isShared = true;
 	
+	/**Die zugehÃ¶rige Eigenschaft der AusprÃ¤gung */
 	private int propertyid;
 
 	/**
-	 * Getter für die Ausprägung.
-	 *
-	 * @return der Inhalt
+	 * Auslesen der AusprÃ¤gung.
 	 */
 	public String getContent() {
 		return content;
 	}
 
 	/**
-	 * Setter für Ausprägung.
-	 *
-	 * @param content der neue Inhalt
+	 *Setzen der AusprÃ¤gung. 
 	 */
 	public void setContent(String content) {
 		this.content = content;
 	}
+	
+	/**
+	 * Auslesen der Eigenschaft. 
+	 */
 
 	public int getPropertyid() {
 		return propertyid;
 	}
+	
+	/** 
+	 * Setzen der Eigenschaft. 
+	 */
 
 	public void setPropertyid(int propertyid) {
 		this.propertyid = propertyid;
 	}
+	
+	/**
+	 *Auslesen des IsShared Werts. 
+	 */
 
 	public boolean getIsShared() {
 		return isShared;
 	}
 
+	/**
+	 * Setzen des IsSharedWerts.
+	 */
 	public void setIsShared(boolean isShared) {
 		this.isShared = isShared;
 	}
