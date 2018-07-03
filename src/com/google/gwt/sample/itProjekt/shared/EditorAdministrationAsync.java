@@ -38,15 +38,15 @@ public interface EditorAdministrationAsync {
 
 	void getAllContactListsOfUser(String email, AsyncCallback<Vector<ContactList>> callback);
 
-	void getAllContactsOf(ContactList contactlist, AsyncCallback<Vector<Contact>> callback);
+	void getAllContactsOfContactList(ContactList contactlist, AsyncCallback<Vector<Contact>> callback);
 
 	void getAllContactsOfActiveUser(User user, AsyncCallback<Vector<Contact>> callback);
 
-	void getAllOwnedContactsOf(String email, AsyncCallback<Vector<Contact>> callback);
+	void getAllOwnedContactsOfUser(String email, AsyncCallback<Vector<Contact>> callback);
 
-	void getAllSharedContactsWith(String email, AsyncCallback<Vector<Contact>> callback);
+	void getAllSharedContactsWithUser(String email, AsyncCallback<Vector<Contact>> callback);
 
-	void getContact(int id, AsyncCallback<Contact> callback);
+	void getContactByID(int id, AsyncCallback<Contact> callback);
 
 	void getUserInformation(String email, AsyncCallback<User> callback);
 
@@ -61,9 +61,9 @@ public interface EditorAdministrationAsync {
 
 	void getAllOwnedContactListsOfActiveUser(User user, AsyncCallback<Vector<ContactList>> callback);
 
-	void getAllValuesOf(Contact contact, AsyncCallback<Vector<Value>> callback);
+	void getAllValuesOfContact(Contact contact, AsyncCallback<Vector<Value>> callback);
 
-	void getAllContactListsWith(Contact contact, AsyncCallback<Vector<ContactList>> callback);
+	void getAllContactListsWithContact(Contact contact, AsyncCallback<Vector<ContactList>> callback);
 
 	void deletePermission(User user, BusinessObject bo, AsyncCallback<Void> callback);
 

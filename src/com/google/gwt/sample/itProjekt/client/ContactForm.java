@@ -1940,7 +1940,7 @@ public class ContactForm extends VerticalPanel {
 			/*
 			 * Alle Ausprägungen des contactToDisplay werden ausgelesen und in einem Vector<Values> gespeichert.
 			 */
-			editorAdministration.getAllValuesOf(contactToDisplay, new AsyncCallback<Vector<Value>>() {
+			editorAdministration.getAllValuesOfContact(contactToDisplay, new AsyncCallback<Vector<Value>>() {
 				public void onFailure(Throwable t) {
 					Window.alert("Fehler beim Auslesen der Ausprägungen des Kontakts");
 					

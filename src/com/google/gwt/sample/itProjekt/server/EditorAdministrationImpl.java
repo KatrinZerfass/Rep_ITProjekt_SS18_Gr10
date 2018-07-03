@@ -96,7 +96,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	}
 
 	@Override
-	public Vector<Contact> getAllOwnedContactsOf(String email) throws IllegalArgumentException {
+	public Vector<Contact> getAllOwnedContactsOfUser(String email) throws IllegalArgumentException {
 
 		Vector<Contact> resultcontacts = new Vector<Contact>();
 		resultcontacts = cMapper.findAllByUID(uMapper.findByEMail(email));
@@ -120,7 +120,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	}
 
 	@Override
-	public Vector<Contact> getAllSharedContactsWith(String email) throws IllegalArgumentException {
+	public Vector<Contact> getAllSharedContactsWithUser(String email) throws IllegalArgumentException {
 
 		return pmMapper.getAllContactsByUID(uMapper.findByEMail(email));
 	}
@@ -129,7 +129,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	public Vector<Contact> getAllContactsOfContactlistForUser(ContactList contactlist, User user) throws IllegalArgumentException {
 		
 		Vector<Contact> allContactsOfActiveUser = getAllContactsOfActiveUser(user);
-		Vector<Contact> allContactsOfContactList = getAllContactsOf(contactlist);
+		Vector<Contact> allContactsOfContactList = getAllContactsOfContactList(contactlist);
 		
 		Vector<Contact> result = new Vector<Contact>();
 		
@@ -143,13 +143,13 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	
 
 	@Override
-	public Vector<Contact> getAllContactsOf(ContactList contactlist) throws IllegalArgumentException {
+	public Vector<Contact> getAllContactsOfContactList(ContactList contactlist) throws IllegalArgumentException {
 		
 		return clMapper.getAllContacts(contactlist);
 	}
 
 	@Override
-	public Contact getContact(int id) throws IllegalArgumentException {
+	public Contact getContactByID(int id) throws IllegalArgumentException {
 
 		Contact contact = new Contact();
 		contact.setId(id);
@@ -303,13 +303,13 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	}
 
 	@Override
-	public Vector<Value> getAllValuesOf(Contact contact) throws IllegalArgumentException {
+	public Vector<Value> getAllValuesOfContact(Contact contact) throws IllegalArgumentException {
 		
 		return vMapper.getAllValueByCID(contact);
 	}
 
 	@Override
-	public Vector<ContactList> getAllContactListsWith(Contact contact) throws IllegalArgumentException {
+	public Vector<ContactList> getAllContactListsWithContact(Contact contact) throws IllegalArgumentException {
 		return clMapper.findAllByCID(contact);
 	}
 
@@ -396,7 +396,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	@Override
 	public Vector<Contact> getAllSharedContactsOfContactList(ContactList contactlist, User user)
 			throws IllegalArgumentException {
-		Vector<Contact> allContactsInCL = getAllContactsOf(contactlist);
+		Vector<Contact> allContactsInCL = getAllContactsOfContactList(contactlist);
 		Vector<Contact> allContactsWithPermission = pmMapper.getAllContactsByUID(user);
 		Vector<Contact> result = new Vector<Contact>();
 		
@@ -453,7 +453,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		Vector<Contact> result = new Vector<Contact>();
 		
 		allContactsOfUser = getAllContactsOfActiveUser(user);
-		allContactsOfList = getAllContactsOf(selectedContactList);
+		allContactsOfList = getAllContactsOfContactList(selectedContactList);
 		nameResults = getAllContactsWithName(textBox);
 		
 			if(selectedContactList.getMyContactsFlag()) {
@@ -483,7 +483,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		Vector<Contact> result = new Vector<Contact>();
 		
 		allContactsOfUser = getAllContactsOfActiveUser(user);
-		allContactsOfList = getAllContactsOf(selectedContactList); 
+		allContactsOfList = getAllContactsOfContactList(selectedContactList); 
 		valueResults = getAllContactsWithValue(textBox);
 		
 		if(selectedContactList.getMyContactsFlag()) {

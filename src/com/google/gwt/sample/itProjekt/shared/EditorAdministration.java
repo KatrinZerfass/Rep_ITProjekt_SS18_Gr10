@@ -100,7 +100,7 @@ public interface EditorAdministration extends RemoteService{
 	 * @return Vector der selbst erstellten Kontakte des Nutzers
 	 * @throws IllegalArgumentException
 	 */
-	public Vector<Contact> getAllOwnedContactsOf(String email) throws IllegalArgumentException;
+	public Vector<Contact> getAllOwnedContactsOfUser(String email) throws IllegalArgumentException;
 	
 	/**
 	 * Holt alle enthaltenen Kontakte einer Kontaktliste für einen bestimmten Nutzer aus der Datenbank.
@@ -129,7 +129,7 @@ public interface EditorAdministration extends RemoteService{
 	 * @return Vector der betroffenen Kontakte
 	 * @throws IllegalArgumentException
 	 */
-	public Vector<Contact> getAllSharedContactsWith(String email) throws IllegalArgumentException;
+	public Vector<Contact> getAllSharedContactsWithUser(String email) throws IllegalArgumentException;
 	
 	/**
 	 * Holt alle Kontagte einer bestimmten Kontaktliste aus der Datenbank, unabhängig vom Nutzer.
@@ -138,7 +138,7 @@ public interface EditorAdministration extends RemoteService{
 	 * @return Vector der betroffenen Kontakte
 	 * @throws IllegalArgumentException
 	 */
-	public Vector<Contact> getAllContactsOf(ContactList contactlist) throws IllegalArgumentException;
+	public Vector<Contact> getAllContactsOfContactList(ContactList contactlist) throws IllegalArgumentException;
 	
 	/**
 	 * Holte alle Kontaktlisten, welche einen bestimmten Kontakt enthalten, aus der Datenbank.
@@ -147,7 +147,7 @@ public interface EditorAdministration extends RemoteService{
 	 * @return Vector der betroffenen Kontaktlisten
 	 * @throws IllegalArgumentException
 	 */
-	public Vector<ContactList> getAllContactListsWith(Contact contact) throws IllegalArgumentException;
+	public Vector<ContactList> getAllContactListsWithContact(Contact contact) throws IllegalArgumentException;
 	
 	/**
 	 * Holt einen Kontakt anhand seiner ID aus der Datenbank.
@@ -156,7 +156,7 @@ public interface EditorAdministration extends RemoteService{
 	 * @return der Kontakt
 	 * @throws IllegalArgumentException
 	 */
-	public Contact getContact(int id) throws IllegalArgumentException;
+	public Contact getContactByID(int id) throws IllegalArgumentException;
 	
 	/**
 	 * Legt einen neuen Kontakt an.
@@ -287,7 +287,7 @@ public interface EditorAdministration extends RemoteService{
 	 * @return Vector der Ausprägungen
 	 * @throws IllegalArgumentException
 	 */
-	public Vector<Value> getAllValuesOf(Contact contact) throws IllegalArgumentException;
+	public Vector<Value> getAllValuesOfContact(Contact contact) throws IllegalArgumentException;
 	
 	/**
 	 * Ändert eine Ausprägung in der Datenbank.
@@ -302,7 +302,7 @@ public interface EditorAdministration extends RemoteService{
 	 * @return vollständiges Ausprägung-Objekt
 	 * @throws IllegalArgumentException
 	 */
-	Value editValue(Contact contact, int propertyId, Value value, String content, boolean isshared);
+	public Value editValue(Contact contact, int propertyId, Value value, String content, boolean isshared);
 	
 	/**
 	 * Löscht eine bestimmte Ausprägung aus der Datenbank.
@@ -407,7 +407,7 @@ public interface EditorAdministration extends RemoteService{
 	 * @return Vector der betroffenen Kontakte
 	 * @throws IllegalArgumentException
 	 */
-	public Vector<Contact> getAllSharedContactsOfContactList (ContactList contactlist, User user) throws IllegalArgumentException;
+	public Vector<Contact> getAllSharedContactsOfContactList(ContactList contactlist, User user) throws IllegalArgumentException;
 
 	/**
 	 * Holt alle Kontakte mit einer bestimmten Ausprägung eines bestimmten Nutzers aus der Datenbank.
