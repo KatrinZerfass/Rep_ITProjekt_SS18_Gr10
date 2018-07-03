@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.Vector;
 import com.google.gwt.sample.itProjekt.shared.EditorAdministration;
 import com.google.gwt.sample.itProjekt.server.EditorAdministrationImpl;
-import com.google.gwt.sample.itProjekt.server.db.UserMapper;
 import com.google.gwt.sample.itProjekt.shared.ReportGenerator;
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.sample.itProjekt.shared.bo.Permission;
@@ -15,6 +14,7 @@ import com.google.gwt.sample.itProjekt.shared.report.AllContactsOfUserReport;
 import com.google.gwt.sample.itProjekt.shared.report.AllContactsWithPropertyReport;
 import com.google.gwt.sample.itProjekt.shared.report.AllContactsWithValueReport;
 import com.google.gwt.sample.itProjekt.shared.report.AllSharedContactsOfUserReport;
+import com.google.gwt.sample.itProjekt.shared.report.AllValuesOfContactReport;
 import com.google.gwt.sample.itProjekt.shared.report.Column;
 import com.google.gwt.sample.itProjekt.shared.report.CompositeParagraph;
 import com.google.gwt.sample.itProjekt.shared.report.Row;
@@ -94,11 +94,11 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			SimpleParagraph sp = new SimpleParagraph("Nutzer: " + user.getEmail());
 			
 			header.addSubParagraph(sp);
-
+	
 			report.setHeaderData(header);
-
+	
 			Row headline = new Row();
-
+	
 			headline.addColumn(new Column("Besitzer"));
 			headline.addColumn(new Column("Erhalten von"));
 			headline.addColumn(new Column("Vorname"));
@@ -152,30 +152,8 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				
 				report.addRow(contactRow);
 				
-				if(allValues.size()!= 0){
-					
-					if(headline.getNumColumns() < 10){
-						
-						headline.addColumn(new Column("Eigenschaft"));
-						headline.addColumn(new Column("Ausprägung"));
-					
-					}
-					for (Value v: allValues){
-						if(v.getIsShared()==true || c.getOwner() == user.getId()){
-						Property p=this.admin.getPropertyOfValue(v);
-						Row valueRow=new Row();
-						
-						for(int i = 0; i < 5; i++){
-							valueRow.addColumn(new Column(""));
-						}
-						
-						valueRow.addColumn(new Column(String.valueOf(p.getType())));
-						valueRow.addColumn(new Column(String.valueOf(v.getContent())));
-						
-						report.addRow(valueRow);
-					}
-					}}
-				
+			    report.addSubReport(this.generateAllValuesOfContactReport(c, user));
+
 				if(allPermissions.size()> 0){
 					
 					User u = new User();
@@ -585,6 +563,49 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	}
 }
 
+@Override
+	public AllValuesOfContactReport generateAllValuesOfContactReport(Contact contact, User user)
+			throws IllegalArgumentException {
+		if(this.getEditorAdministration()==null) {
+			return null;
+		} 
+		else {
+			AllValuesOfContactReport report = new AllValuesOfContactReport();
+			
+			report.setTitle("Alle Eigenschaften des Kontaktes");
+			CompositeParagraph header=new CompositeParagraph();
+			SimpleParagraph sp = new SimpleParagraph("Kontakt: " + contact.getFirstname()+ contact.getLastname());
+			
+			header.addSubParagraph(sp);
+	
+			report.setHeaderData(header);
+			
+			Row headline = new Row();
+	
+			headline.addColumn(new Column("Eigenschaft"));
+			headline.addColumn(new Column("Ausprägung"));
+	
+			report.addRow(headline);
+		
+			Vector<Value> allValues=this.admin.getAllValuesOf(contact);
+			
+			if(allValues.size()!=0){
+				for(Value value :allValues){
+					if(value.getIsShared()==true || contact.getOwner() == user.getId()){
+						Property p=this.admin.getPropertyOfValue(value);
+						Row valueRow=new Row();
+						
+						valueRow.addColumn(new Column(String.valueOf(p.getType())));
+						valueRow.addColumn(new Column(String.valueOf(value.getContent())));
+						
+						report.addRow(valueRow);
+						}
+				}
+			}
+			return report;
+		}
+	}
+
 	/* (non-Javadoc)
 	 * @see com.google.gwt.sample.itProjekt.shared.ReportGenerator#getAllUsers()
 	 */
@@ -600,4 +621,6 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		
 		return admin.getAllPredefinedPropertiesOf();
 	}
+
+
 }
