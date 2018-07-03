@@ -607,12 +607,12 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 					inputDB.getOKButton().addClickHandler(new ClickHandler() {
 						public void onClick(ClickEvent event) {
 							if(inputDB.getSuggestBox().getText()== "") {
-								Window.alert("Fehler beim Teilen der Kontaktliste!");
+								Window.alert("Fehler bei Teilen der Kontaktliste weil User leer");
 							}else {								
 								editorAdministration.shareContactList(user, inputDB.getSuggestBox().getText(), clctvm.getSelectedContactList(), new AsyncCallback<Permission>() {
 			
 									public void onFailure(Throwable arg0) {
-										Window.alert("Fehler beim Teilen der Kontaktliste!");
+										Window.alert("Weil onFailure");
 										inputDB.hide();
 									}
 									public void onSuccess(Permission arg0) {
