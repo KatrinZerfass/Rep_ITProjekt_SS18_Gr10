@@ -5,20 +5,22 @@ import java.io.Serializable;
 
 // 
 /**
- * Die Klasse SimpleParagraph, welche reinen Text enthält.
+ * Die Klasse SimpleParagraph, welche reinen Text enthï¿½lt.
  * @author Anna-MariaGmeiner
  */
 public class SimpleParagraph extends Paragraph implements Serializable {
 	
-	/** The Constant serialVersionUID. */
+	/** Die Konstante serialVersionUID, welche als Versionsnummer bei der Serialisierung dient. */
 	private static final long serialVersionUID=1L;
 	
 	/** Der String text. */
 	private String text; 
 	
 	/**
-	 * Konstruktor für den SimpleParagraph. 
-	 *
+ 	 * Die Konstruktoren der Klasse SimpleParagraph, welche ermÃ¶glichen, 
+	 * dass ein SimpleParagraph-Objekt mit einem String instanziiert kann. 
+	 * Trotzdem kann eine Instanz der SimpleParagraph Klasse auch ohne String instanziiert werden. 
+	 * Dieser kann anschlieÃŸend mit setText gesetzt werden.	*
 	 * @param text the text
 	 */
 	public SimpleParagraph(String text) {
@@ -29,7 +31,7 @@ public class SimpleParagraph extends Paragraph implements Serializable {
 	}
 	
 	/**
-	 * Setter für den String text.
+	 * Setzen der Variable text.
 	 *
 	 * @param text the new text
 	 */
@@ -38,7 +40,7 @@ public class SimpleParagraph extends Paragraph implements Serializable {
 	}
 	
 	/**
-	 * Getter für den String text.
+	 * Auslesen der Variable text.
 	 *
 	 * @return the text
 	 */
@@ -46,7 +48,10 @@ public class SimpleParagraph extends Paragraph implements Serializable {
 		return this.text;
 	}
 
-
+	/** 
+	 * Umwandeln des SimpleParagraph-Objekts in einen String.
+	 * @return den Wert als String
+	 */
 @Override
 	public String toString() {
 		return this.text;

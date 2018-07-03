@@ -5,20 +5,21 @@ import java.util.Vector;
 
 // 
 /**
- * @author Anna-MariaGmeiner
- * Die Klasse CompositeParagraph, welche aus mehreren SimpleParagraphs besteht
+ * Die Klasse CompositeParagraph wird dazu benötigt, um mehrere SimpleParagraphs in einem Vector zu speichern. 
+ * Dadurch   
+ * 
  * @see SimpleParagraph
  */
 public class CompositeParagraph extends Paragraph implements Serializable {
 	
-	/** The Constant serialVersionUID. */
+	/** Die Konstante serialVersionUID, welche als Versionsnummer bei der Serialisierung dient. */
 	private static final long serialVersionUID= 1L;
 	
 	/** Der Vector subParagraph, der nur SimpleParagraphs enth�lt . */
 	private Vector<SimpleParagraph> subParagraph =new Vector<SimpleParagraph>();
 	
 	/**
-	 * Hinzuf�gen eines SimpleParagraphs zu subParagraph.
+	 * Hinzufügen eines SimpleParagraphs zu subParagraph.
 	 *
 	 * @param s the s
 	 */
@@ -27,7 +28,7 @@ public class CompositeParagraph extends Paragraph implements Serializable {
 	}
 	
 	/**
-	 * Entfernt SimpleParagraph aus subParagraph.
+	 * Entfernen eines SimpleParagraph aus dem Vector subParagraph.
 	 *
 	 * @param s the s
 	 */
@@ -36,7 +37,7 @@ public class CompositeParagraph extends Paragraph implements Serializable {
 	}
 	
 	/**
-	 * Getter von subParagraph.
+	 * Auslesen von subParagraph.
 	 *
 	 * @return the sub paragraphs
 	 */
@@ -45,7 +46,7 @@ public class CompositeParagraph extends Paragraph implements Serializable {
 	}
 	
 	/**
-	 * Getter Anzahl der SubParagraphen
+	 * Auslesen  Anzahl der SubParagraphen
 	 *
 	 * @return Anzahl der SubParagraphen
 	 */
@@ -53,6 +54,11 @@ public class CompositeParagraph extends Paragraph implements Serializable {
 		return this.subParagraph.size();
 	}
 	
+	/**
+	 * Auslesen eines SimpleParagraphs an bestimmten Index des Vectors subParagraph. 
+	 * @param i
+	 * @return SimpleParagraph
+	 */
 	public SimpleParagraph getParagraphAt(int i) {
 		return this.subParagraph.elementAt(i);
 	}
@@ -60,23 +66,21 @@ public class CompositeParagraph extends Paragraph implements Serializable {
 @Override
 	public String toString() {
 	/**
-	 * Anlegen einesStringbuffers f�r Umwandeln der SubParagrahen in Simple Paragraphen.
+	 * Anlegen eines Stringbuffers für Umwandeln der SubParagrahen in Simple Paragraphen.
 	 */
 		StringBuffer result = new StringBuffer();
 
-	    // Schleife �ber alle Unterabschnitte
-	    for (int i = 0; i < this.subParagraph.size(); i++) {
+	    /**
+	    * Schleife um auf alle subParagraphs zuzugreifen und diese zum Stringbuffer hinzuzufügen
+	    */
+		for (int i = 0; i < this.subParagraph.size(); i++) {
 	      SimpleParagraph p = this.subParagraph.elementAt(i);
-
-	      /*
-	       * den jew. Unterabschnitt in einen String wandeln und an den Buffer h�ngen.
-	       */
 	      result.append(p.toString() + "\n");
 	    }
 
-	    /*
-	     * Gibt Result als String zur�ck.
-	     */
+	    /**
+	     * Gibt Result als String zurück.
+	     **/
 	    return result.toString();
 	  }	
 }

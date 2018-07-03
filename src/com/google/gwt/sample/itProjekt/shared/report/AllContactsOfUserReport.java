@@ -4,12 +4,12 @@ import java.io.Serializable;
 
 // 
 /**
- * Die Klasse AllContactsOfUserReport für die statische 
+ * Die Klasse AllContactsOfUserReport fÃ¼r die statische 
  * Darstellung des Reportes von allen Kontakten eines Nutzers.
- * @author Anna-MariaGmeiner
+ * 
  */
 public class AllContactsOfUserReport extends Report implements Serializable {
 	
-	/** The Constant serialVersionUID. */
+	/** Die Konstante serialVersionUID, welche als Versionsnummer bei der Serialisierung dient. */
 	private static final long serialVersionUID=1L;
 }
