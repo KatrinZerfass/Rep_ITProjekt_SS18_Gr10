@@ -262,7 +262,7 @@ Vector<Contact> result = new Vector<Contact>();
 				+ "', " 
 				+ "gender='" 
 				+ contact.getSex() 
-				+ "'"
+				+ "', "
 				+ "mod_date ='" 
 				+ s
 				+ "' WHERE C_ID =" + contact.getId());
