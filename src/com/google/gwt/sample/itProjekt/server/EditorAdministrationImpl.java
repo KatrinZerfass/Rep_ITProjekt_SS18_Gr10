@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import com.google.gwt.sample.itProjekt.shared.*;
 import com.google.gwt.sample.itProjekt.shared.bo.*;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.google.gwt.sample.itProjekt.server.db.*;
 
@@ -246,6 +247,8 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	public Permission shareContactList(User sourceUser, String shareUserEmail, ContactList shareContactList) throws IllegalArgumentException {
 		
 		if(uMapper.findByEMail(shareUserEmail).getId() != shareContactList.getOwner()) {
+			Window.alert("sharecontactList.getOwner(): " + ((Integer) shareContactList.getOwner()).toString()
+					+ "\n shareUserEmail.getId(): " + ((Integer) uMapper.findByEMail(shareUserEmail).getId()).toString());
 			Permission newCLpermission = new Permission();
 			newCLpermission.setSourceUserID(sourceUser.getId());
 			newCLpermission.setParticipantID(uMapper.findByEMail(shareUserEmail).getId());

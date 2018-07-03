@@ -3,7 +3,7 @@ package com.google.gwt.sample.itProjekt.shared.bo;
 import java.io.Serializable;
 
 /**
- * Basisklasse f�r alle Business Objekte.
+ * Basisklasse für alle Business Objekte.
  * @author JanNoller
  *
  */
@@ -11,33 +11,15 @@ import java.io.Serializable;
 public abstract class BusinessObject implements Serializable {
 	
 	/**
-	 * Eindeutige Identifikationsnummer einer Instanz dieser Klasse und M�glichkeit zur Indetifizierung, 
+	 * Eindeutige Identifikationsnummer einer Instanz dieser Klasse und Möglichkeit zur Indetifizierung, 
 	 * welche Rolle dieses Objekt in der DB hat.
 	 */
 	
-	private int id;
+	private int id = 0;
+			
 	
 	/**
-	 * TODO vielleicht Konstruktor(en)? 
-	 *
-	 * Instanziert neues Business Objekt.
-	 
-	
-	public BusinessObject() {}
-	
-
-	 * Instanziert neues Business Objekt.
-	 *
-	 * @param newid die neue ID des Business Objekts
-	 
-	
-	public BusinessObject(int newid) {
-		this.setId(newid);
-	}
-	*/
-	
-	/**
-	 * Setter f�r die ID.
+	 * Setter für die ID.
 	 *
 	 * @param new_id die neue ID des BO
 	 */
@@ -47,7 +29,7 @@ public abstract class BusinessObject implements Serializable {
 	}
 	
 	/**
-	 * Getter f�r die ID.
+	 * Getter für die ID.
 	 *
 	 * @return id
 	 */
@@ -57,9 +39,9 @@ public abstract class BusinessObject implements Serializable {
 	}
 	
 	/**
-	 * �berpr�ft die inhaltliche Gleicheit zweier BusinessObject Objekte (die ID).
+	 * Überprüft die inhaltliche Gleicheit zweier BusinessObject Objekte (die ID).
 	 *
-	 * @param object das zu vergleichende Objekt
+	 * @param Das zu vergleichende Objekt
 	 * @return true, wenn inhaltlich gleich
 	 */
 	
@@ -81,7 +63,7 @@ public abstract class BusinessObject implements Serializable {
 	/**
 	 * Einfache Ausgabe des Klassennamens einer BusinessObject Instanz und der ID des Business Objekts.
 	 *
-	 * @return der string oben beschriebene String
+	 * @return Der oben beschriebene String
 	 */
 	
 	public String toString() {
