@@ -13,6 +13,9 @@ public class UserMapper {
 	
 	/** Konstruktor für den UserMapper (Singleton)
 	 * static weil Singleton. Einzige Instanz dieser Klasse
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
 	 */
 	private static UserMapper  usermapper = null;
 	
@@ -21,6 +24,8 @@ public class UserMapper {
 	 *
 	 * Falls noch kein UserMapper existiert erstellt er ein neuen UserMapper und gibt ihn zurück
 	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
 	 */
 	public static UserMapper userMapper() {
 		if (usermapper == null){
@@ -36,6 +41,9 @@ public class UserMapper {
 	 * Findet User durch eine U_ID und speichert die dazugehörigen Werte (U_ID und email) in einem User Objekt ab und gibt dieses wieder
 	 * 
 	 * @param uid übergebener Integer der U_ID
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
 	 */
 	public User findByID(int uid){
 		Connection con = DBConnection.connection();
@@ -68,6 +76,9 @@ public class UserMapper {
 	 * und speichert dieses Objekt im Vector ab und gibt diesen wieder
 	 * 
 	 * @param email übergebener String der eMail
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
 	 */
 	public User findByEMail(String email){
 		Connection con = DBConnection.connection();
@@ -98,7 +109,9 @@ public class UserMapper {
 	 * Gibt alle User Objekte zurück welche mit U_ID und eMail befüllt sind
 	 * Hierfür holen wir U_ID und eMail aus der T_User Tabelle und speichern diese in einem User Objekt ab und fügen diese dem Vector hinzu
 	 * Diesen Vector befüllt mit User geben wir zurück
-	 *
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
 	 */
 	public Vector<User> findAll(){
 		Connection con = DBConnection.connection();
@@ -128,6 +141,9 @@ public class UserMapper {
 	 * Ein value wird zurückgegeben
 	 *
 	 * @param user übergebenes User Objekt mit Attributen U_ID und eMail
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
 	 */
 	public User insert(User user){
 		Connection con = DBConnection.connection();
@@ -163,6 +179,9 @@ public class UserMapper {
 	 * Gibt ein User zurück
 	 * 
 	 * @param user übergebenes User Objekt mit Attributen U_ID und eMail
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
 	 */
 	public User update(User user){
 		Connection con = DBConnection.connection();
@@ -187,6 +206,9 @@ public class UserMapper {
 	 * Entfernt alles aus T_User wo die U_ID der ID des übergebenen Objekts entspricht
 	 * 
 	 * @param user übergebenes User Objekt mit Attribut U_ID
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
 	 */
 	public void delete (User user){
 		Connection con = DBConnection.connection();
