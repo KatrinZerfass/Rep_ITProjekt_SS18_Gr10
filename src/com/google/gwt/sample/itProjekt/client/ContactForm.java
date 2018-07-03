@@ -1602,6 +1602,7 @@ public class ContactForm extends VerticalPanel {
 				
 				Button addAddressButton = new Button("Anlegen");
 				addAddressButton.addStyleName("addNewPropertyButton");
+				addAddressButton.addStyleName("anlegenbutton");
 				addressPanel.add(addAddressButton);
 				
 				contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
