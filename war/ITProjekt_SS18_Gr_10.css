@@ -614,6 +614,10 @@ body{
     float: right;
 }
 
+.okbutton:hover{
+	background-color:#10585a;
+}
+
 .closebutton{
 	background-color: #8c8c8c;
     -moz-border-radius: 4px;
@@ -629,4 +633,8 @@ body{
     text-decoration: none;
     float: right;
     margin-right: 10px;
+}
+
+.closebutton:hover{
+	background-color: #636363;
 }

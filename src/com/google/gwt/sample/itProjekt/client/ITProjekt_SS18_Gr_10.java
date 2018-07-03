@@ -139,6 +139,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 			
 			setTextBox(inputtb);
 	        ok.addStyleName("okbutton");
+	        close.addStyleName("closebutton");
 
 			Window.alert("InputDialogBox instanziert");
 			
@@ -168,6 +169,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 			
 			setOracle(inputOracle);
 	        ok.addStyleName("okbutton");
+	        close.addStyleName("closebutton");
 
 			setdialogBoxLabel("Bitte geben Sie die Email-Adresse des Nutzers ein mit dem Sie die Kontaktliste teilen möchten.");
 			
@@ -199,8 +201,8 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 					panel.add(getSuggestBox());
 					HorizontalPanel hpanel= new HorizontalPanel();
 			        hpanel.add(close);
-			        panel.add(ok);
-			        
+			        hpanel.add(ok);
+			        panel.add(hpanel);
 			        setWidget(panel);
 			        
 			        show();
@@ -523,6 +525,8 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 						}
 						public void onSuccess(ContactList result) {
 							Window.alert("Kontaktliste erfolgreich erstellt.");
+							clctvm.deleteNameResults();
+							clctvm.deleteValueResults();
 							clctvm.addContactList(result);
 							inputDB.hide();
 						}
