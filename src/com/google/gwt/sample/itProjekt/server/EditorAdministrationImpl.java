@@ -39,7 +39,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	public boolean isUserKnown (String email) throws IllegalArgumentException{
 	
 		//Wenn der User noch nicht in der Datenbank existiert, wird ein neuer User angelegt. 
-		if(uMapper.findByEMail(email) == null){
+		if(uMapper.findByEMail(email).getEmail() == null){
 			return false;	
 		}
 		else{
@@ -169,24 +169,13 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	}
 	
 	@Override
-	public Contact createUserContact(String firstname, String lastname, String sex, String email, User user)
+	public User createUserContact(String firstname, String lastname, String sex, String email)
 			throws IllegalArgumentException {
 		
-		Contact newcontact = new Contact();
-		newcontact.setFirstname(firstname);
-		newcontact.setLastname(lastname);
-		newcontact.setSex(sex);
-		newcontact.setOwner(user.getId());
-		newcontact.setIsUser(true);
+		createValue(createContact(firstname, lastname, sex, createUser(email)).configureIsUser(true), 3, email);
 		
-		Property emailProperty = new Property();
-		emailProperty.setId(3);
-		
-		Value emailValue = new Value();
-		emailValue.setPropertyid(3);
-		emailValue.setContent(email);
-		
-		return vMapper.findContactByVID(vMapper.insert(emailValue, cMapper.insert(newcontact, user), pMapper.findByID(emailProperty)));
+		return getOwnerOfContact(vMapper.findContactByVID(createValue(createContact(firstname, lastname, sex, createUser(email)).configureIsUser(true), 3, email)));
+		//return getUser(email);
 	}
 
 	@Override

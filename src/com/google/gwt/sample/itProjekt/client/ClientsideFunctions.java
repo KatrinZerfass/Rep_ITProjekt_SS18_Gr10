@@ -4,9 +4,10 @@ import java.util.Vector;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.sample.itProjekt.client.ContactForm.ValueTextBox;
 import com.google.gwt.sample.itProjekt.shared.EditorAdministrationAsync;
 import com.google.gwt.sample.itProjekt.shared.ReportGeneratorAsync;
+import com.google.gwt.sample.itProjekt.shared.bo.Contact;
+import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -20,6 +21,7 @@ import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.sample.itProjekt.client.ContactForm.ValueTextBox;
 
 public abstract class ClientsideFunctions {
 	
@@ -150,9 +152,19 @@ public abstract class ClientsideFunctions {
 		}
 	}
 	
-	public static boolean compareUser (User user, ContactListContactTreeViewModel clctvm) {
+	public static boolean isOwner (Contact c, User user) {
 		
-		if (user.getId() == clctvm.getSelectedContact().getOwner()) {
+		if (user.getId() == c.getOwner()) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public static boolean isOwner (ContactList cl, User user) {
+		
+		if (user.getId() == cl.getOwner()) {
 			return true;
 		}
 		else {
@@ -175,7 +187,8 @@ public abstract class ClientsideFunctions {
 
         Button ok = new Button("OK");
 		
-		public InputDialogBox(String user) {
+		public InputDialogBox(String userEmail) {
+			Window.alert("InputDialogBox instanziert");
 			
 			setMultiUseTextBox(new TextBox());
 			getMultiUseTextBox().getElement().setPropertyString("placeholder", "Vorname...");
@@ -189,15 +202,13 @@ public abstract class ClientsideFunctions {
 			sexListBox.addItem("männlich");
 			sexListBox.addItem("weiblich");
 			sexListBox.addItem("Sonstiges");
-			sexListBox.getElement().setPropertyString("placeholder", "Geschlecht...");
+			//sexListBox.getElement().setPropertyString("placeholder", "Geschlecht...");
 			
 			ok.addStyleName("okbutton");
 	        close.addStyleName("closebutton");
 
-			Window.alert("InputDialogBox instanziert");
-			
 			setText("Eingabe");
-			setdialogBoxLabel(user + " ist noch nicht registriert\nBitte geben Sie Ihren Information an:");
+			setdialogBoxLabel(userEmail + " ist noch nicht registriert.\nBitte geben Sie Ihre Informationen an:");
 			
 			setAnimationEnabled(true);
 			setGlassEnabled(true);
@@ -205,7 +216,7 @@ public abstract class ClientsideFunctions {
 	        
 			VerticalPanel panel = new VerticalPanel();
 	        panel.setHeight("100");
-	        panel.setWidth("300");
+	        panel.setWidth("600");
 	        panel.setSpacing(10);
 	        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 	        panel.add(dialogBoxLabel);
@@ -214,6 +225,7 @@ public abstract class ClientsideFunctions {
 	        hpanel.add(ok);
 	        panel.add(multiUseTextBox);
 	        panel.add(nameTextBox);
+	        panel.add(sexListBox);
 	        panel.add(hpanel);
 
 	        setWidget(panel);

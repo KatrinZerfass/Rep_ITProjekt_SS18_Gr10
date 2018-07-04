@@ -585,12 +585,13 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 					report.addRow(valueRow);
 					}}
 			}
+			System.out.println("Ende Report: " + report.getRows());
 			return report;
 		}
 		}
 
-//@Override
-//public AllValuesOfContactReport generateAllValuesOfContactReport(Contact contact, User user)
+@Override
+//public AllContactInformationOfContactReport generateAllContactInformationOfContactReport(Contact contact, User user)
 //		throws IllegalArgumentException {
 //	if(this.getEditorAdministration()==null) {
 //		return null;

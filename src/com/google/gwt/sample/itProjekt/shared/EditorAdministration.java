@@ -175,10 +175,10 @@ public interface EditorAdministration extends RemoteService{
 	 * @param sex Geschlecht
 	 * @param email Email-Adresse
 	 * @param user Nutzer
-	 * @return vollständiges Kontakt-Objekt
+	 * @return vollständiges Nutzer-Objekt
 	 * @throws IllegalArgumentException
 	 */
-	public Contact createUserContact(String firstname, String lastname, String sex, String email, User user) throws IllegalArgumentException;
+	public User createUserContact(String firstname, String lastname, String sex, String email) throws IllegalArgumentException;
 	
 	/**
 	 * Ändert den Kontaktstamm eines Kontakts in der Datenbank. 

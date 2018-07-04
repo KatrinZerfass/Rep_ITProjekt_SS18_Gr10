@@ -350,14 +350,14 @@ public class ContactListForm extends VerticalPanel{
 				}
 				else {
 				
-					editorAdministration.deleteContactList(clctvm.getSelectedContactList(), ClientsideFunctions.compareUser(user, clctvm), user, new AsyncCallback<Void>() {
+					editorAdministration.deleteContactList(clctvm.getSelectedContactList(), ClientsideFunctions.isOwner(clctvm.getSelectedContactList(), user), user, new AsyncCallback<Void>() {
 						@Override
 						public void onFailure(Throwable arg0) {
 							Window.alert("Fehler beim löschen der Kontaktliste!");
 						}
 						@Override
 						public void onSuccess(Void arg0) {
-							Window.alert(clctvm.getSelectedContactList().getName());
+							//Window.alert(clctvm.getSelectedContactList().getName());
 							Window.alert("Kontaktliste erfolgreich gelöscht.");	
 							clctvm.removeContactList(clctvm.getSelectedContactList());
 							clctvm.setSelectedContactList(clctvm.getMyContactsContactList());
@@ -497,6 +497,16 @@ public class ContactListForm extends VerticalPanel{
 			this.clctvm= clctvm;
 			
 		}
+
+		
+		
+		/**
+		 * Die Methode compareUser() vergleicht den aktuell angemeldeten Nutzer mit dem Eigentümer des Kontakts.
+		 * 
+		 * @return true= Eigentümer oder false= Teilhaber
+		 * @author JanNoller
+		 */		
+	
 				
 //		public boolean compareUser () {
 //			
@@ -507,6 +517,7 @@ public class ContactListForm extends VerticalPanel{
 //				return false;
 //			}
 //		}
+
 				
 }
 		
