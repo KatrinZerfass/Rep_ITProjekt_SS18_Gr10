@@ -171,10 +171,17 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	public User createUserContact(String firstname, String lastname, String sex, String email)
 			throws IllegalArgumentException {
 		
-		User newUser = new User();
+		User newUser = null;
 		newUser = createUser(email);
+//		
+//		while(newUser == null) {
+//			if(newUser != null) {
+//				Window.alert("user erstellt: " + newUser.getEmail());
+//				
+//			}
+//		}
 		
-		Window.alert("user erstellt: " + newUser.getEmail());
+//		Window.alert("user erstellt: " + newUser.getEmail());
 		
 		Contact newContact = new Contact();
 		newContact.setFirstname(firstname);
@@ -184,12 +191,12 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		
 		cMapper.insert(newContact, newUser);
 		
-		Window.alert("contact erstellt: " + cMapper.findByID(newContact));
+//		Window.alert("contact erstellt: " + cMapper.findByID(newContact));
 		
 		Value newValue = new Value();
 		newValue = createValue(newContact, 3, email);
 		
-		Window.alert("value erstellt: " + newValue.getContent());
+//		Window.alert("value erstellt: " + newValue.getContent());
 		
 		return newUser;
 	}
