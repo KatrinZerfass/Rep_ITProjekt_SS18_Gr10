@@ -571,7 +571,7 @@ public class ContactForm extends VerticalPanel {
 				/*
 				 * Die Eingabe des Nutzers wird mithilfe der Methode checkValue() auf Korrektheit überprüft.
 				 */
-				if(!checkValue(tb)){
+				if(!ClientsideFunctions.checkValue(tb)){
 					tb.setText("");				
 				}
 				else {
@@ -1103,12 +1103,12 @@ public class ContactForm extends VerticalPanel {
 			if(contactToDisplay != null) {
 				setSelected(null);
 			}else {
-				if(!checkValue(firstnameTextBox) || !checkValue(lastnameTextBox) ) {
+				if(!ClientsideFunctions.checkValue(firstnameTextBox) || !ClientsideFunctions.checkValue(lastnameTextBox) ) {
 					firstnameTextBox.setText("");
 					lastnameTextBox.setText("");
 					Window.alert("Ihr Kontakt konnte nicht angelegt werden, bitte versuchen Sie es erneut.");
 					
-				}else if(checkValue(firstnameTextBox) && checkValue(lastnameTextBox)){
+				}else if(ClientsideFunctions.checkValue(firstnameTextBox) && ClientsideFunctions.checkValue(lastnameTextBox)){
 					
 					String sex = "o";
 					switch(sexListBox.getSelectedItemText()) {
@@ -1271,7 +1271,7 @@ public class ContactForm extends VerticalPanel {
 			
 			}else{
 				
-				editorAdministration.deleteContact(contactToDisplay, compareUser(), currentUser, new AsyncCallback<Void>() {
+				editorAdministration.deleteContact(contactToDisplay, ClientsideFunctions.compareUser(currentUser, clctvm), currentUser, new AsyncCallback<Void>() {
 					public void onFailure(Throwable arg0) {
 						Window.alert("Fehler beim Löschen des Kontakts!");
 					}
@@ -1693,15 +1693,15 @@ public class ContactForm extends VerticalPanel {
 	 * @return true= Eigentümer oder false= Teilhaber
 	 * @author JanNoller
 	 */
-	public boolean compareUser () {
-			
-			if (currentUser.getId() == contactToDisplay.getOwner()) {
-				return true;
-			}
-			else {
-				return false;
-			}
-		}
+//	public boolean compareUser () {
+//			
+//			if (currentUser.getId() == contactToDisplay.getOwner()) {
+//				return true;
+//			}
+//			else {
+//				return false;
+//			}
+//		}
 	
 	/**
 	 * Die Methode checkValue() überprüft die Eingabe einer Ausprägung in eine ValueTextBox auf Korrektheit.
@@ -1711,116 +1711,116 @@ public class ContactForm extends VerticalPanel {
 	 * @return true= Eingabe passt oder false= Eingabe passt nicht
 	 * @author JanNoller
 	 */
-	public boolean checkValue (ValueTextBox vtb) {
-		
-		String identifier = vtb.getIdentifier();
-		String text = vtb.getText().toLowerCase().trim();
-	// TODO: work on RegExs!
-		
-		switch(identifier) {
-			case "Name":
-				if (!text.matches("\\d+")) {
-					if(!text.isEmpty()) {
-						return true;
-					}else {
-						return false;
-					}
-				}
-				else {
-					Window.alert("Ungültige Zeichen im Namen!");
-					return false;
-				}
-			case "Straße":
-				if (!text.matches("\\d+")) {
-					return true;
-				}
-				else {
-					Window.alert("Ungültiger Straßenname!");
-					return false;
-				}
-			case "Hausnummer":
-				if (text.matches("\\d+")) {
-					return true;
-				}
-				else {
-					Window.alert("Ungültige Hausnummer!");
-					return false;
-				}
-			case "PLZ":
-				if (text.matches("\\d+") && text.length() == 5) {
-					return true;
-				}
-				else if (text.matches("\\d+") && text.length() != 5) {
-					Window.alert("Bitte geben Sie eine gültige PLZ ein!");
-					return false;
-				}
-				else if(!text.matches("\\d+") && text.length() == 5) {
-					Window.alert("Ungültige Zeichen in der PLZ!");
-					return false;
-				}
-				else {
-					Window.alert("Ungültige Eingabe!");
-					return false;
-				}
-			case "Stadt":
-				if (text.matches("[A-ZÜÄÖ][a-züäöß]*")) {
-					return true;
-				}
-				else {
-					Window.alert("Ungültiger Stadtname!");
-					return false;
-				}
-			case "Telefonnummer":
-				if (text.matches("\\d+")) {
-					return true;
-				}
-				else {
-					Window.alert("Ungültige Telefonnummer!");
-					return false;
-				}
-			case "Geburtstag":
-				if (text.matches("[0-3]\\d\\.[0\\d\\|1[0-2]].\\d\\d\\d\\d")) {
-					return true;
-				}
-				else {
-					Window.alert("Ungültige Telefonnummer!");
-					return false;
-				}
-			case "Email":
-				if (text.matches("(?:[a-zäöü0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])")) {
-					return true;
-				}
-				else {
-					Window.alert("Ungültige e-Mail-Adresse!");
-					return false;
-				}
-			case "Homepage": 
-				if (text.matches("(http:\\/\\/|https:\\/\\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[a-z]{3}.?([a-z]+)?")) {
-					return true;
-				}
-				else {
-					Window.alert("Ungültige Homepage!");
-					return false;
-				}
-				
-			case "Arbeitsplatz":
-				if (text.matches("[A-ZÜÄÖa-züäöß\\s]*")) {
-					return true;
-				}
-				else {
-					Window.alert("Ungültige Zeichen im Arbeitgebernamen!");
-					return false;
-				}
-				
-			case "Sonstiges":
-				return true;
-				
-			default: 
-				Window.alert("Switch case hat nicht ausgelöst!");
-				return false;
-		}
-		
-	}
+//	public boolean checkValue (ValueTextBox vtb) {
+//		
+//		String identifier = vtb.getIdentifier();
+//		String text = vtb.getText().toLowerCase().trim();
+//	// TODO: work on RegExs!
+//		
+//		switch(identifier) {
+//			case "Name":
+//				if (!text.matches("\\d+")) {
+//					if(!text.isEmpty()) {
+//						return true;
+//					}else {
+//						return false;
+//					}
+//				}
+//				else {
+//					Window.alert("Ungültige Zeichen im Namen!");
+//					return false;
+//				}
+//			case "Straße":
+//				if (!text.matches("\\d+")) {
+//					return true;
+//				}
+//				else {
+//					Window.alert("Ungültiger Straßenname!");
+//					return false;
+//				}
+//			case "Hausnummer":
+//				if (text.matches("\\d+")) {
+//					return true;
+//				}
+//				else {
+//					Window.alert("Ungültige Hausnummer!");
+//					return false;
+//				}
+//			case "PLZ":
+//				if (text.matches("\\d+") && text.length() == 5) {
+//					return true;
+//				}
+//				else if (text.matches("\\d+") && text.length() != 5) {
+//					Window.alert("Bitte geben Sie eine gültige PLZ ein!");
+//					return false;
+//				}
+//				else if(!text.matches("\\d+") && text.length() == 5) {
+//					Window.alert("Ungültige Zeichen in der PLZ!");
+//					return false;
+//				}
+//				else {
+//					Window.alert("Ungültige Eingabe!");
+//					return false;
+//				}
+//			case "Stadt":
+//				if (text.matches("[A-ZÜÄÖ][a-züäöß]*")) {
+//					return true;
+//				}
+//				else {
+//					Window.alert("Ungültiger Stadtname!");
+//					return false;
+//				}
+//			case "Telefonnummer":
+//				if (text.matches("\\d+")) {
+//					return true;
+//				}
+//				else {
+//					Window.alert("Ungültige Telefonnummer!");
+//					return false;
+//				}
+//			case "Geburtstag":
+//				if (text.matches("[0-3]\\d\\.[0\\d\\|1[0-2]].\\d\\d\\d\\d")) {
+//					return true;
+//				}
+//				else {
+//					Window.alert("Ungültige Telefonnummer!");
+//					return false;
+//				}
+//			case "Email":
+//				if (text.matches("(?:[a-zäöü0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])")) {
+//					return true;
+//				}
+//				else {
+//					Window.alert("Ungültige e-Mail-Adresse!");
+//					return false;
+//				}
+//			case "Homepage": 
+//				if (text.matches("(http:\\/\\/|https:\\/\\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[a-z]{3}.?([a-z]+)?")) {
+//					return true;
+//				}
+//				else {
+//					Window.alert("Ungültige Homepage!");
+//					return false;
+//				}
+//				
+//			case "Arbeitsplatz":
+//				if (text.matches("[A-ZÜÄÖa-züäöß\\s]*")) {
+//					return true;
+//				}
+//				else {
+//					Window.alert("Ungültige Zeichen im Arbeitgebernamen!");
+//					return false;
+//				}
+//				
+//			case "Sonstiges":
+//				return true;
+//				
+//			default: 
+//				Window.alert("Switch case hat nicht ausgelöst!");
+//				return false;
+//		}
+//		
+//	}
 	
 	
 	
@@ -1930,7 +1930,7 @@ public class ContactForm extends VerticalPanel {
 			 */
 		
 			
-			if(!compareUser()) {
+			if(!ClientsideFunctions.compareUser(currentUser, clctvm)) {
 				saveChangesButton.setEnabled(false);
 			//	removeContactFromContactListButton.setEnabled(false);
 				firstnameTextBox.setEnabled(false);
@@ -2095,7 +2095,7 @@ public class ContactForm extends VerticalPanel {
 						
 				case 4:  // Geburtstag
 					identifier = "Geburtstag";
-					if(compareUser() || (!compareUser() && allValuesOfContact.get(i).getIsShared()==true)) {
+					if(ClientsideFunctions.compareUser(currentUser, clctvm) || (!ClientsideFunctions.compareUser(currentUser, clctvm) && allValuesOfContact.get(i).getIsShared()==true)) {
 							/*
 							 * Eine Ausprägung zu Geburtstag kann nur einmal vorhanden sein. Demzufolge gibt es hierfür auch keine ValueTable.
 							 * Das ValueDisplay, in dem sich die TextBox für das Geburtsdatum befindet, wird direkt angesprochen.
@@ -2107,7 +2107,7 @@ public class ContactForm extends VerticalPanel {
 							((ValueDisplay) contactTable.getWidget(3, 3)).getWidget(0).setWidth("105px");
 							((ValueDisplay) contactTable.getWidget(3,3)).setValue(allValuesOfContact.get(i));
 							
-							if (compareUser()) {
+							if (ClientsideFunctions.compareUser(currentUser, clctvm)) {
 								((ValueDisplay) contactTable.getWidget(3, 3)).enableButtons();
 								
 								if(allValuesOfContact.get(i).getIsShared() == true){
@@ -2145,7 +2145,7 @@ public class ContactForm extends VerticalPanel {
 				case 6:  // Straße
 						
 						row = contactTable.getRowCount();
-						if(compareUser() || (!compareUser() && allValuesOfContact.get(i).getIsShared()==true)) {
+						if(ClientsideFunctions.compareUser(currentUser, clctvm) || (!ClientsideFunctions.compareUser(currentUser, clctvm) && allValuesOfContact.get(i).getIsShared()==true)) {
 						
 							Label addressLabel = new Label("Anschrift: ");
 							contactTable.setWidget(row, 0, addressLabel);
@@ -2177,7 +2177,7 @@ public class ContactForm extends VerticalPanel {
 							((ValueDisplay) addressTable.getWidget(0, 2)).setValue(allValuesOfContact.get(i));
 							
 							
-							if(compareUser()) {
+							if(ClientsideFunctions.compareUser(currentUser, clctvm)) {
 								((ValueDisplay) addressTable.getWidget(0, 2)).enableButtons();
 //								((LockButton) addressTable.getWidget(0, 2)).setEnabled(true);
 //								((DeleteValueButton) addressTable.getWidget(0,3)).setEnabled(true);
@@ -2232,66 +2232,69 @@ public class ContactForm extends VerticalPanel {
 				} //ende der switch case
 			
 			
-			row = contactTable.getRowCount();
-			if(compareUser() || (!compareUser() && allValuesOfContact.get(i).getIsShared()==true)) {
-				
+
+				row = contactTable.getRowCount();
+				if(ClientsideFunctions.compareUser(currentUser, clctvm) || (!ClientsideFunctions.compareUser(currentUser, clctvm) && allValuesOfContact.get(i).getIsShared()==true)) {
+					
+						/*
+						 * Das korrekte ValuePanel und ValueTable werden gesetzt und im Folgenden auf ihnen operiert.
+						 */
+					if(i ==0) {
+						contactTable.setWidget(row, 0, new ValuePanel(pid, row, ptype + ": "));
+						contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+						vp = (ValuePanel) contactTable.getWidget(row, 0);
+						
+						contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
+						contactTable.setWidget(row, 1, new ValueTable(pid));
+						vt = (ValueTable) contactTable.getWidget(row, 1);
+						
+					}else if(i !=0 && allValuesOfContact.get(i-1).getPropertyid() != pid ){
+						contactTable.setWidget(row, 0, new ValuePanel(pid, row, ptype + ": "));
+						contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+						vp = (ValuePanel) contactTable.getWidget(row, 0);
+						
+						contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
+						contactTable.setWidget(row, 1, new ValueTable(pid));
+						vt = (ValueTable) contactTable.getWidget(row, 1);
+						
+					}else if(i !=0 && allValuesOfContact.get(i-1).getPropertyid() == pid && allValuesOfContact.get(i-1).getIsShared() ==false){
+						contactTable.setWidget(row, 0, new ValuePanel(pid, row,  ptype +": "));
+						contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+						vp = (ValuePanel) contactTable.getWidget(row, 0);
+						
+						contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
+						contactTable.setWidget(row, 1, new ValueTable(pid));
+						vt = (ValueTable) contactTable.getWidget(row, 1);
+					}else {
+						 
+						vp = (ValuePanel) contactTable.getWidget(row-1, 0);
+						vt = (ValueTable) contactTable.getWidget(row-1, 1);
+					}
+					
+					vtRow = vt.getRowCount();
+					vt.setWidget(vtRow, 0, new ValueDisplay(new ValueTextBox(identifier)));
+					vt.getValueDisplay(vtRow).setValue(allValuesOfContact.get(i));
+					
+					
+
 					/*
 					 * Das korrekte ValuePanel und ValueTable werden gesetzt und im Folgenden auf ihnen operiert.
 					 */
-				if(i ==0) {
-					contactTable.setWidget(row, 0, new ValuePanel(pid, row, ptype + ": "));
-					contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-					vp = (ValuePanel) contactTable.getWidget(row, 0);
-					
-					contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-					contactTable.setWidget(row, 1, new ValueTable(pid));
-					vt = (ValueTable) contactTable.getWidget(row, 1);
-					
-				}else if(i !=0 && allValuesOfContact.get(i-1).getPropertyid() != pid ){
-					contactTable.setWidget(row, 0, new ValuePanel(pid, row, ptype + ": "));
-					contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-					vp = (ValuePanel) contactTable.getWidget(row, 0);
-					
-					contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-					contactTable.setWidget(row, 1, new ValueTable(pid));
-					vt = (ValueTable) contactTable.getWidget(row, 1);
-					
-				}else if(i !=0 && allValuesOfContact.get(i-1).getPropertyid() == pid && allValuesOfContact.get(i-1).getIsShared() ==false){
-					contactTable.setWidget(row, 0, new ValuePanel(pid, row,  ptype +": "));
-					contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-					vp = (ValuePanel) contactTable.getWidget(row, 0);
-					
-					contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-					contactTable.setWidget(row, 1, new ValueTable(pid));
-					vt = (ValueTable) contactTable.getWidget(row, 1);
-				}else {
-					 
-					vp = (ValuePanel) contactTable.getWidget(row-1, 0);
-					vt = (ValueTable) contactTable.getWidget(row-1, 1);
-				}
-				
-				vtRow = vt.getRowCount();
-				vt.setWidget(vtRow, 0, new ValueDisplay(new ValueTextBox(identifier)));
-				vt.getValueDisplay(vtRow).setValue(allValuesOfContact.get(i));
-				
-				
-				/*
-				 * Gleiches Prinzip wie gerade schon, nur jetzt für das soeben neu hinzugefügte ValueDisplay.
-				 */
-				if (compareUser()) {
-					vt.getValueDisplay(vtRow).enableButtons();
-					vp.getAddValueButton().setEnabled(true);
-					if(allValuesOfContact.get(i).getIsShared() == true){
-						vt.getValueDisplay(vtRow).setLockButtonTo(true);
-					}else {
-						vt.getValueDisplay(vtRow).setLockButtonTo(false);
+					if (ClientsideFunctions.compareUser(currentUser, clctvm)) {
+						vt.getValueDisplay(vtRow).enableButtons();
+						vp.getAddValueButton().setEnabled(true);
+						if(allValuesOfContact.get(i).getIsShared() == true){
+							vt.getValueDisplay(vtRow).setLockButtonTo(true);
+						}else {
+							vt.getValueDisplay(vtRow).setLockButtonTo(false);
+						}
 					}
-				}
-				else {
-					vt.getValueDisplay(vtRow).disableButtons();
-					vp.getAddValueButton().setEnabled(false);
-					
-				}
+					else {
+						vt.getValueDisplay(vtRow).disableButtons();
+						vp.getAddValueButton().setEnabled(false);
+						
+					}
+
 				
 				for(int c=0; c<newPropertyListBox.getItemCount(); c++) {
 					if (newPropertyListBox.getItemText(c) == ptype) {
