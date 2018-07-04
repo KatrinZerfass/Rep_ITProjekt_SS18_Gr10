@@ -10,6 +10,7 @@ import com.google.gwt.sample.itProjekt.shared.bo.Permission;
 import com.google.gwt.sample.itProjekt.shared.bo.Property;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
 import com.google.gwt.sample.itProjekt.shared.bo.Value;
+import com.google.gwt.sample.itProjekt.shared.report.AllContactInformationOfContactReport;
 import com.google.gwt.sample.itProjekt.shared.report.AllContactsOfUserReport;
 import com.google.gwt.sample.itProjekt.shared.report.AllContactsWithPropertyReport;
 import com.google.gwt.sample.itProjekt.shared.report.AllContactsWithValueReport;
@@ -94,6 +95,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			Vector<Contact> allContacts=this.admin.getAllContactsOfActiveUser(user);
 			if(allContacts.size()!=0){
 				for (Contact c: allContacts) {
+					report.addSubReport(this.generateAllContactInformationOfContactReport(c, user));
 					report.addSubReport(this.generateAllValuesOfContactReport(c, user));
 					}			
 			}
@@ -488,79 +490,11 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			
 			Row headline = new Row();
 			
-			headline.addColumn(new Column("Besitzer"));
-			headline.addColumn(new Column("Erhalten von"));
-			headline.addColumn(new Column("Vorname"));
-			headline.addColumn(new Column("Nachname"));
-			headline.addColumn(new Column("Geschlecht"));
-					
-			report.addRow(headline);
-			
-			User owner=admin.getOwnerOfContact(contact);
-			User sharedUser = admin.getSourceToSharedContact(contact, user);
-
-			Vector<Permission> allPermissions = admin.getAllPermissions();
-			
-			Row contactRow=new Row();
-			
-			
-			contactRow.addColumn(new Column(String.valueOf(owner.getEmail())));
-			
-			if (sharedUser.getEmail() != user.getEmail()){	
-			contactRow.addColumn(new Column(String.valueOf(sharedUser.getEmail())));
-			}else{
-				contactRow.addColumn(new Column(String.valueOf("")));
-			}
-			System.out.println(" vorher"+ contact.getFirstname());
-			contactRow.addColumn(new Column(String.valueOf(contact.getFirstname())));
-			contactRow.addColumn(new Column(String.valueOf(contact.getLastname())));
-			
-			switch(contact.getSex()){
-				case "f":
-				contactRow.addColumn(new Column("weiblich"));
-				break;
-				case "m":
-				contactRow.addColumn(new Column("männlich"));
-				break;
-				case "o":
-				contactRow.addColumn(new Column("sonstige"));
-				break;
-			}
-			
-			
-			report.addRow(contactRow);
-			System.out.println("contact get firstname vorher");
-
-			if(allPermissions.size()> 0){
-				User u = new User();
-				headline.addColumn(new Column("Teilhaber"));
-				for (Permission p: allPermissions){
-					
-					if(p.getShareableObjectID() == contact.getId() && contact.getOwner() == user.getId()){
+			headline.addColumn(new Column("Eigenschaft"));
+			headline.addColumn(new Column("Ausprägung"));
 						
-					for(int i = 0; i < 1; i++){
-						contactRow.addColumn(new Column(""));
-					}
-					
-					u = admin.getUserByID(p.getParticipantID());
-				}
-					contactRow.addColumn(new Column(String.valueOf(u.getEmail())));
-			}}
-					
-			if(headline.getNumColumns() < 10){
-				
-				headline.addColumn(new Column("Erstellungsdatum"));
-				headline.addColumn(new Column("Modifikationsdatum"));
-			
-			}
-					
-					
-			contactRow.addColumn(new Column(String.valueOf(contact.getCreationDate())));
-			contactRow.addColumn(new Column(String.valueOf(contact.getModificationDate())));
-		
-	
 			report.addRow(headline);
-		
+			
 			Vector<Value> allValues=this.admin.getAllValuesOfContact(contact);
 			System.out.println("Der Vektor enthält:" +allValues.size());
 
@@ -593,45 +527,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 @Override
 //public AllContactInformationOfContactReport generateAllContactInformationOfContactReport(Contact contact, User user)
 //		throws IllegalArgumentException {
-//	if(this.getEditorAdministration()==null) {
-//		return null;
-//	} 
-//	else {
-//		AllValuesOfContactReport report = new AllValuesOfContactReport();
-//		
-//		report.setTitle("Alle Eigenschaften des Kontaktes");
-//		CompositeParagraph header=new CompositeParagraph();
-//		SimpleParagraph sp = new SimpleParagraph("Kontakt: " + contact.getFirstname()+ contact.getLastname());
-//		
-//		header.addSubParagraph(sp);
-//
-//		report.setHeaderData(header);
-//		
-//		Row headline = new Row();
-//
-//		headline.addColumn(new Column("Eigenschaft"));
-//		headline.addColumn(new Column("Ausprägung"));
-//
-//		report.addRow(headline);
-//	
-//		Vector<Value> allValues=this.admin.getAllValuesOfContact(contact);
-//		
-//		if(allValues.size()!=0){
-//			for(Value value :allValues){
-//				if(value.getIsShared()==true || contact.getOwner() == user.getId()){
-//					Property p=this.admin.getPropertyOfValue(value);
-//					Row valueRow=new Row();
-//					
-//					valueRow.addColumn(new Column(String.valueOf(p.getType())));
-//					valueRow.addColumn(new Column(String.valueOf(value.getContent())));
-//					
-//					report.addRow(valueRow);
-//					}
-//			}
-//		}
-//		return report;
-//	}
-//}
+
 	/* (non-Javadoc)
 	 * @see com.google.gwt.sample.itProjekt.shared.ReportGenerator#getAllUsers()
 	 */
@@ -649,4 +545,77 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	}
 
 
+	@Override
+	public AllContactInformationOfContactReport generateAllContactInformationOfContactReport(Contact contact, User user)
+			throws IllegalArgumentException {
+		if(this.getEditorAdministration()==null) {
+			return null;
+		} 
+		else {
+			AllContactInformationOfContactReport report = new AllContactInformationOfContactReport();
+			
+			report.setTitle("Alle Kontakte mit der Ausprägung");
+			report.setCreated(new Date());
+			
+			CompositeParagraph header=new CompositeParagraph();
+			
+			header.addSubParagraph(new SimpleParagraph("Nutzer: " + user.getEmail()));
+			
+			report.setHeaderData(header);
+			
+			Row headline = new Row();
+
+			Column colSharingUser=new Column("Erhalten von");
+			headline.addColumn(new Column("Vorname"));
+			headline.addColumn(new Column("Nachname"));
+			headline.addColumn(new Column("Geschlecht"));
+			headline.addColumn(new Column("Eigentümer"));
+			headline.addColumn(colSharingUser);
+			headline.addColumn(new Column("Erstellungsdatum"));
+			headline.addColumn(new Column("Modifikationsdatum"));
+
+			
+			report.addRow(headline);
+			
+			User owner=new User();
+			User sharedUser = new User();
+			
+			Row contactRow=new Row();
+			
+			owner=admin.getOwnerOfContact(contact);
+			sharedUser = admin.getSourceToSharedContact(contact, user);
+			
+	
+			contactRow.addColumn(new Column(String.valueOf(contact.getFirstname())));
+			contactRow.addColumn(new Column(String.valueOf(contact.getLastname())));
+			
+			
+			switch (contact.getSex()){
+				case "f":
+				contactRow.addColumn(new Column("weiblich"));
+				break;
+				case "m":
+				contactRow.addColumn(new Column("männlich"));
+				break;
+				case "o":
+				contactRow.addColumn(new Column("sonstige"));
+				break;
+			}
+
+			contactRow.addColumn(new Column(String.valueOf(owner.getEmail())));
+				
+			if (sharedUser.getEmail() != user.getEmail()){	
+				contactRow.addColumn(new Column(String.valueOf(sharedUser.getEmail())));
+				}else{
+					headline.removeColumn(colSharingUser);
+				}
+			
+			contactRow.addColumn(new Column(String.valueOf(contact.getCreationDate())));
+			contactRow.addColumn(new Column(String.valueOf(contact.getModificationDate())));
+			
+			report.addRow(contactRow);		
+			return report;
+
+			}			
+	}
 }

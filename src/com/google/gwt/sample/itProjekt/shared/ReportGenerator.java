@@ -6,6 +6,7 @@ import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.sample.itProjekt.shared.bo.Property;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
 import com.google.gwt.sample.itProjekt.shared.bo.Value;
+import com.google.gwt.sample.itProjekt.shared.report.AllContactInformationOfContactReport;
 import com.google.gwt.sample.itProjekt.shared.report.AllContactsOfUserReport;
 import com.google.gwt.sample.itProjekt.shared.report.AllContactsWithPropertyReport;
 import com.google.gwt.sample.itProjekt.shared.report.AllContactsWithValueReport;
@@ -80,6 +81,9 @@ public interface ReportGenerator extends RemoteService{
 	public abstract AllContactsWithValueReport generateAllContactsWithValueReport(User user, Value value) throws IllegalArgumentException;
 
 	public abstract AllValuesOfContactReport generateAllValuesOfContactReport(Contact contact, User user) throws IllegalArgumentException;
+	
+	public abstract AllContactInformationOfContactReport generateAllContactInformationOfContactReport(Contact contact, User user) throws IllegalArgumentException;
+
 	
 	/**
 	 * Auslesen aller im System angemeldeten Nutzer.

@@ -6,6 +6,7 @@ import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.sample.itProjekt.shared.bo.Property;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
 import com.google.gwt.sample.itProjekt.shared.bo.Value;
+import com.google.gwt.sample.itProjekt.shared.report.AllContactInformationOfContactReport;
 import com.google.gwt.sample.itProjekt.shared.report.AllContactsOfUserReport;
 import com.google.gwt.sample.itProjekt.shared.report.AllContactsWithPropertyReport;
 import com.google.gwt.sample.itProjekt.shared.report.AllContactsWithValueReport;
@@ -40,6 +41,9 @@ public interface ReportGeneratorAsync {
 	void getAllUsers(AsyncCallback<Vector<User>> asyncCallback);
 
 	void getAllPredefinedPropertiesOfReport(AsyncCallback<Vector<Property>> callback);
+
+	void generateAllContactInformationOfContactReport(Contact contact, User user,
+			AsyncCallback<AllContactInformationOfContactReport> callback);
 
 	
 	
