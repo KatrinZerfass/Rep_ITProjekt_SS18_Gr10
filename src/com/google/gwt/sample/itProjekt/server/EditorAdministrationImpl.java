@@ -39,11 +39,11 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	public boolean isUserKnown (String email) throws IllegalArgumentException{
 	
 		//Wenn der User noch nicht in der Datenbank existiert, wird ein neuer User angelegt. 
-		if(uMapper.findByEMail(email).getEmail() == email){
-			return true;	
+		if(uMapper.findByEMail(email).getEmail() == null){
+			return false;	
 		}
 		else{
-			return false;
+			return true;
 		}
 	}
 	

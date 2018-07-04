@@ -204,7 +204,7 @@ public abstract class ClientsideFunctions {
 	        
 			VerticalPanel panel = new VerticalPanel();
 	        panel.setHeight("100");
-	        panel.setWidth("300");
+	        panel.setWidth("600");
 	        panel.setSpacing(10);
 	        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 	        panel.add(dialogBoxLabel);
@@ -213,6 +213,7 @@ public abstract class ClientsideFunctions {
 	        hpanel.add(ok);
 	        panel.add(multiUseTextBox);
 	        panel.add(nameTextBox);
+	        panel.add(sexListBox);
 	        panel.add(hpanel);
 
 	        setWidget(panel);
