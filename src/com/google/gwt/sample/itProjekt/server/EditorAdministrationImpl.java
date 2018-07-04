@@ -564,4 +564,40 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		
 		return streetValue;
 	}
+
+
+	@Override
+	public Vector<User> getAllParticipantsOfContact(Contact contact) throws IllegalArgumentException {
+		
+		return pmMapper.findAllParticipantsByCID(contact);
+	}
+
+
+	@Override
+	public Vector<String> getAllUserSuggestions() throws IllegalArgumentException {
+		
+		Vector<User> allUsers = uMapper.findAll();
+		Vector<Contact> allContacts = cMapper.findAll();
+		Vector<Value> contactValues = new Vector<Value>();
+		Vector<String> allUserEmails = new Vector<String>();
+		Vector<String> result = new Vector<String>();
+		String partResult = null;
+		
+		for(User u : allUsers) {
+			allUserEmails.add(u.getEmail());
+		}
+		
+		for(Contact c : allContacts) {
+			if(c.getIsUser()) {
+				contactValues = vMapper.getAllValueByCID(c);
+				for (Value v : contactValues) {
+					if(v.getPropertyid() == 3 && allUserEmails.contains(v.getContent()) && c.getOwner() == getUser(v.getContent()).getId()) {
+						partResult = v.getContent();
+					}
+				}
+				result.add(c.getFirstname() + " " + c.getLastname() + " (" + partResult + ")");
+			}
+		}
+		return null;
+	}
 }

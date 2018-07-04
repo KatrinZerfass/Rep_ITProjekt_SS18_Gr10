@@ -272,18 +272,31 @@ public abstract class ClientsideFunctions {
 
 			setdialogBoxLabel("Bitte geben Sie die Email-Adresse des Nutzers ein mit dem Sie die Kontaktliste teilen möchten.");
 			
-			editorAdministration.getAllUsers(new AsyncCallback<Vector<User>>() {
+//			editorAdministration.getAllUsers(new AsyncCallback<Vector<User>>() {
+//				public void onFailure(Throwable arg0) {
+//					Window.alert("Fehler beim holen aller User in der InputDialogBox");
+//				}
+//				@Override
+//				public void onSuccess(Vector<User> arg0) {
+//					
+//					for(User loopUser : arg0) {
+//						if (!loopUser.equals(user)) {
+//							getOracle().add(loopUser.getEmail());
+//						}
+//					}
+					
+			editorAdministration.getAllUserSuggestions(new AsyncCallback<Vector<String>>() {
+				@Override
 				public void onFailure(Throwable arg0) {
-					Window.alert("Fehler beim holen aller User in der InputDialogBox");
+					// TODO Auto-generated method stub
+					
 				}
 				@Override
-				public void onSuccess(Vector<User> arg0) {
-					
-					for(User loopUser : arg0) {
-						if (!loopUser.equals(user)) {
-							getOracle().add(loopUser.getEmail());
-						}
+				public void onSuccess(Vector<String> arg0) {
+					for(String s : arg0) {
+						getOracle().add(s);
 					}
+					
 					setSuggestBox(new SuggestBox(getOracle()));
 					
 					setText("Eingabe");
@@ -291,7 +304,7 @@ public abstract class ClientsideFunctions {
 					setGlassEnabled(true);
 					
 					VerticalPanel panel = new VerticalPanel();
-
+	
 			        panel.setHeight("100");
 			        panel.setWidth("300");
 			        panel.setSpacing(10);

@@ -115,5 +115,9 @@ public interface EditorAdministrationAsync {
 
 	void createUserContact(String firstname, String lastname, String sex, String email,
 			AsyncCallback<User> callback);
+
+	void getAllParticipantsOfContact(Contact contact, AsyncCallback<Vector<User>> callback);
+
+	void getAllUserSuggestions(AsyncCallback<Vector<String>> callback);
 }
 
