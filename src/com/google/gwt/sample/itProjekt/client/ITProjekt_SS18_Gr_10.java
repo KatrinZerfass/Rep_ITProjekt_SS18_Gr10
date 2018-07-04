@@ -4,20 +4,28 @@ package com.google.gwt.sample.itProjekt.client;
 import com.google.gwt.sample.itProjekt.shared.EditorAdministrationAsync;
 import com.google.gwt.sample.itProjekt.shared.LoginService;
 import com.google.gwt.sample.itProjekt.shared.LoginServiceAsync;
+import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
 
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.CellBrowser;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.SuggestBox;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
@@ -46,6 +54,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	ContactForm cf = null;
 	ContactListForm clf = null;
 	ContactListContactTreeViewModel clctvm = new ContactListContactTreeViewModel();
+	ClientsideFunctions.InputDialogBox createAccountBox = null;
 
 	/** Die Default-Kontaktliste MyContactsContactList mccl. */
 	ContactList mccl = new ContactList();
@@ -96,25 +105,62 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	    
 	    // Anlegen des User Objekts & Abspeichern in einer lokalen Variabel
 	    
-	    editorAdministration.getUserInformation(loginInfo.getEmailAddress(), new AsyncCallback<User>() {
+	    editorAdministration.isUserKnown(loginInfo.getEmailAddress(), new AsyncCallback<Boolean>() {
 			
 	    	public void onFailure(Throwable caught) {
-	    		Window.alert("AsyncCallback fehlgeschlagen1");			
+	    		Window.alert("AsyncCallback fehlgeschlagen: isUserKnown");			
 			}
 
-			public void onSuccess(User result) {
-				ClientsideSettings.setUser(result);
-				user = result;
-				loadApplication();
-  	
+			public void onSuccess(Boolean result) {
+				if (result) {
+					
+					
+					editorAdministration.getUser(loginInfo.getEmailAddress(), new AsyncCallback<User>() {
+						public void onFailure(Throwable arg0) {
+							Window.alert("AsyncCallback fehlgeschlagen: getUser");
+						}
+						public void onSuccess(User arg0) {
+							ClientsideSettings.setUser(arg0);
+							user = arg0;
+							loadApplication();
+						}
+					});
+				}
 				
+				else {
+					createAccountBox = new ClientsideFunctions.InputDialogBox(loginInfo.getEmailAddress());
+					
+					createAccountBox.getOKButton().addClickHandler(new ClickHandler() {
+						
+						public void onClick(ClickEvent arg0) {
+							if(ClientsideFunctions.checkName(createAccountBox.getMultiUseTextBox().getText()) && ClientsideFunctions.checkName(createAccountBox.getNameTextBox().getText())) {
+								editorAdministration.createUserContact(createAccountBox.getMultiUseTextBox().getText(), createAccountBox.getNameTextBox().getText(), createAccountBox.getSexListBox().getSelectedItemText(), loginInfo.getEmailAddress(), user, new AsyncCallback<Contact>() {
+									public void onFailure(Throwable arg0) {
+										Window.alert("AsyncCallback fehlgeschlagen: createContact");
+										createAccountBox.hide();
+									}
+									public void onSuccess(Contact arg0) {
+										Window.alert("Herzlich Willkommen!");
+										createAccountBox.hide();
+										loadApplication();
+									}
+								});
+							}
+							else {
+								createAccountBox.hide();
+							}
+						}
+					});
+				}
 			}
-   		
 	    });
   	}	    				
 		
   	
   	public void loadApplication(){
+  		
+  		//Window.alert(loginInfo.getNickname());
+  		
 		/*
 		 * Im Folgenden wird das GUI aufgebaut
 		 */
@@ -172,7 +218,6 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		cellBrowser.setWidth("100%");
 		cellBrowser.setAnimationEnabled(true);
 		cellBrowser.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
-		Window.alert("nach CellBrowser");
 		
 		RootPanel.get("Navigator").add(cellBrowser);
 		

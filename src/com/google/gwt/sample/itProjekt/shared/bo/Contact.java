@@ -22,12 +22,13 @@ public class Contact extends BusinessObject {
 	/** Der Besitzer des Kontakts. */
 	private int owner;
 	
+	private boolean isUser = false;
+	
 	/** Erstellungsdatum des Kontakts. */
 	private Timestamp creationdate;
 		
 	/** Modifikationsdatum des Kontakts. */
 	private Timestamp modificationdate;
-	
 	
 	/**
 	 * Auslesen des Vornamens.  
@@ -118,5 +119,13 @@ public class Contact extends BusinessObject {
 		
 	public Timestamp getModificationDate(){
 		return modificationdate;
+	}
+
+	public boolean getIsUser() {
+		return isUser;
+	}
+
+	public void setIsUser(boolean isUser) {
+		this.isUser = isUser;
 	}
 }
