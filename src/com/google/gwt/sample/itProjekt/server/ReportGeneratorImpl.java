@@ -470,10 +470,12 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 @Override
 	public AllValuesOfContactReport generateAllValuesOfContactReport(Contact contact, User user)
 			throws IllegalArgumentException {
+			System.out.println("in der GenerateAllValuesOfContact");
 		if(this.getEditorAdministration()==null) {
 			return null;
 		} 
 		else {
+			System.out.println("geht in die Else schleife");
 			AllValuesOfContactReport report = new AllValuesOfContactReport();
 			
 			report.setTitle("Alle Eigenschaften des Kontaktes");
@@ -509,7 +511,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			}else{
 				contactRow.addColumn(new Column(String.valueOf("")));
 			}
-			
+			System.out.println("contact get firstname vorher");
 			contactRow.addColumn(new Column(String.valueOf(contact.getFirstname())));
 			contactRow.addColumn(new Column(String.valueOf(contact.getLastname())));
 			
@@ -527,7 +529,8 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			
 			
 			report.addRow(contactRow);
-			
+			System.out.println("contact get firstname vorher");
+
 			if(allPermissions.size()> 0){
 				User u = new User();
 				headline.addColumn(new Column("Teilhaber"));
@@ -559,7 +562,8 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			report.addRow(headline);
 		
 			Vector<Value> allValues=this.admin.getAllValuesOfContact(contact);
-			
+			System.out.println("Der Vektor enthält:" +allValues.size());
+
 			if(allValues.size()!=0){
 				if(headline.getNumColumns() < 9){
 					headline.addColumn(new Column("Eigenschaft"));
