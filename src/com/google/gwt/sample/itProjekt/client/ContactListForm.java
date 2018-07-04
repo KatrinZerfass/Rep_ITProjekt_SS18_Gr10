@@ -357,7 +357,7 @@ public class ContactListForm extends VerticalPanel{
 						}
 						@Override
 						public void onSuccess(Void arg0) {
-							Window.alert(clctvm.getSelectedContactList().getName());
+							//Window.alert(clctvm.getSelectedContactList().getName());
 							Window.alert("Kontaktliste erfolgreich gelöscht.");	
 							clctvm.removeContactList(clctvm.getSelectedContactList());
 							clctvm.setSelectedContactList(clctvm.getMyContactsContactList());
