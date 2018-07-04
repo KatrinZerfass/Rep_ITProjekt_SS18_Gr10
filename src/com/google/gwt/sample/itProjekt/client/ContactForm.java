@@ -747,6 +747,13 @@ public class ContactForm extends VerticalPanel {
 			deleteValueButton.setValue(value);
 		}
 		
+		public void setValue(Value v, boolean adressTable) {
+			this.value =v;
+			//this.remove(0);
+			lockButton.setValue(value);
+			deleteValueButton.setValue(value);
+		}
+		
 		/**
 		 * Getter von <code>value</code>
 		 * 
@@ -1657,8 +1664,8 @@ public class ContactForm extends VerticalPanel {
 							}
 							public void onSuccess(Value street) {
 								streetTextBox.setValue(street);
-								((LockButton) addressTable.getWidget(0, 2)).setValue(street);
-								((DeleteValueButton) addressTable.getWidget(0,3)).setValue(street);
+								((ValueDisplay) addressTable.getWidget(0, 2)).setValue(street, true);
+								//((DeleteValueButton) addressTable.getWidget(0,3)).setValue(street);
 								Window.alert("Adresse erfolgreich angelegt");
 							}
 						});
