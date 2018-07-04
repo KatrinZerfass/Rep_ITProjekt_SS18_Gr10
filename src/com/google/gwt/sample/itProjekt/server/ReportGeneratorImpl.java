@@ -587,7 +587,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	
 			report.addRow(headline);
 		
-			Vector<Value> allValues=this.admin.getAllValuesOf(contact);
+			Vector<Value> allValues=this.admin.getAllValuesOfContact(contact);
 			
 			if(allValues.size()!=0){
 				for(Value value :allValues){
