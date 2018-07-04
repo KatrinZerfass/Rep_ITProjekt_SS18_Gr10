@@ -6,6 +6,8 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.sample.itProjekt.shared.EditorAdministrationAsync;
 import com.google.gwt.sample.itProjekt.shared.ReportGeneratorAsync;
+import com.google.gwt.sample.itProjekt.shared.bo.Contact;
+import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -150,9 +152,19 @@ public abstract class ClientsideFunctions {
 		}
 	}
 	
-	public static boolean compareUser (User user, ContactListContactTreeViewModel clctvm) {
+	public static boolean isOwner (Contact c, User user) {
 		
-		if (user.getId() == clctvm.getSelectedContact().getOwner()) {
+		if (user.getId() == c.getOwner()) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public static boolean isOwner (ContactList cl, User user) {
+		
+		if (user.getId() == cl.getOwner()) {
 			return true;
 		}
 		else {

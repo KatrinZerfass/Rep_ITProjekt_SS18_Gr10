@@ -1274,7 +1274,7 @@ public class ContactForm extends VerticalPanel {
 				Window.alert("Sie können sich selbst nicht löschen!");
 			}
 			else{
-				editorAdministration.deleteContact(contactToDisplay, ClientsideFunctions.compareUser(currentUser, clctvm), currentUser, new AsyncCallback<Void>() {
+				editorAdministration.deleteContact(contactToDisplay, ClientsideFunctions.isOwner(contactToDisplay, currentUser), currentUser, new AsyncCallback<Void>() {
 					public void onFailure(Throwable arg0) {
 						Window.alert("Fehler beim Löschen des Kontakts!");
 					}
@@ -1933,7 +1933,7 @@ public class ContactForm extends VerticalPanel {
 			 */
 		
 			
-			if(!ClientsideFunctions.compareUser(currentUser, clctvm)) {
+			if(!ClientsideFunctions.isOwner(contactToDisplay, currentUser)) {
 				saveChangesButton.setEnabled(false);
 			//	removeContactFromContactListButton.setEnabled(false);
 				firstnameTextBox.setEnabled(false);
@@ -2064,7 +2064,7 @@ public class ContactForm extends VerticalPanel {
 			
 			boolean isFirstValue = false;
 			
-			if(ClientsideFunctions.compareUser(currentUser, clctvm)){
+			if(ClientsideFunctions.isOwner(contactToDisplay, currentUser)){
 				if(i==0) {
 					isFirstValue = true;
 				}else if(i!=0 && allValuesOfContact.get(i-1).getPropertyid() != pid) {
@@ -2132,7 +2132,7 @@ public class ContactForm extends VerticalPanel {
 						
 				case 4:  // Geburtstag
 					identifier = "Geburtstag";
-					if(ClientsideFunctions.compareUser(currentUser, clctvm) || (!ClientsideFunctions.compareUser(currentUser, clctvm) && allValuesOfContact.get(i).getIsShared()==true)) {
+					if(ClientsideFunctions.isOwner(contactToDisplay, currentUser) || (!ClientsideFunctions.isOwner(contactToDisplay, currentUser) && allValuesOfContact.get(i).getIsShared()==true)) {
 							/*
 							 * Eine Ausprägung zu Geburtstag kann nur einmal vorhanden sein. Demzufolge gibt es hierfür auch keine ValueTable.
 							 * Das ValueDisplay, in dem sich die TextBox für das Geburtsdatum befindet, wird direkt angesprochen.
@@ -2144,7 +2144,7 @@ public class ContactForm extends VerticalPanel {
 							((ValueDisplay) contactTable.getWidget(3, 3)).getWidget(0).setWidth("105px");
 							((ValueDisplay) contactTable.getWidget(3,3)).setValue(allValuesOfContact.get(i));
 							
-							if (ClientsideFunctions.compareUser(currentUser, clctvm)) {
+							if (ClientsideFunctions.isOwner(contactToDisplay, currentUser)) {
 								((ValueDisplay) contactTable.getWidget(3, 3)).enableButtons();
 								
 								if(allValuesOfContact.get(i).getIsShared() == true){
@@ -2182,7 +2182,7 @@ public class ContactForm extends VerticalPanel {
 				case 6:  // Straße
 						
 						row = contactTable.getRowCount();
-						if(ClientsideFunctions.compareUser(currentUser, clctvm) || (!ClientsideFunctions.compareUser(currentUser, clctvm) && allValuesOfContact.get(i).getIsShared()==true)) {
+						if(ClientsideFunctions.isOwner(contactToDisplay, currentUser) || (!ClientsideFunctions.isOwner(contactToDisplay, currentUser) && allValuesOfContact.get(i).getIsShared()==true)) {
 						
 							Label addressLabel = new Label("Anschrift: ");
 							contactTable.setWidget(row, 0, addressLabel);
@@ -2214,7 +2214,7 @@ public class ContactForm extends VerticalPanel {
 							((ValueDisplay) addressTable.getWidget(0, 2)).setValue(allValuesOfContact.get(i));
 							
 							
-							if(ClientsideFunctions.compareUser(currentUser, clctvm)) {
+							if(ClientsideFunctions.isOwner(contactToDisplay, currentUser)) {
 								((ValueDisplay) addressTable.getWidget(0, 2)).enableButtons();
 //								((LockButton) addressTable.getWidget(0, 2)).setEnabled(true);
 //								((DeleteValueButton) addressTable.getWidget(0,3)).setEnabled(true);
@@ -2274,7 +2274,7 @@ public class ContactForm extends VerticalPanel {
 
 				row = contactTable.getRowCount();
 
-				if(ClientsideFunctions.compareUser(currentUser, clctvm) || (!ClientsideFunctions.compareUser(currentUser, clctvm) && allValuesOfContact.get(i).getIsShared()==true)) {
+				if(ClientsideFunctions.isOwner(contactToDisplay, currentUser) || (!ClientsideFunctions.isOwner(contactToDisplay, currentUser) && allValuesOfContact.get(i).getIsShared()==true)) {
 
 					
 					if(isFirstValue) {
@@ -2336,7 +2336,7 @@ public class ContactForm extends VerticalPanel {
 					/*
 					 * Das korrekte ValuePanel und ValueTable werden gesetzt und im Folgenden auf ihnen operiert.
 					 */
-					if (ClientsideFunctions.compareUser(currentUser, clctvm)) {
+					if (ClientsideFunctions.isOwner(contactToDisplay, currentUser)) {
 						vt.getValueDisplay(vtRow).enableButtons();
 						vp.getAddValueButton().setEnabled(true);
 						if(allValuesOfContact.get(i).getIsShared() == true){
