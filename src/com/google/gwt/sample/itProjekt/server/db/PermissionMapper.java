@@ -296,6 +296,18 @@ public Permission update(Permission permission){
 						+ permission.getSourceUserID()
 						+ ")") ;
 			
+			
+			
+				return permission;
+				
+				}
+		
+			
+		catch (SQLException e2){
+			e2.printStackTrace();
+			return permission;
+			}
+		finally {
 			ContactList cl= new ContactList();
 			cl.setId(permission.getShareableObjectID());
 						
@@ -312,14 +324,7 @@ public Permission update(Permission permission){
 					shareContact(p);
 					}
 				}}
-			
-			return permission;	
-				
-				}
-		catch (SQLException e2){
-			e2.printStackTrace();
-			return permission;
-			}
+		}
 		}
 	
 
@@ -502,5 +507,37 @@ public User getSourceUserByUIDAndCID(User user, Contact contact){
 			}
 			return user;
 		}
+/**
+ * FindAllParticipantsByCID.
+ *
+ * Sucht nach den Usern welche an einen Contact geteilt wurden
+ * Hierfür suchen wir nach allen U_ID die der C_ID der ID des contact Objekts in der T_Permission_Contact
+ * und speichern die gefundene U_ID in ein User Objekt
+ * Durch den Aufruf der findByID im UserMapper wird das User Objekt vollständig befüllt
+ * Die User schreiben wir in ein Vektor. Zum Schluss geben wir den Vektor zurück
+ * 
+ * @param contact übergebenes Contact Objekt mit Attribut C_ID
+ * 
+ * @author Egor Krämer
+ * @author Robert Mattheis
+ */
+public Vector <User> findAllParticipantsByCID(Contact contact){
+	
+	Connection con = DBConnection.connection();
+	Vector <User> result = new Vector <User>();		
+			try{
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT U_ID FROM T_Permission_Contact WHERE U_C_ID=" + contact.getId());
+				
+				while (rs.next()){									
+					result.addElement(UserMapper.userMapper().findByID(rs.getInt("U_ID")));
+				}				
+			}catch(SQLException e2){
+				e2.printStackTrace();
+				return result;
+			}
+			return result;
+		}
+
 
 }
