@@ -1,47 +1,23 @@
 package com.google.gwt.sample.itProjekt.client;
 
-import com.google.gwt.sample.itProjekt.client.ContactForm.CloseButton;
-import com.google.gwt.sample.itProjekt.client.ContactForm.EmailDialogBox;
-import com.google.gwt.sample.itProjekt.shared.CommonSettings;
+
 import com.google.gwt.sample.itProjekt.shared.EditorAdministrationAsync;
 import com.google.gwt.sample.itProjekt.shared.LoginService;
 import com.google.gwt.sample.itProjekt.shared.LoginServiceAsync;
-import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
-import com.google.gwt.sample.itProjekt.shared.bo.Permission;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
-import com.google.gwt.sample.itProjekt.shared.bo.Value;
 
-import java.util.Vector;
-
-import org.apache.tools.ant.taskdefs.Sync.MyCopy;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyUpEvent;
-import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.cellview.client.CellBrowser;
-import com.google.gwt.user.cellview.client.CellList;
-import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
-import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.SuggestBox;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
@@ -173,17 +149,13 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		 */
 		clctvm.setContactForm(cf);
 		cf.setClctvm(clctvm);
-		Window.alert("vor zuweiseung");
 		clf.setClctvm(clctvm);
-		Window.alert("nach Zuweiseung");
 		
 		/*
 		 * Die default-Kontaktliste "Meine Kontakte" wird erstellt.
 		 */
 		mccl.setName("Meine Kontakte");
-		Window.alert(user.getEmail());
 		mccl.setOwner(user.getId());
-		Window.alert("hey");
 		mccl.setId(5);
 		
 		mccl.setMyContactsFlag(true);
