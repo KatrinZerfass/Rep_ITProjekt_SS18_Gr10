@@ -174,8 +174,8 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		
 		createValue(createContact(firstname, lastname, sex, createUser(email)).configureIsUser(true), 3, email);
 		
-		//return getOwnerOfContact(vMapper.findContactByVID(createValue(createContact(firstname, lastname, sex, createUser(email)).configureIsUser(true), 3, email)));
-		return getUser(email);
+		return getOwnerOfContact(vMapper.findContactByVID(createValue(createContact(firstname, lastname, sex, createUser(email)).configureIsUser(true), 3, email)));
+		//return getUser(email);
 	}
 
 	@Override
