@@ -112,14 +112,15 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 			}
 
 			public void onSuccess(Boolean result) {
+				Window.alert("isUserKnow: " + result);
 				if (result) {
-					
 					
 					editorAdministration.getUser(loginInfo.getEmailAddress(), new AsyncCallback<User>() {
 						public void onFailure(Throwable arg0) {
 							Window.alert("AsyncCallback fehlgeschlagen: getUser");
 						}
 						public void onSuccess(User arg0) {
+							Window.alert("getUser() erfolgreich");
 							ClientsideSettings.setUser(arg0);
 							user = arg0;
 							loadApplication();
@@ -128,20 +129,23 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 				}
 				
 				else {
+					Window.alert("springt in else");
 					createAccountBox = new ClientsideFunctions.InputDialogBox(loginInfo.getEmailAddress());
 					
 					createAccountBox.getOKButton().addClickHandler(new ClickHandler() {
 						
 						public void onClick(ClickEvent arg0) {
 							if(ClientsideFunctions.checkName(createAccountBox.getMultiUseTextBox().getText()) && ClientsideFunctions.checkName(createAccountBox.getNameTextBox().getText())) {
-								editorAdministration.createUserContact(createAccountBox.getMultiUseTextBox().getText(), createAccountBox.getNameTextBox().getText(), createAccountBox.getSexListBox().getSelectedItemText(), loginInfo.getEmailAddress(), user, new AsyncCallback<Contact>() {
+								editorAdministration.createUserContact(createAccountBox.getMultiUseTextBox().getText(), createAccountBox.getNameTextBox().getText(), createAccountBox.getSexListBox().getSelectedItemText(), loginInfo.getEmailAddress(), user, new AsyncCallback<User>() {
 									public void onFailure(Throwable arg0) {
 										Window.alert("AsyncCallback fehlgeschlagen: createContact");
 										createAccountBox.hide();
 									}
-									public void onSuccess(Contact arg0) {
+									public void onSuccess(User arg0) {
 										Window.alert("Herzlich Willkommen!");
 										createAccountBox.hide();
+										ClientsideSettings.setUser(arg0);
+										user = arg0;
 										loadApplication();
 									}
 								});

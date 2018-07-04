@@ -175,7 +175,8 @@ public abstract class ClientsideFunctions {
 
         Button ok = new Button("OK");
 		
-		public InputDialogBox(String user) {
+		public InputDialogBox(String userEmail) {
+			Window.alert("InputDialogBox instanziert");
 			
 			setMultiUseTextBox(new TextBox());
 			getMultiUseTextBox().getElement().setPropertyString("placeholder", "Vorname...");
@@ -189,15 +190,13 @@ public abstract class ClientsideFunctions {
 			sexListBox.addItem("männlich");
 			sexListBox.addItem("weiblich");
 			sexListBox.addItem("Sonstiges");
-			sexListBox.getElement().setPropertyString("placeholder", "Geschlecht...");
+			//sexListBox.getElement().setPropertyString("placeholder", "Geschlecht...");
 			
 			ok.addStyleName("okbutton");
 	        close.addStyleName("closebutton");
 
-			Window.alert("InputDialogBox instanziert");
-			
 			setText("Eingabe");
-			setdialogBoxLabel(user + " ist noch nicht registriert\nBitte geben Sie Ihren Information an:");
+			setdialogBoxLabel(userEmail + " ist noch nicht registriert.\nBitte geben Sie Ihre Informationen an:");
 			
 			setAnimationEnabled(true);
 			setGlassEnabled(true);
