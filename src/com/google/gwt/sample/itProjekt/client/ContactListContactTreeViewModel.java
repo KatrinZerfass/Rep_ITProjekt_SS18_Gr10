@@ -206,14 +206,13 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 			contactListDataProvider.getList().add(cl);
 			selectionModel.setSelected(cl, true);
 			BusinessObject selection = selectionModel.getSelectedObject();
-			Window.alert(selection.toString());
 			setSelectedContactList((ContactList) selection);
 			
 		}
 		if(cl == valueResultsCL) {
 			valueResults = contacts;
 			contactListDataProvider.getList().add(cl);
-			//selectionModel.setSelected(cl, true);
+			selectionModel.setSelected(cl, true);
 		}
 		
 	}
@@ -224,24 +223,11 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 			return;
 		}
 		
+			
+		contactDataProviders.get(cl).getList().remove(contact);
+		selectionModel.setSelected(cl, true);
+		
 
-				
-//		ListDataProvider<Contact> contactsProvider = contactDataProviders.get(cl);
-//		Window.alert(contactsProvider.getList().toString());
-//		contactsProvider.getList().remove(contactsProvider.getKey(c));
-//		contactListDataProvider.flush();
-				
-		//int selectedIndex =  contactDataProviders.getList(cl).indexOf(selectionModel.getSelectedObject());
-		
-		//selectionModel.setSelected(cl, true);
-		//contactDataProviders.getList().remove(c);
-		
-		
-		contactListDataProvider.refresh();
-		//TODO was tut refresh?
-		
-		
-		//contactListDataProvider.setList(contactListDataProvider.getList());
 	}
 	
 	public void addNameResults () {
@@ -279,6 +265,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	 * Die Methode getNodeInfo gibt für jeden Knoten im TreeViewModel dessen Kinder wieder 
 	 */
 	public <T> NodeInfo<?> getNodeInfo(T value) {
+		
 		
 		user = ClientsideSettings.getUser();
 		
@@ -325,11 +312,15 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 						for (Contact c : contacts) {
 							contactsProvider.getList().add(c);
 							contactForm.disableRemoveContactButton();
+							Window.alert("onS" + contactsProvider.getList().size());
+							
 						}
 					}
 				});
-				return new DefaultNodeInfo<Contact>(contactsProvider,
-						new ContactCell(), selectionModel, null);
+				Window.alert("danach" + contactsProvider.getList().size());
+				return new DefaultNodeInfo<Contact>(contactsProvider,new ContactCell(), selectionModel, null);
+				
+						
 				
 			/* 
 			 * Der Nutzer ist Eigentümer der Kontakliste 
@@ -345,6 +336,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 						for (Contact c : contacts) {
 								contactsProvider.getList().add(c);
 						}
+						contactListDataProvider.refresh();
 					}
 				});
 					return new DefaultNodeInfo<Contact>(contactsProvider,

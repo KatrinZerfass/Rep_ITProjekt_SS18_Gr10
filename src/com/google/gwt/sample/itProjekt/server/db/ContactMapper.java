@@ -58,7 +58,7 @@ public class ContactMapper {
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID, create_date, mod_date FROM T_Contact WHERE C_ID =" + contact.getId() + " ORDER BY C_ID");
+			ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID, create_date, mod_date, isUser FROM T_Contact WHERE C_ID =" + contact.getId() + " ORDER BY C_ID");
 			if (rs.next()){
 				Contact c = new Contact();
 				c.setId(rs.getInt("C_ID"));
@@ -68,6 +68,7 @@ public class ContactMapper {
 				c.setOwner(rs.getInt("U_ID"));
 				c.setCreationDate(rs.getTimestamp("create_date"));
 				c.setModificationDate(rs.getTimestamp("mod_date"));
+				c.setIsUser(rs.getBoolean("isUser"));
 				return c;	
 			}
 		}
@@ -95,7 +96,7 @@ Vector<Contact> result = new Vector<Contact>();
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID, create_date, mod_date FROM T_Contact ORDER BY C_ID");
+			ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID, create_date, mod_date, isUser FROM T_Contact ORDER BY C_ID");
 			
 			while (rs.next()){
 				Contact c = new Contact();
@@ -106,6 +107,7 @@ Vector<Contact> result = new Vector<Contact>();
 				c.setOwner(rs.getInt("U_ID"));
 				c.setCreationDate(rs.getTimestamp("create_date"));
 				c.setModificationDate(rs.getTimestamp("mod_date"));
+				c.setIsUser(rs.getBoolean("isUser"));
 				result.addElement(c);
 			}		
 		}catch(SQLException e2){
@@ -131,7 +133,7 @@ Vector<Contact> result = new Vector<Contact>();
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID, create_date, mod_date FROM T_Contact WHERE firstName ='" + contact.getFirstname() + "' AND lastName='" + contact.getLastname() + "' ORDER BY C_ID");
+			ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID, create_date, mod_date, isUser FROM T_Contact WHERE firstName ='" + contact.getFirstname() + "' AND lastName='" + contact.getLastname() + "' ORDER BY C_ID");
 			while (rs.next()){
 				Contact c = new Contact();
 				c.setId(rs.getInt("C_ID"));
@@ -141,6 +143,7 @@ Vector<Contact> result = new Vector<Contact>();
 				c.setOwner(rs.getInt("U_ID"));
 				c.setCreationDate(rs.getTimestamp("create_date"));
 				c.setModificationDate(rs.getTimestamp("mod_date"));
+				c.setIsUser(rs.getBoolean("isUser"));
 				result.addElement(c);	
 			}
 		}
@@ -170,7 +173,7 @@ Vector<Contact> result = new Vector<Contact>();
 				try{
 					Statement stmt = con.createStatement();
 					
-					ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID, create_date, mod_date FROM T_Contact WHERE U_ID=" + user.getId()+ " ORDER BY C_ID");
+					ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID, create_date, mod_date, isUser FROM T_Contact WHERE U_ID=" + user.getId()+ " ORDER BY C_ID");
 						while (rs.next()){
 						
 						Contact c = new Contact();
@@ -181,7 +184,7 @@ Vector<Contact> result = new Vector<Contact>();
 						c.setOwner(rs.getInt("U_ID"));
 						c.setCreationDate(rs.getTimestamp("create_date"));
 						c.setModificationDate(rs.getTimestamp("mod_date"));
-						
+						c.setIsUser(rs.getBoolean("isUser"));
 						result.addElement(c);
 					}		
 				}catch(SQLException e2){
@@ -219,7 +222,7 @@ Vector<Contact> result = new Vector<Contact>();
 				
 				contact.setId(rs.getInt("maxcid")+1);
 				Statement stmt2 = con.createStatement();
-				stmt2.executeUpdate("INSERT INTO T_Contact (C_ID, firstName, lastName, gender, create_date, mod_date, U_ID)"
+				stmt2.executeUpdate("INSERT INTO T_Contact (C_ID, firstName, lastName, gender, create_date, mod_date, U_ID, isUser)"
 				+ " VALUES ('"
 				+ contact.getId() 
 				+ "', '" 
@@ -231,10 +234,11 @@ Vector<Contact> result = new Vector<Contact>();
 				+ "', '" 
 				+ s
 				+ "', '"
-				//+ "CURRENT_TIMESTAMP"
 				+ s
 				+ "', " 
 				+ user.getId()
+				+", "
+				+ contact.getIsUser()
 				+ ")") ;
 						
 				return contact;	
@@ -393,7 +397,7 @@ Connection con = DBConnection.connection();
 			
 			try{
 				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID, create_date, mod_date FROM T_Contact WHERE firstName LIKE'%" +name+ "%' OR lastName LIKE'%" + name+ "%' ORDER BY C_ID");
+				ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID, create_date, mod_date, isUser FROM T_Contact WHERE firstName LIKE'%" +name+ "%' OR lastName LIKE'%" + name+ "%' ORDER BY C_ID");
 				while (rs.next()){
 					Contact c = new Contact();
 					c.setId(rs.getInt("C_ID"));
@@ -403,6 +407,7 @@ Connection con = DBConnection.connection();
 					c.setOwner(rs.getInt("U_ID"));
 					c.setCreationDate(rs.getTimestamp("create_date"));
 					c.setModificationDate(rs.getTimestamp("mod_date"));
+					c.setIsUser(rs.getBoolean("isUser"));
 					result.addElement(c);	
 				}
 			}

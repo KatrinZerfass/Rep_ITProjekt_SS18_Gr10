@@ -344,7 +344,9 @@ public class ContactForm extends VerticalPanel {
 							{Window.alert("Die Ausprägung wurde gelöscht. 2");};
 						});//TODO WTF is this?!
 					}
+					setSelected(contactToDisplay);
 				}
+				
 			});
 				
 		}
@@ -1280,7 +1282,7 @@ public class ContactForm extends VerticalPanel {
 					}
 				});
 				
-		       setSelected(null);
+		       //setSelected(null);
 			}
 		}
 	}
@@ -2229,8 +2231,8 @@ public class ContactForm extends VerticalPanel {
 					
 				} //ende der switch case
 			
-			if(pid!= 6 && pid!=7 && pid !=8 && pid!=9) {
-				
+			
+
 				row = contactTable.getRowCount();
 				if(ClientsideFunctions.compareUser(currentUser, clctvm) || (!ClientsideFunctions.compareUser(currentUser, clctvm) && allValuesOfContact.get(i).getIsShared()==true)) {
 					
@@ -2274,8 +2276,9 @@ public class ContactForm extends VerticalPanel {
 					vt.getValueDisplay(vtRow).setValue(allValuesOfContact.get(i));
 					
 					
+
 					/*
-					 * Gleiches Prinzip wie gerade schon, nur jetzt für das soeben neu hinzugefügte ValueDisplay.
+					 * Das korrekte ValuePanel und ValueTable werden gesetzt und im Folgenden auf ihnen operiert.
 					 */
 					if (ClientsideFunctions.compareUser(currentUser, clctvm)) {
 						vt.getValueDisplay(vtRow).enableButtons();
@@ -2291,15 +2294,15 @@ public class ContactForm extends VerticalPanel {
 						vp.getAddValueButton().setEnabled(false);
 						
 					}
-					
-					for(int c=0; c<newPropertyListBox.getItemCount(); c++) {
-						if (newPropertyListBox.getItemText(c) == ptype) {
-							newPropertyListBox.removeItem(c);
-						}
+
+				
+				for(int c=0; c<newPropertyListBox.getItemCount(); c++) {
+					if (newPropertyListBox.getItemText(c) == ptype) {
+						newPropertyListBox.removeItem(c);
 					}
 				}
 			}
-			
+		
 		}//ende der for-schleife
 	}
 	
