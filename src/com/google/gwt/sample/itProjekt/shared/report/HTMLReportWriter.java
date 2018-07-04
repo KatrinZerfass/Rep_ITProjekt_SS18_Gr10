@@ -3,8 +3,6 @@ package com.google.gwt.sample.itProjekt.shared.report;
 import java.io.Serializable;
 import java.util.Vector;
 
-import com.google.gwt.user.client.Window;
-import com.sun.org.apache.bcel.internal.generic.INSTANCEOF;
 
 /**
  * Ein ReportWriter, der Reports mittels HTML formatiert. Das im Zielformat
@@ -76,8 +74,6 @@ public class HTMLReportWriter implements Serializable{
 	 * @see com.google.gwt.sample.itProjekt.shared.report.ReportWriter#process(com.google.gwt.sample.itProjekt.shared.report.AllContactsOfUserReport)
 	 */
 	public void process(AllContactsOfUserReport r) {
-		Window.alert("arsch");
-		Window.alert(r.getTitle());
 		this.resetReportText();
 		
 		StringBuffer result=new StringBuffer();
@@ -95,152 +91,169 @@ public class HTMLReportWriter implements Serializable{
 		 
 //		Vector<Row> rows=r.getRows();
 //		result.append("<table class=\"reporttable\">");
-		System.out.println(r.getNumSubReports());
-		Window.alert("" + r.getNumSubReports());
-		for (int i = 0; i < r.getNumSubReports(); i++) {
-			AllValuesOfContactReport subReport = (AllValuesOfContactReport) 
-			r.getSubReportAt(i);
-			AllContactInformationOfContactReport subReport1=(AllContactInformationOfContactReport)
-			r.getSubReportAt(i);
-			if(subReport instanceof AllValuesOfContactReport){
-			this.process(subReport);
-			}
-			else{
+
+		AllContactInformationOfContactReport subReport2=(AllContactInformationOfContactReport) r.getSubReportAt(0);
+		this.process(subReport2);
+		result.append(this.reportText + "\n");
+	    this.resetReportText();
+		
+		for (int i = 1; i < r.getNumSubReports(); i++) {
+			if(r.getSubReportAt(i) instanceof AllContactInformationOfContactReport){
+				result.append("<hr>");
+				AllContactInformationOfContactReport subReport1=(AllContactInformationOfContactReport)
+				r.getSubReportAt(i);
 				this.process(subReport1);
 			}
-		    result.append(this.reportText + "\n");
+			else{
+				AllValuesOfContactReport subReport = (AllValuesOfContactReport) 			
+				r.getSubReportAt(i);
+				this.process(subReport);
+				}
+			
+			result.append(this.reportText + "\n");
 		    this.resetReportText();
-		}
-		Window.alert(result.toString());
+			}
 		this.reportText=result.toString();
 	  }
 	   	
 
 	public void process(AllSharedContactsOfUserReport r) {
-		System.out.println("springt in 2. process");
 		this.resetReportText();
 		
 		StringBuffer result=new StringBuffer();
 		
 		result.append("<H1>" + r.getTitle() + "</H1>");
 		result.append("<table class=\"infotable\"><tr>");
-		result.append("<td valign=\"top\"><b>" + p2HTML(r.getHeaderData()) + "</b></td>");
-		result.append("<tr></tr><td>" + r.getCreated().toString()+ "</td></tr></table>");
+		if (r.getHeaderData() != null) {
+		      result.append("<td valign=\"top\"><b>" + p2HTML(r.getHeaderData()) + "</b></td>");
+		    }
 		
-		Vector<Row> rows=r.getRows();
-		result.append("<table class=\"reporttable\">");
+//		result.append("<td " + p2HTML(r.getHeaderData()) + "</td>");
+		result.append("<tr></tr><td>" + r.getCreated().toString()+ "</td></tr><tr></tr></table>");
+//		 result.append("</tr><tr><td></td><td>" + r.getCreated().toString()
+//			        + "</td></tr></table>");
+		 
+//		Vector<Row> rows=r.getRows();
+//		result.append("<table class=\"reporttable\">");
+		AllContactInformationOfContactReport subReport2=(AllContactInformationOfContactReport) r.getSubReportAt(0);
+		this.process(subReport2);
+		result.append(this.reportText + "\n");
+	    this.resetReportText();
 		
-		for (int i=0; i<rows.size();i++) {
-			Row row=rows.elementAt(i);
-			result.append("<tr>");
-			for(int k=0; k<row.getNumColumns();k++) {
-				if (i==0) {
-					result.append("<td class=\"columnhead\">" + row.getColumnAt(k)
-		              + "</td>");
-				}
-				else {
-					if(i>1) {
-						result.append("<td class=\"reporttd\" valign=\"top\">" + row.getColumnAt(k)+ "</td>");
-					}
-					else {
-						result.append("<td class=\"reporttd\"  valign=\"top\">" + row.getColumnAt(k)+ "</td>");
-					}
-				}
+	    for (int i = 1; i < r.getNumSubReports(); i++) {
+			if(r.getSubReportAt(i) instanceof AllContactInformationOfContactReport){
+				result.append("<hr>");
+				AllContactInformationOfContactReport subReport1=(AllContactInformationOfContactReport)
+				r.getSubReportAt(i);
+				this.process(subReport1);
 			}
-			result.append("</tr>");
-		}
-		result.append("</table>");
-	    this.reportText = result.toString();
+			else{
+				AllValuesOfContactReport subReport = (AllValuesOfContactReport) 			
+				r.getSubReportAt(i);
+				this.process(subReport);
+				}
+			
+			result.append(this.reportText + "\n");
+		    this.resetReportText();
+			}
+		this.reportText=result.toString();
 	}
-	
 	
 	public void process(AllContactsWithValueReport r) {
-		System.out.println("springt in 3. process");
-		this.resetReportText();
+this.resetReportText();
 		
 		StringBuffer result=new StringBuffer();
 		
 		result.append("<H1>" + r.getTitle() + "</H1>");
 		result.append("<table class=\"infotable\"><tr>");
-		result.append("<td valign=\"top\"><b>" + p2HTML(r.getHeaderData()) + "</b></td>");
-		result.append("<tr></tr><td>" + r.getCreated().toString()+ "</td></tr></table>");
+		if (r.getHeaderData() != null) {
+		      result.append("<td valign=\"top\"><b>" + p2HTML(r.getHeaderData()) + "</b></td>");
+		    }
 		
-		Vector<Row> rows=r.getRows();
-		result.append("<table class=\"reporttable\">");
+//		result.append("<td " + p2HTML(r.getHeaderData()) + "</td>");
+		result.append("<tr></tr><td>" + r.getCreated().toString()+ "</td></tr><tr></tr></table>");
+//		 result.append("</tr><tr><td></td><td>" + r.getCreated().toString()
+//			        + "</td></tr></table>");
+		 
+//		Vector<Row> rows=r.getRows();
+//		result.append("<table class=\"reporttable\">");
 		
-		for (int i=0; i<rows.size();i++) {
-			Row row=rows.elementAt(i);
-			result.append("<tr>");
-			for(int k=0; k<row.getNumColumns();k++) {
-				if (i==0) {
-					result.append("<td  class= \"columnhead\">" + row.getColumnAt(k)
-		              + "</td>");
-				}
-				else {
-					if(i>1) {
-						result.append("<td class=\"reporttd\" valign=\"top\">" + row.getColumnAt(k)+ "</td>");
-					}
-					else {
-						result.append("<td class=\"reporttd\" valign=\"top\">" + row.getColumnAt(k)+ "</td>");
-					}
-				}
+		AllContactInformationOfContactReport subReport2=(AllContactInformationOfContactReport) r.getSubReportAt(0);
+		this.process(subReport2);
+		result.append(this.reportText + "\n");
+	    this.resetReportText();
+	    
+		for (int i = 1; i < r.getNumSubReports(); i++) {
+			if(r.getSubReportAt(i) instanceof AllContactInformationOfContactReport){
+				result.append("<hr>");
+				AllContactInformationOfContactReport subReport1=(AllContactInformationOfContactReport)
+				r.getSubReportAt(i);
+				this.process(subReport1);
 			}
-			result.append("</tr>");
+			else{
+				AllValuesOfContactReport subReport = (AllValuesOfContactReport) 			
+				r.getSubReportAt(i);
+				this.process(subReport);
+				}
+			
+			result.append(this.reportText + "\n");
+		    this.resetReportText();
+			}
+		this.reportText=result.toString();
 		}
-		result.append("</table>");
-	    this.reportText = result.toString();
-	}
 	
 	public void process(AllContactsWithPropertyReport r) {
-		System.out.println("springt in 4. process");
-		this.resetReportText();
+this.resetReportText();
 		
 		StringBuffer result=new StringBuffer();
 		
 		result.append("<H1>" + r.getTitle() + "</H1>");
 		result.append("<table class=\"infotable\"><tr>");
-		result.append("<td valign=\"top\"><b>" + p2HTML(r.getHeaderData()) + "</b></td>");
-		result.append("<tr></tr><td>" + r.getCreated().toString()+ "</td></tr></table>");
+		if (r.getHeaderData() != null) {
+		      result.append("<td valign=\"top\"><b>" + p2HTML(r.getHeaderData()) + "</b></td>");
+		    }
 		
-		Vector<Row> rows=r.getRows();
-		result.append("<table class=\"reporttable\">");
+//		result.append("<td " + p2HTML(r.getHeaderData()) + "</td>");
+		result.append("<tr></tr><td>" + r.getCreated().toString()+ "</td></tr><tr></tr></table>");
+//		 result.append("</tr><tr><td></td><td>" + r.getCreated().toString()
+//			        + "</td></tr></table>");
+		 
+//		Vector<Row> rows=r.getRows();
+//		result.append("<table class=\"reporttable\">");
+		System.out.println(r.getNumSubReports());
+
+		AllContactInformationOfContactReport subReport2=(AllContactInformationOfContactReport) r.getSubReportAt(0);
+		this.process(subReport2);
+		result.append(this.reportText + "\n");
+	    this.resetReportText();
 		
-		for (int i=0; i<rows.size();i++) {
-			Row row=rows.elementAt(i);
-			result.append("<tr>");
-			for(int k=0; k<row.getNumColumns();k++) {
-				if (i==0) {
-					result.append("<td  class=\"columnhead\">" + row.getColumnAt(k)
-		              + "</td>");
-				}
-				else {
-					if(i>1) {
-						result.append("<td class=\"reporttd\" valign=\"top\">" + row.getColumnAt(k)+ "</td>");
-					}
-					else {
-						result.append("<td class=\"reporttd\" valign=\"top\">" + row.getColumnAt(k)+ "</td>");
-					}
-				}
+		for (int i = 1; i < r.getNumSubReports(); i++) {
+			if(r.getSubReportAt(i) instanceof AllContactInformationOfContactReport){
+				result.append("<hr>");
+				AllContactInformationOfContactReport subReportKontakt=(AllContactInformationOfContactReport)
+				r.getSubReportAt(i);
+				this.process(subReportKontakt);
 			}
-			result.append("</tr>");
-		}
-		result.append("</table>");
-	    this.reportText = result.toString();
+			else{
+				AllValuesOfContactReport subReport = (AllValuesOfContactReport) 			
+				r.getSubReportAt(i);
+				this.process(subReport);
+				}
+			
+			result.append(this.reportText + "\n");
+		    this.resetReportText();
+			}
+		this.reportText=result.toString();
 	}
 	
 	public void process(AllValuesOfContactReport report) {
-		Window.alert("loch");
 		StringBuffer result=new StringBuffer();
-		Window.alert("" + report.getRows().size());
 //		result.append("<H1>" + report.getTitle() + "</H1>");
 //		result.append("<table class=\"infotable\"><tr>");
 //		result.append("<td valign=\"top\"><b>" + p2HTML(report.getHeaderData()) + "</b></td>");
 //		result.append("<tr></tr><td>" + report.getCreated().toString()+ "</td></tr></table>");
-		Window.alert("geht");
 		Vector<Row> rows=report.getRows();
 		result.append("<table class=\"reporttable\">");
-		Window.alert("läuft bis hierhin");
-		Window.alert("" + rows.size());
 		for (int i=0; i<rows.size();i++) {
 			Row row=rows.elementAt(i);
 			result.append("<tr>");
@@ -266,16 +279,12 @@ public class HTMLReportWriter implements Serializable{
 	
 	public void process(AllContactInformationOfContactReport report) {
 		StringBuffer result=new StringBuffer();
-		Window.alert("" + report.getRows().size());
 //		result.append("<H1>" + report.getTitle() + "</H1>");
 //		result.append("<table class=\"infotable\"><tr>");
 //		result.append("<td valign=\"top\"><b>" + p2HTML(report.getHeaderData()) + "</b></td>");
 //		result.append("<tr></tr><td>" + report.getCreated().toString()+ "</td></tr></table>");
-		Window.alert("geht");
 		Vector<Row> rows=report.getRows();
 		result.append("<table class=\"reporttable\">");
-		Window.alert("läuft bis hierhin");
-		Window.alert("" + rows.size());
 		for (int i=0; i<rows.size();i++) {
 			Row row=rows.elementAt(i);
 			result.append("<tr>");
