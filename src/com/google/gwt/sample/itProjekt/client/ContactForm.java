@@ -341,10 +341,11 @@ public class ContactForm extends VerticalPanel {
 							public void onFailure(Throwable arg0) {Window.alert("Das Löschen der Ausprägung ist fehlgeschlagen.");};
 							{Window.alert("Das Löschen der Ausprägung ist fehlgeschlagen 2.");};
 							public void onSuccess(Void arg0) {Window.alert("Die Ausprägung wurde gelöscht.");}; 
-							{Window.alert("Die Ausprägung wurde gelöscht. 2");};
+							{setSelected(contactToDisplay);
+								Window.alert("Die Ausprägung wurde gelöscht. 2");};
 						});//TODO WTF is this?!
 					}
-					setSelected(contactToDisplay);
+					
 				}
 				
 			});
