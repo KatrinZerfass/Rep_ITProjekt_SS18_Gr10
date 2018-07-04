@@ -511,7 +511,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			}else{
 				contactRow.addColumn(new Column(String.valueOf("")));
 			}
-			System.out.println("contact get firstname vorher");
+			System.out.println(" vorher"+ contact.getFirstname());
 			contactRow.addColumn(new Column(String.valueOf(contact.getFirstname())));
 			contactRow.addColumn(new Column(String.valueOf(contact.getLastname())));
 			
