@@ -97,31 +97,31 @@ public class ContactListForm extends VerticalPanel{
 	
 	
 
-		public class CloseButton extends Button{
-			InputDialogBox db;
-			
-			public CloseButton(InputDialogBox db) {
-				this.db = db;
-				this.addClickHandler(new CloseDBClickHandler(db)); 
-				this.setText("Abbrechen");
-				this.addStyleName("closebutton");
-			}
-			
-			private class CloseDBClickHandler implements ClickHandler{
-				InputDialogBox db;
-		
-				
-				public CloseDBClickHandler(InputDialogBox db) {
-					this.db=db;
-				}
-				
-				public void onClick(ClickEvent event) {
-					db.hide();
-				}
-				
-			}
-			
-		}
+//		public class CloseButton extends Button{
+//			InputDialogBox db;
+//			
+//			public CloseButton(InputDialogBox db) {
+//				this.db = db;
+//				this.addClickHandler(new CloseDBClickHandler(db)); 
+//				this.setText("Abbrechen");
+//				this.addStyleName("closebutton");
+//			}
+//			
+//			private class CloseDBClickHandler implements ClickHandler{
+//				InputDialogBox db;
+//		
+//				
+//				public CloseDBClickHandler(InputDialogBox db) {
+//					this.db=db;
+//				}
+//				
+//				public void onClick(ClickEvent event) {
+//					db.hide();
+//				}
+//				
+//			}
+//			
+//		}
 		
 		
 		
@@ -131,166 +131,166 @@ public class ContactListForm extends VerticalPanel{
 		 * 
 		 * @author JanNoller
 		 */
-		public class InputDialogBox extends DialogBox{
-			
-			private String input;
-			
-			Label dialogBoxLabel = new Label();
-			
-	        private TextBox tb;
-	        private SuggestBox sb;
-	        private MultiWordSuggestOracle oracle;
-			CloseButton close=new CloseButton(this);
-
-	        Button ok = new Button("OK");
-			
-			/**
-			 * Der Konstruktor von InputDialogBox
-			 * ?? was macht er ??
-			 */
-			public InputDialogBox(TextBox inputtb) {
-				
-				setTextBox(inputtb);
-		        ok.addStyleName("okbutton");
-		        close.addStyleName("closebutton");
-
-				Window.alert("InputDialogBox instanziert");
-				
-				setText("Eingabe");
-				setAnimationEnabled(true);
-				setGlassEnabled(true);
-				
-		        
-				VerticalPanel panel = new VerticalPanel();
-		        panel.setHeight("100");
-		        panel.setWidth("300");
-		        panel.setSpacing(10);
-		        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
-		        panel.add(dialogBoxLabel);
-				HorizontalPanel hpanel=new HorizontalPanel();
-				hpanel.add(close);
-		        hpanel.add(ok);
-		        panel.add(tb);
-		        panel.add(hpanel);
-
-		        setWidget(panel);
-		        
-		        show();
-		    }
-			
-			public InputDialogBox(MultiWordSuggestOracle inputOracle) {
-				
-				setOracle(inputOracle);
-		        ok.addStyleName("okbutton");
-		        close.addStyleName("closebutton");
-
-				setdialogBoxLabel("Bitte geben Sie die Email-Adresse des Nutzers ein mit dem Sie die Kontaktliste teilen möchten.");
-				
-				editorAdministration.getAllUsers(new AsyncCallback<Vector<User>>() {
-					public void onFailure(Throwable arg0) {
-						Window.alert("Fehler beim holen aller User in der InputDialogBox");
-					}
-					@Override
-					public void onSuccess(Vector<User> arg0) {
-						
-						for(User loopUser : arg0) {
-							if (!loopUser.equals(user)) {
-								getOracle().add(loopUser.getEmail());
-							}
-						}
-						setSuggestBox(new SuggestBox(getOracle()));
-						
-						setText("Eingabe");
-						setAnimationEnabled(true);
-						setGlassEnabled(true);
-						
-						VerticalPanel panel = new VerticalPanel();
-
-				        panel.setHeight("100");
-				        panel.setWidth("300");
-				        panel.setSpacing(10);
-				        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
-				        panel.add(dialogBoxLabel);
-						panel.add(getSuggestBox());
-						HorizontalPanel hpanel= new HorizontalPanel();
-				        hpanel.add(close);
-				        hpanel.add(ok);
-				        panel.add(hpanel);
-				        setWidget(panel);
-				        
-				        show();
-					}
-				});
-			}
-			
-			public Button getOKButton() {
-				return this.ok;
-			}
-			
-			public void setOKButton(Button b) {
-				this.ok = b;
-			}
-			
-			/**
-			 * Getter von input.
-			 *
-			 * @return den Input
-			 */
-			public String getInput() {
-				return this.input;
-			}
-			
-			/**
-			 * Setter von input.
-			 *
-			 * @param input der Input
-			 */
-			public void setInput(String input) {
-				this.input = input;
-			}
-
-			/**
-			 * Gets the label.
-			 *
-			 * @return the label
-			 */
-			public Label getdialogBoxLabel () {
-				return this.dialogBoxLabel;
-			}
-			
-			/**
-			 * Setter des Labels.
-			 *
-			 * @param labelText der Text des Labels.
-			 */
-			public void setdialogBoxLabel (String labelText) {
-				this.dialogBoxLabel.setText(labelText);
-			}
-			
-			public TextBox getTextBox() {
-				return this.tb;
-			}
-			
-			public void setTextBox(TextBox tb) {
-				this.tb = tb;
-			}
-
-			public SuggestBox getSuggestBox() {
-				return sb;
-			}
-
-			public void setSuggestBox(SuggestBox sb) {
-				this.sb = sb;
-			}
-
-			public MultiWordSuggestOracle getOracle() {
-				return oracle;
-			}
-
-			public void setOracle(MultiWordSuggestOracle oracle) {
-				this.oracle = oracle;
-			}
-		}
+//		public class InputDialogBox extends DialogBox{
+//			
+//			private String input;
+//			
+//			Label dialogBoxLabel = new Label();
+//			
+//	        private TextBox tb;
+//	        private SuggestBox sb;
+//	        private MultiWordSuggestOracle oracle;
+//			CloseButton close=new CloseButton(this);
+//
+//	        Button ok = new Button("OK");
+//			
+//			/**
+//			 * Der Konstruktor von InputDialogBox
+//			 * ?? was macht er ??
+//			 */
+//			public InputDialogBox(TextBox inputtb) {
+//				
+//				setTextBox(inputtb);
+//		        ok.addStyleName("okbutton");
+//		        close.addStyleName("closebutton");
+//
+//				Window.alert("InputDialogBox instanziert");
+//				
+//				setText("Eingabe");
+//				setAnimationEnabled(true);
+//				setGlassEnabled(true);
+//				
+//		        
+//				VerticalPanel panel = new VerticalPanel();
+//		        panel.setHeight("100");
+//		        panel.setWidth("300");
+//		        panel.setSpacing(10);
+//		        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+//		        panel.add(dialogBoxLabel);
+//				HorizontalPanel hpanel=new HorizontalPanel();
+//				hpanel.add(close);
+//		        hpanel.add(ok);
+//		        panel.add(tb);
+//		        panel.add(hpanel);
+//
+//		        setWidget(panel);
+//		        
+//		        show();
+//		    }
+//			
+//			public InputDialogBox(MultiWordSuggestOracle inputOracle) {
+//				
+//				setOracle(inputOracle);
+//		        ok.addStyleName("okbutton");
+//		        close.addStyleName("closebutton");
+//
+//				setdialogBoxLabel("Bitte geben Sie die Email-Adresse des Nutzers ein mit dem Sie die Kontaktliste teilen möchten.");
+//				
+//				editorAdministration.getAllUsers(new AsyncCallback<Vector<User>>() {
+//					public void onFailure(Throwable arg0) {
+//						Window.alert("Fehler beim holen aller User in der InputDialogBox");
+//					}
+//					@Override
+//					public void onSuccess(Vector<User> arg0) {
+//						
+//						for(User loopUser : arg0) {
+//							if (!loopUser.equals(user)) {
+//								getOracle().add(loopUser.getEmail());
+//							}
+//						}
+//						setSuggestBox(new SuggestBox(getOracle()));
+//						
+//						setText("Eingabe");
+//						setAnimationEnabled(true);
+//						setGlassEnabled(true);
+//						
+//						VerticalPanel panel = new VerticalPanel();
+//
+//				        panel.setHeight("100");
+//				        panel.setWidth("300");
+//				        panel.setSpacing(10);
+//				        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+//				        panel.add(dialogBoxLabel);
+//						panel.add(getSuggestBox());
+//						HorizontalPanel hpanel= new HorizontalPanel();
+//				        hpanel.add(close);
+//				        hpanel.add(ok);
+//				        panel.add(hpanel);
+//				        setWidget(panel);
+//				        
+//				        show();
+//					}
+//				});
+//			}
+//			
+//			public Button getOKButton() {
+//				return this.ok;
+//			}
+//			
+//			public void setOKButton(Button b) {
+//				this.ok = b;
+//			}
+//			
+//			/**
+//			 * Getter von input.
+//			 *
+//			 * @return den Input
+//			 */
+//			public String getInput() {
+//				return this.input;
+//			}
+//			
+//			/**
+//			 * Setter von input.
+//			 *
+//			 * @param input der Input
+//			 */
+//			public void setInput(String input) {
+//				this.input = input;
+//			}
+//
+//			/**
+//			 * Gets the label.
+//			 *
+//			 * @return the label
+//			 */
+//			public Label getdialogBoxLabel () {
+//				return this.dialogBoxLabel;
+//			}
+//			
+//			/**
+//			 * Setter des Labels.
+//			 *
+//			 * @param labelText der Text des Labels.
+//			 */
+//			public void setdialogBoxLabel (String labelText) {
+//				this.dialogBoxLabel.setText(labelText);
+//			}
+//			
+//			public TextBox getTextBox() {
+//				return this.tb;
+//			}
+//			
+//			public void setTextBox(TextBox tb) {
+//				this.tb = tb;
+//			}
+//
+//			public SuggestBox getSuggestBox() {
+//				return sb;
+//			}
+//
+//			public void setSuggestBox(SuggestBox sb) {
+//				this.sb = sb;
+//			}
+//
+//			public MultiWordSuggestOracle getOracle() {
+//				return oracle;
+//			}
+//
+//			public void setOracle(MultiWordSuggestOracle oracle) {
+//				this.oracle = oracle;
+//			}
+//		}
 	
 		
 	
@@ -303,11 +303,11 @@ public class ContactListForm extends VerticalPanel{
 		 */
 		private class NewContactListClickHandler implements ClickHandler {
 			
-			InputDialogBox inputDB;
+			ClientsideFunctions.InputDialogBox inputDB;
 			
 			
 			public void onClick(ClickEvent event) {
-				inputDB = new InputDialogBox(new TextBox());
+				inputDB = new ClientsideFunctions.InputDialogBox(new TextBox());
 				inputDB.setdialogBoxLabel("Bitte geben Sie den Namen der neuen Kontaktliste an.");
 				inputDB.show();
 				
@@ -316,7 +316,7 @@ public class ContactListForm extends VerticalPanel{
 					@Override
 					public void onClick(ClickEvent arg0) {
 						Window.alert("user-email: " + user.getEmail());
-						editorAdministration.createContactList(inputDB.getTextBox().getText(), user, new AsyncCallback<ContactList>() {
+						editorAdministration.createContactList(inputDB.getMultiUseTextBox().getText(), user, new AsyncCallback<ContactList>() {
 							public void onFailure(Throwable arg0) {
 								Window.alert("Fehler beim Erstellen der Kontaktliste!");
 								inputDB.hide();
@@ -350,7 +350,7 @@ public class ContactListForm extends VerticalPanel{
 				}
 				else {
 				
-					editorAdministration.deleteContactList(clctvm.getSelectedContactList(), compareUser(), user, new AsyncCallback<Void>() {
+					editorAdministration.deleteContactList(clctvm.getSelectedContactList(), ClientsideFunctions.compareUser(user, clctvm), user, new AsyncCallback<Void>() {
 						@Override
 						public void onFailure(Throwable arg0) {
 							Window.alert("Fehler beim löschen der Kontaktliste!");
@@ -389,7 +389,7 @@ public class ContactListForm extends VerticalPanel{
 		 */
 		private class ShareContactListClickHandler implements ClickHandler {
 		
-			InputDialogBox inputDB;
+			ClientsideFunctions.InputDialogBox inputDB;
 			
 //			User shareUser = new User();
 			
@@ -401,7 +401,7 @@ public class ContactListForm extends VerticalPanel{
 					if(clctvm.getSelectedContactList() == null) {
 						Window.alert("Keine Kontaktliste ausgewählt");
 					}else {
-						inputDB = new InputDialogBox(new MultiWordSuggestOracle());
+						inputDB = new ClientsideFunctions.InputDialogBox(new MultiWordSuggestOracle());
 						inputDB.getOKButton().addClickHandler(new ClickHandler() {
 							public void onClick(ClickEvent event) {
 								if(inputDB.getSuggestBox().getText()== "") {
@@ -498,15 +498,15 @@ public class ContactListForm extends VerticalPanel{
 			
 		}
 				
-		public boolean compareUser () {
-			
-			if (user.getId() == clctvm.getSelectedContact().getOwner()) {
-				return true;
-			}
-			else {
-				return false;
-			}
-		}
+//		public boolean compareUser () {
+//			
+//			if (user.getId() == clctvm.getSelectedContact().getOwner()) {
+//				return true;
+//			}
+//			else {
+//				return false;
+//			}
+//		}
 				
 }
 		
