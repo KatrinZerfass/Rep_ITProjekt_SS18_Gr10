@@ -114,6 +114,6 @@ public interface EditorAdministrationAsync {
 			AsyncCallback<Value> callback);
 
 	void createUserContact(String firstname, String lastname, String sex, String email, User user,
-			AsyncCallback<Contact> callback);
+			AsyncCallback<User> callback);
 }
 

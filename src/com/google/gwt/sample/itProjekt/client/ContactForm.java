@@ -1269,8 +1269,11 @@ public class ContactForm extends VerticalPanel {
 			if (contactToDisplay == null) {
 				Window.alert("kein Kontakt ausgewählt");
 			
-			}else{
-				
+			}
+			else if(!contactToDisplay.getIsUser()) {
+				Window.alert("Sie können sich selbst nicht löschen!");
+			}
+			else{
 				editorAdministration.deleteContact(contactToDisplay, ClientsideFunctions.compareUser(currentUser, clctvm), currentUser, new AsyncCallback<Void>() {
 					public void onFailure(Throwable arg0) {
 						Window.alert("Fehler beim Löschen des Kontakts!");
