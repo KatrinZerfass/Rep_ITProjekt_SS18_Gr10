@@ -1474,26 +1474,30 @@ public class ContactForm extends VerticalPanel {
 	 */
 	private class RemoveContactFromContactListClickHandler implements ClickHandler{
 		public void onClick(ClickEvent event) {
-			if(clctvm.getSelectedContactList() == clctvm.getMyContactsContactList()) {
-				Window.alert("Sie können Kontakte in dieser Kontaktliste nur löschen, nicht entfernen!");
-			}
-			else if(clctvm.getSelectedContactList().getOwner() != currentUser.getId()) {
-				Window.alert("Sie können den Kontakt aus dieser Liste nicht entfernen, da es eine geteilte List ist.");
-			}
-			else {	
-				clearContactForm();
-				editorAdministration.removeContactFromContactList(clctvm.getSelectedContactList(), contactToDisplay, new AsyncCallback<ContactList>() {
-					@Override
-					public void onFailure(Throwable arg0) {	
-						Window.alert("Fehler beim entfernen des Kontakts aus der Kontaktliste!");
-					}
-					@Override
-					public void onSuccess(ContactList arg0) {
-						Window.alert("Kontakt erfolgreich aus Kontaktliste entfernt.");
-						clctvm.removeContactOfContactList(arg0, contactToDisplay);
-						clctvm.getNodeInfo(clctvm.getSelectedContactList());
-					}
-				});
+			if(contactToDisplay == null) {
+				Window.alert("kein Kontakt ausgewählt");
+			}else { 
+				if(clctvm.getSelectedContactList() == clctvm.getMyContactsContactList()) {
+					Window.alert("Sie können Kontakte in dieser Kontaktliste nur löschen, nicht entfernen!");
+				}
+				else if(ClientsideFunctions.isOwner(clctvm.getSelectedContactList(), currentUser)) {
+					Window.alert("Sie können den Kontakt aus dieser Liste nicht entfernen, da es eine geteilte List ist.");
+				}
+				else {	
+					//clearContactForm();
+					editorAdministration.removeContactFromContactList(clctvm.getSelectedContactList(), contactToDisplay, new AsyncCallback<ContactList>() {
+						@Override
+						public void onFailure(Throwable arg0) {	
+							Window.alert("Fehler beim entfernen des Kontakts aus der Kontaktliste!");
+						}
+						@Override
+						public void onSuccess(ContactList arg0) {
+							Window.alert("Kontakt erfolgreich aus Kontaktliste entfernt.");
+							clctvm.removeContactOfContactList(arg0, contactToDisplay);
+							//clctvm.getNodeInfo(clctvm.getSelectedContactList());
+						}
+					});
+				}
 			}
 		}
 	}
