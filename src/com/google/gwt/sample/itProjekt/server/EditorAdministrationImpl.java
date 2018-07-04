@@ -168,58 +168,36 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	}
 	
 	@Override
-	public User createUserContact(String firstname, String lastname, String sex, String email)
+	public User createUserContact(String firstname, String lastname, String sexList, String email)
 			throws IllegalArgumentException {
 		
 		User newUser = null;
 		newUser = createUser(email);
 		
-		{
-			if(newUser != null) {
-				Window.alert("user erstellt: " + newUser.getEmail());
-				
-				Contact newContact = new Contact();
-				newContact.setFirstname(firstname);
-				newContact.setLastname(lastname);
-				newContact.setSex(sex);
-				newContact.setIsUser(true);
-				
-				Contact testContact = null;
-				testContact = cMapper.insert(newContact, newUser);
-				
-				{
-					if(testContact != null) {
-						Value newValue = null;
-						newValue = createValue(newContact, 3, email);
-						{
-							if(newValue != null) {
-								return newUser;
-							}
-						}while(newValue == null);
-					}
-				}while(testContact == null);
-			}
-		}while(newUser == null);
-		return null;
+		Contact newContact = new Contact();
+		newContact.setFirstname(firstname);
+		newContact.setLastname(lastname);
+		String sex = "o";
+		switch(sexList) {
+			case "männlich": 
+				sex = "m";
+				break;
+			case "weiblich": 
+				sex = "f";
+				break;
+			case "Sonstiges": 
+				sex = "o";
+				break;
+		}
+		newContact.setSex(sex);
+		newContact.setIsUser(true);
 		
-//		Window.alert("user erstellt: " + newUser.getEmail());
-//		
-//		Contact newContact = new Contact();
-//		newContact.setFirstname(firstname);
-//		newContact.setLastname(lastname);
-//		newContact.setSex(sex);
-//		newContact.setIsUser(true);
-//		
-//		cMapper.insert(newContact, newUser);
-//		
-//		Window.alert("contact erstellt: " + cMapper.findByID(newContact));
-//		
-//		Value newValue = new Value();
-//		newValue = createValue(newContact, 3, email);
-//		
-//		Window.alert("value erstellt: " + newValue.getContent());
-//		
-//		return newUser;
+		cMapper.insert(newContact, newUser);
+		
+		Value newValue = new Value();
+		newValue = createValue(newContact, 3, email);
+		
+		return newUser;
 	}
 
 	@Override
