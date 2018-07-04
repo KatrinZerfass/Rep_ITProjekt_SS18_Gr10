@@ -294,7 +294,6 @@ public Permission update(Permission permission){
 						+ permission.getParticipantID()
 						+", "
 						+ permission.getSourceUserID()
-					
 						+ ")") ;
 			
 			ContactList cl= new ContactList();
@@ -355,7 +354,7 @@ public Vector<Contact> getAllContactsByUID(User user){
 				}		
 			}catch(SQLException e2){
 				e2.printStackTrace();
-//			return result;
+			return result;
 			}
 			return result;
 		}
