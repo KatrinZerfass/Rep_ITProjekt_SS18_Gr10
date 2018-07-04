@@ -48,7 +48,7 @@ public interface EditorAdministrationAsync {
 
 	void getContactByID(int id, AsyncCallback<Contact> callback);
 
-	void getUserInformation(String email, AsyncCallback<User> callback);
+	void isUserKnown(String email, AsyncCallback<Boolean> callback);
 
 	void init(AsyncCallback<Void> callback);
 
@@ -112,5 +112,8 @@ public interface EditorAdministrationAsync {
 
 	void createAddress(String street, String housenumber, String zip, String city, Contact contact,
 			AsyncCallback<Value> callback);
+
+	void createUserContact(String firstname, String lastname, String sex, String email, User user,
+			AsyncCallback<Contact> callback);
 }
 

@@ -27,17 +27,14 @@ public interface EditorAdministration extends RemoteService{
 	public void init() throws IllegalArgumentException;
 	
 	/**
-	 * Holt die Information des Nutzers anhand seiner Email-Adresse aus der Datenbank, falls dieser dort
-	 * nicht existiert wird ein neuer Nutzer in der Datenbank angelegt.
-	 * Soll kein neuern Nutzer in der Datenbank angelegt werden und nur die Information
-	 * des nutzers aus der Datenbank geholt werden benutzen Sie die 
-	 * {@link #getUser(String) getUser} Methode.
+	 * Holt die Information ob der Nutzer bereits aus der Datenbank.
+	 * Identifiziert wird dies über einen boolschen Rückgabewert, true wenn Nutzer bereits existiert, sonst false.
 	 * 
 	 * @param email Email des Nutzers
-	 * @return ein vollständiges User Objekt
+	 * @return boolscher Wert
 	 * @throws IllegalArgumentException
 	 */
-	public User getUserInformation (String email) throws IllegalArgumentException;
+	public boolean isUserKnown (String email) throws IllegalArgumentException;
 	
 	/**
 	 * Holt die Information des Nutzers anhand seiner Email-Adresse aus der Datenbank.
@@ -169,6 +166,19 @@ public interface EditorAdministration extends RemoteService{
 	 * @throws IllegalArgumentException
 	 */
 	public Contact createContact(String firstname, String lastname, String sex, User user) throws IllegalArgumentException;
+	
+	/**
+	 * Legt einen neuen Kontakt, welcher einen Nutzer repräsentiert, an.
+	 *
+	 * @param firstname Vorname
+	 * @param lastname Nachname
+	 * @param sex Geschlecht
+	 * @param email Email-Adresse
+	 * @param user Nutzer
+	 * @return vollständiges Kontakt-Objekt
+	 * @throws IllegalArgumentException
+	 */
+	public Contact createUserContact(String firstname, String lastname, String sex, String email, User user) throws IllegalArgumentException;
 	
 	/**
 	 * Ändert den Kontaktstamm eines Kontakts in der Datenbank. 
