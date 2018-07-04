@@ -10,7 +10,7 @@ public class User extends BusinessObject {
 	private static final long serialVersionUID = 1L;
 	
 	/** Eine eindeutige E-Mail, mit der jeder Nutzer des Systems identifiziert werden kann. */ 
-	private String email;
+	private String email = null;
 
 	/**Auslesen der E-Mail-Adresse. */ 
 	
