@@ -169,26 +169,17 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	}
 	
 	@Override
-	public User createUserContact(String firstname, String lastname, String sex, String email, User user)
+	public User createUserContact(String firstname, String lastname, String sex, String email)
 			throws IllegalArgumentException {
 		
-		Contact newcontact = new Contact();
-		newcontact.setFirstname(firstname);
-		newcontact.setLastname(lastname);
-		newcontact.setSex(sex);
-		newcontact.setOwner(user.getId());
+		User newUser = createUser(email);
+		
+		Contact newcontact = createContact(firstname, lastname, sex, newUser);
 		newcontact.setIsUser(true);
 		
-		Property emailProperty = new Property();
-		emailProperty.setId(3);
+		createValue(newcontact, 3, email);
 		
-		Value emailValue = new Value();
-		emailValue.setPropertyid(3);
-		emailValue.setContent(email);
-		
-		vMapper.insert(emailValue, cMapper.insert(newcontact, user), pMapper.findByID(emailProperty));
-		
-		return uMapper.insert(user);
+		return newUser;
 	}
 
 	@Override

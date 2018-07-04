@@ -113,7 +113,6 @@ public interface EditorAdministrationAsync {
 	void createAddress(String street, String housenumber, String zip, String city, Contact contact,
 			AsyncCallback<Value> callback);
 
-	void createUserContact(String firstname, String lastname, String sex, String email, User user,
-			AsyncCallback<User> callback);
+	void createUserContact(String firstname, String lastname, String sex, String email, AsyncCallback<User> callback);
 }
 
