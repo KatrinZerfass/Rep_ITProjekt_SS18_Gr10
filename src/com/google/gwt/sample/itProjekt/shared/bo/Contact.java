@@ -128,4 +128,9 @@ public class Contact extends BusinessObject {
 	public void setIsUser(boolean isUser) {
 		this.isUser = isUser;
 	}
+	
+	public Contact configureIsUser(boolean isUser) {
+		this.isUser = isUser;
+		return this;
+	}
 }

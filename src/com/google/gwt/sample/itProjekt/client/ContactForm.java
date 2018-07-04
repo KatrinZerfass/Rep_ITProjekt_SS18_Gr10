@@ -1266,11 +1266,13 @@ public class ContactForm extends VerticalPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 			
+			Window.alert("getIsUser(): " + contactToDisplay.getIsUser());
+			
 			if (contactToDisplay == null) {
 				Window.alert("kein Kontakt ausgewählt");
 			
 			}
-			else if(!contactToDisplay.getIsUser()) {
+			else if(contactToDisplay.getIsUser()) {
 				Window.alert("Sie können sich selbst nicht löschen!");
 			}
 			else{

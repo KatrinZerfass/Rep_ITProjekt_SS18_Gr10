@@ -311,13 +311,11 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 					public void onSuccess (Vector<Contact> contacts) {
 						for (Contact c : contacts) {
 							contactsProvider.getList().add(c);
-							contactForm.disableRemoveContactButton();
-							Window.alert("onS" + contactsProvider.getList().size());
-							
+							contactForm.disableRemoveContactButton();							
 						}
 					}
 				});
-				Window.alert("danach" + contactsProvider.getList().size());
+				
 				return new DefaultNodeInfo<Contact>(contactsProvider,new ContactCell(), selectionModel, null);
 				
 						

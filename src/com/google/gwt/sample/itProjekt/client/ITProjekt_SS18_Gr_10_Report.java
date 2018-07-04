@@ -232,10 +232,12 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	    							 
 	    						 }
 	    						 public void onSuccess(AllContactsOfUserReport result) {
+	    							    							 
 	    							 if (result != null) {
 	    								 RootPanel.get("reporttext").setVisible(true);
-	    								 HTMLReportWriter writer=new HTMLReportWriter();
+	    								 HTMLReportWriter writer=new HTMLReportWriter();	    								 
 	    								 writer.process(result);
+	    								 Window.alert("nach writer");
 	    								 RootPanel.get("reporttext").clear();
 	    								 RootPanel.get("reporttext").add(new HTML(writer.getReportText()));
 	    							 }

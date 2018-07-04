@@ -32,7 +32,7 @@ public class DBConnection {
      * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal
      * für sämtliche eventuellen Instanzen dieser Klasse vorhanden. Sie
      * speichert die einzige Instanz dieser Klasse.
-     * 
+     * @author Thies
      */
     private static Connection con = null;
 
@@ -56,7 +56,7 @@ public class DBConnection {
      * bei einer nicht mehr funktionsfähigen Verbindung stets versucht würde,
      * eine neue Verbindung aufzubauen. Dies würde allerdings ebenfalls den
      * Rahmen dieses Projekts sprengen.
-     * 
+     * @author Thies
      * @return DAS <code>DBConncetion</code>-Objekt.
      * @see con
      */
