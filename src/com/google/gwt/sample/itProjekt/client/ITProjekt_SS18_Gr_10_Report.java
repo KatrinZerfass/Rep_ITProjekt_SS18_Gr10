@@ -225,10 +225,10 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 		         public void onClick(ClickEvent event){
 		        	 reportGenerator.generateAllContactsOfUserReport(user, new AsyncCallback<AllContactsOfUserReport>() {
 	    						 public void onFailure(Throwable caught) {
-//	   				 				    RootPanel.get("reporttext").setVisible(false);	
-//	   				 				    Label errornote=new Label("Es Existieren leider keine Kontakte");
-//	   				 				    errornote.addStyleName("errornote");
-//	   				 				    mainPanel.add(errornote);
+	   				 				    RootPanel.get("reporttext").setVisible(false);	
+	   				 				    Label errornote=new Label("Es Existieren leider keine Kontakte");
+	   				 				    errornote.addStyleName("errornote");
+	   				 				    mainPanel.add(errornote);
 	    							 
 	    						 }
 	    						 public void onSuccess(AllContactsOfUserReport result) {
@@ -340,7 +340,8 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 							 Window.alert("Es wurde kein Kontakt mit der angegebenen Eigenschaft gefunden");
 						 }
 						 public void onSuccess(AllContactsWithPropertyReport result) {
-								if (result !=null) {
+							 	Window.alert("geht in die onSuccess");
+							 	if (result !=null) {
 				 				    RootPanel.get("reporttext").setVisible(true);
 				 				    HTMLReportWriter writer=new HTMLReportWriter();
 								 	writer.process(result);

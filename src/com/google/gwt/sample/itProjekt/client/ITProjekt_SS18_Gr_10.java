@@ -115,6 +115,9 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		
   	
   	public void loadApplication(){
+  		
+  		//Window.alert(loginInfo.getNickname());
+  		
 		/*
 		 * Im Folgenden wird das GUI aufgebaut
 		 */
@@ -172,7 +175,6 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		cellBrowser.setWidth("100%");
 		cellBrowser.setAnimationEnabled(true);
 		cellBrowser.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
-		Window.alert("nach CellBrowser");
 		
 		RootPanel.get("Navigator").add(cellBrowser);
 		
