@@ -341,10 +341,11 @@ public class ContactForm extends VerticalPanel {
 							public void onFailure(Throwable arg0) {Window.alert("Das Löschen der Ausprägung ist fehlgeschlagen.");};
 							{Window.alert("Das Löschen der Ausprägung ist fehlgeschlagen 2.");};
 							public void onSuccess(Void arg0) {Window.alert("Die Ausprägung wurde gelöscht.");}; 
-							{Window.alert("Die Ausprägung wurde gelöscht. 2");};
+							{setSelected(contactToDisplay);
+								Window.alert("Die Ausprägung wurde gelöscht. 2");};
 						});//TODO WTF is this?!
 					}
-					setSelected(contactToDisplay);
+					
 				}
 				
 			});
@@ -742,6 +743,13 @@ public class ContactForm extends VerticalPanel {
 		public void setValue(Value v) {
 			this.value = v;
 			valueTextBox.setValue(value);
+			lockButton.setValue(value);
+			deleteValueButton.setValue(value);
+		}
+		
+		public void setValue(Value v, boolean adressTable) {
+			this.value =v;
+			//this.remove(0);
 			lockButton.setValue(value);
 			deleteValueButton.setValue(value);
 		}
@@ -1656,8 +1664,8 @@ public class ContactForm extends VerticalPanel {
 							}
 							public void onSuccess(Value street) {
 								streetTextBox.setValue(street);
-								((LockButton) addressTable.getWidget(0, 2)).setValue(street);
-								((DeleteValueButton) addressTable.getWidget(0,3)).setValue(street);
+								((ValueDisplay) addressTable.getWidget(0, 2)).setValue(street, true);
+								//((DeleteValueButton) addressTable.getWidget(0,3)).setValue(street);
 								Window.alert("Adresse erfolgreich angelegt");
 							}
 						});
