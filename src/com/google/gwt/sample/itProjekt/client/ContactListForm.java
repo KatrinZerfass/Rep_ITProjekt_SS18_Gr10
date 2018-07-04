@@ -497,6 +497,16 @@ public class ContactListForm extends VerticalPanel{
 			this.clctvm= clctvm;
 			
 		}
+
+		
+		
+		/**
+		 * Die Methode compareUser() vergleicht den aktuell angemeldeten Nutzer mit dem Eigentümer des Kontakts.
+		 * 
+		 * @return true= Eigentümer oder false= Teilhaber
+		 * @author JanNoller
+		 */		
+	
 				
 //		public boolean compareUser () {
 //			
@@ -507,6 +517,7 @@ public class ContactListForm extends VerticalPanel{
 //				return false;
 //			}
 //		}
+
 				
 }
 		

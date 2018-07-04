@@ -408,11 +408,6 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 //		}
 //	}
 	
-	/**
-	 * Die Methode compareUser() vergleicht den aktuell angemeldeten Nutzer mit dem Eigentümer des Kontakts.
-	 * 
-	 * @return true= Eigentümer oder false= Teilhaber
-	 * @author JanNoller
-	 */
+	
 	
 }	 
