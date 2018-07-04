@@ -3,6 +3,8 @@ package com.google.gwt.sample.itProjekt.shared.report;
 import java.io.Serializable;
 import java.util.Vector;
 
+import com.google.gwt.user.client.Window;
+
 /**
  * Ein ReportWriter, der Reports mittels HTML formatiert. Das im Zielformat
  * vorliegende Ergebnis wird in der Variable reportText abgelegt und kann nach
@@ -73,6 +75,8 @@ public class HTMLReportWriter implements Serializable{
 	 * @see com.google.gwt.sample.itProjekt.shared.report.ReportWriter#process(com.google.gwt.sample.itProjekt.shared.report.AllContactsOfUserReport)
 	 */
 	public void process(AllContactsOfUserReport r) {
+		Window.alert("arsch");
+		Window.alert(r.getTitle());
 		this.resetReportText();
 		
 		StringBuffer result=new StringBuffer();
@@ -90,20 +94,24 @@ public class HTMLReportWriter implements Serializable{
 		 
 //		Vector<Row> rows=r.getRows();
 //		result.append("<table class=\"reporttable\">");
-		
+		System.out.println(r.getNumSubReports());
+		Window.alert("" + r.getNumSubReports());
 		for (int i = 0; i < r.getNumSubReports(); i++) {
 			AllValuesOfContactReport subReport = (AllValuesOfContactReport) 
 			r.getSubReportAt(i);
-
+			
 		    this.process(subReport);
-
+		    
 		    result.append(this.reportText + "\n");
-		 }
-	    this.resetReportText();
+		    this.resetReportText();
+		}
+		Window.alert(result.toString());
+		this.reportText=result.toString();
 	  }
 	   	
 
 	public void process(AllSharedContactsOfUserReport r) {
+		System.out.println("springt in 2. process");
 		this.resetReportText();
 		
 		StringBuffer result=new StringBuffer();
@@ -141,6 +149,7 @@ public class HTMLReportWriter implements Serializable{
 	
 	
 	public void process(AllContactsWithValueReport r) {
+		System.out.println("springt in 3. process");
 		this.resetReportText();
 		
 		StringBuffer result=new StringBuffer();
@@ -177,6 +186,7 @@ public class HTMLReportWriter implements Serializable{
 	}
 	
 	public void process(AllContactsWithPropertyReport r) {
+		System.out.println("springt in 4. process");
 		this.resetReportText();
 		
 		StringBuffer result=new StringBuffer();
@@ -213,18 +223,18 @@ public class HTMLReportWriter implements Serializable{
 	}
 	
 	public void process(AllValuesOfContactReport report) {
-		this.resetReportText();
-		
+		Window.alert("loch");
 		StringBuffer result=new StringBuffer();
-		
-		result.append("<H1>" + report.getTitle() + "</H1>");
-		result.append("<table class=\"infotable\"><tr>");
-		result.append("<td valign=\"top\"><b>" + p2HTML(report.getHeaderData()) + "</b></td>");
-		result.append("<tr></tr><td>" + report.getCreated().toString()+ "</td></tr></table>");
-		
+		Window.alert("" + report.getRows().size());
+//		result.append("<H1>" + report.getTitle() + "</H1>");
+//		result.append("<table class=\"infotable\"><tr>");
+//		result.append("<td valign=\"top\"><b>" + p2HTML(report.getHeaderData()) + "</b></td>");
+//		result.append("<tr></tr><td>" + report.getCreated().toString()+ "</td></tr></table>");
+		Window.alert("geht");
 		Vector<Row> rows=report.getRows();
 		result.append("<table class=\"reporttable\">");
-		
+		Window.alert("läuft bis hierhin");
+		Window.alert("" + rows.size());
 		for (int i=0; i<rows.size();i++) {
 			Row row=rows.elementAt(i);
 			result.append("<tr>");
