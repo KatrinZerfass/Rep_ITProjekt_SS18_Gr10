@@ -58,8 +58,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	}
 	
 	@Override
-	public User createUser(String email)
-			throws IllegalArgumentException {
+	public User createUser(String email) throws IllegalArgumentException {
 
 		User newuser = new User();
 		newuser.setEmail(email);
@@ -172,10 +171,27 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	public User createUserContact(String firstname, String lastname, String sex, String email)
 			throws IllegalArgumentException {
 		
-		createValue(createContact(firstname, lastname, sex, createUser(email)).configureIsUser(true), 3, email);
+		User newUser = new User();
+		newUser = createUser(email);
 		
-		return getOwnerOfContact(vMapper.findContactByVID(createValue(createContact(firstname, lastname, sex, createUser(email)).configureIsUser(true), 3, email)));
-		//return getUser(email);
+		Window.alert("user erstellt: " + newUser.getEmail());
+		
+		Contact newContact = new Contact();
+		newContact.setFirstname(firstname);
+		newContact.setLastname(lastname);
+		newContact.setSex(sex);
+		newContact.setIsUser(true);
+		
+		cMapper.insert(newContact, newUser);
+		
+		Window.alert("contact erstellt: " + cMapper.findByID(newContact));
+		
+		Value newValue = new Value();
+		newValue = createValue(newContact, 3, email);
+		
+		Window.alert("value erstellt: " + newValue.getContent());
+		
+		return newUser;
 	}
 
 	@Override
