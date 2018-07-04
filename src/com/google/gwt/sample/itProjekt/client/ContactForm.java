@@ -2061,7 +2061,7 @@ public class ContactForm extends VerticalPanel {
 			
 			boolean isFirstValue = false;
 			
-			if(compareUser()){
+			if(ClientsideFunctions.compareUser(currentUser, clctvm)){
 				if(i==0) {
 					isFirstValue = true;
 				}else if(i!=0 && allValuesOfContact.get(i-1).getPropertyid() != pid) {
@@ -2349,15 +2349,16 @@ public class ContactForm extends VerticalPanel {
 					}
 
 				
-				for(int c=0; c<newPropertyListBox.getItemCount(); c++) {
-					if (newPropertyListBox.getItemText(c) == ptype) {
-						newPropertyListBox.removeItem(c);
+					for(int c=0; c<newPropertyListBox.getItemCount(); c++) {
+						if (newPropertyListBox.getItemText(c) == ptype) {
+							newPropertyListBox.removeItem(c);
+						}
 					}
-				}
 			
-			}
+				}
 		
-		}//ende der for-schleife
+			}//ende der for-schleife
+		}
 	}
 	
 //	private class GetPropertyOfValueCallback implements AsyncCallback<Property>{
@@ -2450,4 +2451,4 @@ public class ContactForm extends VerticalPanel {
 		this.removeContactFromContactListButton.setEnabled(false);
 	}
 	
-	}
+}

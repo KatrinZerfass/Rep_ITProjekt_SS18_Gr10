@@ -4,7 +4,6 @@ import java.util.Vector;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.sample.itProjekt.client.ContactForm.ValueTextBox;
 import com.google.gwt.sample.itProjekt.shared.EditorAdministrationAsync;
 import com.google.gwt.sample.itProjekt.shared.ReportGeneratorAsync;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
@@ -20,6 +19,7 @@ import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.sample.itProjekt.client.ContactForm.ValueTextBox;
 
 public abstract class ClientsideFunctions {
 	
