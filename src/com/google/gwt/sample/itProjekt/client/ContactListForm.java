@@ -398,7 +398,6 @@ public class ContactListForm extends VerticalPanel{
 					Window.alert("Sie können die Liste all Ihrer Kontakte nicht teilen!");
 				}
 				else {
-				
 					inputDB = new ClientsideFunctions.InputDialogBox(new MultiWordSuggestOracle());
 					inputDB.getOKButton().addClickHandler(new ClickHandler() {
 						public void onClick(ClickEvent event) {
@@ -422,7 +421,6 @@ public class ContactListForm extends VerticalPanel{
 											Window.alert("User ist der Owner der Kontaktliste!");
 											inputDB.hide();
 										}
-										
 									}
 								});
 							}

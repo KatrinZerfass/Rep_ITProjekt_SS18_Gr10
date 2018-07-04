@@ -598,6 +598,6 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 				result.add(c.getFirstname() + " " + c.getLastname() + " (" + partResult + ")");
 			}
 		}
-		return null;
+		return result;
 	}
 }

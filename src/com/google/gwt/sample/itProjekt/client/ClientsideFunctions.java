@@ -315,6 +315,7 @@ public abstract class ClientsideFunctions {
 			        hpanel.add(close);
 			        hpanel.add(ok);
 			        panel.add(hpanel);
+			        
 			        setWidget(panel);
 			        
 			        show();
