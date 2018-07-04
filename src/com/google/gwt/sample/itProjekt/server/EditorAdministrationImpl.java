@@ -172,14 +172,10 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	public User createUserContact(String firstname, String lastname, String sex, String email)
 			throws IllegalArgumentException {
 		
-		User newUser = createUser(email);
+		createValue(createContact(firstname, lastname, sex, createUser(email)).configureIsUser(true), 3, email);
 		
-		Contact newcontact = createContact(firstname, lastname, sex, newUser);
-		newcontact.setIsUser(true);
-		
-		createValue(newcontact, 3, email);
-		
-		return newUser;
+		//return getOwnerOfContact(vMapper.findContactByVID(createValue(createContact(firstname, lastname, sex, createUser(email)).configureIsUser(true), 3, email)));
+		return getUser(email);
 	}
 
 	@Override
