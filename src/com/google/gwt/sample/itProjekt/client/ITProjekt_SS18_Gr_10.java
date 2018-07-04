@@ -100,9 +100,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		if(editorAdministration == null) {
 			editorAdministration = ClientsideSettings.getEditorAdministration();
 	    }
-		
-	    
-	    
+
 	    // Anlegen des User Objekts & Abspeichern in einer lokalen Variabel
 	    
 	    editorAdministration.isUserKnown(loginInfo.getEmailAddress(), new AsyncCallback<Boolean>() {
@@ -114,7 +112,6 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 			public void onSuccess(Boolean result) {
 				Window.alert("isUserKnow: " + result);
 				if (result) {
-					
 					editorAdministration.getUser(loginInfo.getEmailAddress(), new AsyncCallback<User>() {
 						public void onFailure(Throwable arg0) {
 							Window.alert("AsyncCallback fehlgeschlagen: getUser");
@@ -136,27 +133,6 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 						
 						public void onClick(ClickEvent arg0) {
 							if(ClientsideFunctions.checkName(createAccountBox.getMultiUseTextBox().getText()) && ClientsideFunctions.checkName(createAccountBox.getNameTextBox().getText())) {
-//								editorAdministration.createUserContact(createAccountBox.getMultiUseTextBox().getText(), createAccountBox.getNameTextBox().getText(), createAccountBox.getSexListBox().getSelectedItemText(), loginInfo.getEmailAddress(), new AsyncCallback<User>() {
-//									public void onFailure(Throwable arg0) {
-//										Window.alert("AsyncCallback fehlgeschlagen: createContact 1");
-//										createAccountBox.hide();
-//									}; {
-//										Window.alert("AsyncCallback fehlgeschlagen: createContact 2");
-//										createAccountBox.hide();
-//									};
-//									public void onSuccess(User arg0) {
-//										Window.alert("Herzlich Willkommen! 1");
-//										createAccountBox.hide();
-//										ClientsideSettings.setUser(arg0);
-//										user = arg0;
-//										loadApplication();
-//									}; {
-//										Window.alert("Herzlich Willkommen! 2");
-//										createAccountBox.hide();
-//										
-//									};
-//								});
-								
 								editorAdministration.createUserContact(createAccountBox.getMultiUseTextBox().getText(), createAccountBox.getNameTextBox().getText(), createAccountBox.getSexListBox().getSelectedItemText(), loginInfo.getEmailAddress(), new AsyncCallback<User>() {
 									public void onFailure(Throwable arg0) {
 										Window.alert("AsyncCallback fehlgeschlagen: createContact");
