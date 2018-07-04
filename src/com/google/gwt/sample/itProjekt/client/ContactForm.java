@@ -39,8 +39,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Die Klasse ContactForm dient zur Darstellung von Kontakten mit all ihren Eigenschaften und deren Ausprägungen.
- * @author KatrinZerfass & JanNoller
+ * Die Klasse ContactForm dient der Darstellung von Kontakten mit all ihren Eigenschaften und deren Ausprägungen.
+ * @author KatrinZerfass & JanNoller & Anna-MariaGmeiner 
  */
 
 public class ContactForm extends VerticalPanel {
@@ -48,6 +48,7 @@ public class ContactForm extends VerticalPanel {
 	
 	EditorAdministrationAsync editorAdministration = ClientsideSettings.getEditorAdministration();
 	
+	/** Das verknüpfte TreeViewModel */
 	ContactListContactTreeViewModel clctvm = null;
 	
 	/** Der anzuzeigende Kontakt */
@@ -59,20 +60,24 @@ public class ContactForm extends VerticalPanel {
 	/**Alle vordefinierten Eigenschaften des Systems*/
 	Vector<Property> allPredefinedProperties = new Vector<Property>();
 	
-	/**Alle von einem Nutzer neu hinzugefügten Eigenschaften*/
+	/**Alle dem Kontakt neu hinzugefügten Eigenschaften*/
 	Vector<Property> allNewPropertiesOfContact = new Vector<Property>();
 	
-	/**Ein Vector, in dem alle im Kontaktformular instantiierten ValueTextBoxes gespeichert werden. */
+	/**Ein Vektor, in dem alle im Kontaktformular instantiierten ValueTextBoxes gespeichert werden. 
+	 * Dieser Vektor wird ausgelesen, wenn Änderungen getätigt wurden und gespeichert werden sollen. 
+	 */
 	Vector<ValueTextBox> allValueTextBoxes = new Vector<ValueTextBox>();
 	
 	/** Allumfassende Tabelle zur Darstellung von Kontakten */
 	FlexTable contactTable = new FlexTable();
 
+	/** Ein Panel, welches alle Elemente rund um die ListBox für das Hinzufügen von Eigenschaften enthält */
 	HorizontalPanel newPropertyPanel = new HorizontalPanel();
 	
+	/** Ein Panel, welches alle Buttons enthält, die man im Zusammenhang mit dem im Kontaktformular angezeigten Kontakt betätigen kann*/
 	VerticalPanel buttonsPanel = new VerticalPanel();
 	
-	/* Für den Kontaktstamm */ 
+	/* Instanzenvariablen für das Anzeigen des Kontaktstamms. Dieser wird immer im Kontaktformular angezeigt. */ 
 	ValueTextBox firstnameTextBox;
 	ValueTextBox lastnameTextBox;
 	ListBox sexListBox = new ListBox();
@@ -86,35 +91,42 @@ public class ContactForm extends VerticalPanel {
 	ValueTextBox plzTextBox;
 	ValueTextBox cityTextBox;
 	
-	Label newPropertyLabel = new Label("Eigenschaft hinzufügen");
+	/** Der Button, mit dem dem Kontakt neue Eigenschaften hinzugefügt werden können*/
 	Button addNewPropertyButton = new Button("Hinzufügen");
+	
+	/*Die zwei ClickHandler für das Speichern von Änderungen und das Hinzufügen neuer Eigenschaften*/
 	ClickHandler saveChangesClickHandler = null;
 	ClickHandler addPropertyClickHandler = null;
 	
 	/**Listbox für das Hinzufügen neuer Eigenschaften */
 	ListBox newPropertyListBox = new ListBox();
 	
-	/**Der aktuell angemeldete Nutzer wird lokal zwischengespeichert.*/
+	/**Der aktuell angemeldete Nutzer */
 	User currentUser = new User();
 	
 	/*
-	 * Buttons, auf die später auch außerhalb der Methode onLoad zugegriffen werden muss (wegen disablen), 
-	 * deshalb wurden sie als Instanzenvariablen deklariert,
+	 * Buttons, auf die später auch außerhalb der Methode onLoad() zugegriffen werden muss (wegen disablen, falls der Nutzer 
+	 * nur Teilhaber ist). Deshalb wurden sie als Instanzenvariablen deklariert.
 	 */
 	Button saveChangesButton;
 	Button removeContactFromContactListButton;
 	
-//	public class OurDialogBox extends DialogBox{
-//		public OurDialogBox(VerticalPanel panel){
-//			CloseButton close= new CloseButton(this);
-//			panel.add(close);
-//			this.add(panel);
-//		}
-//	}
+
+	/**
+	 * Die innere Klasse CloseButton.
+	 * Sie dient der Darstellung von "Abbrechen"-Buttons auf jeder instantiierten DialogBox. Dieser bietet dem Nutzer die Möglichkeit,
+	 * den Vorgang abzubrechen und die DialogBox zu schließen.
+	 * 
+	 *  @author KatrinZerfass
+	 */
 	
 	public class CloseButton extends Button{
+		
 		DialogBox db;
 		
+		/**
+		 * Der Konstruktor von LockButton. Die DialogBox, in der der CloseButton hinzugefügt wird, wird als Übergabeparameter definiert.
+		 */
 		public CloseButton(DialogBox db) {
 			this.db = db;
 			this.addClickHandler(new CloseDBClickHandler(db)); 
@@ -122,6 +134,11 @@ public class ContactForm extends VerticalPanel {
 			this.addStyleName("closebutton");
 		}
 		
+		/**
+		 * Der ClickHandler wird im Konstruktor dem CloseButton hinzugefügt. Er schließt die DialogBox.
+		 * @author Zerfass
+		 *
+		 */
 		private class CloseDBClickHandler implements ClickHandler{
 			DialogBox db;
 	
@@ -136,6 +153,239 @@ public class ContactForm extends VerticalPanel {
 			
 		}
 		
+	}
+	
+	
+	
+	
+	/**
+	 * Die innere Klasse ValueTable. Erbt von FlexTable.
+	 * Sie dient der Darstellung aller Ausprägungen einer Eigenschaft in Form von ValueDisplays (s.u.).
+	 * 
+	 *  @author KatrinZerfass
+	 */
+	public class ValueTable extends FlexTable{
+		
+		/**Die Eigenschaftsart der angezeigten Ausprägungen */
+		int propertyId;
+		
+		
+		/**
+		 * Konstruktor von ValueTable. 
+		 * @param pid die ID der referenzierten Eigenschaftsart 
+		 */
+		public ValueTable(int pid) {
+			this.propertyId=pid;			
+		}
+		
+		/**
+		 * Getter für das valueDisplay in einer bestimmten Zeile. Später wichtig, um die Buttons in einem valueDisplay zu disablen.
+		 * 
+		 * @param row die Zeile in der ValueTable
+		 * @return das ValueDisplay an der Stelle <code>row, 0</code>
+		 */
+		public ValueDisplay getValueDisplay(int row) {
+			return (ValueDisplay) getWidget(row,  0);
+		}
+		
+		
+	}
+	
+	
+	
+	/**
+	 * Die innere Klasse ValueDisplay. Sie erbt von HorizontalPanel.
+	 * Sie dient der Darstellung einer Eigenschaftsausprägung in den jeweiligen ValueTables der einzelnen Eigenschaften.
+	 * Sie besteht immer aus einer <code>ValueTextBox</code>, einem <code>LockButton</code> und einem <code>DeleteValueButton</code>.
+	 * 
+	 *  @author KatrinZerfass
+	 */
+	public class ValueDisplay extends HorizontalPanel{
+		
+		/** Die anzuzeigende und referenzierte Ausprägung */
+		private Value value = null;
+		
+		private ValueTextBox valueTextBox;
+		private LockButton lockButton;
+		private DeleteValueButton deleteValueButton;
+		
+		/**
+		 * Konstruktor von ValueDisplay. <code>ValueTextBox</code>, <code>LockButton</code> und <code>DeleteValueButton</code> werden gesetzt. 
+		 *
+		 *@param vtb die dazugehörige TextBox
+		 */
+		public ValueDisplay(ValueTextBox vtb) {
+			valueTextBox = vtb;
+			lockButton = new LockButton();
+			deleteValueButton = new DeleteValueButton();
+			
+			this.add(valueTextBox);
+			this.add(lockButton);
+			this.add(deleteValueButton);
+			
+			this.getWidget(0).setWidth("290px");
+		}
+		
+		
+		/**
+		 * Setter von <code>value</code>. Setzt die Ausprägung in alle Elemente des Displays, welche somit auf diese referenzieren.
+		 * 
+		 * @param v die anzuzeigende Ausprägung
+		 */
+		public void setValue(Value v) {
+			this.value = v;
+			valueTextBox.setValue(value);
+			lockButton.setValue(value);
+			deleteValueButton.setValue(value);
+		}
+		
+		
+		/**
+		 * Setter von <code>value</code>, wenn es sich bei der Ausprägung um die Straße handelt. Hinter der Anschrift existiert ebenfalls
+		 * ein ValueDisplay, allerdings wurde die ValueTextBox wieder entfernt, deshalb wird die Ausprägung nur noch in den Lock- und
+		 * DeleteButton gesetzt 
+		 * @param v die referenzierte Ausprägung
+		 * @param addressTable boolean, ob es sich um die addressTable handelt
+		 */
+		public void setValue(Value v, boolean addressTable) {
+			this.value =v;
+			lockButton.setValue(value);
+			deleteValueButton.setValue(value);
+		}
+		
+		
+		
+		/**
+		 * Die Methode enableButton() wird aufgerufen, wenn der aktuelle Nutzer auch der Eigentümer des Kontakts ist.
+		 */
+		public void enableButtons() {
+			this.deleteValueButton.setEnabled(true);
+			this.lockButton.setEnabled(true);
+		}
+		
+		
+		/**
+		 * Die Methode disableButton() wird aufgerufen, wenn der aktuelle Nutzer nur Teilhaber des Kontakts ist.
+		 */
+		public void disableButtons() {
+			this.deleteValueButton.setEnabled(false);
+			this.lockButton.setEnabled(false);
+		}
+		
+		
+		/**
+		 * Methode, die beim Auslesen aller Ausprägungen eines Kontakts in jedem ValueDisplay den richtigen Stand des LockButtons setzt.
+		 * Der Wert "false" zeigt an, dass nichts an die Datenbank kommuniziert werden muss. Lediglich das richtige Bild soll angezeigt werden. 
+		 * 
+		 * @param isShared 
+		 */
+		public void setLockButtonTo(boolean isShared) {
+			if(isShared) {	
+				this.lockButton.setValueToShared(false);
+			}else {
+				this.lockButton.setValueToUnshared(false);
+			}
+		}
+			
+	}
+	
+	
+	
+	/**
+	 * Die innere Klasse ValueTextBox.
+	 * Sie dient der Darstellungen der Textboxen, in denen Eigenschaftsausprägungen angezeigt und bearbeitet werden können.
+	 * Die Besonderheit ist hier ein valueChangeHandler, welcher reagiert, wenn der Benutzer den Wert in der Textbox verändert.
+	 * 
+	 *  @author KatrinZerfass
+	 */
+	public class ValueTextBox extends TextBox{
+		
+		/**Um später auslesen zu können, bei welcher TextBox Änderungen vorgenommen wurden.*/
+		private boolean isChanged=false;
+		
+		/** Die referenzierte Ausprägung, welche in der TextBox angezeigt wird. */
+		private Value value = null;
+		
+		/** Ein Identifier, der notwendig ist, um den Inhalt der TextBox später mit <code>checkValue()</code> zu überprüfen. */
+		private String identifier;
+		
+		/**
+		 * Konstruktor von ValueTextBox. Setzt den Identifier der TextBox, welcher für die Methode <code>checkValue</code> notwendig ist.
+		 * Außerdem wird die ValueTextBox dem Vektor aller VTBs hinzugefügt und ihr ein valueChangeHandler hinzugefügt,  
+		 * welcher den Zustand von <code>isChanged</code> ändert.
+		 * 
+		 * @param identifier der Identifier für checkValue()
+		 */
+		public ValueTextBox(String identifier) {
+	
+			this.identifier = identifier;
+			this.setText("");
+			
+			allValueTextBoxes.add(this);
+		
+			this.addValueChangeHandler(new ValueChangeHandler<String>(){
+
+				public void onValueChange(ValueChangeEvent<String> event) {
+					isChanged = true;					
+				}
+				
+			});
+		}
+		
+		/**
+		 * Getter von <code>isChanged</code>
+		 *
+		 * @return Wert der Variable <code>isChanged</code>
+		 */
+		public boolean getIsChanged() {
+			return this.isChanged;
+		}
+		
+		
+		/**
+		 * Getter von <code>value</code>
+		 *
+		 * @return die referenzierte Ausprägung
+		 */
+		public Value getTextBoxValue() {
+			return this.value;
+		}
+		
+		
+		/**
+		 * Setter von <code>value</code>. 
+		 * Setzt auch gleichzeitig den Inhalt der Value als Text der TextBox. (Wird null übergeben, dann wird der Inhalt gelöscht 
+		 * und die TextBox aus dem  Vektor aller VTBs wieder entfernt. Dies passiert, wenn <code>setSelected(null)</code> aufgerufen wird.) 
+		 * 
+		 * @param v die anzuzeigende Ausprägung
+		 */
+		public void setValue(Value v) {
+			this.value = v;
+			
+			if(value!= null) {
+				setText(value.getContent());
+			}else {
+				/*
+				 * Wird als Übergabeparameter null übergeben, so wird der Text aus der TextBox gelöscht und die TextBox aus dem Vector entfernt.
+				 */
+				this.setText("");
+				allValueTextBoxes.remove(this);
+			}
+			
+		}
+		
+		
+		/**
+		 * der Getter des Identifiers
+		 * 
+		 * @return der Identifier
+		 */
+		public String getIdentifier() {
+			return identifier;
+		}
+
+		
+
 	}
 	
 	
@@ -156,10 +406,7 @@ public class ContactForm extends VerticalPanel {
 		private Image lockUnlocked = new Image("lock_unlocked.png");
 		private Image lockLocked = new Image ("lock_locked.png");
 		
-		/**
-		 * Der Konstruktor von LockButton. Es wird dem Button ein ClickHandler hinzugefügt, welcher den Übergang der Zustände von 
-		 * <code>isLocked</code> bzw. von <code>isShared</code> (bezogen auf die Ausprägung) regelt.
-		 */
+		
 		public LockButton() {
 			
 			this.addStyleName("lockButton");
@@ -168,17 +415,20 @@ public class ContactForm extends VerticalPanel {
 			lockLocked.setPixelSize(17, 17);
 			
 			/*
-			 * per default sind alle Ausprägungen geteilt, d.h. das Schloss ist zu Beginn unlocked.
+			 * Per default sind alle Ausprägungen geteilt, d.h. das Schloss ist zu Beginn unlocked.
 			 */
 			this.getUpFace().setImage(lockUnlocked);
 			
 			this.setEnabled(false);
 			
+			/*
+			 * Es wird dem Button ein ClickHandler hinzugefügt, welcher die referenzierte Ausprägung auf "Nicht geteilt" bzw. "Geteilt" setzt. 
+			 */
 			this.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
-					if(isLocked ==false) { // =Schloss ist geöffnet
-					setValueToUnshared();	// =Schloss soll geschlossen werden, d.h. die Ausprägung wird nicht geteilt.
-					}else setValueToShared();
+					if(isLocked ==false) { // =Schloss ist geöffnet, Ausprägung ist geteilt
+					setValueToUnshared(true);	// =Schloss soll geschlossen werden, d.h. die Ausprägung wird nicht geteilt.
+					}else setValueToShared(true);
 				}
 			});
 		}
@@ -194,79 +444,84 @@ public class ContactForm extends VerticalPanel {
 	
 		
 		/**
-		 * Methode, die beim Klicken eines geöffneten LockButtons aufgerufen wird. Folge: das Schloss wird geschlossen
-		 * und die Variable <code>isShared</code> der Ausprägung wird auf false gesetzt. Diese Veränderung wird mit einem 
-		 * Aufruf der Methode <code>editValue()</code> an den Server weitergegeben.
+		 * Die Methode setValueToShared schließt das Schloss und setzt die Variable <code>isShared</code> der Ausprägung auf <code>false</code>.
+		 * Wird die Methode infolge einer Änderung durch den Benutzer aufgerufen, wird diese Änderung auch an den Server weitergegeben.
+		 * 
 		 */
-		public void setValueToUnshared() {
+		public void setValueToUnshared(boolean wasChanged) {
 			this.getUpFace().setImage(lockLocked);
 			isLocked = true;
 			
-			if(value.getPropertyid() == 6) { 
-				/*
-				 * Es handelt sich um den LockButton, welcher sich auf die Straße bezieht. Folglich muss auch isShared der Ausprägungen
-				 * Hausnummer, PLZ und Wohnort neu gesetzt werden.	
-				 */
-					for(int i= 0; i<allValuesOfContact.size(); i++) {
-						int pid = allValuesOfContact.get(i).getPropertyid();
-						if(pid == 6 || pid == 7 || pid == 8 || pid ==9) {
-							editorAdministration.editValue(contactToDisplay, pid, allValuesOfContact.get(i), 
-											allValuesOfContact.get(i).getContent(), false, new AsyncCallback<Value>() {
-								public void onFailure(Throwable t) {
-									Window.alert("Das Setzen dieser Ausprägung zu \"Nicht geteilt\" ist fehlgeschlagen.");
+			if(wasChanged) {
+				if(value.getPropertyid() == 6) { //die PropertyID 6 bezieht sich auf die Ausprägung "Straße"
+					/*
+					 * Wir der LockButton betätigt, welcher sich auf die Straße bezieht, so müssen folglich auch isShared der Ausprägungen
+					 * Hausnummer, PLZ und Wohnort neu gesetzt werden, da diese vier Ausprägungen immer zusammenhängen.	
+					 * Dazu wird der Vektor allValuesOfContact durchiteriert und nach den Ausprägungen der Anschrift durchsucht.
+					 */
+						for(int i= 0; i<allValuesOfContact.size(); i++) {
+							int pid = allValuesOfContact.get(i).getPropertyid();
+							
+							// || Straße||Hausnummer||   PLZ    || Wohnort
+							if(pid == 6 || pid == 7 || pid == 8 || pid ==9) {
+								editorAdministration.editValue(contactToDisplay, pid, allValuesOfContact.get(i), 
+												allValuesOfContact.get(i).getContent(), false, new AsyncCallback<Value>() {
 									
-								}
-								public void onSuccess(Value v) {
-									
-												
-								}
-							});
-						}
-					}			
-				}
+									public void onFailure(Throwable t) {
+										Window.alert("Das Setzen deer Ausprägung zu \"Nicht geteilt\" ist fehlgeschlagen.");
+										
+									}
+									public void onSuccess(Value v) {
+										
+													
+									}
+								});
+							}
+						}			
+					}
+			
 				
-			else{
-				editorAdministration.editValue(contactToDisplay, value.getPropertyid(), this.value, value.getContent(), false, new AsyncCallback<Value>() {
+				else{ //es handelt sich um jede andere "normale" Ausprägung
+					editorAdministration.editValue(contactToDisplay, value.getPropertyid(), this.value, value.getContent(), false, new AsyncCallback<Value>() {
+				
+						public void onFailure(Throwable t) {
+							Window.alert("Das Setzen dieser Ausprägung zu \"Nicht geteilt\" ist fehlgeschlagen.");
+							
+						}
+						public void onSuccess(Value v) {
+							Window.alert("Ausprägung zu \"Nicht geteilt\" gesetzt" );
+						
+						}
+					});
+				}
+			}
+		}
+		
+		
+		/**
+		 * Die Methode setValueToShared öffnet das Schloss und setzt die Variable <code>isShared</code> der Ausprägung auf <code>true</code>.
+		 * Wird die Methode infolge einer Änderung durch den Benutzer aufgerufen, wird diese Änderung auch an den Server weitergegeben.
+		 */
+		public void setValueToShared(boolean wasChanged) {
+			this.getUpFace().setImage(lockUnlocked);
+			isLocked = false;
+			
+			if(wasChanged) {
+				editorAdministration.editValue(contactToDisplay, value.getPropertyid(), this.value, value.getContent(), true, new AsyncCallback<Value>() {
 			
 					public void onFailure(Throwable t) {
-						Window.alert("Das Setzen dieser Ausprägung zu \"Nicht geteilt\" ist fehlgeschlagen.");
+						Window.alert("Das Setzen dieser Ausprägung zu \"Geteilt\" ist fehlgeschlagen.");
 						
 					}
 					public void onSuccess(Value v) {
-						Window.alert("Ausprägung zu \"Nicht geteilt\" gesetzt" );
+						Window.alert("Ausprägung zu \"Geteilt\" gesetzt" );
 					
 					}
 				});
 			}
-		}
-		
-		/**
-		 * Methode, die beim Klicken eines geschlossenen LockButtons aufgerufen wird. Folge: das Schloss wird geöffnet
-		 * und die Variable <code>isShared</code> der Ausprägung wird auf <code>true</code> gesetzt. Diese Veränderung wird mit einem 
-		 * Aufruf der Methode <code>editValue()</code> an den Server weitergegeben.
-		 */
-		public void setValueToShared() {
-			this.getUpFace().setImage(lockUnlocked);
-			isLocked = false;
-			editorAdministration.editValue(contactToDisplay, value.getPropertyid(), this.value, value.getContent(), true, new AsyncCallback<Value>() {
-				public void onFailure(Throwable t) {
-					Window.alert("Das Setzen dieser Ausprägung zu \"Geteilt\" ist fehlgeschlagen.");
-					
-				}
-				public void onSuccess(Value v) {
-					Window.alert("Ausprägung zu \"Geteilt\" gesetzt" );
-				
-				}
-			});
 		}	
 		
-		public void setImage(boolean b) {
-			if(b==true) {
-				this.getUpFace().setImage(lockUnlocked);
-			}else {
-				this.getUpFace().setImage(lockLocked);
-			}
-		}
+		
 	}
 			
 	
@@ -289,6 +544,7 @@ public class ContactForm extends VerticalPanel {
 		 * Konstruktor von DeleteValueButton. Es wird dem Button ein ClickHandler hinzugefügt, welcher die Methode <code>deleteValue()</code> aufruft.
 		 */
 		public DeleteValueButton() {
+			
 			this.getUpFace().setImage(bin);
 			bin.setPixelSize(17, 17);
 			
@@ -306,6 +562,7 @@ public class ContactForm extends VerticalPanel {
 					 */
 						for(int i= 0; i<allValuesOfContact.size(); i++) {
 							int pid = allValuesOfContact.get(i).getPropertyid();
+							
 							if(pid == 6 || pid == 7 || pid == 8 || pid ==9) {
 								editorAdministration.deleteValue(allValuesOfContact.get(i), new AsyncCallback<Void>() {
 								
@@ -338,9 +595,11 @@ public class ContactForm extends VerticalPanel {
 //
 //						});
 						editorAdministration.deleteValue(value, new AsyncCallback<Void>() {
-							public void onFailure(Throwable arg0) {Window.alert("Das Löschen der Ausprägung ist fehlgeschlagen.");};
+							public void onFailure(Throwable t) {
+								Window.alert("Das Löschen der Ausprägung ist fehlgeschlagen.");
+								};
 							{Window.alert("Das Löschen der Ausprägung ist fehlgeschlagen 2.");};
-							public void onSuccess(Void arg0) {Window.alert("Die Ausprägung wurde gelöscht.");}; 
+							public void onSuccess(Void result) {Window.alert("Die Ausprägung wurde gelöscht.");}; 
 							{setSelected(contactToDisplay);
 								Window.alert("Die Ausprägung wurde gelöscht. 2");};
 						});//TODO WTF is this?!
@@ -361,6 +620,7 @@ public class ContactForm extends VerticalPanel {
 			this.value=v;
 		}
 		
+		
 		/**
 		 * Methode, um die DeleteValueButtons auszugrauen. Wird aufgerufen, wenn der angemeldete Nutzer nicht der Eigentümer des
 		 * angezeigten Kontakts ist.
@@ -372,9 +632,56 @@ public class ContactForm extends VerticalPanel {
 	
 	
 	
+	
+	/**
+	 * Die innere Klasse ValuePanel.
+	 * Sie dient der Darstellung des Eigenschaftslabels und des AddValueButtons vor jeder ValueTable..
+	 *
+	 * @author KatrinZerfass
+	 */
+	public class ValuePanel extends VerticalPanel{
+		
+		/**Die referenzierte PropertyID*/
+		int propertyId;
+		
+		Label valueLabel;
+		AddValueButton addValueButton;
+		
+		/**
+		 * Der Konstruktor von ValuePanel. Die Eigenschafts-ID wird gesetzt und das Label und der AddValueButton werden hinzugefügt..
+		 * 
+		 * @param pid die ID der referenzierten Eigenschaft
+		 * @param row die Zeile, in der sich das Panel in der <code>contactTable</code> befindet
+		 * @param label das Label, welches auf die Art der Eigenschaft hinweist
+		 */
+		public ValuePanel(int pid, int row, String label){
+			
+			this.propertyId= pid;
+			
+			valueLabel = new Label();
+			this.valueLabel.setText(label);
+			this.add(valueLabel);
+			
+			this.addValueButton = new AddValueButton(propertyId, row);
+			this.add(addValueButton);
+			
+		}
+		
+		/**
+		 * Getter des addValueButtons.
+		 * @return den AddValueButton des ValuePanels
+		 */
+		public AddValueButton getAddValueButton() {
+			return addValueButton;
+		}
+		
+	}
+	
+	
+	
 	/**
 	 * Die innere Klasse AddValueButton.
-	 * Sie dient der Darstellung der Buttons, mit welchen man eine neue Ausprägung der jeweiligen Eigenschaft hinzufügen kann.
+	 * Sie dient der Darstellung der Buttons, mit welchen man eine neue Ausprägung der jeweiligen Eigenschaftsart hinzufügen kann.
 	 * 
 	 *  @author KatrinZerfass
 	 */
@@ -382,7 +689,8 @@ public class ContactForm extends VerticalPanel {
 		
 		/** Die referenzierte Eigenschaftsart. */
 		private int propertyId;
-		/**Die Nummer der Zeile, in welcher der Button sich in der <code>contactTable</code> befindet */
+		
+		/**Die Nummer der Zeile, in welcher sich die Eigenschaftsart in der <code>contactTable</code> befindet */
 		private int row;
 		
 			
@@ -402,183 +710,146 @@ public class ContactForm extends VerticalPanel {
 			
 		//wieder zurück kommentieren!
 			this.setEnabled(true);
+			//TODO: ?
 			
 					
 			this.addClickHandler(new ClickHandler() {
 				
 				public void onClick (ClickEvent event) {
 					
-					if(contactToDisplay != null) {
-						addValuePopUp(propertyId, row);	
-						
+					addValuePopUp(propertyId, row);	
 					
-					}else { 
-						Window.alert("geht in AddValueclickHandler rein. Kontakt gleich null\nKatrin");
-						int valueTableRow = ((ValueTable)contactTable.getWidget(row, 1)).getRowCount();
-						Window.alert("Widget der contactTable an der Stelle " + row + ", 1: " + ((ValueTable) contactTable.getWidget(row, 1)).getPid() + "\nKatrin");
-						Window.alert("Aktuelle Reihe der ValueTable: " + valueTableRow + "\nKatrin");
-						
-						switch(propertyId) {
-						case 1: ((ValueTable) contactTable.getWidget(row, 1)).setWidget(valueTableRow, 0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
-								break;
-						
-						case 2: ((ValueTable) contactTable.getWidget(row, 1)).setWidget(((ValueTable) contactTable.getWidget(row, 1))
-									.getRowCount(),0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
-								break;
-						case 3: ((ValueTable) contactTable.getWidget(row, 1)).setWidget(((ValueTable) contactTable.getWidget(row, 1))
-									.getRowCount(),0, new ValueDisplay(new ValueTextBox("Email")));
-								break;
-						case 5: ((ValueTable) contactTable.getWidget(row, 1)).setWidget(((ValueTable) contactTable.getWidget(row, 1))
-									.getRowCount(),0, new ValueDisplay(new ValueTextBox("Arbeitsplatz")));
-								break;
-						case 10: ((ValueTable) contactTable.getWidget(row, 1)).setWidget(((ValueTable) contactTable.getWidget(row, 1))
-									.getRowCount(),0, new ValueDisplay(new ValueTextBox("Homepage")));
-								break;
-						default:
-							if (propertyId>10) {
-								((ValueTable) contactTable.getWidget(row, 1)).setWidget(((ValueTable) contactTable.getWidget(row, 1))
-										.getRowCount(),0, new ValueDisplay(new ValueTextBox("")));
-							}
-							break;
-					
-						}
-					}
-				
 				}
 			});
 		}
 		
 		
 		/**
-		 * Gibt die ID der referenzierten Eigenschaft zurück.
-		 *
-		 * @return die ID der referenzierten Eigenschaft
-		 */
-		public int getPropertyId() {
-			return this.propertyId;
-		}
-		/**
-		 * Die Methode AddValuePopUp wird im ClickHandler der AddValueButtons aufgerufen.
+		 * Die Methode addValuePopUp erzeugt ein PopUp, in das man eine neue Ausprägung eintragen kann
 		 * 
-		 * @param pid die referenzierte Eigenschaft, wird vom ClickHandler übergeben
+		 * @param pid die referenzierte Eigenschaftsart. Wird vom ClickHandler übergeben.
+		 * @param row die Zeile der ContactTable, in der sich die Eigenschaftsart befindet. Wird vom ClickHandler übergeben.
 		 */
 		public void addValuePopUp(int pid, int row) {
-
-			VerticalPanel addValueDialogBoxPanel = new VerticalPanel();
-			DialogBox addValuePopUp = new DialogBox();
-			CloseButton close=new CloseButton(addValuePopUp);
-			addValuePopUp.setText("Neue Ausprägung hinzufügen");
-			addValuePopUp.setAnimationEnabled(true);
-			addValuePopUp.setGlassEnabled(true);			
 			
-			addValueDialogBoxPanel.setHeight("100px");
-			addValueDialogBoxPanel.setWidth("230px");
-		    addValueDialogBoxPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
-		
+			/* Die DialogBox, welche aufpoppt */
+			DialogBox addValueDB = new DialogBox();
+			addValueDB.setText("Neue Ausprägung hinzufügen");
+			addValueDB.setAnimationEnabled(true);
+			addValueDB.setGlassEnabled(true);
 			
+			/*Das innere Panel der DialogBox */
+			VerticalPanel addValueDBPanel = new VerticalPanel();
+			addValueDBPanel.setHeight("100px");
+			addValueDBPanel.setWidth("230px");
+		    addValueDBPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+		    addValueDB.add(addValueDBPanel);
+		    			
 			Label addValueLabel = new Label();
+			addValueDBPanel.add(addValueLabel);
+			
+			/*Die ValueTextBox, in die man die neue Ausprägung eintragen kann. Sie wird nach der switch-case gesetzt */
 			ValueTextBox addValueTextBox = null;
+			
+			HorizontalPanel dbButtonsPanel=new HorizontalPanel();
+			addValueDBPanel.add(dbButtonsPanel);
+			
 			Button addValueButton = new Button("Hinzufügen");
-			HorizontalPanel hpanel=new HorizontalPanel();
-			hpanel.add(close);
-			hpanel.add(addValueButton);
 			addValueButton.addStyleName("okbutton");
-			addValueDialogBoxPanel.add(addValueLabel);
+			dbButtonsPanel.add(addValueButton);
 			
+			CloseButton closeButton = new CloseButton(addValueDB);
+			dbButtonsPanel.add(closeButton);
 			
-			
+		
 			/*
-			 * Je nachdem, um welche Art von Eigenschaft es sich handelt, wir ein anderer Text im Pop-Up angezeigt und dem ClickHandler
-			 * des "Hinzufügen"-Buttons wird u.a. die jeweilige ValueTable übergeben, in die die Ausprägung hinzugefügt werden muss.
+			 * Je nachdem, um welche Art von Eigenschaft es sich handelt, wird der Identifier gesetzt, mit dem nach der switch-case
+			 * die ValueTextBox erstellt wird. Der Identifier dient der Methode checkValue aus den ClientsideFunctions, welche auf korrekte 
+			 * Eingabe überprüft.
 			 */
+			String identifier = null;
+			
 			switch(pid) {
-			case 1: addValueTextBox = new ValueTextBox("Telefonnummer");
-					addValueLabel.setText("Neue geschäftliche Telefonnummer: ");
-					addValueButton.addClickHandler(new AddValueClickHandler(addValuePopUp, addValueTextBox,
-							((ValueTable) contactTable.getWidget(row, 1)), pid));
-					break;
-			case 2: addValueTextBox = new ValueTextBox("Telefonnummer");
-					addValueLabel.setText("Neue private Telefonnummer: ");
-					addValueButton.addClickHandler(new AddValueClickHandler(addValuePopUp, addValueTextBox,
-							((ValueTable) contactTable.getWidget(row, 1)), pid));
-					break;
-			case 3: addValueTextBox = new ValueTextBox("Email");
-					addValueLabel.setText("Neue e-Mail-Adresse: ");
-					addValueButton.addClickHandler(new AddValueClickHandler(addValuePopUp, addValueTextBox,
-							((ValueTable) contactTable.getWidget(row, 1)), pid));
-					break;
-			case 5: addValueTextBox = new ValueTextBox("Arbeitsplatz");
-					addValueLabel.setText("Neue Arbeitsstelle: ");
-					addValueButton.addClickHandler(new AddValueClickHandler(addValuePopUp, addValueTextBox,
-							((ValueTable) contactTable.getWidget(row, 1)), pid));
-					break;
-			case 10:addValueTextBox = new ValueTextBox("Homepage");
-					addValueLabel.setText("Neue Homepage: ");
-					addValueButton.addClickHandler(new AddValueClickHandler(addValuePopUp, addValueTextBox,
-							((ValueTable) contactTable.getWidget(row, 1)), pid));
-					break;
-			default: 
-				if(pid>10) {
-					addValueTextBox = new ValueTextBox("Sonstiges");
-					addValueLabel.setText("Neue Ausprägung: ");
-					addValueButton.addClickHandler(new AddValueClickHandler(addValuePopUp, addValueTextBox,
-							((ValueTable) contactTable.getWidget(row, 1)), pid));
-					break;
+			
+				case 1: identifier = "Telefonnummer";
+						addValueLabel.setText("Neue geschäftliche Telefonnummer: ");
+						break;
+						
+				case 2: identifier = "Telefonnummer";
+						addValueLabel.setText("Neue private Telefonnummer: ");
+						break;
+						
+				case 3: identifier = "Email";
+						addValueLabel.setText("Neue e-Mail-Adresse: ");
+						break;
+						
+				case 5: identifier = "Arbeitsplatz";
+						addValueLabel.setText("Neue Arbeitsstelle: ");
+						break;
+						
+				case 10: identifier = "Homepage";
+						addValueLabel.setText("Neue Homepage: ");
+						break;
+				default: 
+						identifier = "Sonstiges";
+						addValueLabel.setText("Neue Ausprägung: ");
+						break;
 					
-				}
+				
 			}
 			
-			addValueDialogBoxPanel.add(addValueTextBox);
-			addValueDialogBoxPanel.add(hpanel);
+			addValueTextBox = new ValueTextBox(identifier);
+			addValueDBPanel.add(addValueTextBox);
 			
-			addValuePopUp.add(addValueDialogBoxPanel);
-			addValuePopUp.show();
+			addValueButton.addClickHandler(new AddValueClickHandler(addValueDB, addValueTextBox,
+					((ValueTable) contactTable.getWidget(row, 1)), pid));
 			
 			
-		
+			addValueDB.show();
+
 		}
 		
 		/**
 		 * Der innere Klasse AddValueClickHandler innerhalb der inneren Klasse AddValueButton.
-		 * Wird aufgerufen, nachdem der Benutzer eine neue Ausprägung einträgt und im Popup auf "Hinzufügen" klickt.
+		 * Wird aufgerufen, nachdem der Benutzer eine neue Ausprägung einträgt und in der DialogBox auf "Hinzufügen" klickt.
 		 *
 		 * @author KatrinZerfass
 		 */
 		private class AddValueClickHandler implements ClickHandler {
-			DialogBox popup;
-			ValueTextBox tb;
-			FlexTable vt;
+			
+			DialogBox db;
+			ValueTextBox vtb;
+			ValueTable vt;
 			int pid;
 			
 			/**
-			 * Der Konstruktor von AddValueClickHandler. Ihm müssen alle Parameter aus dem Popup übergeben werden, damit er in einem 
-			 * Aufruf zum Server die neue Ausprägung anlegen und diese außerdem in der ValueTable anzeigen kann.
+			 * Der Konstruktor von AddValueClickHandler. Ihm müssen alle Parameter aus der DialogBox übergeben werden, damit er in einem 
+			 * Aufruf zum Server die neue Ausprägung anlegen und diese außerdem in der zugehörigen ValueTable anzeigen kann.
 			 * 
-			 * @param popup Das AddValuePopUp
-			 * @param tb die TextBox aus dem PopUp
-			 * @param ft die ValueTable, der die neue Ausprägung hinzugefügt werden soll
-			 * @param pid die ID der Eigenschaftsart des AddValueButtons
-			 * @param content der vom Nutzer eingetragene Inhalt der neuen Ausprägung
+			 * @param db die addValueDB
+			 * @param vtb die addValueTextBox aus der DialogBox
+			 * @param vt die ValueTable, der die neue Ausprägung hinzugefügt werden soll
+			 * @param pid die PropertyID der Eigenschaftsart des AddValueButtons
 			 */
-			public AddValueClickHandler(DialogBox popup, ValueTextBox tb, ValueTable vt, int pid) {
-				this.popup = popup;
-				this.tb = tb;
+			public AddValueClickHandler(DialogBox db, ValueTextBox vtb, ValueTable vt, int pid) {
+				
+				this.db = db;
+				this.vtb = vtb;
 				this.vt = vt;
-				this.pid = pid;
-						
+				this.pid = pid;		
 			}
 			
 			public void onClick(ClickEvent event) {
 				/*
-				 * Die Eingabe des Nutzers wird mithilfe der Methode checkValue() auf Korrektheit überprüft.
+				 * Die Eingabe des Nutzers in die addValueTextBox wird mithilfe der Methode checkValue() auf Korrektheit überprüft.
 				 */
-				if(!ClientsideFunctions.checkValue(tb)){
-					tb.setText("");				
+				if(!ClientsideFunctions.checkValue(vtb)){
+					vtb.setText("");				
 				}
 				else {
-					popup.hide();
+					db.hide();
 							
-					editorAdministration.createValue(contactToDisplay, pid, tb.getText(), new AsyncCallback<Value>() {
+					editorAdministration.createValue(contactToDisplay, pid, vtb.getText(), new AsyncCallback<Value>() {
 						public void onFailure(Throwable t) {
 							Window.alert("Ausprägung konnte nicht hinzugefügt werden. Versuchen Sie es erneut.");
 						}
@@ -587,10 +858,10 @@ public class ContactForm extends VerticalPanel {
 							 * War das Anlegen der Ausprägung auf dem Server erfolgreich, so wird sie auch im GUI als neue Zeile in
 							 * der jeweiligen ValueTable angezeigt.
 							 */
-							int rowCount = vt.getRowCount();
-							vt.setWidget(rowCount, 0, new ValueDisplay(new ValueTextBox(tb.getIdentifier())));
-							((ValueDisplay) vt.getWidget(rowCount ,0)).setValue(v);
-							((ValueDisplay) vt.getWidget(rowCount ,0)).enableButtons();
+							int vtRowCount = vt.getRowCount();
+							vt.setWidget(vtRowCount, 0, new ValueDisplay(new ValueTextBox(vtb.getIdentifier())));
+							((ValueDisplay) vt.getWidget(vtRowCount ,0)).setValue(v);
+							((ValueDisplay) vt.getWidget(vtRowCount ,0)).enableButtons();
 						}
 					});
 				
@@ -603,276 +874,13 @@ public class ContactForm extends VerticalPanel {
 	
 	
 	
-	/**
-	 * Die innere Klasse ValueTextBox.
-	 * Sie dient der Darstellungen der Textboxen, in denen Eigenschaftsausprägungen angezeigt und bearbeitet werden können.
-	 * Die Besonderheit ist hier ein valueChangeHandler, welcher reagiert, wenn der Benutzer den Wert in der Textbox verändert.
-	 * 
-	 *  @author KatrinZerfass
-	 */
-	public class ValueTextBox extends TextBox{
-		
-		/**Um später auslesen zu können, bei welcher TextBox Änderungen vorgenommen wurden.*/
-		private boolean isChanged=false;
-		
-		/** Die referenzierte Ausprägung, welche in der TextBox angezeigt wird. */
-		private Value value = null;
-		
-		/** Ein Identifier, der notwendig ist, um den Inhalt der TextBox später mit <code>checkValue()</code> zu überprüfen. */
-		private String identifier;
-		
-		/**
-		 * Konstruktor von ValueTextBox. Setzt den Identifier der TextBox, welcher für die Methode <code>checkValue</code> notwendig ist.
-		 * Und fügt der TextBox den valueChangeHandler hinzu,  welcher den Zustand von <code>isChanged</code> ändert.
-		 * @param identifier der Identifier
-		 */
-		public ValueTextBox(String identifier) {
-	
-			setIdentifier(identifier);
-			allValueTextBoxes.add(this);
-			this.setText("");
-			
-			this.addValueChangeHandler(new ValueChangeHandler<String>(){
-
-				public void onValueChange(ValueChangeEvent<String> event) {
-					isChanged = true;					
-				}
-				
-			});
-		}
-		
-		/**
-		 * Getter von <code>isChanged</code>
-		 *
-		 * @return Wert der Variable <code>isChanged</code>
-		 */
-		public boolean getIsChanged() {
-			return this.isChanged;
-		}
-		
-		/**
-		 * Getter von <code>value</code>
-		 *
-		 * @return die referenzierte Ausprägung
-		 */
-		public Value getTextBoxValue() {
-			return this.value;
-		}
-		
-		/**
-		 * Setter von <code>value</code>. Setzt auch gleichzeitig den Inhalt der Value als Text der TextBox und fügt die ValueTextBox dem
-		 * Vector aller instantiierten ValueTextBoxes hinzu. (Wird null übergeben, dann wird der Text gelöscht und die TextBox aus dem
-		 * Vector wieder entfernt. Dies passiert, wenn <code>setSelected(null)</code> aufgerufen wird.) 
-		 * 
-		 * @param v die anzuzeigende Ausprägung
-		 */
-		public void setValue(Value v) {
-			this.value = v;
-			if(value!= null) {
-				setText(value.getContent());
-			//	allValueTextBoxes.add(this);
-			}else {
-				/*
-				 * Wird als Übergabeparameter null übergeben, so wird der Text aus der TextBox gelöscht und die TextBox aus dem Vector entfernt.
-				 */
-				this.setText("");
-				allValueTextBoxes.remove(this);
-			}
-			
-		}
-		
-		/**
-		 * der Getter des Identifiers
-		 * @return der Identifier
-		 */
-		public String getIdentifier() {
-			return identifier;
-		}
-
-		/**
-		 * der Setter des Identifiers
-		 * @param identifier der Identifier
-		 */
-		public void setIdentifier(String identifier) {
-			this.identifier = identifier;
-		}
-
-	}
-	
-	
-	
-	/**
-	 * Die innere Klasse ValueDisplay. Sie erbt von HorizontalPanel.
-	 * Sie dient der Darstellung einer Eigenschaftsausprägung in den jeweiligen ValueTables der einzelnen Eigenschaften.
-	 * Sie besteht immer aus einer <code>ValueTextBox</code>, einem <code>LockButton</code> und einem <code>DeleteValueButton</code>.
-	 * 
-	 *  @author KatrinZerfass
-	 */
-	public class ValueDisplay extends HorizontalPanel{
-		
-		/** Die anzuzeigende Ausprägung */
-		private Value value = null;
-		
-		private ValueTextBox valueTextBox;
-		private LockButton lockButton;
-		private DeleteValueButton deleteValueButton;
-		
-		/**
-		 * Konstruktor von ValueDisplay.  <code>ValueTextBox</code>, <code>LockButton</code> und <code>DeleteValueButton</code> werden dem Panel hinzugefügt. 
-		 *
-		 *@param vtb die dazugehörige TextBox
-		 */
-		public ValueDisplay(ValueTextBox vtb) {
-			valueTextBox = vtb;
-			lockButton = new LockButton();
-			deleteValueButton = new DeleteValueButton();
-			this.add(valueTextBox);
-			this.add(lockButton);
-			this.add(deleteValueButton);
-			
-			this.getWidget(0).setWidth("290px");
-		}
-		
-		
-		/**
-		 * Setter von <code>value</code>. Setzt die Ausprägung in alle Elemente des Displays, welche auf diese referenzieren.
-		 * Fügt außerdem in der geschachtelten Methode valueTextBox.setValue() die TextBox dem Vector aller TextBoxen hinzu.
-		 * 
-		 * @param v die anzuzeigende Ausprägung
-		 */
-		public void setValue(Value v) {
-			this.value = v;
-			valueTextBox.setValue(value);
-			lockButton.setValue(value);
-			deleteValueButton.setValue(value);
-		}
-		
-		public void setValue(Value v, boolean adressTable) {
-			this.value =v;
-			//this.remove(0);
-			lockButton.setValue(value);
-			deleteValueButton.setValue(value);
-		}
-		
-		/**
-		 * Getter von <code>value</code>
-		 * 
-		 * @return die anzuzeigende Ausprägung
-		 */
-		public Value getValue() {
-			return this.value;
-		}
-		
-		/**
-		 * Getter der <code>valueTextBox</code>
-		 * @return
-		 */
-		public ValueTextBox getValueTextBox() {
-			return this.valueTextBox;
-		}
-		/**
-		 * Die Methode enableButton() wird aufgerufen, wenn der aktuelle Nutzer auch der Eigentümer des Kontakts ist.
-		 */
-		public void enableButtons() {
-			this.deleteValueButton.setEnabled(true);
-			this.lockButton.setEnabled(true);
-		}
-		
-		/**
-		 * Die Methode disableButton() wird aufgerufen, wenn der aktuelle Nutzer nur Teilhaber des Kontakts ist.
-		 */
-		public void disableButtons() {
-			this.deleteValueButton.setEnabled(false);
-			this.lockButton.setEnabled(false);
-		}
-		
-		public void setLockButtonTo(boolean b) {
-			if(b==true) {
-				this.lockButton.setImage(b);
-			}else {
-				this.lockButton.setImage(b);
-			}
-		}
-			
-	}
-	
-	
-	/**
-	 * Die innere Klasse ValuePanel.
-	 * Sie dient der Darstellung des Eigenschaftslabels und des AddValueButtons in der jeweils ersten Spalte der <code>contactTable</code>.
-	 *
-	 * @author KatrinZerfass
-	 */
-	public class ValuePanel extends VerticalPanel{
-		int propertyId;
-		Label valueLabel = new Label();
-		AddValueButton addValueButton;
-		
-		/**
-		 * Der Konstruktor von ValuePanel. Das Label und der AddValueButton werden hinzugefügt und die Eigenschafts-ID wird gesetzt.
-		 * @param pid die ID der referenzierten Eigenschaft
-		 * @param row die Zeile, in der sich das Panel in der <code>contactTable</code> befindet
-		 * @param label das Label, welches auf die Art der Eigenschaft hinweist
-		 */
-		public ValuePanel(int pid, int row, String label){
-			this.propertyId= pid;
-			this.valueLabel.setText(label);
-			this.addValueButton = new AddValueButton(propertyId, row);
-			this.add(valueLabel);
-			this.add(addValueButton);
-			
-		}
-		
-		/**
-		 * Getter des addValueButtons.
-		 * @return den AddValueButton des ValuePanels
-		 */
-		public AddValueButton getAddValueButton() {
-			return addValueButton;
-		}
-		
-	}
-	
-	
-	
-	
-	/**
-	 * Die innere Klasse ValueTable. Erbt von FlexTable.
-	 * Sie dient der Darstellung aller ValueDisplays zu jeder Eigenschaftsart.
-	 * 
-	 *  @author KatrinZerfass
-	 */
-	public class ValueTable extends FlexTable{
-		int propertyId;
-		ValueDisplay valueDisplay;
-		
-		/**
-		 * Konstruktor von ValueTable. 
-		 * @param pid die ID der referenzierten Eigenschaftsart 
-		 */
-		public ValueTable(int pid) {
-			this.propertyId=pid;			
-		}
-		
-		/**
-		 * Getter für valueDisplay
-		 * @param row die Zeile in der ValueTable
-		 * @return das ValueDisplay an der Stelle <code>row, 0</code>
-		 */
-		public ValueDisplay getValueDisplay(int row) {
-			return (ValueDisplay) getWidget(row,  0);
-		}
-		
-		public int getPid() {
-			return this.propertyId;
-		}
-	}
 	
 	
 	/**
 	 * Die innere Klasse EmailDialogBox
 	 * 
 	 * @author JanNoller
+	 * TODO: nicht nach Clientside Funtcions auslagern?!
 	 */
 	
 	public class EmailDialogBox extends DialogBox{
@@ -974,24 +982,31 @@ public class ContactForm extends VerticalPanel {
 	
 	/**
 	 * Die Methode <code>onLoad()</code> wird in der EntryPoint-Klasse aufgerufen, um im GUI eine Instanz von ContactForm zu erzeugen.
+	 * 
+	 * @author KatrinZerfass & Anna-MariaGmeiner
 	 */
 	
 	public void onLoad() {
 		
 		super.onLoad();
 		
-		/* 
-		 * Zunächst wird der angemeldete Nutzer abgefragt und als Instanzenvariable gespeichert.
-		 */
-		
-		currentUser = ClientsideSettings.getUser();
-		addNewPropertyButton.addStyleName("addNewPropertyButton");
-		newPropertyLabel.addStyleName("newPropertyLabel");
-		newPropertyListBox.addStyleName("newPropertyListBox");
-		
 		this.add(contactTable);
+		contactTable.setStyleName("contactTable");
+		//TODO: hier mit anderen werten probieren?!
 		contactTable.getColumnFormatter().setWidth(0, "30px");
 		
+		
+		/* 
+		 * Der angemeldete Nutzer wird abgefragt und als Instanzenvariable gespeichert.
+		 */
+		currentUser = ClientsideSettings.getUser();
+		
+		
+		
+		
+		/*
+		 * Alle vordefinierten Eigenschaften werden aus der Datenbank ausgelesen und in einem Vektor gespeichert.
+		 */
 		editorAdministration.getAllPredefinedPropertiesOf(new AsyncCallback<Vector<Property>>(){
 			public void onFailure(Throwable t) {
 				Window.alert("Auslesen aller vordefinierten Eigenschaften fehlgeschlagen");
@@ -1008,13 +1023,8 @@ public class ContactForm extends VerticalPanel {
 		
 		
 		
-		
-		
-		//Zeile 0 und 1 der Tabelle contactTable sind leer
-		contactTable.setStyleName("contactTable");
-		
 		/*
-		 * Zweite Zeile: Vor- und Nachname
+		 * Elemente zum Anzeigen des Vor- und Nachnamens 
 		 */
 		Label firstnameLabel = new Label("Vorname: ");
 		contactTable.setWidget(2, 0, firstnameLabel);
@@ -1029,62 +1039,69 @@ public class ContactForm extends VerticalPanel {
 		
 		
 		/*
-		 * Dritte Zeile: Geschlecht und Geburtsdatum
+		 * Elemente zum Anzeigen bzw. Auswählen des Geschlechts
 		 */
 		Label sexLabel = new Label("Geschlecht: ");
+		contactTable.setWidget(3, 0, sexLabel);
+		
 		sexListBox.addItem("männlich");
 		sexListBox.addItem("weiblich");
 		sexListBox.addItem("Sonstiges");
-		
-		contactTable.setWidget(3, 0, sexLabel);
 		contactTable.setWidget(3, 1, sexListBox);		
 	
-		
+		/*
+		 *Die Buttons für das buttonPanel werden instantiiert, mit Stylenamen versehen und zum buttonPanel hinzugefügt
+		 */
 		Button addContactButton = new Button("Neuen Kontakt anlegen");
 		addContactButton.addStyleName("buttonPanel");
+		buttonsPanel.add(addContactButton);
+		
 		Button shareContactButton = new Button("Kontakt teilen");		
 		shareContactButton.addStyleName("buttonPanel");
+		buttonsPanel.add(shareContactButton);
+		
 		Button deleteContactButton = new Button("Kontakt löschen");
 		deleteContactButton.addStyleName("buttonPanel");
-		saveChangesButton = new Button("Änderungen speichern");
-		saveChangesButton.addStyleName("buttonPanel");
+		buttonsPanel.add(deleteContactButton);
+		
 		Button addContactToContactListButton = new Button("Kontakt zu einer Kontaktliste hinzufügen");
 		addContactToContactListButton.addStyleName("buttonPanel");
+		buttonsPanel.add(addContactToContactListButton);
+		
 		removeContactFromContactListButton = new Button("Kontakt aus der aktuellen Kontaktliste entfernen");
 		removeContactFromContactListButton.addStyleName("buttonPanel");
-		
-		buttonsPanel.add(addContactButton);
-		buttonsPanel.add(shareContactButton);
-		buttonsPanel.add(deleteContactButton);
-		buttonsPanel.add(addContactToContactListButton);
 		buttonsPanel.add(removeContactFromContactListButton);
+		
+		saveChangesButton = new Button("Änderungen speichern");
+		saveChangesButton.addStyleName("buttonPanel");
 		buttonsPanel.add(saveChangesButton);
 		
+	
 		buttonsPanel.setStyleName("buttonsPanel");
 		
 		
+		addNewPropertyButton.addStyleName("addNewPropertyButton");
 		
-		
+		newPropertyListBox.addStyleName("newPropertyListBox");
 		
 		
 		/*
-		 * Hinzufügen der ClickHandler zu den Buttons
+		 * Hinzufügen der ClickHandler zu allen Buttons
 		 */
 		addContactButton.addClickHandler(new NewContactClickHandler());
 		
 		shareContactButton.addClickHandler(new ShareContactClickHandler());
 		
 		deleteContactButton.addClickHandler(new DeleteContactClickHandler());
-		
-		if(saveChangesClickHandler ==null) {
-			saveChangesClickHandler = new SaveChangesClickHandler();
-		}
-		saveChangesButton.addClickHandler(saveChangesClickHandler);
 	
 		addContactToContactListButton.addClickHandler(new AddContactToContactListClickHandler());
 		
 		removeContactFromContactListButton.addClickHandler(new RemoveContactFromContactListClickHandler());
 		
+		if(saveChangesClickHandler ==null) {
+			saveChangesClickHandler = new SaveChangesClickHandler();
+		}
+		saveChangesButton.addClickHandler(saveChangesClickHandler);
 		
 		if (addPropertyClickHandler == null) {
 			addPropertyClickHandler = new NewPropertyClickHandler();
@@ -1092,7 +1109,7 @@ public class ContactForm extends VerticalPanel {
 		}
 		
 	
-	} //Ende von onLoad()
+	} 
 	
 	
 	/*
@@ -1105,18 +1122,25 @@ public class ContactForm extends VerticalPanel {
 	 * @author KatrinZerfass
 	 */
 	private class NewContactClickHandler implements ClickHandler{
-	//	DialogBox db = new DialogBox();
 		
 		public void onClick(ClickEvent event) {
+			
 			if(contactToDisplay != null) {
 				setSelected(null);
+				//das ContactForm wird gecleared, damit ein neuer Kontakt angelegt werden kann 
+				
 			}else {
 				if(!ClientsideFunctions.checkValue(firstnameTextBox) || !ClientsideFunctions.checkValue(lastnameTextBox) ) {
 					firstnameTextBox.setText("");
 					lastnameTextBox.setText("");
+					//Wurden ungültige Werte für Vor- und Nachnamen eingetragen, werden die Texte resettet und es kommt eine Fehlermeldung
 					Window.alert("Ihr Kontakt konnte nicht angelegt werden, bitte versuchen Sie es erneut.");
 					
 				}else if(ClientsideFunctions.checkValue(firstnameTextBox) && ClientsideFunctions.checkValue(lastnameTextBox)){
+					
+					/*
+					 * Im Folgenden wird ein neuer Kontakt im System angelegt
+					 */
 					
 					String sex = "o";
 					switch(sexListBox.getSelectedItemText()) {
@@ -1133,74 +1157,18 @@ public class ContactForm extends VerticalPanel {
 	
 					editorAdministration.createContact(firstnameTextBox.getText(), lastnameTextBox.getText(), sex, currentUser, new AsyncCallback<Contact>(){
 						public void onFailure(Throwable t) {
-							Window.alert("Fehler im Kontakt anlegen");
+							Window.alert("Fehler beim Kontakt anlegen");
 							
 						}
 						public void onSuccess(Contact result) {
 							Window.alert("Kontakt erfolgreich angelegt.");
 							clctvm.addContactOfContactList(clctvm.getMyContactsContactList(), result);
+							//Ein neu angelegter Kontakt wird per Default immer der "Meine Kontakte"-Standardkontaktliste hinzugefügt.
 						}
 					});
 				}
 			}
-//			if(firstnameTextBox.isEnabled()==false) {
-//				firstnameTextBox.setEnabled(true);
-//				lastnameTextBox.setEnabled(true);
-//			}
-//			if(sexListBox.isEnabled()==false) {
-//				sexListBox.setEnabled(true);
-//			}
-//			/*
-//			 * Bevor ein neuer Kontakt angelegt werden kann, muss der bestehende Kontakt aus dem Formular genommen werden.
-//			 */
-//			
-//			
-//			
-//			/*
-//			 * Die Dialogbox, die dem Benutzer sagt, was er tun muss, um einen neuen Kontakt anzulegen, wird konfiguriert.
-//			 */
-//			VerticalPanel vp = new VerticalPanel();
-//			Label label = new Label("Tragen Sie im Formular die Daten des Kontakts ein und klicken Sie anschließend auf \"Änderungen speichern\".");
-//			Button ok = new Button("Ok");
-//			
-//			vp.add(label);
-//			vp.add(ok);
-//			vp.setCellHorizontalAlignment(ok, ALIGN_RIGHT);
-//			db.setTitle("Neuen Kontakt anlegen");
-//			db.add(vp);
-//			db.setWidth("250px");
-//			db.setPopupPosition(500, 200);
-//			db.show();
-//		
-//			ok.addClickHandler(new ClickHandler() {
-//				public void onClick(ClickEvent event) {
-//					db.hide();
-//				}
-//			});
-//			
-//			/*
-//			 * Mit Klick auf den neu entstandenen Button wird der Kontaktstamm im System angelegt. Anschließend wird der Kontakt selektiert.
-//			 */
-//			addContactButton.addClickHandler(new ClickHandler() {
-//				public void onClick(ClickEvent event){
-//					editorAdministration.createContact(firstnameTextBox.getText(),
-//							lastnameTextBox.getText(), sexListBox.getValue(0).toString(), new AsyncCallback<Contact>() {
-//						
-//						public void onFailure(Throwable caught) {
-//							Window.alert("Fehler beim Kontakt anlegen!");
-//							
-//						}
-//						
-//						
-//						public void onSuccess(Contact result) {
-//							clctvm.addContactOfContactList(clctvm.getMyContactsContactList(), result);
-//							Window.alert("Kontakt wurde erfolgreich angelegt.");
-//							
-//						}
-//					});
-//				}
-//			});		
-//	
+
 		}
 	}
 	
@@ -1208,6 +1176,7 @@ public class ContactForm extends VerticalPanel {
 	
 	/**
 	 * Die innere Klasse shareContactClickHandler.
+	 * TODO: comments
 	 * 
 	 *  @author JanNoller
 	 */
@@ -1266,7 +1235,7 @@ public class ContactForm extends VerticalPanel {
 	
 	/**
 	 * Die innere Klasse deleteContactClickHandler.
-	 * 
+	 * TODO: comments
 	 * @author JanNoller
 	 */
 	private class DeleteContactClickHandler implements ClickHandler{
@@ -1274,13 +1243,11 @@ public class ContactForm extends VerticalPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 			
-			Window.alert("getIsUser(): " + contactToDisplay.getIsUser());
-			
 			if (contactToDisplay == null) {
 				Window.alert("kein Kontakt ausgewählt");
 			
 			}
-			else if(contactToDisplay.getIsUser()) {
+			else if(contactToDisplay.getIsUser()) { // der ausgewählte Kontakt ist der, welcher den User repräsentiert
 				Window.alert("Sie können sich selbst nicht löschen!");
 			}
 			else{
@@ -1292,6 +1259,7 @@ public class ContactForm extends VerticalPanel {
 						Window.alert("Kontakt erfolgreich gelöscht");
 						clctvm.removeContactOfContactList(clctvm.getSelectedContactList(), contactToDisplay);
 						clctvm.getNodeInfo(clctvm.getSelectedContactList());
+						//TODO:  geht immer nur beim ersten Mal?!?!?!
 					}
 				});
 				
@@ -1313,9 +1281,7 @@ public class ContactForm extends VerticalPanel {
 			
 			if (contactToDisplay == null) {
 				Window.alert("kein Kontakt ausgewählt");
-		
-				
-					
+						
 			}
 			else {
 				
@@ -1342,17 +1308,15 @@ public class ContactForm extends VerticalPanel {
 					 * Wenn es sich bei der ValueTextBox um die firstnameTextBox oder lastnameTextBox handelt, wurde eine Veränderung am Kontaktstamm 
 					 * vorgenommen und demzufolge wird die Methode editContact aufgerufen.
 					 */
-					else if(vtb.getIsChanged() && (vtb.equals(firstnameTextBox) ||
-								vtb.equals(lastnameTextBox))){
+					else if(vtb.getIsChanged() && (vtb.equals(firstnameTextBox) || vtb.equals(lastnameTextBox))){
 						editorAdministration.editContact(contactToDisplay.getId(), firstnameTextBox.getText(), lastnameTextBox.getText(), 
 							contactToDisplay.getSex(), new AsyncCallback<Contact>() {
-								//TODO evtl sind timestamps rigged
-							public void onFailure(Throwable arg0) {
-								Window.alert("Fehler beim Änderungen speichern. \n (Kontaktstamm)");
-							}
-							public void onSuccess(Contact arg0) {
-								Window.alert("Die Änderungen wurden gespeichert. \n (Kontaktstamm)");
-							}
+								public void onFailure(Throwable arg0) {
+									Window.alert("Fehler beim Änderungen speichern. \n (Kontaktstamm)");
+								}
+								public void onSuccess(Contact arg0) {
+									Window.alert("Die Änderungen wurden gespeichert. \n (Kontaktstamm)");
+								}
 						});
 					}
 					else {
@@ -1364,19 +1328,21 @@ public class ContactForm extends VerticalPanel {
 		}
 	}
 	
+	
 	/**
 	 * Die innere Klasse AddContactToContactListClickHandler.
 	 * 
 	 * @author JanNoller (& KatrinZerfass)
 	 */
 	private class AddContactToContactListClickHandler implements ClickHandler {
-		VerticalPanel panel= new VerticalPanel();
-		DialogBox db = new DialogBox();
-		HorizontalPanel hpanel= new HorizontalPanel();
-		ListBox listbox = new ListBox();
-		ContactList choice;
 		
-        Vector<ContactList> contactLists;
+		DialogBox db = new DialogBox();
+		VerticalPanel dbPanel= new VerticalPanel();
+		HorizontalPanel dbButtonsPanel= new HorizontalPanel();
+		ListBox clListbox = new ListBox();
+		ContactList chosenCL;
+		
+        Vector<ContactList> contactLists = new Vector<ContactList>();
 		
 		public void onClick(ClickEvent event) {
 			
@@ -1384,23 +1350,33 @@ public class ContactForm extends VerticalPanel {
 				Window.alert("kein Kontakt ausgewählt");
 			}
 			else {
-		
-				panel.setHeight("100");
-		        panel.setWidth("300");
-		        panel.setSpacing(10);
-		        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+				/*
+				 * Im Folgenden wird die DialogBox aufgebaut.
+				 */
+				dbPanel.setHeight("100");
+		        dbPanel.setWidth("300");
+		        dbPanel.setSpacing(10);
+		        dbPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+		    	db.add(dbPanel);
 		        
-		        Label label = new Label("Bitte wählen Sie die Kontaktliste aus.");
-		        final Button ok = new Button("OK");
-		        ok.addStyleName("okbutton");
-				CloseButton close= new CloseButton(db);
+		        Label label = new Label("Bitte wählen Sie eine Kontaktliste aus.");
+		        dbPanel.add(label);
 		        
-		        panel.add(label);
-		        panel.add(listbox);
-		        hpanel.add(close);
-		        hpanel.add(ok);
-		        panel.add(hpanel);
-		       	db.add(panel);	     
+		        /*
+		         * In der Dialogbox soll eine ListBox angezeigt werden, die alle Kontaktlisten des Nutzers beinhaltet.
+		         */
+		        dbPanel.add(clListbox);
+		        
+		      //TODO: why final?
+		        final Button okButton = new Button("OK");
+		        okButton.addStyleName("okbutton");
+		        dbButtonsPanel.add(okButton);
+		        
+		        CloseButton closeButton = new CloseButton(db);
+				dbButtonsPanel.add(closeButton);
+				
+		        dbPanel.add(dbButtonsPanel);
+		       	     
 		    	db.show();
 	
 		        editorAdministration.getAllOwnedContactListsOfActiveUser(currentUser, new AsyncCallback<Vector<ContactList>>() {
@@ -1410,21 +1386,31 @@ public class ContactForm extends VerticalPanel {
 		        	}
 		        	
 		        	public void onSuccess(Vector<ContactList> result) {
+		        		
 		        		contactLists = result;
+		        		
+		        		/*
+		        		 * Alle Kontaktlisten, von denen der Nutzer Eigentümer ist, werden der ListBox hinzugefügt.
+		        		 */
 		        		for (ContactList cl : contactLists) {
-				        	listbox.addItem(cl.getName());
+				        	clListbox.addItem(cl.getName());
 				        }
-		        		ok.addClickHandler(new ClickHandler() {
+		        		
+		        		okButton.addClickHandler(new ClickHandler() {
 				        	
 				        	public void onClick(ClickEvent event) {
 				        		for (ContactList cl : contactLists) {
-				        			if (listbox.getSelectedItemText() == cl.getName()) {
-				        				choice = cl;
+				        			if (clListbox.getSelectedItemText() == cl.getName()) {
+				        				chosenCL = cl;
 				        			}
-				        		} 
+				        		}
+				        		
 				        		db.hide();
 				        		
-				        		editorAdministration.addContactToContactList(choice, contactToDisplay, new AsyncCallback<ContactList>() {
+				        		/*
+				 		        * Hat der Nutzer eine Kontaktliste ausgewählt und klickt "OK", so wird der Kontakt dieser Kontaktliste hinzugefügt.
+				 		        */
+				        		editorAdministration.addContactToContactList(chosenCL, contactToDisplay, new AsyncCallback<ContactList>() {
 				        			
 				        			public void onFailure(Throwable z) {
 				        				Window.alert("Fehler beim Hinzufügen des Kontakts zur Kontaktliste!");
@@ -1439,41 +1425,17 @@ public class ContactForm extends VerticalPanel {
 		        	}
 				});
 		        
-		        /*
-		         * In der Dialogbox soll eine ListBox angezeigt werden, die alle Kontaktlisten des Nutzers beinhaltet.
-		         */
+		       
 		        
 		        
-		       /*
-		        * Hat der Nutzer eine Kontaktliste ausgewählt und klickt "OK", so wird der Kontakt dieser Kontaktliste hinzugefügt.
-		        */
+		       
 		        
 			}
 	        
 		}
 	}
 	
-//	private class AddContactToContactListCallback implements AsyncCallback<ContactList>{
-//		
-//		Button ok = null;
-//		
-//		AddContactToContactListCallback(Button b){
-//			ok=b;
-//		}
-//
-//		@Override
-//		public void onFailure(Throwable arg0) {
-//			// TODO Auto-generated method stub
-//			
-//		}
-//
-//		@Override
-//		public void onSuccess(ContactList arg0) {
-//			// TODO Auto-generated method stub
-//			
-//		}
-//		
-//	}
+
 	
 	/**
 	 * Die innere Klasse RemoveContactFromContactListClickHandler.
@@ -1481,17 +1443,24 @@ public class ContactForm extends VerticalPanel {
 	 * @author JanNoller
 	 */
 	private class RemoveContactFromContactListClickHandler implements ClickHandler{
+		
 		public void onClick(ClickEvent event) {
 			if(contactToDisplay == null) {
 				Window.alert("kein Kontakt ausgewählt");
-			}else { 
+			}
+			else { 
 				if(clctvm.getSelectedContactList() == clctvm.getMyContactsContactList()) {
 					Window.alert("Sie können Kontakte in dieser Kontaktliste nur löschen, nicht entfernen!");
 				}
-				else if(ClientsideFunctions.isOwner(clctvm.getSelectedContactList(), currentUser)) {
+				else if(!ClientsideFunctions.isOwner(clctvm.getSelectedContactList(), currentUser)) {
 					Window.alert("Sie können den Kontakt aus dieser Liste nicht entfernen, da es eine geteilte List ist.");
 				}
-				else {	
+				else {
+					/*
+					 * Handelt es sich weder um die Default-Liste "Meine Kontakte", noch um eine geteilte Liste, so wird der ausgewählte Kontakt 
+					 * aus der ausgewählten Liste entfernt
+					 */
+					
 					//clearContactForm();
 					editorAdministration.removeContactFromContactList(clctvm.getSelectedContactList(), contactToDisplay, new AsyncCallback<ContactList>() {
 						@Override
@@ -1500,7 +1469,7 @@ public class ContactForm extends VerticalPanel {
 						}
 						@Override
 						public void onSuccess(ContactList arg0) {
-							Window.alert("Kontakt erfolgreich aus Kontaktliste entfernt.");
+							Window.alert("Kontakt erfolgreich aus der Kontaktliste entfernt.");
 							clctvm.removeContactOfContactList(arg0, contactToDisplay);
 							//clctvm.getNodeInfo(clctvm.getSelectedContactList());
 						}
@@ -1510,6 +1479,12 @@ public class ContactForm extends VerticalPanel {
 		}
 	}
 	
+	
+	/**
+	 * Die innere Klasse NewPropertyClickHandler.
+	 * 
+	 * @author KatrinZerfass
+	 */
 	private class NewPropertyClickHandler implements ClickHandler{
 		DialogBox db1;
 		DialogBox db2;
@@ -1704,144 +1679,7 @@ public class ContactForm extends VerticalPanel {
 		}
 	}
 	
-	/**
-	 * Die Methode compareUser() vergleicht den aktuell angemeldeten Nutzer mit dem Eigentümer des Kontakts.
-	 * 
-	 * @return true= Eigentümer oder false= Teilhaber
-	 * @author JanNoller
-	 */
-//	public boolean compareUser () {
-//			
-//			if (currentUser.getId() == contactToDisplay.getOwner()) {
-//				return true;
-//			}
-//			else {
-//				return false;
-//			}
-//		}
-	
-	/**
-	 * Die Methode checkValue() überprüft die Eingabe einer Ausprägung in eine ValueTextBox auf Korrektheit.
-	 * Enthält die Eingabe nicht mit der Eigenschaftsart übereinstimmende Zeichen, so muss der Wert erneut eingegeben werden.
-	 * 
-	 * @param vtb die ValueTextBox, deren Wert überprüft wird
-	 * @return true= Eingabe passt oder false= Eingabe passt nicht
-	 * @author JanNoller
-	 */
-//	public boolean checkValue (ValueTextBox vtb) {
-//		
-//		String identifier = vtb.getIdentifier();
-//		String text = vtb.getText().toLowerCase().trim();
-//	// TODO: work on RegExs!
-//		
-//		switch(identifier) {
-//			case "Name":
-//				if (!text.matches("\\d+")) {
-//					if(!text.isEmpty()) {
-//						return true;
-//					}else {
-//						return false;
-//					}
-//				}
-//				else {
-//					Window.alert("Ungültige Zeichen im Namen!");
-//					return false;
-//				}
-//			case "Straße":
-//				if (!text.matches("\\d+")) {
-//					return true;
-//				}
-//				else {
-//					Window.alert("Ungültiger Straßenname!");
-//					return false;
-//				}
-//			case "Hausnummer":
-//				if (text.matches("\\d+")) {
-//					return true;
-//				}
-//				else {
-//					Window.alert("Ungültige Hausnummer!");
-//					return false;
-//				}
-//			case "PLZ":
-//				if (text.matches("\\d+") && text.length() == 5) {
-//					return true;
-//				}
-//				else if (text.matches("\\d+") && text.length() != 5) {
-//					Window.alert("Bitte geben Sie eine gültige PLZ ein!");
-//					return false;
-//				}
-//				else if(!text.matches("\\d+") && text.length() == 5) {
-//					Window.alert("Ungültige Zeichen in der PLZ!");
-//					return false;
-//				}
-//				else {
-//					Window.alert("Ungültige Eingabe!");
-//					return false;
-//				}
-//			case "Stadt":
-//				if (text.matches("[A-ZÜÄÖ][a-züäöß]*")) {
-//					return true;
-//				}
-//				else {
-//					Window.alert("Ungültiger Stadtname!");
-//					return false;
-//				}
-//			case "Telefonnummer":
-//				if (text.matches("\\d+")) {
-//					return true;
-//				}
-//				else {
-//					Window.alert("Ungültige Telefonnummer!");
-//					return false;
-//				}
-//			case "Geburtstag":
-//				if (text.matches("[0-3]\\d\\.[0\\d\\|1[0-2]].\\d\\d\\d\\d")) {
-//					return true;
-//				}
-//				else {
-//					Window.alert("Ungültige Telefonnummer!");
-//					return false;
-//				}
-//			case "Email":
-//				if (text.matches("(?:[a-zäöü0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])")) {
-//					return true;
-//				}
-//				else {
-//					Window.alert("Ungültige e-Mail-Adresse!");
-//					return false;
-//				}
-//			case "Homepage": 
-//				if (text.matches("(http:\\/\\/|https:\\/\\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[a-z]{3}.?([a-z]+)?")) {
-//					return true;
-//				}
-//				else {
-//					Window.alert("Ungültige Homepage!");
-//					return false;
-//				}
-//				
-//			case "Arbeitsplatz":
-//				if (text.matches("[A-ZÜÄÖa-züäöß\\s]*")) {
-//					return true;
-//				}
-//				else {
-//					Window.alert("Ungültige Zeichen im Arbeitgebernamen!");
-//					return false;
-//				}
-//				
-//			case "Sonstiges":
-//				return true;
-//				
-//			default: 
-//				Window.alert("Switch case hat nicht ausgelöst!");
-//				return false;
-//		}
-//		
-//	}
-	
-	
-	
-	
+		
 	
 	/**
 	 * Die Methode clearContactFrom() wird aufgerufen, wenn der addContactButton gedrückt wird. Die Felder leeren sich und ein neuer Kontakt
@@ -1876,39 +1714,15 @@ public class ContactForm extends VerticalPanel {
 	 * @author KatrinZerfass & JanNoller
 	 */
 	public void setSelected(Contact c) {
+		
 		clearContactForm();
-		
-		if(newPropertyPanel.isVisible()==true) {
-			newPropertyPanel.setVisible(false);
-		}
-		
-//		for (int i = 4; i < contactTable.getRowCount(); i++) {
-//			for (int a =0; a<4; a++) {
-//				if(contactTable.isCellPresent(i, a)) {
-//					contactTable.removeCell(i, a);
-//				}
-//			}
-//		}
-//		
-//		if(contactTable.isCellPresent(3, 2)) {
-//			contactTable.removeCell(3, 2);
-//		}
-//		
-//		if(contactTable.isCellPresent(3, 3)) {
-//			contactTable.removeCell(3, 3);
-//		}
-	
-		
-		/*
-		 * Bei jedem neuen Aufruf von setSelected werden die ausgefüllten ValueTextBoxen geleert und aus dem Vector alle TextBoxen entfernt.
-		 */
-		
 		
 		firstnameTextBox.setEnabled(true);
 		lastnameTextBox.setEnabled(true);
 		sexListBox.setEnabled(true);
 		saveChangesButton.setEnabled(true);
 		removeContactFromContactListButton.setEnabled(true);
+		newPropertyPanel.setVisible(true);
 		
 	
 		if (c != null){
@@ -1929,13 +1743,15 @@ public class ContactForm extends VerticalPanel {
 			newPropertyListBox.addItem("Anschrift");
 			newPropertyListBox.addItem("Sonstiges");	
 			
-			
+			Label newPropertyLabel = new Label("Eigenschaft hinzufügen");
+			newPropertyLabel.addStyleName("newPropertyLabel");
 			newPropertyPanel.add(newPropertyLabel);
+			
 			newPropertyPanel.add(newPropertyListBox);
 			newPropertyPanel.addStyleName("propertyPanel");
 			newPropertyPanel.add(addNewPropertyButton);
 			
-			newPropertyPanel.setVisible(true);
+			
 			
 			
 			
