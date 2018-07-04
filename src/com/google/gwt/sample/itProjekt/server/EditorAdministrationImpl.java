@@ -173,32 +173,53 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		
 		User newUser = null;
 		newUser = createUser(email);
-//		
-//		while(newUser == null) {
-//			if(newUser != null) {
-//				Window.alert("user erstellt: " + newUser.getEmail());
-//				
-//			}
-//		}
+		
+		{
+			if(newUser != null) {
+				Window.alert("user erstellt: " + newUser.getEmail());
+				
+				Contact newContact = new Contact();
+				newContact.setFirstname(firstname);
+				newContact.setLastname(lastname);
+				newContact.setSex(sex);
+				newContact.setIsUser(true);
+				
+				Contact testContact = null;
+				testContact = cMapper.insert(newContact, newUser);
+				
+				{
+					if(testContact != null) {
+						Value newValue = null;
+						newValue = createValue(newContact, 3, email);
+						{
+							if(newValue != null) {
+								return newUser;
+							}
+						}while(newValue == null);
+					}
+				}while(testContact == null);
+			}
+		}while(newUser == null);
+		return null;
 		
 //		Window.alert("user erstellt: " + newUser.getEmail());
-		
-		Contact newContact = new Contact();
-		newContact.setFirstname(firstname);
-		newContact.setLastname(lastname);
-		newContact.setSex(sex);
-		newContact.setIsUser(true);
-		
-		cMapper.insert(newContact, newUser);
-		
+//		
+//		Contact newContact = new Contact();
+//		newContact.setFirstname(firstname);
+//		newContact.setLastname(lastname);
+//		newContact.setSex(sex);
+//		newContact.setIsUser(true);
+//		
+//		cMapper.insert(newContact, newUser);
+//		
 //		Window.alert("contact erstellt: " + cMapper.findByID(newContact));
-		
-		Value newValue = new Value();
-		newValue = createValue(newContact, 3, email);
-		
+//		
+//		Value newValue = new Value();
+//		newValue = createValue(newContact, 3, email);
+//		
 //		Window.alert("value erstellt: " + newValue.getContent());
-		
-		return newUser;
+//		
+//		return newUser;
 	}
 
 	@Override

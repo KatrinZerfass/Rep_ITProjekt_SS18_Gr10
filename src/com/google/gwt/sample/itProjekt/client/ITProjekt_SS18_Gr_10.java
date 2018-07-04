@@ -136,40 +136,43 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 						
 						public void onClick(ClickEvent arg0) {
 							if(ClientsideFunctions.checkName(createAccountBox.getMultiUseTextBox().getText()) && ClientsideFunctions.checkName(createAccountBox.getNameTextBox().getText())) {
-								editorAdministration.createUserContact(createAccountBox.getMultiUseTextBox().getText(), createAccountBox.getNameTextBox().getText(), createAccountBox.getSexListBox().getSelectedItemText(), loginInfo.getEmailAddress(), new AsyncCallback<User>() {
-									public void onFailure(Throwable arg0) {
-										Window.alert("AsyncCallback fehlgeschlagen: createContact 1");
-										createAccountBox.hide();
-									}; {
-										Window.alert("AsyncCallback fehlgeschlagen: createContact 2");
-										createAccountBox.hide();
-									};
-									public void onSuccess(User arg0) {
-										Window.alert("Herzlich Willkommen! 1");
-										createAccountBox.hide();
-										ClientsideSettings.setUser(arg0);
-										user = arg0;
-										loadApplication();
-									}; {
-										Window.alert("Herzlich Willkommen! 2");
-										createAccountBox.hide();
-										
-									};
-								});
-//								
 //								editorAdministration.createUserContact(createAccountBox.getMultiUseTextBox().getText(), createAccountBox.getNameTextBox().getText(), createAccountBox.getSexListBox().getSelectedItemText(), loginInfo.getEmailAddress(), new AsyncCallback<User>() {
 //									public void onFailure(Throwable arg0) {
-//										Window.alert("AsyncCallback fehlgeschlagen: createContact");
+//										Window.alert("AsyncCallback fehlgeschlagen: createContact 1");
 //										createAccountBox.hide();
-//									}
+//									}; {
+//										Window.alert("AsyncCallback fehlgeschlagen: createContact 2");
+//										createAccountBox.hide();
+//									};
 //									public void onSuccess(User arg0) {
-//										Window.alert("Herzlich Willkommen!");
+//										Window.alert("Herzlich Willkommen! 1");
 //										createAccountBox.hide();
 //										ClientsideSettings.setUser(arg0);
 //										user = arg0;
 //										loadApplication();
-//									}
+//									}; {
+//										Window.alert("Herzlich Willkommen! 2");
+//										createAccountBox.hide();
+//										
+//									};
 //								});
+								
+								editorAdministration.createUserContact(createAccountBox.getMultiUseTextBox().getText(), createAccountBox.getNameTextBox().getText(), createAccountBox.getSexListBox().getSelectedItemText(), loginInfo.getEmailAddress(), new AsyncCallback<User>() {
+									public void onFailure(Throwable arg0) {
+										Window.alert("AsyncCallback fehlgeschlagen: createContact");
+										createAccountBox.hide();
+									}
+									public void onSuccess(User arg0) {
+										if(arg0 == null) {
+											Window.alert("arg0 = null");
+										}
+										Window.alert("Herzlich Willkommen!");
+										createAccountBox.hide();
+										ClientsideSettings.setUser(arg0);
+										user = arg0;
+										loadApplication();
+									}
+								});
 							}
 							else {
 								createAccountBox.hide();
