@@ -2049,237 +2049,59 @@ public class ContactForm extends VerticalPanel {
 		ValuePanel vp = null; //das ValuePanel der jeweiligen Eigenschaftsart
 		ValueTable vt = null;	 //die ValueTable der jeweiligen Eigenschaftsart
 	
+	
 		
-		
-		int count = allValuesOfContact.size();
-		for(int i=0; i<=count; i++) {
+		for(int i=0; i<=allValuesOfContact.size(); i++) {
 			int pid = allValuesOfContact.get(i).getPropertyid();
 			
+			String identifier = null;
+			
+			String ptype = null;
+			
+			if(pid<=10) {
+				for (Property p: allPredefinedProperties) {
+					if(pid == p.getId()){
+						ptype = p.getType();				
+					}
+				}
+			}else {
+				for(Property p: allNewPropertiesOfContact) {
+					if (pid == p.getId()) {
+						ptype = p.getType();
+							
+					}
+				}
+			}
 		
 		
 			
 			switch (pid) {
 				
 				case 1: // Tel.Nr. geschäftlich
-					
-						row = contactTable.getRowCount();
-						if(compareUser() || (!compareUser() && allValuesOfContact.get(i).getIsShared()==true)) {
-							
-								/*
-								 * Das korrekte ValuePanel und ValueTable werden gesetzt und im Folgenden auf ihnen operiert.
-								 */
-							if(i ==0) {
-								contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Geschäftliche Telefonnummern: "));
-								contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-								vp = (ValuePanel) contactTable.getWidget(row, 0);
-								
-								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-								contactTable.setWidget(row, 1, new ValueTable(pid));
-								vt = (ValueTable) contactTable.getWidget(row, 1);
-								
-							}else if(i !=0 && allValuesOfContact.get(i-1).getPropertyid() != 1 ){
-								contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Geschäftliche Telefonnummern: "));
-								contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-								vp = (ValuePanel) contactTable.getWidget(row, 0);
-								
-								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-								contactTable.setWidget(row, 1, new ValueTable(pid));
-								vt = (ValueTable) contactTable.getWidget(row, 1);
-								
-							}else if(i !=0 && allValuesOfContact.get(i-1).getPropertyid() == 1 && allValuesOfContact.get(i-1).getIsShared() ==false){
-								contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Geschäftliche Telefonnummern: "));
-								contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-								vp = (ValuePanel) contactTable.getWidget(row, 0);
-								
-								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-								contactTable.setWidget(row, 1, new ValueTable(pid));
-								vt = (ValueTable) contactTable.getWidget(row, 1);
-							}else {
-								 
-								vp = (ValuePanel) contactTable.getWidget(row-1, 0);
-								vt = (ValueTable) contactTable.getWidget(row-1, 1);
-							}
-							
-							vtRow = vt.getRowCount();
-							vt.setWidget(vtRow, 0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
-							vt.getValueDisplay(vtRow).setValue(allValuesOfContact.get(i));
-							
-							
-							/*
-							 * Gleiches Prinzip wie gerade schon, nur jetzt für das soeben neu hinzugefügte ValueDisplay.
-							 */
-							if (compareUser()) {
-								vt.getValueDisplay(vtRow).enableButtons();
-								vp.getAddValueButton().setEnabled(true);
-								if(allValuesOfContact.get(i).getIsShared() == true){
-									vt.getValueDisplay(vtRow).setLockButtonTo(true);
-								}else {
-									vt.getValueDisplay(vtRow).setLockButtonTo(false);
-								}
-							}
-							else {
-								vt.getValueDisplay(vtRow).disableButtons();
-								vp.getAddValueButton().setEnabled(false);
-								
-							}
-							
-							for(int c=0; c<newPropertyListBox.getItemCount(); c++) {
-								if (newPropertyListBox.getItemText(c) == "Telefonnummer geschäftlich") {
-									newPropertyListBox.removeItem(c);
-								}
-							}
-						}
-					
+						identifier = "Telefonnummer";
 						break;
 						
 				
 				case 2:  // Tel.Nr. privat
-						row = contactTable.getRowCount();
-						if(compareUser() || (!compareUser() && allValuesOfContact.get(i).getIsShared()==true)) {
-							/*
-							 * Das korrekte ValuePanel und ValueTable werden gesetzt und im Folgenden auf ihnen operiert.
-							 */
-							
-							if(i ==0) {
-								 
-								contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Private Telefonnummern: "));
-								contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-								vp = (ValuePanel) contactTable.getWidget(row, 0);
-								
-								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-								contactTable.setWidget(row, 1, new ValueTable(pid));
-								vt = (ValueTable) contactTable.getWidget(row, 1);
-								
-							}else if(i !=0 && allValuesOfContact.get(i-1).getPropertyid() != 2 ){
-								contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Private Telefonnummern: "));
-								contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-								vp = (ValuePanel) contactTable.getWidget(row, 0);
-								
-								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-								contactTable.setWidget(row, 1, new ValueTable(pid));
-								vt = (ValueTable) contactTable.getWidget(row, 1);
-								
-							}else if(i !=0 && allValuesOfContact.get(i-1).getPropertyid() == 2 && allValuesOfContact.get(i-1).getIsShared() ==false){
-								contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Private Telefonnummern: "));
-								contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-								vp = (ValuePanel) contactTable.getWidget(row, 0);
-								
-								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-								contactTable.setWidget(row, 1, new ValueTable(pid));
-								vt = (ValueTable) contactTable.getWidget(row, 1);	
-								
-							}else {
-								 
-								vp = (ValuePanel) contactTable.getWidget(row-1, 0);
-								vt = (ValueTable) contactTable.getWidget(row-1, 1);
-							}
-							
-							vtRow = vt.getRowCount();
-							vt.setWidget(vtRow, 0, new ValueDisplay(new ValueTextBox("Telefonnummer")));
-							vt.getValueDisplay(vtRow).setValue(allValuesOfContact.get(i));
-							
-							/*
-							 * Gleiches Prinzip wie gerade schon, nur jetzt für das soeben neu hinzugefügte ValueDisplay.
-							 */
-							if (compareUser()) {
-								vt.getValueDisplay(vtRow).enableButtons();
-								vp.getAddValueButton().setEnabled(true);
-								if(allValuesOfContact.get(i).getIsShared() == true){
-									vt.getValueDisplay(vtRow).setLockButtonTo(true);
-								}else {
-									vt.getValueDisplay(vtRow).setLockButtonTo(false);
-								}
-							}
-							else {
-								vt.getValueDisplay(vtRow).disableButtons();
-								vp.getAddValueButton().setEnabled(false);
-							}
-							for(int c=0; c<newPropertyListBox.getItemCount(); c++) {
-								if (newPropertyListBox.getItemText(c) == "Telefonnummer privat") {
-									newPropertyListBox.removeItem(c);
-								}
-							}
-						}
+						identifier = "Telefonnummer";
 						break;
 						
 				case 3:  // e-Mail
-						row = contactTable.getRowCount();
-						if(compareUser() || (!compareUser() && allValuesOfContact.get(i).getIsShared()==true)) {
-							
-							if(i ==0) {
-								contactTable.setWidget(row, 0, new ValuePanel(pid, row, "e-Mail-Adressen: "));
-								contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-								vp = (ValuePanel) contactTable.getWidget(row, 0);
-								
-								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-								contactTable.setWidget(row, 1, new ValueTable(pid));
-								vt = (ValueTable) contactTable.getWidget(row, 1);
-								
-							}else if(i !=0 && allValuesOfContact.get(i-1).getPropertyid() != 3 ){
-								contactTable.setWidget(row, 0, new ValuePanel(pid, row, "e-Mail-Adressen: "));
-								contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-								vp = (ValuePanel) contactTable.getWidget(row, 0);
-								
-								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-								contactTable.setWidget(row, 1, new ValueTable(pid));
-								vt = (ValueTable) contactTable.getWidget(row, 1);
-								
-							}else if(i !=0 && allValuesOfContact.get(i-1).getPropertyid() == 3 && allValuesOfContact.get(i-1).getIsShared() ==false){
-								contactTable.setWidget(row, 0, new ValuePanel(pid, row, "e-Mail-Adressen: "));
-								contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-								vp = (ValuePanel) contactTable.getWidget(row, 0);
-								
-								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-								contactTable.setWidget(row, 1, new ValueTable(pid));
-								vt = (ValueTable) contactTable.getWidget(row, 1);	
-								
-								
-							}else {
-								 
-								vp = (ValuePanel) contactTable.getWidget(row-1, 0);
-								vt = (ValueTable) contactTable.getWidget(row-1, 1);
-							}
-							
-							vtRow = vt.getRowCount();
-							vt.setWidget(vtRow, 0, new ValueDisplay(new ValueTextBox("Email")));
-							vt.getValueDisplay(vtRow).setValue(allValuesOfContact.get(i));
-
-							
-							/*
-							 * Gleiches Prinzip wie gerade schon, nur jetzt für das soeben neu hinzugefügte ValueDisplay.
-							 */
-							if (compareUser()) {
-								vt.getValueDisplay(vtRow).enableButtons();
-								vp.getAddValueButton().setEnabled(true);
-								if(allValuesOfContact.get(i).getIsShared() == true){
-									vt.getValueDisplay(vtRow).setLockButtonTo(true);
-								}else {
-									vt.getValueDisplay(vtRow).setLockButtonTo(false);
-								}
-							}
-							else {
-								vt.getValueDisplay(vtRow).disableButtons();
-								vp.getAddValueButton().setEnabled(false);
-							}
-							for(int c=0; c<newPropertyListBox.getItemCount(); c++) {
-								if (newPropertyListBox.getItemText(c) == "E-Mail Adresse") {
-									newPropertyListBox.removeItem(c);
-								}
-							}
-						}
+						identifier = "Email";
 						break;
 						
 						
 				case 4:  // Geburtstag
+					identifier = "Geburtstag";
 					if(compareUser() || (!compareUser() && allValuesOfContact.get(i).getIsShared()==true)) {
 							/*
 							 * Eine Ausprägung zu Geburtstag kann nur einmal vorhanden sein. Demzufolge gibt es hierfür auch keine ValueTable.
 							 * Das ValueDisplay, in dem sich die TextBox für das Geburtsdatum befindet, wird direkt angesprochen.
 							 */
-							Label birthdateLabel = new Label("Geburtsdatum: ");
+							Label birthdateLabel = new Label(ptype + ": ");
 							contactTable.setWidget(3, 2, birthdateLabel);
 							
-							contactTable.setWidget(3, 3, new ValueDisplay(new ValueTextBox("Geburtstag")));
+							contactTable.setWidget(3, 3, new ValueDisplay(new ValueTextBox(identifier)));
 							((ValueDisplay) contactTable.getWidget(3, 3)).getWidget(0).setWidth("105px");
 							((ValueDisplay) contactTable.getWidget(3,3)).setValue(allValuesOfContact.get(i));
 							
@@ -2298,99 +2120,18 @@ public class ContactForm extends VerticalPanel {
 							}
 							
 							for(int c=0; c<newPropertyListBox.getItemCount(); c++) {
-								if (newPropertyListBox.getItemText(c) == "Geburtstag") {
+								if (newPropertyListBox.getItemText(c) == ptype) {
 									newPropertyListBox.removeItem(c);
 								}
 							}
-//							newPropertyListBox.clear();
-//							for (Property p : allPredefinedProperties) {
-//								if(p.getType()!= "Geburtstag" && p.getType()!="Straße" && p.getType()!= "Hausnummer" && p.getType()!= "PLZ" && p.getType()!= "Wohnort") {
-//									newPropertyListBox.addItem(p.getType());
-//								}
-//								
-//								
-////									for (Property prop : allPredefinedProperties) {
-////										if(prop.getType()!="Straße" && prop.getType()!= "Hausnummer" && prop.getType()!= "PLZ" && prop.getType()!= "Wohnort") {
-////											newPropertyListBox.addItem(prop.getType());
-////										}
-////									}
-////								}
-//							}
-//							newPropertyListBox.addItem("Anschrift");
-//							newPropertyListBox.addItem("Sonstiges");
+//							
 						}
 						break;
 					
 						
 						
 				case 5: // Arbeitsplatz
-						row = contactTable.getRowCount();
-						if(compareUser() || (!compareUser() && allValuesOfContact.get(i).getIsShared()==true)) {
-							
-							/*
-							 * Das korrekte ValuePanel und ValueTable werden gesetzt und im Folgenden auf ihnen operiert.
-							 */
-							
-							if(i ==0) { 
-								contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Arbeitsplatz: "));
-								contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-								vp = (ValuePanel) contactTable.getWidget(row, 0);
-								
-								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-								contactTable.setWidget(row, 1, new ValueTable(pid));
-								vt = (ValueTable) contactTable.getWidget(row, 1);
-								
-							}else if(i !=0 && allValuesOfContact.get(i-1).getPropertyid() != 5 ){
-								contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Arbeitsplatz: "));
-								contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-								vp = (ValuePanel) contactTable.getWidget(row, 0);
-								
-								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-								contactTable.setWidget(row, 1, new ValueTable(pid));
-								vt = (ValueTable) contactTable.getWidget(row, 1);
-								
-							}else if(i !=0 && allValuesOfContact.get(i-1).getPropertyid() == 5 && allValuesOfContact.get(i-1).getIsShared() ==false){
-								contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Arbeitsplatz: "));
-								contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-								vp = (ValuePanel) contactTable.getWidget(row, 0);
-								
-								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-								contactTable.setWidget(row, 1, new ValueTable(pid));
-								vt = (ValueTable) contactTable.getWidget(row, 1);	
-								
-								
-							}else {
-								 
-								vp = (ValuePanel) contactTable.getWidget(row-1, 0);
-								vt = (ValueTable) contactTable.getWidget(row-1, 1);
-							}
-							
-							vtRow = vt.getRowCount();
-							vt.setWidget(vtRow, 0, new ValueDisplay(new ValueTextBox("Arbeitsplatz")));
-							vt.getValueDisplay(vtRow).setValue(allValuesOfContact.get(i));
-							
-							/*
-							 * Gleiches Prinzip wie gerade schon, nur jetzt für das soeben neu hinzugefügte ValueDisplay.
-							 */
-							if (compareUser()) {
-								vt.getValueDisplay(vtRow).enableButtons();
-								vp.getAddValueButton().setEnabled(true);
-								if(allValuesOfContact.get(i).getIsShared() == true){
-									vt.getValueDisplay(vtRow).setLockButtonTo(true);
-								}else {
-									vt.getValueDisplay(vtRow).setLockButtonTo(false);
-								}
-							}
-							else {
-								vt.getValueDisplay(vtRow).disableButtons();
-								vp.getAddValueButton().setEnabled(false);
-							}
-							for(int c=0; c<newPropertyListBox.getItemCount(); c++) {
-								if (newPropertyListBox.getItemText(c) == "Arbeitsplatz") {
-									newPropertyListBox.removeItem(c);
-								}
-							}
-						}
+						identifier = "Arbeitsplatz";
 						break;
 						
 				
@@ -2476,153 +2217,88 @@ public class ContactForm extends VerticalPanel {
 						
 				
 				case 10:  // Homepage
-						row = contactTable.getRowCount();
-						if(compareUser() || (!compareUser() && allValuesOfContact.get(i).getIsShared()==true)) {
-						
-							/*
-							 * Das korrekte ValuePanel und ValueTable werden gesetzt und im Folgenden auf ihnen operiert.
-							 */
-							
-							if(i ==0) {
-								 
-								contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Homepages: "));
-								contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-								vp = (ValuePanel) contactTable.getWidget(row, 0);
-								
-								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-								contactTable.setWidget(row, 1, new ValueTable(pid));
-								vt = (ValueTable) contactTable.getWidget(row, 1);
-								
-							}else if(i !=0 && allValuesOfContact.get(i-1).getPropertyid() != 10 ){
-								contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Homepages: "));
-								contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-								vp = (ValuePanel) contactTable.getWidget(row, 0);
-								
-								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-								contactTable.setWidget(row, 1, new ValueTable(pid));
-								vt = (ValueTable) contactTable.getWidget(row, 1);
-								
-							}else if(i !=0 && allValuesOfContact.get(i-1).getPropertyid() == 10 && allValuesOfContact.get(i-1).getIsShared() ==false){
-								contactTable.setWidget(row, 0, new ValuePanel(pid, row, "Homepages: "));
-								contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-								vp = (ValuePanel) contactTable.getWidget(row, 0);
-								
-								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-								contactTable.setWidget(row, 1, new ValueTable(pid));
-								vt = (ValueTable) contactTable.getWidget(row, 1);	
-								
-								
-							}else {
-								 
-								vp = (ValuePanel) contactTable.getWidget(row-1, 0);
-								vt = (ValueTable) contactTable.getWidget(row-1, 1);
-							}
-							
-							vtRow = vt.getRowCount();
-							vt.setWidget(vtRow, 0, new ValueDisplay(new ValueTextBox("Homepage")));
-							vt.getValueDisplay(vtRow).setValue(allValuesOfContact.get(i));
-							
-							
-							/*
-							 * Gleiches Prinzip wie gerade schon, nur jetzt für das soeben neu hinzugefügte ValueDisplay.
-							 */
-							if (compareUser()) {
-								vt.getValueDisplay(vtRow).enableButtons();
-								vp.getAddValueButton().setEnabled(true);
-								if(allValuesOfContact.get(i).getIsShared() == true){
-									vt.getValueDisplay(vtRow).setLockButtonTo(true);
-								}else {
-									vt.getValueDisplay(vtRow).setLockButtonTo(false);
-								}
-							}
-							else {
-								vt.getValueDisplay(vtRow).disableButtons();
-								vp.getAddValueButton().setEnabled(false);
-							}
-							for(int c=0; c<newPropertyListBox.getItemCount(); c++) {
-								if (newPropertyListBox.getItemText(c) == "Homepage") {
-									newPropertyListBox.removeItem(c);
-								}
-							}
-						}
+						identifier = "Homepage";
 						break;
 		
 				default: 
-					row = contactTable.getRowCount();
-					if(compareUser() || (!compareUser() && allValuesOfContact.get(i).getIsShared()==true)) {
-						String ptype = null;
-						for(Property p: allNewPropertiesOfContact) {
-							if (pid == p.getId()) {
-								ptype = p.getType();
-									
-							}
-						}
 					
+						identifier = "Sonstiges";	
 				
-						if(i ==0) {
-							 
-							contactTable.setWidget(row, 0, new ValuePanel(pid, row, ptype + ": "));
-							contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-							vp = (ValuePanel) contactTable.getWidget(row, 0);
-							
-							contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-							contactTable.setWidget(row, 1, new ValueTable(pid));
-							vt = (ValueTable) contactTable.getWidget(row, 1);
-							
-						}else if(i!=0 && allValuesOfContact.get(i-1).getPropertyid() != pid) {
-							contactTable.setWidget(row, 0, new ValuePanel(pid, row, ptype + ": "));
-							contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-							vp = (ValuePanel) contactTable.getWidget(row, 0);
-							
-							contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-							contactTable.setWidget(row, 1, new ValueTable(pid));
-							vt = (ValueTable) contactTable.getWidget(row, 1);
+						break;
 						
-						}else if(i !=0 && allValuesOfContact.get(i-1).getPropertyid() == pid && allValuesOfContact.get(i-1).getIsShared() ==false) {
-							contactTable.setWidget(row, 0, new ValuePanel(pid, row, ptype + ": "));
-							contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-							vp = (ValuePanel) contactTable.getWidget(row, 0);
-							
-							contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-							contactTable.setWidget(row, 1, new ValueTable(pid));
-							vt = (ValueTable) contactTable.getWidget(row, 1);
-						}else {
-							 
-							vp = (ValuePanel) contactTable.getWidget(row-1, 0);
-							vt = (ValueTable) contactTable.getWidget(row-1, 1);
-						}
-						
-						vtRow = vt.getRowCount();
-						vt.setWidget(vtRow, 0, new ValueDisplay(new ValueTextBox("Sonstiges")));
-						vt.getValueDisplay(vtRow).setValue(allValuesOfContact.get(i));
-						
-						
-						/*
-						 * Gleiches Prinzip wie gerade schon, nur jetzt für das soeben neu hinzugefügte ValueDisplay.
-						 */
-						if (compareUser()) {
-							vt.getValueDisplay(vtRow).enableButtons();
-							vp.getAddValueButton().setEnabled(true);
-							if(allValuesOfContact.get(i).getIsShared() == true){
-								vt.getValueDisplay(vtRow).setLockButtonTo(true);
-							}else {
-								vt.getValueDisplay(vtRow).setLockButtonTo(false);
-							}
-						}
-						else {
-							vt.getValueDisplay(vtRow).disableButtons();
-							vp.getAddValueButton().setEnabled(false);
-						}
-						
-						
-					}	
+					
+				} //ende der switch case
+			
+			
+			row = contactTable.getRowCount();
+			if(compareUser() || (!compareUser() && allValuesOfContact.get(i).getIsShared()==true)) {
 				
-					break;
-						
+					/*
+					 * Das korrekte ValuePanel und ValueTable werden gesetzt und im Folgenden auf ihnen operiert.
+					 */
+				if(i ==0) {
+					contactTable.setWidget(row, 0, new ValuePanel(pid, row, ptype + ": "));
+					contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+					vp = (ValuePanel) contactTable.getWidget(row, 0);
+					
+					contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
+					contactTable.setWidget(row, 1, new ValueTable(pid));
+					vt = (ValueTable) contactTable.getWidget(row, 1);
+					
+				}else if(i !=0 && allValuesOfContact.get(i-1).getPropertyid() != pid ){
+					contactTable.setWidget(row, 0, new ValuePanel(pid, row, ptype + ": "));
+					contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+					vp = (ValuePanel) contactTable.getWidget(row, 0);
+					
+					contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
+					contactTable.setWidget(row, 1, new ValueTable(pid));
+					vt = (ValueTable) contactTable.getWidget(row, 1);
+					
+				}else if(i !=0 && allValuesOfContact.get(i-1).getPropertyid() == pid && allValuesOfContact.get(i-1).getIsShared() ==false){
+					contactTable.setWidget(row, 0, new ValuePanel(pid, row,  ptype +": "));
+					contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+					vp = (ValuePanel) contactTable.getWidget(row, 0);
+					
+					contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
+					contactTable.setWidget(row, 1, new ValueTable(pid));
+					vt = (ValueTable) contactTable.getWidget(row, 1);
+				}else {
+					 
+					vp = (ValuePanel) contactTable.getWidget(row-1, 0);
+					vt = (ValueTable) contactTable.getWidget(row-1, 1);
+				}
+				
+				vtRow = vt.getRowCount();
+				vt.setWidget(vtRow, 0, new ValueDisplay(new ValueTextBox(identifier)));
+				vt.getValueDisplay(vtRow).setValue(allValuesOfContact.get(i));
+				
+				
+				/*
+				 * Gleiches Prinzip wie gerade schon, nur jetzt für das soeben neu hinzugefügte ValueDisplay.
+				 */
+				if (compareUser()) {
+					vt.getValueDisplay(vtRow).enableButtons();
+					vp.getAddValueButton().setEnabled(true);
+					if(allValuesOfContact.get(i).getIsShared() == true){
+						vt.getValueDisplay(vtRow).setLockButtonTo(true);
+					}else {
+						vt.getValueDisplay(vtRow).setLockButtonTo(false);
+					}
+				}
+				else {
+					vt.getValueDisplay(vtRow).disableButtons();
+					vp.getAddValueButton().setEnabled(false);
 					
 				}
+				
+				for(int c=0; c<newPropertyListBox.getItemCount(); c++) {
+					if (newPropertyListBox.getItemText(c) == ptype) {
+						newPropertyListBox.removeItem(c);
+					}
+				}
+			}
 		
-		}
+		}//ende der for-schleife
 	}
 	
 //	private class GetPropertyOfValueCallback implements AsyncCallback<Property>{
