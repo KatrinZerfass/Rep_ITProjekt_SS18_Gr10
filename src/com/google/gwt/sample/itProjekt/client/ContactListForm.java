@@ -398,40 +398,38 @@ public class ContactListForm extends VerticalPanel{
 					Window.alert("Sie können die Liste all Ihrer Kontakte nicht teilen!");
 				}
 				else {
-					if(clctvm.getSelectedContactList() == null) {
-						Window.alert("Keine Kontaktliste ausgewählt");
-					}else {
-						inputDB = new ClientsideFunctions.InputDialogBox(new MultiWordSuggestOracle());
-						inputDB.getOKButton().addClickHandler(new ClickHandler() {
-							public void onClick(ClickEvent event) {
-								if(inputDB.getSuggestBox().getText()== "") {
-									Window.alert("Fehler bei Teilen der Kontaktliste weil User leer");
-								}else {								
-									editorAdministration.shareContactList(user, inputDB.getSuggestBox().getText(), clctvm.getSelectedContactList(), new AsyncCallback<Permission>() {
 				
-										public void onFailure(Throwable arg0) {
-											Window.alert("Weil onFailure");
+					inputDB = new ClientsideFunctions.InputDialogBox(new MultiWordSuggestOracle());
+					inputDB.getOKButton().addClickHandler(new ClickHandler() {
+						public void onClick(ClickEvent event) {
+							if(inputDB.getSuggestBox().getText()== "") {
+								Window.alert("Fehler bei Teilen der Kontaktliste weil User leer");
+							}else {								
+								editorAdministration.shareContactList(user, inputDB.getSuggestBox().getText(), clctvm.getSelectedContactList(), new AsyncCallback<Permission>() {
+			
+									public void onFailure(Throwable arg0) {
+										Window.alert("Weil onFailure");
+										inputDB.hide();
+									}
+									public void onSuccess(Permission arg0) {
+										if(arg0 != null) {
+											Window.alert("Kontaktliste erfolgreich geteilt.");
 											inputDB.hide();
 										}
-										public void onSuccess(Permission arg0) {
-											if(arg0 != null) {
-												Window.alert("Kontaktliste erfolgreich geteilt.");
-												inputDB.hide();
-											}
-											else if(arg0 == null) {
-												Window.alert("User ist der Owner der Kontaktliste!");
-												inputDB.hide();
-											}
-											
+										else if(arg0 == null) {
+											Window.alert("User ist der Owner der Kontaktliste!");
+											inputDB.hide();
 										}
-									});
-								}
+										
+									}
+								});
 							}
-						});
-					}
+						}
+					});
 				}
 			}
 		}
+	
 				
 				/**
 				 * Die innere Klasse SearchButtonClickHandler. 
