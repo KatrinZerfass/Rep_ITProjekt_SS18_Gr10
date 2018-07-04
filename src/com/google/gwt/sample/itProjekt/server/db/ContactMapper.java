@@ -96,7 +96,7 @@ Vector<Contact> result = new Vector<Contact>();
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID, create_date, mod_date, isUser FROM T_Contact ORDER BY C_ID");
+			ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID, create_date, mod_date, isUser FROM T_Contact ORDER BY firstName");
 			
 			while (rs.next()){
 				Contact c = new Contact();
@@ -133,7 +133,7 @@ Vector<Contact> result = new Vector<Contact>();
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID, create_date, mod_date, isUser FROM T_Contact WHERE firstName ='" + contact.getFirstname() + "' AND lastName='" + contact.getLastname() + "' ORDER BY C_ID");
+			ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID, create_date, mod_date, isUser FROM T_Contact WHERE firstName ='" + contact.getFirstname() + "' AND lastName='" + contact.getLastname() + "' ORDER BY firstName");
 			while (rs.next()){
 				Contact c = new Contact();
 				c.setId(rs.getInt("C_ID"));
@@ -173,7 +173,7 @@ Vector<Contact> result = new Vector<Contact>();
 				try{
 					Statement stmt = con.createStatement();
 					
-					ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID, create_date, mod_date, isUser FROM T_Contact WHERE U_ID=" + user.getId()+ " ORDER BY C_ID");
+					ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID, create_date, mod_date, isUser FROM T_Contact WHERE U_ID=" + user.getId()+ " ORDER BY firstName");
 						while (rs.next()){
 						
 						Contact c = new Contact();
@@ -397,7 +397,7 @@ Connection con = DBConnection.connection();
 			
 			try{
 				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID, create_date, mod_date, isUser FROM T_Contact WHERE firstName LIKE'%" +name+ "%' OR lastName LIKE'%" + name+ "%' ORDER BY C_ID");
+				ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID, create_date, mod_date, isUser FROM T_Contact WHERE firstName LIKE'%" +name+ "%' OR lastName LIKE'%" + name+ "%' ORDER BY firstName");
 				while (rs.next()){
 					Contact c = new Contact();
 					c.setId(rs.getInt("C_ID"));

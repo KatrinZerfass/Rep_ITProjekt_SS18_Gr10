@@ -93,7 +93,7 @@ public class ContactListMapper {
 				
 				try{
 					Statement stmt = con.createStatement();
-					ResultSet rs = stmt.executeQuery("SELECT CL_ID, listname, U_ID FROM T_ContactList ORDER BY CL_ID");
+					ResultSet rs = stmt.executeQuery("SELECT CL_ID, listname, U_ID FROM T_ContactList ORDER BY listname");
 					
 					while (rs.next()){
 						ContactList cl = new ContactList();
@@ -125,7 +125,7 @@ public class ContactListMapper {
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT CL_ID, listname, U_ID FROM T_ContactList WHERE listname ='"+ name + "' ORDER BY CL_ID");
+			ResultSet rs = stmt.executeQuery("SELECT CL_ID, listname, U_ID FROM T_ContactList WHERE listname ='"+ name + "' ORDER BY listname");
 			while (rs.next()){
 				ContactList cl = new ContactList();
 				cl.setId(rs.getInt("CL_ID"));
@@ -159,7 +159,7 @@ public class ContactListMapper {
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT CL_ID, listname, U_ID FROM T_ContactList WHERE U_ID=" + user.getId() + " ORDER BY CL_ID");
+			ResultSet rs = stmt.executeQuery("SELECT CL_ID, listname, U_ID FROM T_ContactList WHERE U_ID=" + user.getId() + " ORDER BY listname");
 			while (rs.next()){
 				ContactList cl = new ContactList();
 				cl.setId(rs.getInt("CL_ID"));
@@ -193,7 +193,7 @@ public class ContactListMapper {
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT DISTINCT CL_ID FROM T_Contact_Contactlist WHERE C_ID=" + contact.getId() + " ORDER BY CL_ID");
+			ResultSet rs = stmt.executeQuery("SELECT DISTINCT CL_ID FROM T_Contact_Contactlist WHERE C_ID=" + contact.getId() + " ORDER BY listname");
 			while (rs.next()){
 				ContactList cl = new ContactList();
 				cl.setId(rs.getInt("CL_ID"));
@@ -347,7 +347,7 @@ Connection con = DBConnection.connection();
 			
 			try{
 				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT DISTINCT C_ID FROM T_Contact_Contactlist WHERE CL_ID =" + contactlist.getId() + " ORDER BY C_ID");			
+				ResultSet rs = stmt.executeQuery("SELECT DISTINCT C_ID FROM T_Contact_Contactlist WHERE CL_ID =" + contactlist.getId() + " ORDER BY listname");			
 			
 				
 				while (rs.next()){
