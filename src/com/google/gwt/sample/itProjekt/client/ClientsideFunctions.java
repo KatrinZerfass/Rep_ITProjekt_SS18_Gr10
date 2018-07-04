@@ -293,6 +293,8 @@ public abstract class ClientsideFunctions {
 				}
 				@Override
 				public void onSuccess(Vector<String> arg0) {
+					
+					Window.alert("oracle size: " + arg0.size());
 					for(String s : arg0) {
 						getOracle().add(s);
 					}
