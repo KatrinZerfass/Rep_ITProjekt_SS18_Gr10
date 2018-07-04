@@ -350,7 +350,7 @@ public class ContactListForm extends VerticalPanel{
 				}
 				else {
 				
-					editorAdministration.deleteContactList(clctvm.getSelectedContactList(), ClientsideFunctions.compareUser(user, clctvm), user, new AsyncCallback<Void>() {
+					editorAdministration.deleteContactList(clctvm.getSelectedContactList(), ClientsideFunctions.isOwner(clctvm.getSelectedContactList(), user), user, new AsyncCallback<Void>() {
 						@Override
 						public void onFailure(Throwable arg0) {
 							Window.alert("Fehler beim löschen der Kontaktliste!");
