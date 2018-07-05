@@ -19,7 +19,6 @@ import com.google.gwt.sample.itProjekt.shared.report.Column;
 import com.google.gwt.sample.itProjekt.shared.report.CompositeParagraph;
 import com.google.gwt.sample.itProjekt.shared.report.Row;
 import com.google.gwt.sample.itProjekt.shared.report.SimpleParagraph;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
@@ -322,31 +321,25 @@ public AllContactInformationOfContactReport generateAllContactInformationOfConta
 		
 		contactRow.addColumn(new Column(String.valueOf(contact.getCreationDate())));
 		contactRow.addColumn(new Column(String.valueOf(contact.getModificationDate())));
-		System.out.println("Vor der if schleife");
 		if (user.getEmail().equals(owner.getEmail())){
-			System.out.println("Nach der if schleife");
-			headline.addColumn(colParticipant);
 			Vector<User> allParticipants=this.admin.getAllParticipantsOfContact(contact);
-			System.out.println("vektor größe" + allParticipants.size());
-			System.out.println(allParticipants.size());
-			for(User u : allParticipants){
-				if (u.getEmail() != user.getEmail()){	
-				contactRow.addColumn(new Column(String.valueOf(u.getEmail())));
-				}else{
-					headline.removeColumn(colParticipant);
+			if(allParticipants.size()!=0){
+				headline.addColumn(colParticipant);
+				StringBuffer result=new StringBuffer();
+				for (User u: allParticipants){
+					result.append(u.getEmail());
+					result.append(", ");
 				}
-		}
-		
-		}
+				result.deleteCharAt(result.length()-1);
+				result.deleteCharAt(result.length()-1);
+				contactRow.addColumn(new Column(String.valueOf(result)));
+			}
+		}		
 		report.addRow(contactRow);		
 		return report;
 
 		}			
 }
-
-
-//public AllContactInformationOfContactReport generateAllContactInformationOfContactReport(Contact contact, User user)
-//		throws IllegalArgumentException {
 
 	/* (non-Javadoc)
 	 * @see com.google.gwt.sample.itProjekt.shared.ReportGenerator#getAllUsers()

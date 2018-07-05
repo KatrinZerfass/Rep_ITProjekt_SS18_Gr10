@@ -193,10 +193,10 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
             	}
             	}});
             	           	
-        reportlistbox.addItem("Alle Kontakte");
+        reportlistbox.addItem("Alle meine Kontakte");
         reportlistbox.addItem("Mit anderen Nutzern geteilte Kontakte");
-        reportlistbox.addItem("Kontakte nach Ausprägung");
-        reportlistbox.addItem("Kontakte nach Eigenschaft");
+        reportlistbox.addItem("Kontakte mit bestimmter Ausprägung");
+        reportlistbox.addItem("Kontakte mit bestimmter Eigenschaft");
 
 		LoginServiceAsync loginService = GWT.create(LoginService.class);
 	    loginService.login("https://it-projekt-gruppe-10-203610.appspot.com/ITProjekt_SS18_Gr_10_Report.html", new AsyncCallback<LoginInfo>() {
