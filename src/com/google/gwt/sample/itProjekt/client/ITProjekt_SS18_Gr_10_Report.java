@@ -71,7 +71,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	 */
 	Label searchheading = new Label("Hier können Sie sich einen Report über Ihre Kontakte ausgeben lassen. "
 			+ "Dabei können Sie Ihren Report zusätzlich nach Eigenschaften der Kontakte (z.B. Arbeitsplatz) oder bestimmten Ausprägungen der Kontakte (z.B. Hochschule der Medien) filtern. "
-			+ "Außerdem können Sie nach Eingabe eines Nutzers, die Kontakte sehen, die Sie mit diesem geteilt haben");
+			+ "Außerdem können Sie nach Eingabe eines Nutzers, die Kontakte sehen, die Sie mit diesem geteilt haben.");
 	Label participantLabel = new Label("Nutzer: ");
 	Label valueLabel = new Label("Ausprägung: ");
 	Label propertyLabel = new Label("Eigenschaft: ");
@@ -302,8 +302,10 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 				@Override
 				public void onClick(ClickEvent event) {
 					if(sb.getSuggestBox().getText() != ""){
+						String[] split = sb.getSuggestBox().getText().split(" - ");
+						String userEmail = split[1].substring(0, split[1].length());
 						User sharedUser=new User();
-						sharedUser.setEmail(sb.getSuggestBox().getText());
+						sharedUser.setEmail(userEmail);
 						reportGenerator.generateAllSharedContactsOfUserReport(user, sharedUser, new AsyncCallback<AllSharedContactsOfUserReport>() {
 				 				    	public void onFailure(Throwable caught) {
 		   				 				    RootPanel.get("reporttext").setVisible(false);	

@@ -2,14 +2,11 @@ package com.google.gwt.sample.itProjekt.client;
 
 import java.util.Vector;
 
-import org.omg.CORBA.Current;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.sample.itProjekt.client.ClientsideFunctions.InputDialogBox;
-import com.google.gwt.sample.itProjekt.client.ContactForm.ValueDisplay;
 import com.google.gwt.sample.itProjekt.shared.EditorAdministrationAsync;
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
@@ -20,12 +17,9 @@ import com.google.gwt.sample.itProjekt.shared.bo.Value;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -34,10 +28,8 @@ import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.ValueBoxBase;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 /**
  * Die Klasse ContactForm dient der Darstellung von Kontakten mit all ihren Eigenschaften und deren Ausprägungen.
