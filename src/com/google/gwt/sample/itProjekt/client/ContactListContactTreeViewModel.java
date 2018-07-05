@@ -399,8 +399,10 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 							for (Contact c : contacts) {
 								contactsProvider.getList().add(c);
 							}
+							contactForm.disableRemoveContactButton();
 						}
 					});
+				
 					return new DefaultNodeInfo<Contact>(contactsProvider,
 							new ContactCell(), selectionModel, null);
 			}									
