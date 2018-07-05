@@ -91,6 +91,12 @@ public class ContactForm extends VerticalPanel {
 	ValueTextBox plzTextBox;
 	ValueTextBox cityTextBox;
 	
+	/**Label für das Hinzufügen neuer Eigenschaften */
+	Label newPropertyLabel = new Label("Eigenschaft hinzufügen");
+	
+	/**Listbox für das Hinzufügen neuer Eigenschaften */
+	ListBox newPropertyListBox = new ListBox();
+	
 	/** Der Button, mit dem dem Kontakt neue Eigenschaften hinzugefügt werden können*/
 	Button addNewPropertyButton = new Button("Hinzufügen");
 	
@@ -98,8 +104,7 @@ public class ContactForm extends VerticalPanel {
 	ClickHandler saveChangesClickHandler = null;
 	ClickHandler addPropertyClickHandler = null;
 	
-	/**Listbox für das Hinzufügen neuer Eigenschaften */
-	ListBox newPropertyListBox = new ListBox();
+	
 	
 	/**Der aktuell angemeldete Nutzer */
 	User currentUser = new User();
@@ -750,17 +755,7 @@ public class ContactForm extends VerticalPanel {
 			
 			/*Die ValueTextBox, in die man die neue Ausprägung eintragen kann. Sie wird nach der switch-case gesetzt */
 			ValueTextBox addValueTextBox = null;
-			
-			HorizontalPanel dbButtonsPanel=new HorizontalPanel();
-			addValueDBPanel.add(dbButtonsPanel);
-			
-			Button addValueButton = new Button("Hinzufügen");
-			addValueButton.addStyleName("okbutton");
-			dbButtonsPanel.add(addValueButton);
-			
-			CloseButton closeButton = new CloseButton(addValueDB);
-			dbButtonsPanel.add(closeButton);
-			
+					
 		
 			/*
 			 * Je nachdem, um welche Art von Eigenschaft es sich handelt, wird der Identifier gesetzt, mit dem nach der switch-case
@@ -800,6 +795,17 @@ public class ContactForm extends VerticalPanel {
 			
 			addValueTextBox = new ValueTextBox(identifier);
 			addValueDBPanel.add(addValueTextBox);
+			
+			HorizontalPanel dbButtonsPanel=new HorizontalPanel();
+			addValueDBPanel.add(dbButtonsPanel);
+			
+			CloseButton closeButton = new CloseButton(addValueDB);
+			dbButtonsPanel.add(closeButton);
+			
+			Button addValueButton = new Button("Hinzufügen");
+			addValueButton.addStyleName("okbutton");
+			dbButtonsPanel.add(addValueButton);
+			
 			
 			addValueButton.addClickHandler(new AddValueClickHandler(addValueDB, addValueTextBox,
 					((ValueTable) contactTable.getWidget(row, 1)), pid));
@@ -1002,7 +1008,7 @@ public class ContactForm extends VerticalPanel {
 		currentUser = ClientsideSettings.getUser();
 		
 		
-		
+
 		
 		/*
 		 * Alle vordefinierten Eigenschaften werden aus der Datenbank ausgelesen und in einem Vektor gespeichert.
@@ -1018,6 +1024,24 @@ public class ContactForm extends VerticalPanel {
 				for (Property p : properties){
 					allPredefinedProperties.add(p);
 				}
+				
+				for (Property p : allPredefinedProperties) {
+					if(p.getType()!="Straße" && p.getType()!= "Hausnummer" && p.getType()!= "PLZ" && p.getType()!= "Wohnort") {
+					newPropertyListBox.addItem(p.getType());
+					}
+				}
+				newPropertyListBox.addItem("Anschrift");
+				newPropertyListBox.addItem("Sonstiges");	
+				
+
+				newPropertyLabel.addStyleName("newPropertyLabel");
+				newPropertyPanel.add(newPropertyLabel);
+				newPropertyPanel.add(newPropertyListBox);
+				newPropertyPanel.addStyleName("propertyPanel");
+				newPropertyPanel.add(addNewPropertyButton);
+				newPropertyPanel.setVisible(false);
+				
+				
 			}
 		});
 		
@@ -1049,6 +1073,7 @@ public class ContactForm extends VerticalPanel {
 		sexListBox.addItem("Sonstiges");
 		contactTable.setWidget(3, 1, sexListBox);		
 	
+		
 		/*
 		 *Die Buttons für das buttonPanel werden instantiiert, mit Stylenamen versehen und zum buttonPanel hinzugefügt
 		 */
@@ -1258,12 +1283,9 @@ public class ContactForm extends VerticalPanel {
 					public void onSuccess(Void arg0){
 						Window.alert("Kontakt erfolgreich gelöscht");
 						clctvm.removeContactOfContactList(clctvm.getSelectedContactList(), contactToDisplay);
-						clctvm.getNodeInfo(clctvm.getSelectedContactList());
-						//TODO:  geht immer nur beim ersten Mal?!?!?!
 					}
 				});
 				
-		       //setSelected(null);
 			}
 		}
 	}
@@ -1486,15 +1508,14 @@ public class ContactForm extends VerticalPanel {
 	 * @author KatrinZerfass
 	 */
 	private class NewPropertyClickHandler implements ClickHandler{
-		DialogBox db1;
-		DialogBox db2;
-		TextBox inputTextBox1;
-		TextBox inputTextBox2;
+		DialogBox db = null;
+		VerticalPanel dbPanel = null;
+		TextBox inputTextBox = null;
+		HorizontalPanel dbButtonsPanel = null;
 		int pid;
 		String ptype;
 		int row;
-		HorizontalPanel hpanel1;
-		HorizontalPanel hpanel2;
+
 		
 		
 		public void onClick(ClickEvent event) {
@@ -1502,28 +1523,35 @@ public class ContactForm extends VerticalPanel {
 			row = contactTable.getRowCount();
 			
 			if(ptype == "Geburtstag") {
-				VerticalPanel db1Panel = new VerticalPanel();
-				hpanel1 = new HorizontalPanel();
-				db1 = new DialogBox();
-				inputTextBox1 = new TextBox();
-				db1.setText("Geburtsdatum eintragen");
+				db = new DialogBox();
+				dbPanel = new VerticalPanel();
+				inputTextBox = new TextBox();
+				dbButtonsPanel = new HorizontalPanel();
+
+				db.setText("Geburtsdatum eintragen");
 			
+				CloseButton closeButton = new CloseButton(db);
+				dbButtonsPanel.add(closeButton);
+				
 				Button addBirthdayButton = new Button("Hinzufügen");
+				dbButtonsPanel.add(addBirthdayButton);
 				addBirthdayButton.addStyleName("okbutton");
-				CloseButton close1=new CloseButton(db1);
-				db1Panel.add(inputTextBox1);
-				hpanel1.add(close1);
-				hpanel1.add(addBirthdayButton);
-				db1Panel.add(hpanel1);
-				db1.add(db1Panel);
-				db1.show();
+			
+				dbPanel.add(inputTextBox);
+				dbPanel.add(dbButtonsPanel);
+
+				
+				db.add(dbPanel);
+				db.show();
+				
 				
 				addBirthdayButton.addClickHandler(new ClickHandler(){
 					public void onClick(ClickEvent event) {
-						db1.hide();
+
+						db.hide();
 						
 						
-						editorAdministration.createValue(contactToDisplay, 4, inputTextBox1.getText(), new AsyncCallback<Value>() {
+						editorAdministration.createValue(contactToDisplay, 4, inputTextBox.getText(), new AsyncCallback<Value>() {
 							public void onFailure (Throwable t) {
 								Window.alert("Geburtsdatum anlegen gescheitert");
 							}
@@ -1545,31 +1573,34 @@ public class ContactForm extends VerticalPanel {
 				
 			}
 			else if(ptype == "Sonstiges") {
-				VerticalPanel db2Panel = new VerticalPanel();
-				hpanel2 = new HorizontalPanel();
-				db2 = new DialogBox();
-				inputTextBox2 = new TextBox();
+				db = new DialogBox();
+				dbPanel = new VerticalPanel();
+				inputTextBox = new TextBox();
+				dbButtonsPanel = new HorizontalPanel();
+
+				db.setText("Neue Eigenschaftsart hinzufügen");
 				
-				db2.setText("Neue Eigenschaftsart hinzufügen");
+				CloseButton closeButton = new CloseButton(db);
+				dbButtonsPanel.add(closeButton);
 				
 				Button addPropertyButton = new Button("Hinzufügen");
+				dbButtonsPanel.add(addPropertyButton);
 				addPropertyButton.addStyleName("okbutton");
-				CloseButton close2= new CloseButton(db2);
+			
+				dbPanel.add(inputTextBox);
+				dbPanel.add(dbButtonsPanel);
 				
-				db2Panel.add(inputTextBox2);
-				hpanel2.add(close2);
-				hpanel2.add(addPropertyButton);
-				db2Panel.add(hpanel2);
-				db2.add(db2Panel);
-				db2.show();
-				
+
+				db.add(dbPanel);
+				db.show();
 					
 				addPropertyButton.addClickHandler(new ClickHandler(){
 					public void onClick(ClickEvent event) {
-						db2.hide();
+
+						db.hide();
 						
 						
-						editorAdministration.createProperty(contactToDisplay, inputTextBox2.getText(), new AsyncCallback<Property>() {
+						editorAdministration.createProperty(contactToDisplay, inputTextBox.getText(), new AsyncCallback<Property>() {
 							public void onFailure (Throwable t) {
 								Window.alert("Eigenschaft anlegen gescheitert");
 							}
@@ -1691,6 +1722,7 @@ public class ContactForm extends VerticalPanel {
 		contactTable.removeAllRows();
 		buttonsPanel.clear();
 		sexListBox.clear();
+		newPropertyPanel.clear();
 		newPropertyListBox.clear();
 		allValuesOfContact.clear();
 	
@@ -1728,33 +1760,6 @@ public class ContactForm extends VerticalPanel {
 		if (c != null){
 			
 			contactToDisplay = c;
-			
-			
-			/*
-			 * Befüllen der Eigenschaften aus der Datenbank
-			 */
-			
-			
-			for (Property p : allPredefinedProperties) {
-				if(p.getType()!="Straße" && p.getType()!= "Hausnummer" && p.getType()!= "PLZ" && p.getType()!= "Wohnort") {
-				newPropertyListBox.addItem(p.getType());
-				}
-			}
-			newPropertyListBox.addItem("Anschrift");
-			newPropertyListBox.addItem("Sonstiges");	
-			
-			Label newPropertyLabel = new Label("Eigenschaft hinzufügen");
-			newPropertyLabel.addStyleName("newPropertyLabel");
-			newPropertyPanel.add(newPropertyLabel);
-			
-			newPropertyPanel.add(newPropertyListBox);
-			newPropertyPanel.addStyleName("propertyPanel");
-			newPropertyPanel.add(addNewPropertyButton);
-			
-			
-			
-			
-			
 			
 			
 			/*
