@@ -2,10 +2,8 @@
 package com.google.gwt.sample.itProjekt.client;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Vector;
-import com.google.gwt.dev.jjs.impl.codesplitter.CfaLivenessPredicate;
 import com.google.gwt.sample.itProjekt.shared.EditorAdministrationAsync;
 import com.google.gwt.sample.itProjekt.shared.bo.BusinessObject;
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
@@ -26,7 +24,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * Die ContactListContactTreeViewModel. 
  * Sie dient der Verwaltung von Kontaktlisten und den dazugehörigen Kontakten und stellt die Basis für den CellBrowser dar.
  * 
- * @author KatrinZerfass
+ * @author KatrinZerfass & JoshuaHill
  */
 public class ContactListContactTreeViewModel implements TreeViewModel{
 	
@@ -101,8 +99,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		}
 	}
 
-	
-	
+		
 	/**
 	 * Konstruktor von ContactListContactTreeViewModel.
 	 */
@@ -118,6 +115,10 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 
 	/** Getter und Setter */ 
 	
+	/**
+	 * 
+	 * @param cf
+	 */
 	
 	public void setContactForm(ContactForm cf) {
 		contactForm = cf;
@@ -195,7 +196,16 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 			contactsProvider.getList().add(c);
 		}
 		selectionModel.setSelected(c, true);
-		Window.alert("neuer Kontakt wurde ausgewählt");
+		
+	}
+	
+	public void removeContactOfContactList(ContactList cl, Contact contact) {
+		if (!contactDataProviders.containsKey(cl)) {
+			return;
+		}			
+		contactDataProviders.get(cl).getList().remove(contact);
+		contactListDataProvider.refresh();
+		selectionModel.setSelected(cl, true);	
 		
 	}
 	
@@ -204,47 +214,27 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		if(cl == nameResultsCL) {
 			nameResults = contacts;
 			contactListDataProvider.getList().add(cl);
-			selectionModel.setSelected(cl, true);
-			BusinessObject selection = selectionModel.getSelectedObject();
-			setSelectedContactList((ContactList) selection);
+			selectionModel.setSelected(cl, true);		
 			
 		}
 		if(cl == valueResultsCL) {
 			valueResults = contacts;
 			contactListDataProvider.getList().add(cl);
 			selectionModel.setSelected(cl, true);
-		}
-		
+		}	
 	}
 	
 	
-	public void removeContactOfContactList(ContactList cl, Contact contact) {
-		if (!contactDataProviders.containsKey(cl)) {
-			return;
-		}
-		
-			
-		contactDataProviders.get(cl).getList().remove(contact);
-		selectionModel.setSelected(cl, true);
-		
-
-	}
-	
-	public void addNameResults () {
-		
-		
+	public void addNameResults () {			
 		deleteNameResults();
-			
 		nameResultsCL = new ContactList();
 		nameResultsCL.setId(0);
 		nameResultsCL.setName("Suchergebnis im Namen");
 		
 	}
 	
-	public void addValueResults () {
-		
-		deleteValueResults();
-		
+	public void addValueResults () {	
+		deleteValueResults();		
 		valueResultsCL = new ContactList();
 		valueResultsCL.setId(1);
 		valueResultsCL.setName("Suchergebnis in den Eigenschaften");
@@ -303,6 +293,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	
 			
 			if((ContactList) value == myContactsContactList) {
+				Window.alert("springt in Node Info");
 				editorAdministration.getAllContactsOfActiveUser(user, new AsyncCallback<Vector<Contact>>() {
 					public void onFailure (Throwable t) {
 						
@@ -316,6 +307,8 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 					}
 				});
 				
+				Window.alert(contactsProvider.toString());
+				
 				return new DefaultNodeInfo<Contact>(contactsProvider,new ContactCell(), selectionModel, null);
 				
 						
@@ -325,6 +318,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 			 */	
 				
 			}else if(user.getId() == ((ContactList) value).getOwner())  {
+				
 				editorAdministration.getAllContactsOfContactlistForUser((ContactList) value, user, new AsyncCallback<Vector<Contact>>() {
 					public void onFailure(Throwable t) {
 							Window.alert("Kontakte der Kontaktliste auslesen fehlgeschlagen");

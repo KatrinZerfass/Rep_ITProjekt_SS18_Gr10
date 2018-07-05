@@ -1283,12 +1283,9 @@ public class ContactForm extends VerticalPanel {
 					public void onSuccess(Void arg0){
 						Window.alert("Kontakt erfolgreich gelöscht");
 						clctvm.removeContactOfContactList(clctvm.getSelectedContactList(), contactToDisplay);
-						clctvm.getNodeInfo(clctvm.getSelectedContactList());
-						//TODO:  geht immer nur beim ersten Mal?!?!?!
 					}
 				});
 				
-		       //setSelected(null);
 			}
 		}
 	}

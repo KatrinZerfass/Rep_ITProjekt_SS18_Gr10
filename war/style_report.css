@@ -296,6 +296,6 @@ h1 {
 .reporttable, .reporttd{
   border-collapse: collapse;
   border: 1px solid #80808047;
-  margin: 10px 0px;
+  margin: 5px 0px;
   padding: 8px;
 }
