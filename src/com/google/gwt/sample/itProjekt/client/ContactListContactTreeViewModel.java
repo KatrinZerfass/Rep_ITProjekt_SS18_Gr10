@@ -211,18 +211,11 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		
 	}
 	
-	public void updateContact(Contact contact){
-		
-						
-		editorAdministration.getContactByID(contact.getId(), new AsyncCallback<Contact>() {
-
-			@Override
+	public void updateContact(Contact contact){							
+		editorAdministration.getContactByID(contact.getId(), new AsyncCallback<Contact>() {			
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-				
 			}
 
-			@Override
 			public void onSuccess(Contact result) {
 				List<Contact> contactList = contactDataProviders.get(getSelectedContactList()).getList();
 				for (int i=0; i<contactList.size(); i++) {
@@ -230,10 +223,8 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 						contactList.set(i, result);
 						break;
 					}
-				}
-				
-			}
-			
+				}			
+			}	
 		});
 	}
 	
@@ -321,7 +312,6 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	
 			
 			if((ContactList) value == myContactsContactList) {
-				Window.alert("springt in Node Info");
 				editorAdministration.getAllContactsOfActiveUser(user, new AsyncCallback<Vector<Contact>>() {
 					public void onFailure (Throwable t) {
 						
@@ -333,9 +323,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 						}
 					}
 				});
-				
-				Window.alert(contactsProvider.toString());
-				
+								
 				return new DefaultNodeInfo<Contact>(contactsProvider,new ContactCell(), selectionModel, null);
 				
 						

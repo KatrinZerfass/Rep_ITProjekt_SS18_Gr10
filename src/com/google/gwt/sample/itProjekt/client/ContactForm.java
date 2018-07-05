@@ -1346,7 +1346,7 @@ public class ContactForm extends VerticalPanel {
 									Window.alert("Fehler beim Änderungen speichern. \n (Kontaktstamm)");
 								}
 								public void onSuccess(Contact arg0) {
-									Window.alert("Die Änderungen wurden gespeichert. \n (Kontaktstamm)");
+									clctvm.updateContact(arg0);
 								}
 						});
 					}
