@@ -589,13 +589,20 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		
 		for(Contact c : allContacts) {
 			if(c.getIsUser()) {
-				contactValues = vMapper.getAllValueByCID(c);
-				for (Value v : contactValues) {
-					if(v.getPropertyid() == 3 && allUserEmails.contains(v.getContent()) && c.getOwner() == getUser(v.getContent()).getId()) {
-						partResult = v.getContent();
+				
+				for(User u : allUsers) {
+					if (c.getOwner() == u.getId()) {
+						result.add(c.getFirstname() + " " + c.getLastname() + " (" + u.getEmail() + ")");
 					}
 				}
-				result.add(c.getFirstname() + " " + c.getLastname() + " (" + partResult + ")");
+				
+//				contactValues = vMapper.getAllValueByCID(c);
+//				for (Value v : contactValues) {
+//					if(v.getPropertyid() == 3 && allUserEmails.contains(v.getContent()) && c.getOwner() == getUser(v.getContent()).getId()) {
+//						partResult = v.getContent();
+//					}
+//				}
+//				result.add(c.getFirstname() + " " + c.getLastname() + " (" + partResult + ")");
 			}
 		}
 		return result;
