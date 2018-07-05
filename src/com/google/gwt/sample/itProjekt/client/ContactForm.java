@@ -606,8 +606,19 @@ public class ContactForm extends VerticalPanel {
 								};
 							{Window.alert("Das Löschen der Ausprägung ist fehlgeschlagen 2.");};
 							public void onSuccess(Void result) {Window.alert("Die Ausprägung wurde gelöscht.");}; 
-							{setSelected(contactToDisplay);
-								Window.alert("Die Ausprägung wurde gelöscht. 2");};
+							{
+								ClientsideFunctions.safetyBox deleted = new ClientsideFunctions.safetyBox("Value gelöscht");
+								deleted.getOkButton().addClickHandler(new ClickHandler() {
+									
+									@Override
+									public void onClick(ClickEvent arg0) {
+										setSelected(contactToDisplay);
+									}
+								});
+								
+								//setSelected(contactToDisplay);
+								//Window.alert("Die Ausprägung wurde gelöscht. 2");
+							};
 						});//TODO WTF is this?!
 					}
 					
