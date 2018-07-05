@@ -607,18 +607,16 @@ public class ContactForm extends VerticalPanel {
 //
 //						});
 						editorAdministration.deleteValue(value, new AsyncCallback<Void>() {
-							public void onFailure(Throwable t) {
-								Window.alert("Das Löschen der Ausprägung ist fehlgeschlagen.");
-								};
-							{Window.alert("Das Löschen der Ausprägung ist fehlgeschlagen 2.");};
-							public void onSuccess(Void result) {Window.alert("Die Ausprägung wurde gelöscht.");}; 
+							public void onFailure(Throwable t) {};{};
+							public void onSuccess(Void result) {}; 
 							{
-								ClientsideFunctions.safetyBox deleted = new ClientsideFunctions.safetyBox("Value gelöscht");
+								final ClientsideFunctions.safetyBox deleted = new ClientsideFunctions.safetyBox("Value gelöscht");
 								deleted.getOkButton().addClickHandler(new ClickHandler() {
 									
 									@Override
 									public void onClick(ClickEvent arg0) {
 										setSelected(contactToDisplay);
+										deleted.hide();
 									}
 								});
 								
