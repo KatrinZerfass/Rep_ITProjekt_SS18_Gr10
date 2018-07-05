@@ -47,6 +47,7 @@ h1 {
 	position: absolute;
 }
 
+
 #reporttext {
 	position: relative;
 	top: 280px;
@@ -97,8 +98,9 @@ h1 {
 }
 
 .searchheading{
-	padding: 4% 2%;
-}
+	line-height: 1.5;
+    margin: 1px 21px 12px 13px;
+    }
 
 
 .gwt-TextBox {
@@ -183,7 +185,7 @@ h1 {
 
 .gwt-ListBox{
     padding: 9px 7px;
-    margin: 1px 26px 1px 73px;
+	margin: 1px 21px 1px 13px;
     display: inline-block;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -298,4 +300,8 @@ h1 {
   border: 1px solid #80808047;
   margin: 5px 0px;
   padding: 8px;
+}
+
+.panel{
+	margin:7px 0px;
 }
