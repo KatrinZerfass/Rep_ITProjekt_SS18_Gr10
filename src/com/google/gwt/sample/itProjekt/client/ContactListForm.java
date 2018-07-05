@@ -404,8 +404,8 @@ public class ContactListForm extends VerticalPanel{
 							if(inputDB.getSuggestBox().getText()== "") {
 								Window.alert("Fehler bei Teilen der Kontaktliste weil User leer");
 							}else {	
-								String[] split = inputDB.getSuggestBox().getText().split("(");
-								String userEmail = split[1].substring(0, split[1].length() - 1);
+								String[] split = inputDB.getSuggestBox().getText().split(" - ");
+								String userEmail = split[1].substring(0, split[1].length());
 								Window.alert(userEmail);
 								editorAdministration.shareContactList(user, userEmail, clctvm.getSelectedContactList(), new AsyncCallback<Permission>() {
 			
