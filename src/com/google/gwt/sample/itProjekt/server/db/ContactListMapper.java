@@ -316,7 +316,17 @@ Connection con = DBConnection.connection();
 		catch (SQLException e2){
 			e2.printStackTrace();
 
-			}	
+			}
+		try{
+			
+			Statement stmt4 = con.createStatement();
+				stmt4.executeUpdate("DELETE FROM T_Contact_Contactlist WHERE CL_ID =" + contactlist.getId());
+		}
+
+		catch (SQLException e2){
+			e2.printStackTrace();
+
+			}
 		try{
 				
 				Statement stmt = con.createStatement();
