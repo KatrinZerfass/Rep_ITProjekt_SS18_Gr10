@@ -1039,7 +1039,7 @@ public class ContactForm extends VerticalPanel {
 				newPropertyPanel.add(newPropertyListBox);
 				newPropertyPanel.addStyleName("propertyPanel");
 				newPropertyPanel.add(addNewPropertyButton);
-				newPropertyPanel.setVisible(true);
+				//newPropertyPanel.setVisible(true);
 				
 				
 			}
