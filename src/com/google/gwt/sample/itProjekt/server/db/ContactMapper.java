@@ -83,7 +83,7 @@ public class ContactMapper {
 	/**
 	 * FindAll.
 	 *
-	 * Gibt alle Contact Objekte zurück welche mit C_ID, firstName, lastName, geder und U_ID befüllt sind
+	 * Gibt alle Contact Objekte zurück welche mit C_ID, firstName, lastName, gender und U_ID befüllt sind
 	 * Hierfür holen wir C_ID, firstName, lastName, geder und U_ID aus der T_Contact Tabelle und speichern diese in einem Contact Objekt ab und fügen diese dem Vector hinzu
 	 * Diesen Vector befüllt mit Contacts geben wir zurück
 	 * 
@@ -97,6 +97,42 @@ Vector<Contact> result = new Vector<Contact>();
 		try{
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID, create_date, mod_date, isUser FROM T_Contact ORDER BY firstName");
+			
+			while (rs.next()){
+				Contact c = new Contact();
+				c.setId(rs.getInt("C_ID"));
+				c.setFirstname(rs.getString("firstName"));
+				c.setLastname(rs.getString("lastName"));
+				c.setSex(rs.getString("gender"));
+				c.setOwner(rs.getInt("U_ID"));
+				c.setCreationDate(rs.getTimestamp("create_date"));
+				c.setModificationDate(rs.getTimestamp("mod_date"));
+				c.setIsUser(rs.getBoolean("isUser"));
+				result.addElement(c);
+			}		
+		}catch(SQLException e2){
+			e2.printStackTrace();
+		}
+		return result;
+	}
+	
+	/**
+	 * FindAllUsers.
+	 *
+	 * Gibt alle Contact Objekte zurück welche mit C_ID, firstName, lastName, gender und U_ID befüllt sind und den IsUser flag auf true haben.
+	 * Hierfür holen wir C_ID, firstName, lastName, geder und U_ID aus der T_Contact Tabelle und speichern diese in einem Contact Objekt ab und fügen diese dem Vector hinzu
+	 * Diesen Vector befüllt mit Contacts geben wir zurück.
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
+	 */
+	public Vector<Contact> findAllUserContacts(){
+Connection con = DBConnection.connection();
+Vector<Contact> result = new Vector<Contact>();
+		
+		try{
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID, create_date, mod_date, isUser FROM T_Contact WHERE isUser = 1 ORDER BY firstName");
 			
 			while (rs.next()){
 				Contact c = new Contact();

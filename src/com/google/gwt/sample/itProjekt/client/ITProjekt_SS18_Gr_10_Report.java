@@ -70,7 +70,8 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	 * Die notwendigen Buttons für den Navigationsteil 
 	 */
 	Label searchheading = new Label("Hier können Sie sich einen Report über Ihre Kontakte ausgeben lassen. "
-			+ "Dabei können Sie Ihren Report zusätzlich nach Eigenschaften der Kontakte (z.B. Arbeitsplatz) oder bestimmten Ausprägungen der Kontakte (z.B. Hochschule der Medien) filtern. ");
+			+ "Dabei können Sie Ihren Report zusätzlich nach Eigenschaften der Kontakte (z.B. Arbeitsplatz) oder bestimmten Ausprägungen der Kontakte (z.B. Hochschule der Medien) filtern. "
+			+ "Außerdem können Sie nach Eingabe eines Nutzers, die Kontakte sehen, die Sie mit diesem geteilt haben");
 	Label participantLabel = new Label("Nutzer: ");
 	Label valueLabel = new Label("Ausprägung: ");
 	Label propertyLabel = new Label("Eigenschaft: ");
@@ -149,6 +150,9 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 		valueLabel.addStyleName("searchlabel");
 		participantLabel.addStyleName("searchlabel");
 		reportbuttonPanel.addStyleName("top-buttons");
+		valuePanel.addStyleName("panel");
+		propertyPanel.addStyleName("panel");
+		participantPanel.addStyleName("panel");
 		getReportButton.addStyleName("reportbutton");
 		allContactsOfUserButton.addStyleName("reportbutton");
 		allSharedContactsOfUserButton.addStyleName("reportbutton");
