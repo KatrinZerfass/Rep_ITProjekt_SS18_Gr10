@@ -1389,13 +1389,16 @@ public class ContactForm extends VerticalPanel {
 		         */
 		        dbPanel.add(clListbox);
 		        
-		      //TODO: why final?
+		      
+		        CloseButton closeButton = new CloseButton(db);
+				dbButtonsPanel.add(closeButton);
+				
+				//TODO: why final?
 		        final Button okButton = new Button("OK");
 		        okButton.addStyleName("okbutton");
 		        dbButtonsPanel.add(okButton);
 		        
-		        CloseButton closeButton = new CloseButton(db);
-				dbButtonsPanel.add(closeButton);
+		       
 				
 		        dbPanel.add(dbButtonsPanel);
 		       	     
@@ -1510,7 +1513,7 @@ public class ContactForm extends VerticalPanel {
 	private class NewPropertyClickHandler implements ClickHandler{
 		DialogBox db = null;
 		VerticalPanel dbPanel = null;
-		TextBox inputTextBox = null;
+		ValueTextBox inputTextBox = null;
 		HorizontalPanel dbButtonsPanel = null;
 		int pid;
 		String ptype;
@@ -1525,7 +1528,8 @@ public class ContactForm extends VerticalPanel {
 			if(ptype == "Geburtstag") {
 				db = new DialogBox();
 				dbPanel = new VerticalPanel();
-				inputTextBox = new TextBox();
+				inputTextBox = new ValueTextBox("Geburtstag");
+				inputTextBox.getElement().setPropertyString("placeholder", "dd.mm.yyyy");
 				dbButtonsPanel = new HorizontalPanel();
 
 				db.setText("Geburtsdatum eintragen");
@@ -1550,23 +1554,27 @@ public class ContactForm extends VerticalPanel {
 
 						db.hide();
 						
-						
-						editorAdministration.createValue(contactToDisplay, 4, inputTextBox.getText(), new AsyncCallback<Value>() {
-							public void onFailure (Throwable t) {
-								Window.alert("Geburtsdatum anlegen gescheitert");
-							}
+						if(!ClientsideFunctions.checkValue(inputTextBox)) {
+							Window.alert("Ungültiges Geburtsdatum oder falsches Format");
+							inputTextBox.setText("");
 							
-							public void onSuccess(Value result) {
-							
-								Label birthdateLabel = new Label("Geburtsdatum: ");
-								contactTable.setWidget(3, 2, birthdateLabel);
+						}else {
+							editorAdministration.createValue(contactToDisplay, 4, inputTextBox.getText(), new AsyncCallback<Value>() {
+								public void onFailure (Throwable t) {
+									Window.alert("Geburtsdatum anlegen gescheitert");
+								}
 								
-								contactTable.setWidget(3, 3, new ValueDisplay(new ValueTextBox("Geburtstag")));
-								((ValueDisplay) contactTable.getWidget(3, 3)).getWidget(0).setWidth("105px");
-								((ValueDisplay) contactTable.getWidget(3,3)).setValue(result);
-							}
-						});
-					
+								public void onSuccess(Value result) {
+								
+									Label birthdateLabel = new Label("Geburtsdatum: ");
+									contactTable.setWidget(3, 2, birthdateLabel);
+									
+									contactTable.setWidget(3, 3, new ValueDisplay(new ValueTextBox("Geburtstag")));
+									((ValueDisplay) contactTable.getWidget(3, 3)).getWidget(0).setWidth("105px");
+									((ValueDisplay) contactTable.getWidget(3,3)).setValue(result);
+								}
+							});
+						}
 					}
 				});
 				
@@ -1575,7 +1583,7 @@ public class ContactForm extends VerticalPanel {
 			else if(ptype == "Sonstiges") {
 				db = new DialogBox();
 				dbPanel = new VerticalPanel();
-				inputTextBox = new TextBox();
+				inputTextBox = new ValueTextBox("Sonstiges");
 				dbButtonsPanel = new HorizontalPanel();
 
 				db.setText("Neue Eigenschaftsart hinzufügen");
