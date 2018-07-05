@@ -1784,7 +1784,7 @@ public class ContactForm extends VerticalPanel {
 				firstnameTextBox.setEnabled(false);
 				lastnameTextBox.setEnabled(false);
 				sexListBox.setEnabled(false);
-				newPropertyPanel.setVisible(false);
+				newPropertyPanel.setVisible(true);
 			}
 			
 			/*
@@ -1827,7 +1827,7 @@ public class ContactForm extends VerticalPanel {
 			allValueTextBoxes.add(firstnameTextBox);
 			lastnameTextBox.setText(contactToDisplay.getLastname());
 			allValueTextBoxes.add(lastnameTextBox);
-			newPropertyPanel.setVisible(false);
+			
 			
 			/*
 			 * Das Geschlecht des Kontaktes wird abgefragt und gesetzt.
@@ -1856,6 +1856,7 @@ public class ContactForm extends VerticalPanel {
 			firstnameTextBox.setText("");
 			lastnameTextBox.getElement().setPropertyString("placeholder", "Nachname...");
 			lastnameTextBox.setText("");
+			newPropertyPanel.setVisible(false);
 
 		}
 				
