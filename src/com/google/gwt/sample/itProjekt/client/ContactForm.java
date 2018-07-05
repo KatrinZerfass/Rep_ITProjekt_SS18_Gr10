@@ -584,7 +584,7 @@ public class ContactForm extends VerticalPanel {
 							public void onFailure(Throwable t) {};{};
 							public void onSuccess(Void result) {}; 
 							{
-								final ClientsideFunctions.safetyBox deleted = new ClientsideFunctions.safetyBox("Value gelöscht");
+								final ClientsideFunctions.popUpBox deleted = new ClientsideFunctions.popUpBox("Value gelöscht");
 								deleted.getOkButton().addClickHandler(new ClickHandler() {
 									
 									@Override

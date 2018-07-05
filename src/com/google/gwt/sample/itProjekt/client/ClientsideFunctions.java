@@ -396,7 +396,7 @@ public abstract class ClientsideFunctions {
 		}
 	}
 	
-	public static class safetyBox extends DialogBox {
+	public static class popUpBox extends DialogBox {
 		Button closeButton = null;
 		Button okButton = null;
 		VerticalPanel panel = null;
@@ -404,7 +404,7 @@ public abstract class ClientsideFunctions {
 		
 		Label dialogBoxLabel = new Label();
 		
-		public safetyBox(DialogBox db, String dbLabel) {
+		public popUpBox(DialogBox db, String dbLabel) {
 			closeButton = new CloseButton(db);
 			okButton = new okButton(db);
 			dialogBoxLabel.setText(dbLabel);
@@ -425,7 +425,7 @@ public abstract class ClientsideFunctions {
 	        show();
 		}
 		
-		public safetyBox(String dbLabel) {
+		public popUpBox(String dbLabel) {
 			okButton = new okButton();
 			dialogBoxLabel.setText(dbLabel);
 			
