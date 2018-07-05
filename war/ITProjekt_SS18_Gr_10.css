@@ -614,10 +614,10 @@ body{
     float: right;
 }
 .anlegenbutton{
-    padding: 4px 10px;
-    text-decoration: none;
-    margin: 7px -4px;
-    width:none;
+   padding: 7px 4px;
+	text-decoration: none;
+	margin: 7px 0px;
+	width: 70px;
 }
 
 .okbutton:hover{
