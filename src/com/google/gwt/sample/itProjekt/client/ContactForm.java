@@ -114,8 +114,11 @@ public class ContactForm extends VerticalPanel {
 	 * Buttons, auf die später auch außerhalb der Methode onLoad() zugegriffen werden muss (wegen disablen, falls der Nutzer 
 	 * nur Teilhaber ist). Deshalb wurden sie als Instanzenvariablen deklariert.
 	 */
-	Button saveChangesButton;
-	Button removeContactFromContactListButton;
+	Button shareContactButton = null;	
+	Button deleteContactButton = null;
+	Button addContactToContactListButton = null;
+	Button saveChangesButton = null;
+	Button removeContactFromContactListButton = null;
 	
 
 	/**
@@ -1098,15 +1101,15 @@ public class ContactForm extends VerticalPanel {
 		addContactButton.addStyleName("buttonPanel");
 		buttonsPanel.add(addContactButton);
 		
-		Button shareContactButton = new Button("Kontakt teilen");		
+		shareContactButton = new Button("Kontakt teilen");		
 		shareContactButton.addStyleName("buttonPanel");
 		buttonsPanel.add(shareContactButton);
 		
-		Button deleteContactButton = new Button("Kontakt löschen");
+		deleteContactButton = new Button("Kontakt löschen");
 		deleteContactButton.addStyleName("buttonPanel");
 		buttonsPanel.add(deleteContactButton);
 		
-		Button addContactToContactListButton = new Button("Kontakt zu einer Kontaktliste hinzufügen");
+		addContactToContactListButton = new Button("Kontakt zu einer Kontaktliste hinzufügen");
 		addContactToContactListButton.addStyleName("buttonPanel");
 		buttonsPanel.add(addContactToContactListButton);
 		
@@ -1829,10 +1832,14 @@ public class ContactForm extends VerticalPanel {
 		firstnameTextBox.setEnabled(true);
 		lastnameTextBox.setEnabled(true);
 		sexListBox.setEnabled(true);
-	//	saveChangesButton.setEnabled(true);
-		saveChangesButton.setVisible(true);
-	//	removeContactFromContactListButton.setEnabled(true);
-		removeContactFromContactListButton.setVisible(true);
+		
+		shareContactButton.setVisible(false);
+		deleteContactButton.setVisible(false);
+		addContactToContactListButton.setVisible(false);
+		removeContactFromContactListButton.setVisible(false);
+		saveChangesButton.setVisible(false);
+	
+		
 		
 		
 	
@@ -1840,6 +1847,11 @@ public class ContactForm extends VerticalPanel {
 			
 			contactToDisplay = c;
 			newPropertyPanel.setVisible(true);
+			
+			shareContactButton.setVisible(true);
+			deleteContactButton.setVisible(true);
+			addContactToContactListButton.setVisible(true);
+			
 			
 			
 			/*
@@ -1849,13 +1861,17 @@ public class ContactForm extends VerticalPanel {
 		
 			
 			if(!ClientsideFunctions.isOwner(contactToDisplay, currentUser)) {
-			//	saveChangesButton.setEnabled(false);
-				saveChangesButton.setVisible(false);
-			//	removeContactFromContactListButton.setEnabled(false);
 				firstnameTextBox.setEnabled(false);
 				lastnameTextBox.setEnabled(false);
 				sexListBox.setEnabled(false);
+				removeContactFromContactListButton.setVisible(false);
+				saveChangesButton.setVisible(false);
 				newPropertyPanel.setVisible(false);
+			}else {
+				
+				removeContactFromContactListButton.setVisible(true);
+				saveChangesButton.setVisible(true);
+				newPropertyPanel.setVisible(true);
 			}
 			
 			/*
