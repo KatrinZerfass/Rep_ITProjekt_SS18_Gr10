@@ -577,24 +577,23 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	public Vector<String> getAllUserSuggestions() throws IllegalArgumentException {
 		
 		Vector<User> allUsers = uMapper.findAll();
-		Vector<Contact> allContacts = cMapper.findAll();
-		Vector<Value> contactValues = new Vector<Value>();
-		Vector<String> allUserEmails = new Vector<String>();
+		Vector<Contact> allContacts = cMapper.findAllUserContacts();
+				//cMapper.findAll();
+//		Vector<Value> contactValues = new Vector<Value>();
+//		Vector<String> allUserEmails = new Vector<String>();
 		Vector<String> result = new Vector<String>();
-		String partResult = null;
+//		String partResult = null;
 		
-		for(User u : allUsers) {
-			allUserEmails.add(u.getEmail());
-		}
+//		for(User u : allUsers) {
+//			allUserEmails.add(u.getEmail());
+//		}
 		
 		for(Contact c : allContacts) {
-			if(c.getIsUser()) {
-				
-				for(User u : allUsers) {
-					if (c.getOwner() == u.getId()) {
-						result.add(c.getFirstname() + " " + c.getLastname() + " (" + u.getEmail() + ")");
-					}
+			for(User u : allUsers) {
+				if (c.getOwner() == u.getId()) {
+					result.add(c.getFirstname() + " " + c.getLastname() + " (" + u.getEmail() + ")");
 				}
+			}
 				
 //				contactValues = vMapper.getAllValueByCID(c);
 //				for (Value v : contactValues) {
@@ -603,7 +602,6 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 //					}
 //				}
 //				result.add(c.getFirstname() + " " + c.getLastname() + " (" + partResult + ")");
-			}
 		}
 		return result;
 	}
