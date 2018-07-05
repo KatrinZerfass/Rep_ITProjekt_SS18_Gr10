@@ -202,7 +202,6 @@ public abstract class ClientsideFunctions {
 			sexListBox.addItem("männlich");
 			sexListBox.addItem("weiblich");
 			sexListBox.addItem("Sonstiges");
-			//sexListBox.getElement().setPropertyString("placeholder", "Geschlecht...");
 			
 			ok.addStyleName("okbutton");
 	        close.addStyleName("closebutton");
@@ -271,18 +270,6 @@ public abstract class ClientsideFunctions {
 	        close.addStyleName("closebutton");
 
 			setdialogBoxLabel(labelString);
-//			editorAdministration.getAllUsers(new AsyncCallback<Vector<User>>() {
-//				public void onFailure(Throwable arg0) {
-//					Window.alert("Fehler beim holen aller User in der InputDialogBox");
-//				}
-//				@Override
-//				public void onSuccess(Vector<User> arg0) {
-//					
-//					for(User loopUser : arg0) {
-//						if (!loopUser.equals(user)) {
-//							getOracle().add(loopUser.getEmail());
-//						}
-//					}
 					
 			editorAdministration.getAllUserSuggestions(user, new AsyncCallback<Vector<String>>() {
 				@Override
@@ -415,20 +402,22 @@ public abstract class ClientsideFunctions {
 		VerticalPanel panel = null;
 		HorizontalPanel hpanel = null;
 		
-		public safetyBox(DialogBox db) {
+		Label dialogBoxLabel = new Label();
+		
+		public safetyBox(DialogBox db, String dbLabel) {
 			closeButton = new CloseButton(db);
 			okButton = new okButton(db);
+			dialogBoxLabel.setText(dbLabel);
 			
 			panel = new VerticalPanel();
 	        panel.setHeight("100");
 	        panel.setWidth("300");
 	        panel.setSpacing(10);
 	        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
-//	        panel.add(dialogBoxLabel);
-			hpanel=new HorizontalPanel();
-//			hpanel.add(close);
-//	        hpanel.add(ok);
-//	        panel.add(multiUseTextBox);
+	        panel.add(dialogBoxLabel);
+			hpanel = new HorizontalPanel();
+			hpanel.add(closeButton);
+	        hpanel.add(okButton);
 	        panel.add(hpanel);
 
 	        setWidget(panel);
@@ -436,8 +425,21 @@ public abstract class ClientsideFunctions {
 	        show();
 		}
 		
-		//TODO
+		public Button getCloseButton() {
+			return this.closeButton;
+		}
 		
+		public void setCloseButton(Button b) {
+			this.closeButton = b;
+		}
+		
+		public Button getOkButton() {
+			return this.okButton;
+		}
+		
+		public void setOkButton(Button b) {
+			this.okButton = b;
+		}
 	}
 	
 	public static class CloseButton extends Button{

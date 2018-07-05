@@ -1224,8 +1224,6 @@ public class ContactForm extends VerticalPanel {
 				/*
 				 * Über eine Instanz der inneren Klasse EmailDialogBox können Objekte mit anderen Nutzern geteilt werden.
 				 */
-				
-				inputDB = new ClientsideFunctions.InputDialogBox(new MultiWordSuggestOracle(), "Bitte geben Sie die Email-Adresse des Nutzers ein mit dem Sie die Kontaktliste teilen möchten.");
 				inputDB.getOKButton().addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {
 						if(inputDB.getSuggestBox().getText()== "") {
@@ -1242,7 +1240,7 @@ public class ContactForm extends VerticalPanel {
 								}
 								public void onSuccess(Permission arg0) {
 									if(arg0 != null) {
-										Window.alert("Kontaktliste erfolgreich geteilt.");
+										Window.alert("Kontakt erfolgreich geteilt.");
 										inputDB.hide();
 									}
 									else if(arg0 == null) {
