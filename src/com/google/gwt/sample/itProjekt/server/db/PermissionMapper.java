@@ -11,15 +11,11 @@ import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
 import com.google.gwt.sample.itProjekt.shared.bo.Permission;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
 
-/**
- * The Class PermissionMapper.
- * 
- * @author Egor Krämer
- * @author Robert Mattheis
- */
+
 public class PermissionMapper {
 
-	/** Konstruktor für den PermissionMapper (Singleton)
+	/**
+	 * Konstruktor für den PermissionMapper (Singleton)
 	 * static weil Singleton. Einzige Instanz dieser Klasse
 	 * 
 	 * @author Egor Krämer
@@ -28,9 +24,9 @@ public class PermissionMapper {
 	private static PermissionMapper  permissionmapper = null;
 	
 	/**
-	 * PermissionMapper.
-	 *
 	 * Falls noch kein PermissionMapper existiert erstellt er ein neuen PermissionMapper und gibt ihn zurück
+	 * 
+	 * @return erstmalig erstellter PermissionMapper
 	 * 
 	 * @author Egor Krämer
 	 * @author Robert Mattheis
@@ -43,14 +39,14 @@ public class PermissionMapper {
 		}
 	
 	/**
-	 * FindAll.
-	 *
 	 * Gibt alle Permission Objekte zurück welche mit U_ID und C_ID befüllt sind
 	 * Hierfür holen wir U_ID und C_ID aus der T_Permission_Contact Tabelle und setzten als permissionID ein zusammengesetzten Key aus U_ID und C_ID
 	 * Für das setzten des Participant holen wir, durch das aufrufen der findByID im UserMapper, die U_ID
 	 * und speichern diese in einem Permission Objekt ab
 	 * zudem setzen wir die C_ID in einem neuen Contact Objekt und ein Shareableobject durch das aufrufen der findByID Methode im ContactMapper 
 	 * Das selbe führen wir für ContactList durch und fügen das Permission Objekt dem Vector hinzu
+	 * 
+	 * @return Ein Vector voller Permission Objekte welche befüllt sind
 	 * 
 	 * @author Egor Krämer
 	 * @author Robert Mattheis
@@ -95,13 +91,12 @@ public class PermissionMapper {
 			}
 	
 /**
- * Update.
- *
  * Update von Veränderungen falls sich die Shareableobject ändert
  * Falls die ID unter 30000000 liegt wird ein Contact geupdated, falls die ID �ber 30000000 liegt werden ContactLists geupdated
  * Gibt ein permission zurück
  * 
  * @param permission übergebenes Permission Objekt mit Attributen C_ID oder CL_ID und U_ID
+ * @return Ein vollständiges Permission Objekt
  * 
  * @author Egor Krämer
  * @author Robert Mattheis
@@ -142,9 +137,7 @@ public Permission update(Permission permission){
 	}
 	
 	/**
-	 * Delete.
-	 *
-	 * falls die ID des übergebenen Shareableobjects Objekts unter 30000000 liegt wird aus der T_Permission_Contact alles entfernt
+	 * Falls die ID des übergebenen Shareableobjects Objekts unter 30000000 liegt wird aus der T_Permission_Contact alles entfernt
 	 * wo die U_ID und C_ID der ID des Participants und des Shareableobjects entspricht
 	 * 
 	 * falls die ID des übergebenen Shareableobjects Objekts über 30000000 liegt wird aus der T_Permission_Contactlist alles entfernt
@@ -199,8 +192,6 @@ public Permission update(Permission permission){
 	}
 	
 	/**
-	 * DeleteAllByCLID.
-	 *
 	 * Entfernt alle Einträge aus T_Permission_Contactlist falls eine ContactList gelöscht wird
 	 * Hierfür wird die T_Permission_Contactlist nach der CL_ID durchsucht wo sie der ID der ContactList entspricht welches wir übergeben bekommen haben
 	 * 
@@ -225,13 +216,12 @@ public Permission update(Permission permission){
 	
 	
 	/**
-	 * ShareContact.
-	 *
 	 * Befüllt die T_Permission_Contact mit einer zusammengesetzten ID aus C_ID und U_ID 
 	 * und befüllt die Tabelle mit der C_ID aus dem Shareableobject und der U_ID aus Participant
 	 * und gibt die permission zurück
 	 * 
 	 * @param permission übergebenes Permission Objekt mit Attributen C_ID, U_ID und srcU_ID
+	 * @return Ein vollständiges Permission Objekt
 	 * 
 	 * @author Egor Krämer
 	 * @author Robert Mattheis
@@ -266,13 +256,12 @@ public Permission update(Permission permission){
 	
 	
 	/**
-	 * ShareContactList.
-	 *
 	 * Befüllt die T_Permission_Contactlist mit einer zusammengesetzten ID aus CL_ID und U_ID 
 	 * und befüllt die Tabelle mit der CL_ID aus dem Shareableobject und der U_ID aus Participant
 	 * und gibt die permission zurück
 	 * 
 	 * @param permission übergebenes Permission Objekt mit Attributen CL_ID, U_ID und srcU_ID
+	 * @return Ein vollständiges Permission Objekt
 	 * 
 	 * @author Egor Krämer
 	 * @author Robert Mattheis
@@ -329,8 +318,6 @@ public Permission update(Permission permission){
 	
 
 /**
- * GetAllContactsByUID.
- * 
  * Sucht nach allen Contacts die einem User zur Verfügung stehen
  * Hierfür suchen wir nach allen U_ID die der ID des User Objektes entsprechen in der T_Permission_Contact
  * Die gefundenen C_ID werden in einem Contact Objekt abgespeichert 
@@ -338,6 +325,7 @@ public Permission update(Permission permission){
  * Zum Schluss geben wir den Vector zurück
  * 
  * @param user übergebenes User Objekt mit Attribut U_ID
+ * @return Ein Vector voller Contact Objekte welche befüllt sind
  * 
  * @author Egor Krämer
  * @author Robert Mattheis
@@ -365,8 +353,6 @@ public Vector<Contact> getAllContactsByUID(User user){
 		}
 
 /**
- * GetAllContactsBySrcUID.
- * 
  * Sucht nach allen Contacts die einem User zur Verfügung stehen
  * Hierfür suchen wir nach allen srcU_ID die der ID des User Objektes entsprechen in der T_Permission_Contact
  * Die gefundenen C_ID werden in einem Contact Objekt abgespeichert 
@@ -374,6 +360,7 @@ public Vector<Contact> getAllContactsByUID(User user){
  * Zum Schluss geben wir den Vector zurück
  * 
  * @param user übergebenes User Objekt mit Attribut srcU_ID
+ * @return Ein Vector voller Contact Objekte welche befüllt sind
  * 
  * @author Egor Krämer
  * @author Robert Mattheis
@@ -395,7 +382,7 @@ public Vector<Contact> getAllContactsBySrcUID(User user){
 				}		
 			}catch(SQLException e2){
 				e2.printStackTrace();
-//				return result;
+				return result;
 			}
 			return result;
 		}
@@ -403,8 +390,6 @@ public Vector<Contact> getAllContactsBySrcUID(User user){
 
 
 /**
- * GetAllContactListsByUID.
- *
  * Sucht nach allen ContactLists die einem User zur Verfügung stehen
  * Hierfür suchen wir nach allen U_ID die der ID des User Objektes entsprechen in der T_Permission_Contactlist
  * Die gefundenen CL_ID werden in einem ContactList Objekt abgespeichert 
@@ -412,6 +397,7 @@ public Vector<Contact> getAllContactsBySrcUID(User user){
  * Zum Schluss geben wir den Vector zurück
  * 
  * @param user übergebenes User Objekt mit Attribut U_ID
+ * @return Ein Vector voller ContactList Objekte welche befüllt sind
  * 
  * @author Egor Krämer
  * @author Robert Mattheis
@@ -438,8 +424,6 @@ public Vector<ContactList> getAllContactListsByUID(User user){
 		}
 
 /**
- * getAllContactListsBySrcUID.
- *
  * Sucht nach allen ContactLists die einem User zur Verfügung stehen
  * Hierfür suchen wir nach allen srcU_ID die der ID des User Objektes entsprechen in der T_Permission_Contactlist
  * Die gefundenen CL_ID werden in einem ContactList Objekt abgespeichert 
@@ -447,6 +431,7 @@ public Vector<ContactList> getAllContactListsByUID(User user){
  * Zum Schluss geben wir den Vector zurück
  * 
  * @param user übergebenes User Objekt mit Attribut srcU_ID
+ * @return Ein Vector voller ContactList Objekte welche befüllt sind
  * 
  * @author Egor Krämer
  * @author Robert Mattheis
@@ -473,8 +458,6 @@ public Vector<ContactList> getAllContactListsBySrcUID(User user){
 		}
 
 /**
- * GetSourceUserByUIDAndCID.
- *
  * Sucht nach dem User welcher einen Contact von einem bestimmten User geteilt bekommen hat
  * Hierfür suchen wir nach allen U_ID die der ID des User Objektes entsprechen und der C_ID der ID des contact Objekts in der T_Permission_Contact
  * und speichern die srcU_ID die gefunden wird in ein User Objekt
@@ -483,6 +466,7 @@ public Vector<ContactList> getAllContactListsBySrcUID(User user){
  * 
  * @param user übergebenes User Objekt mit Attribut U_ID
  * @param contact übergebenes Contact Objekt mit Attribut C_ID
+ * @return Ein vollständiges User Objekt
  * 
  * @author Egor Krämer
  * @author Robert Mattheis
@@ -508,8 +492,6 @@ public User getSourceUserByUIDAndCID(User user, Contact contact){
 			return user;
 		}
 /**
- * FindAllParticipantsByCID.
- *
  * Sucht nach den Usern welche an einen Contact geteilt wurden
  * Hierfür suchen wir nach allen U_ID die der C_ID der ID des contact Objekts in der T_Permission_Contact
  * und speichern die gefundene U_ID in ein User Objekt
@@ -517,6 +499,7 @@ public User getSourceUserByUIDAndCID(User user, Contact contact){
  * Die User schreiben wir in ein Vektor. Zum Schluss geben wir den Vektor zurück
  * 
  * @param contact übergebenes Contact Objekt mit Attribut C_ID
+ * @return Ein Vector voller User Objekte welche befüllt sind
  * 
  * @author Egor Krämer
  * @author Robert Mattheis

@@ -14,7 +14,8 @@ import com.google.gwt.sample.itProjekt.shared.bo.User;
 
 public class PropertyMapper {
 
-	/** Konstruktor für den PropertyMapper (Singleton)
+	/**
+	 * Konstruktor für den PropertyMapper (Singleton)
 	 * static weil Singleton. Einzige Instanz dieser Klasse
 	 * 
 	 * @author Egor Krämer
@@ -23,9 +24,9 @@ public class PropertyMapper {
 	private static PropertyMapper  propertymapper = null;
 	
 	/**
-	 * PropertyMapper.
-	 *
 	 * Falls noch kein ProperyMapper existiert erstellt er ein neuen PropertyMapper und gibt ihn zurück
+	 * 
+	 * @return erstmalig erstellter PropertyMapper
 	 * 
 	 * @author Egor Krämer
 	 * @author Robert Mattheis
@@ -39,11 +40,10 @@ public class PropertyMapper {
 
 
 /**
- * FindByID.
- *
  * Findet Property durch eine P_ID und speichert die dazugehörigen Werte (P_ID und type) in einem Property Objekt ab und gibt dieses wieder
  * 
  * @param property übergebenes Property Objekt mit Attribut P_ID
+ * @return Ein vollständiges Property Objekt
  * 
  * @author Egor Krämer
  * @author Robert Mattheis
@@ -64,17 +64,17 @@ public Property findByID(Property property){
 	}
 	catch (SQLException e2){
 		e2.printStackTrace();
-//		return null;
+		return null;
 	}
 	return null;
 }
 
 /**
- * FindAll.
- *
  * Gibt alle Property Objekte zurück welche mit P_ID, type und C_ID befüllt sind
  * Hierfür holen wir die Attribute aus der T_Property Tabelle und speichern diese in einem Property Objekt ab und fügen diese dem Vector hinzu
  * Am Ende geben wir diesen Vector zurück
+ * 
+ * @return Ein Vector voller Property Objekte welche befüllt sind
  * 
  * @author Egor Krämer
  * @author Robert Mattheis
@@ -103,13 +103,12 @@ Vector<Property> result = new Vector<Property>();
 	}
 
 /**
- * FindAllByCID.
- * 
  * Findet alle P_ID, type und C_ID wo die C_ID der ID des übergebenen Objekte entspricht
  * Befüllt das Property Objekt mit den Attributen und fügt dieses Objekt dem Vector hinzu
  * Gibt ein Vector voller Property Objekte zurück
  *
  * @param contact übergebenes Contact Objekt mit Attribut C_ID
+ * @return Ein Vector voller Property Objekte welche befüllt sind
  * 
  * @author Egor Krämer
  * @author Robert Mattheis
@@ -140,13 +139,13 @@ Vector<Property> result = new Vector<Property>();
 	}
 
 /**
- * FindAllDefault.
- *
  * Gibt alle Proeprty Objekte zurück die mit den Default Werten befüllt sind
  * Hierfür sind alle Default Property Werte mit der C_ID von 20000000 verknüpft
  * Alle Attribute die zu dieser C_ID von 20000000 gehören holen wir aus der T_Property Tabelle (P_ID, type und C_ID)
  * und speichern diese in einem Property Objekt ab und fügen diese dem Vector hinzu
  * Am Ende geben wir diesen Vector zurück
+ * 
+ * @return Ein Vector voller Property Objekte welche befüllt sind
  * 
  * @author Egor Krämer
  * @author Robert Mattheis
@@ -175,14 +174,13 @@ Vector<Property> result = new Vector<Property>();
 	}
 
 /**
- * Insert.
- *
  * Sucht nach der höchsten P_ID um diese um eins zu erhöhen und als neue P_ID zu nutzen
  * Befüllt T_Property mit P_ID, type und C_ID
  * Eine Property wird zum Schluss zurückgegeben
  * 
  * @param property übergebenes Property Objekt mit Attributen P_ID und type 
  * @param contact übergebenes Contact Objekt mit Attribut C_ID
+ * @return Ein vollständiges Property Objekt
  * 
  * @author Egor Krämer
  * @author Robert Mattheis
@@ -219,12 +217,11 @@ public Property insert(Property property, Contact contact){
 	return property;}
 
 /**
- * Update.
- *
  * Update von Veränderungen falls sich type ändert
  * Gibt ein Property zurück
  * 
  * @param property übergebenes Property Objekt mit Attributen P_ID und type
+ * @return Ein vollständiges Property Objekt
  * 
  * @author Egor Krämer
  * @author Robert Mattheis
@@ -248,8 +245,6 @@ catch (SQLException e2){
 return property;}
 
 /**
- * Delete.
- *
  * Entfernt alles aus T_Property wo die P_ID der ID des übergebenen Objekts entspricht
  * 
  * @param property übergebenes Property Objekt mit Attribut P_ID
@@ -274,12 +269,11 @@ public void delete (Property property){
 			}
 
 /**
- * findByType.
- *
  * Findet alle P_ID, type und C_ID wo der type dem type des übergebenen Objektes entspricht
  * Befüllt das Property Objekt mit den Attributen und gint es wieder
  * 
  * @param property übergebenes Property Objekt mit Attribut type
+ * @return Ein vollständiges Property Objekt
  * 
  * @author Egor Krämer
  * @author Robert Mattheis

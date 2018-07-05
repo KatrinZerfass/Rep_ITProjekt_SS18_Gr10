@@ -11,15 +11,11 @@ import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
 import com.google.gwt.sample.itProjekt.shared.bo.Permission;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
 
-/**
- * The Class ContactListMapper.
- * 
- * @author Egor Krämer
- * @author Robert Mattheis
- */
+
 public class ContactListMapper {
 	
-	/** Konstruktor für den ContactListMapper (Singleton) 
+	/** 
+	* Konstruktor für den ContactListMapper (Singleton) 
 	* static weil Singleton. Einzige Instanz dieser Klasse
 	* 
 	* @author Egor Krämer
@@ -28,9 +24,9 @@ public class ContactListMapper {
 	private static ContactListMapper  contactlistmapper = null;
 	
 	/**
-	 * ContactListMapper.
-	 *
 	 * Falls noch kein ContactListMapper existiert erstellt er ein neuen ContactListMapper und gibt ihn zurück
+	 * 
+	 * @return erstmalig erstellter ContactListMapper
 	 * 
 	 * @author Egor Krämer
 	 * @author Robert Mattheis
@@ -43,11 +39,10 @@ public class ContactListMapper {
 		}
 	
 	/**
-	 * FindByID.
-	 *
 	 * Findet ContactList durch eine CL_ID und speichert die dazugehörigen Werte (CL_ID, listname und U_ID) in einem ContactList Objekt ab und gibt dieses wieder
 	 * 
 	 * @param contactlist übergebenes ContactList Objekt mit Attribut CL_ID
+	 * @return Ein vollständiges ContactList Objekt
 	 * 
 	 * @author Egor Krämer
 	 * @author Robert Mattheis
@@ -78,11 +73,11 @@ public class ContactListMapper {
 	
 	
 	/**
-	 * FindAll.
-	 *
 	 * Gibt alle ContactList Objekte zurück welche mit CL_ID, listname und U_ID befüllt sind
 	 * Hierfür holen wir CL_ID, listname und U_ID aus der T_ContactList Tabelle und speichern diese in einem ContactList Objekt ab und fügen diese dem Vector hinzu
 	 * Am Ende geben wir diesen Vector zurück
+	 * 
+	 * @return Ein Vector voller ContactList Objekte welche befüllt sind
 	 * 
 	 * @author Egor Krämer
 	 * @author Robert Mattheis
@@ -109,12 +104,11 @@ public class ContactListMapper {
 			}
 	
 	/**
-	 * FindByName.
-	 *
 	 * Findet ContactLists durch einen Namen und speichert die dazugehörigen Werte (CL_ID, listname und U_ID) in einem ContactList Objekt ab
 	 * und Speichert dieses Objekt im Vector ab und gibt diesen wieder
 	 * 
 	 * @param name übergebener String listname
+	 * @return Ein Vector voller ContactList Objekte welche befüllt sind
 	 * 
 	 * @author Egor Krämer
 	 * @author Robert Mattheis
@@ -142,13 +136,12 @@ public class ContactListMapper {
 	}
 	
 	/**
-	 * FindAllByUID.
-	 *
 	 * Findet alle ContactLists die ein User erstellt hat durch seine U_ID
 	 * Alle Values werden aus T_ContactList ausgelesen und in einem ContactList Objekt gespeichert und einem Vector hinzugefügt und zurückgegeben
 	 * Gibt ein Vector voller ContactList Objekte zurück welche ein User erstellt hat
 	 * 
 	 * @param user übergebenes User Objekt mit Attribut U_ID
+	 * @return Ein Vector voller ContactList Objekte welche befüllt sind
 	 * 
 	 * @author Egor Krämer
 	 * @author Robert Mattheis
@@ -176,13 +169,12 @@ public class ContactListMapper {
 	}
 	
 	/**
-	 * FindAllByCID.
-	 * 
 	 * Findet alle CL_ID wo die C_ID der ID der übergebenen Objekte entspricht
 	 * Befüllt das ContactList Objekt mit den Attributen und fügt dieses Objekt dem Vector hinzu
 	 * Gibt ein Vector voller ContactList Objekte zurück
 	 *
 	 * @param contact übergebenes Contact Objekt mit Attributen C_ID
+	 * @return Ein Vector voller ContactList Objekte welche befüllt sind
 	 * 
 	 * @author Egor Krämer
 	 * @author Robert Mattheis
@@ -209,14 +201,13 @@ public class ContactListMapper {
 	}
 	
 	/**
-	 * Insert.
-	 *
 	 * Sucht nach der höchsten CL_ID um diese um eins zu erhöhen und als neue CL_ID zu nutzen
 	 * Befüllt T_ContactList mit CL_ID, listname und U_ID
 	 * Ein ContactList wird zurückgegeben
 	 *
 	 * @param contactlist übergebenes ContactList Objekt mit Attributen CL_ID und listname
 	 * @param user übergebenes User Objekt mit Attribut U_ID
+	 * @return Ein vollständiges ContactList Objekt
 	 * 
 	 * @author Egor Krämer
 	 * @author Robert Mattheis
@@ -251,12 +242,11 @@ public class ContactListMapper {
 		return contactlist;}
 	
 		/**
-		 * Update.
-		 *
 		 * Update von Veränderungen falls sich der listname ändert
 		 * Gibt ein ContactList zurück
 		 * 
 		 * @param contactlist übergebenes ContactList Objekt mit Attributen listname und CL_ID
+		 * @return Ein vollständiges ContactList Objekt
 		 * 
 		 * @author Egor Krämer
 		 * @author Robert Mattheis
@@ -276,8 +266,6 @@ public class ContactListMapper {
 		return contactlist;}
 		
 		/**
-		 * Delete.
-		 *
 		 * Entfernt alles aus T_Permission_Contactlist wo die CL_ID der ID des übergebenen Objekts entspricht
 		 * Entfernt alles aus T_Permission_Contact wo die C_ID der ID des übergebenen Objekts entspricht
 		 * Damit lösen wir die Teilhaberschaft an einem ContactList auf
@@ -339,14 +327,13 @@ Connection con = DBConnection.connection();
 		}}
 		
 		/**
-		 * GetAllContacts.
-		 *
 		 * Befüllt den Vector mit Contacts die in einer ContactList enthalten sind
 		 * Hierfür durchsuchen wir die T_Contact_ContactList Tabelle nach C_ID wo die CL_ID der ID des übergebenen Objektes entspricht
 		 * Diese C_ID nutzen wir um die C_ID, firstName, lastName, gender und U_ID aus der T_Contact zu holen wo die C_ID der ID des ResultSets entspricht (Die C_ID welche wir aus T_Contact_Contactlist erhalten haben)
 		 * Die Werte aus der T_Contact speichern wir in einem Contact Objekt ab und geben den Vector zurück
 		 * 
 		 * @param contactlist übergebenes ContactList Objekt mit Attribut CL_ID
+		 * @return Ein Vector voller Contact Objekte welche befüllt sind
 		 * 
 		 * @author Egor Krämer
 		 * @author Robert Mattheis
@@ -378,13 +365,12 @@ Connection con = DBConnection.connection();
 		}	
 		
 		/**
-		 * AddContact.
-		 *
 		 * Fügt der ContactList einen Contact hinzu
 		 * Hierfür fügen wir der T_Contact_ContactList die CL_ID und C_ID hinzu und geben die ContactList zurück
 		 * 
 		 * @param contactlist übergebenes ContactList Objekt mit Attribut CL_ID
 		 * @param contact übergebenes Contact Objekt mit Attributen C_ID
+		 * @return Ein vollständiges ContactList Objekt
 		 * 
 		 * @author Egor Krämer
 		 * @author Robert Mattheis
@@ -411,13 +397,12 @@ Connection con = DBConnection.connection();
 			}
 		
 		/**
-		 * RemoveContact.
-		 * 
 		 * Entfernt einen Contact aus der ContactList
 		 * Hierfür löschen wir den Eintag aus T_Contact_ContactList wo die CL_ID der CL_ID des übergebenen Objektes entspricht
 		 * 
 		 * @param contactlist übergebenes ContactList Objekt mit Attribut CL_ID
 		 * @param contact übergebenes Contact Objekt mit Attribut C_ID
+		 * @return Ein vollständiges ContactList Objekt
 		 * 
 		 * @author Egor Krämer
 		 * @author Robert Mattheis

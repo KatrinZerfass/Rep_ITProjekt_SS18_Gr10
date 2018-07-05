@@ -2,6 +2,7 @@
 package com.google.gwt.sample.itProjekt.client;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 import com.google.gwt.sample.itProjekt.shared.EditorAdministrationAsync;
@@ -17,6 +18,8 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.gwt.view.client.TreeViewModel;
 import com.google.gwt.view.client.TreeViewModel.DefaultNodeInfo;
+
+
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
@@ -204,9 +207,34 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 			return;
 		}			
 		contactDataProviders.get(cl).getList().remove(contact);
-		contactListDataProvider.refresh();
 		selectionModel.setSelected(cl, true);	
 		
+	}
+	
+	public void updateContact(Contact contact){
+		
+						
+		editorAdministration.getContactByID(contact.getId(), new AsyncCallback<Contact>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(Contact result) {
+				List<Contact> contactList = contactDataProviders.get(getSelectedContactList()).getList();
+				for (int i=0; i<contactList.size(); i++) {
+					if (result.getId() == contactList.get(i).getId()) {
+						contactList.set(i, result);
+						break;
+					}
+				}
+				
+			}
+			
+		});
 	}
 	
 	
@@ -371,8 +399,10 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 							for (Contact c : contacts) {
 								contactsProvider.getList().add(c);
 							}
+							contactForm.disableRemoveContactButton();
 						}
 					});
+				
 					return new DefaultNodeInfo<Contact>(contactsProvider,
 							new ContactCell(), selectionModel, null);
 			}									
