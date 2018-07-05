@@ -1039,7 +1039,7 @@ public class ContactForm extends VerticalPanel {
 				newPropertyPanel.add(newPropertyListBox);
 				newPropertyPanel.addStyleName("propertyPanel");
 				newPropertyPanel.add(addNewPropertyButton);
-				newPropertyPanel.setVisible(false);
+				newPropertyPanel.setVisible(true);
 				
 				
 			}
@@ -1763,6 +1763,7 @@ public class ContactForm extends VerticalPanel {
 		saveChangesButton.setEnabled(true);
 		removeContactFromContactListButton.setEnabled(true);
 		newPropertyPanel.setVisible(true);
+		Window.alert("isVisble von newPropertyPanel: "+ newPropertyPanel.isVisible());
 		
 	
 		if (c != null){
