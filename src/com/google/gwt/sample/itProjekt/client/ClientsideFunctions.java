@@ -285,7 +285,7 @@ public abstract class ClientsideFunctions {
 //						}
 //					}
 					
-			editorAdministration.getAllUserSuggestions(new AsyncCallback<Vector<String>>() {
+			editorAdministration.getAllUserSuggestions(user, new AsyncCallback<Vector<String>>() {
 				@Override
 				public void onFailure(Throwable arg0) {
 					// TODO Auto-generated method stub
@@ -410,10 +410,23 @@ public abstract class ClientsideFunctions {
 		}
 	}
 	
-	public static class CloseButton extends Button{
-		InputDialogBox db;
+	public static class safetyBox extends DialogBox {
+		Button closeButton = null;
+		Button okButton = null;
 		
-		public CloseButton(InputDialogBox db) {
+		public safetyBox(DialogBox db) {
+			closeButton = new CloseButton(db);
+			
+		}
+		
+		//TODO
+		
+	}
+	
+	public static class CloseButton extends Button{
+		DialogBox db;
+		
+		public CloseButton(DialogBox db) {
 			this.db = db;
 			this.addClickHandler(new CloseDBClickHandler(db)); 
 			this.setText("Abbrechen");
@@ -421,18 +434,16 @@ public abstract class ClientsideFunctions {
 		}
 		
 		private class CloseDBClickHandler implements ClickHandler{
-			InputDialogBox db;
+			DialogBox db;
 	
 			
-			public CloseDBClickHandler(InputDialogBox db) {
+			public CloseDBClickHandler(DialogBox db) {
 				this.db=db;
 			}
 			
 			public void onClick(ClickEvent event) {
 				db.hide();
 			}
-			
 		}
-		
 	}
 }
