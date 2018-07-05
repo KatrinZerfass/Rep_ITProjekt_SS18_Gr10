@@ -95,7 +95,7 @@ public abstract class ClientsideFunctions {
 					return false;
 				}
 			case "Geburtstag":
-				if (text.matches("[0-3]\\d\\.[0\\d\\|1[0-2]].\\d\\d\\d\\d")) {
+				if (text.matches("^\\s*(3[01]|[12][0-9]|0?[1-9])\\.(1[012]|0?[1-9])\\.((?:19|20)\\d{2})\\s*$")) {
 					return true;
 				}
 				else {
