@@ -413,10 +413,28 @@ public abstract class ClientsideFunctions {
 	public static class safetyBox extends DialogBox {
 		Button closeButton = null;
 		Button okButton = null;
+		VerticalPanel panel = null;
+		HorizontalPanel hpanel = null;
 		
 		public safetyBox(DialogBox db) {
 			closeButton = new CloseButton(db);
+			okButton = new okButton(db);
 			
+			panel = new VerticalPanel();
+	        panel.setHeight("100");
+	        panel.setWidth("300");
+	        panel.setSpacing(10);
+	        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+//	        panel.add(dialogBoxLabel);
+			hpanel=new HorizontalPanel();
+//			hpanel.add(close);
+//	        hpanel.add(ok);
+//	        panel.add(multiUseTextBox);
+	        panel.add(hpanel);
+
+	        setWidget(panel);
+	        
+	        show();
 		}
 		
 		//TODO
@@ -444,6 +462,16 @@ public abstract class ClientsideFunctions {
 			public void onClick(ClickEvent event) {
 				db.hide();
 			}
+		}
+	}
+	
+	public static class okButton extends Button{
+		DialogBox db;
+		
+		public okButton(DialogBox db) {
+			this.db = db;
+			this.setText("OK");
+			this.addStyleName("okbutton");
 		}
 	}
 }
