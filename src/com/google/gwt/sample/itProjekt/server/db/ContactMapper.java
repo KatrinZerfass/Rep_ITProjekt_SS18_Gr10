@@ -126,7 +126,7 @@ Vector<Contact> result = new Vector<Contact>();
 	 * @author Egor Krämer
 	 * @author Robert Mattheis
 	 */
-	public Vector<Contact> findAllUsers(){
+	public Vector<Contact> findAllUserContacts(){
 Connection con = DBConnection.connection();
 Vector<Contact> result = new Vector<Contact>();
 		
