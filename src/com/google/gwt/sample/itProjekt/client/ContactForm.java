@@ -1641,6 +1641,7 @@ public class ContactForm extends VerticalPanel {
 				Button addAddressButton = new Button("Anlegen");
 				addAddressButton.addStyleName("addNewPropertyButton");
 				addAddressButton.addStyleName("anlegenbutton");
+				
 				addressPanel.add(addAddressButton);
 				
 				contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
@@ -1762,13 +1763,13 @@ public class ContactForm extends VerticalPanel {
 		sexListBox.setEnabled(true);
 		saveChangesButton.setEnabled(true);
 		removeContactFromContactListButton.setEnabled(true);
-		newPropertyPanel.setVisible(true);
-		Window.alert("isVisble von newPropertyPanel: "+ newPropertyPanel.isVisible());
+		
 		
 	
 		if (c != null){
 			
 			contactToDisplay = c;
+			newPropertyPanel.setVisible(true);
 			
 			
 			/*
@@ -1826,6 +1827,7 @@ public class ContactForm extends VerticalPanel {
 			allValueTextBoxes.add(firstnameTextBox);
 			lastnameTextBox.setText(contactToDisplay.getLastname());
 			allValueTextBoxes.add(lastnameTextBox);
+			newPropertyPanel.setVisible(false);
 			
 			/*
 			 * Das Geschlecht des Kontaktes wird abgefragt und gesetzt.

@@ -99,7 +99,7 @@ public abstract class ClientsideFunctions {
 					return true;
 				}
 				else {
-					Window.alert("Ungültige Telefonnummer!");
+					Window.alert("Ungültiges Geburtsdatum!");
 					return false;
 				}
 			case "Email":
