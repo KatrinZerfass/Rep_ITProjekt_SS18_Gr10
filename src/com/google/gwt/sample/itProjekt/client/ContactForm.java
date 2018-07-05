@@ -1039,6 +1039,7 @@ public class ContactForm extends VerticalPanel {
 				newPropertyPanel.add(newPropertyListBox);
 				newPropertyPanel.addStyleName("propertyPanel");
 				newPropertyPanel.add(addNewPropertyButton);
+				newPropertyPanel.setVisible(false);
 				
 				
 			}
@@ -1514,15 +1515,10 @@ public class ContactForm extends VerticalPanel {
 		VerticalPanel dbPanel = null;
 		TextBox inputTextBox = null;
 		HorizontalPanel dbButtonsPanel = null;
-//		DialogBox db1;
-//		DialogBox db2;
-//		TextBox inputTextBox1;
-//		TextBox inputTextBox2;
 		int pid;
 		String ptype;
 		int row;
-//		HorizontalPanel hpanel1;
-//		HorizontalPanel hpanel2;
+
 		
 		
 		public void onClick(ClickEvent event) {
@@ -1534,11 +1530,7 @@ public class ContactForm extends VerticalPanel {
 				dbPanel = new VerticalPanel();
 				inputTextBox = new TextBox();
 				dbButtonsPanel = new HorizontalPanel();
-//				VerticalPanel db1Panel = new VerticalPanel();
-//				hpanel1 = new HorizontalPanel();
-//				db1 = new DialogBox();
-//				inputTextBox1 = new TextBox();
-//				db1.setText("Geburtsdatum eintragen");
+
 				db.setText("Geburtsdatum eintragen");
 			
 				CloseButton closeButton = new CloseButton(db);
@@ -1550,13 +1542,7 @@ public class ContactForm extends VerticalPanel {
 			
 				dbPanel.add(inputTextBox);
 				dbPanel.add(dbButtonsPanel);
-//				CloseButton close1=new CloseButton(db1);
-//				db1Panel.add(inputTextBox1);
-//				hpanel1.add(close1);
-//				hpanel1.add(addBirthdayButton);
-//				db1Panel.add(hpanel1);
-//				db1.add(db1Panel);
-//				db1.show();
+
 				
 				db.add(dbPanel);
 				db.show();
@@ -1564,7 +1550,7 @@ public class ContactForm extends VerticalPanel {
 				
 				addBirthdayButton.addClickHandler(new ClickHandler(){
 					public void onClick(ClickEvent event) {
-//						db1.hide();
+
 						db.hide();
 						
 						
@@ -1594,12 +1580,7 @@ public class ContactForm extends VerticalPanel {
 				dbPanel = new VerticalPanel();
 				inputTextBox = new TextBox();
 				dbButtonsPanel = new HorizontalPanel();
-//				VerticalPanel db2Panel = new VerticalPanel();
-//				hpanel2 = new HorizontalPanel();
-//				db2 = new DialogBox();
-//				inputTextBox2 = new TextBox();
-//				
-//				db2.setText("Neue Eigenschaftsart hinzufügen");
+
 				db.setText("Neue Eigenschaftsart hinzufügen");
 				
 				CloseButton closeButton = new CloseButton(db);
@@ -1612,22 +1593,13 @@ public class ContactForm extends VerticalPanel {
 				dbPanel.add(inputTextBox);
 				dbPanel.add(dbButtonsPanel);
 				
-//				Button addPropertyButton = new Button("Hinzufügen");
-//				addPropertyButton.addStyleName("okbutton");
-//				CloseButton close2= new CloseButton(db2);
-				
-//				db2Panel.add(inputTextBox2);
-//				hpanel2.add(close2);
-//				hpanel2.add(addPropertyButton);
-//				db2Panel.add(hpanel2);
-//				db2.add(db2Panel);
-//				db2.show();
+
 				db.add(dbPanel);
 				db.show();
 					
 				addPropertyButton.addClickHandler(new ClickHandler(){
 					public void onClick(ClickEvent event) {
-//						db2.hide();
+
 						db.hide();
 						
 						
