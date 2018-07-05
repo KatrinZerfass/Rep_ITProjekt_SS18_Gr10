@@ -52,12 +52,15 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	
 	
 	VerticalPanel mainPanel = new VerticalPanel ();
+	VerticalPanel selectionPanel = new VerticalPanel ();
+	HorizontalPanel selectionHPanel= new HorizontalPanel();
+	
 	HorizontalPanel reportbuttonPanel=new HorizontalPanel();
 	HorizontalPanel searchPanel=new HorizontalPanel();
 	HorizontalPanel descriptionPanel = new HorizontalPanel();
 	HorizontalPanel propertyPanel=new HorizontalPanel();
-	
-	HorizontalPanel addPanel = new HorizontalPanel();
+	HorizontalPanel valuePanel=new HorizontalPanel();
+	HorizontalPanel participantPanel = new HorizontalPanel();
 	
 	private User user = null;
 	private ReportGeneratorAsync reportGenerator=null;
@@ -66,15 +69,22 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	/*
 	 * Die notwendigen Buttons für den Navigationsteil 
 	 */
-	Label searchheading = new Label("Hier können Sie Ihre Kontakte gefiltert nach Eigenschaft oder Ausprägung ausgeben.");
-	Label searchLabel = new Label("Suche: ");
-	
+	Label searchheading = new Label("Hier können Sie sich einen Report über Ihre Kontakte ausgeben lassen. "
+			+ "Dabei können Sie Ihren Report zusätzlich nach Eigenschaften der Kontakte (z.B. Arbeitsplatz) oder bestimmten Ausprägungen der Kontakte (z.B. Hochschule der Medien) filtern. ");
+	Label participantLabel = new Label("Nutzer: ");
+	Label valueLabel = new Label("Ausprägung: ");
+	Label propertyLabel = new Label("Eigenschaft: ");
+
+
 	TextBox propertyInput = new TextBox();
+	TextBox valueInput = new TextBox();
 	ListBox propertylistbox = new ListBox();
-	Button allContactsOfUserButton = new Button("Alle Kontakte eines Nutzers");
-	Button allSharedContactsOfUserButton = new Button("Alle mit einem Nutzer geteilten Kontakte");
-	Button allContactsWithValueButton = new Button("Kontakte mit bestimmter Ausprägung");
-	Button allContactsWithPropertyButton = new Button("Kontakte mit bestimmter Eigenschaft");
+	ListBox reportlistbox = new ListBox();
+	Button getReportButton = new Button("Zum Report");
+	Button allContactsOfUserButton = new Button("Report ausgeben");
+	Button allSharedContactsOfUserButton = new Button("Report ausgeben");
+	Button allContactsWithValueButton = new Button("Report ausgeben");
+	Button allContactsWithPropertyButton = new Button("Report ausgeben");
 
 	public class TextSuggest{
 
@@ -125,30 +135,27 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 		
 		reportGenerator=ClientsideSettings.getReportGenerator();
 		RootPanel.get("reporttext").setVisible(false);
-
-		/**
-		 * zusätzliche Klassennamen, die für das stylesheet benötigt werden.
-		**/
 		
 		/**
 		 * Instanziierung der SuggestBox für die Eingabe der Email.
 		**/
 		sb=new TextSuggest(new MultiWordSuggestOracle());
 
+		/**Layout**/		
 		searchheading.addStyleName("searchheading");
 		signOutLink.addStyleName("signout");
-		signInLink.addStyleName("reportbutton");
-
-		
-		searchLabel.addStyleName("searchlabel");
+		signInLink.addStyleName("reportbutton");		
+		propertyLabel.addStyleName("searchlabel");
+		valueLabel.addStyleName("searchlabel");
+		participantLabel.addStyleName("searchlabel");
 		reportbuttonPanel.addStyleName("top-buttons");
+		getReportButton.addStyleName("reportbutton");
 		allContactsOfUserButton.addStyleName("reportbutton");
 		allSharedContactsOfUserButton.addStyleName("reportbutton");
 		allContactsWithValueButton.addStyleName("reportbutton");
 		allContactsWithPropertyButton.addStyleName("reportbutton");
 		propertyInput.addStyleName("sonstigeinput");
-
-		
+		valueInput.addStyleName("reportSuggestBox");
 		
 		/**
 		 * Auslesen der vordefinierten Eigenschaften aus der Datenbank, um diese zur ListBox hinzuzufügen.
@@ -175,9 +182,13 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
             	if(Item==(size-1)){
             		propertyPanel.add(propertyInput);
                 	}
-            	
+            	}});
+            	           	
+        reportlistbox.addItem("Alle Kontakte");
+        reportlistbox.addItem("Geteilte Kontakte");
+        reportlistbox.addItem("Kontakte nach Ausprägung");
+        reportlistbox.addItem("Kontakte nach Eigenschaft");
 
-            }});
 		LoginServiceAsync loginService = GWT.create(LoginService.class);
 	    loginService.login("https://it-projekt-gruppe-10-203610.appspot.com/ITProjekt_SS18_Gr_10_Report.html", new AsyncCallback<LoginInfo>() {
 	    	public void onFailure(Throwable error) {
@@ -216,20 +227,57 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
   	}
 	
 	 public void loadApplication() { 
-	  
-		 
+	  		 
 			signOutLink.setHref(loginInfo.getLogoutUrl());
-						
+	        
+			getReportButton.addClickHandler(new ClickHandler() {
+		         public void onClick(ClickEvent event){
+		       			switch (reportlistbox.getSelectedIndex()){
+		        			case 0:
+		        				mainPanel.remove(valuePanel);
+		        				mainPanel.remove(propertyPanel);
+		        				mainPanel.remove(participantPanel);
+		        				reportGenerator.generateAllContactsOfUserReport(user, new AsyncCallback<AllContactsOfUserReport>() {
+		    						 public void onFailure(Throwable caught) {
+		    							  RootPanel.get("reporttext").setVisible(false);	
+		   				 				  Window.alert("Es ist leider ein Fehler aufgetreten. Der Report konnte nicht erstellt werden.");
+		    						 }
+		    						 public void onSuccess(AllContactsOfUserReport result) {
+		    							    							 
+		    							 if (result != null) {
+		    								 RootPanel.get("reporttext").setVisible(true);
+		    								 HTMLReportWriter writer=new HTMLReportWriter();	    								 
+		    								 writer.process(result);
+		    								 RootPanel.get("reporttext").clear();
+		    								 RootPanel.get("reporttext").add(new HTML(writer.getReportText()));
+		    						}}});
+		        				break;
+		        			case 1:
+		        				mainPanel.remove(valuePanel);
+		        				mainPanel.remove(propertyPanel);
+		        				mainPanel.add(participantPanel);
+		        				break;
+		        			case 2: 
+		         				mainPanel.remove(propertyPanel);
+		        				mainPanel.remove(participantPanel);
+		        				mainPanel.add(valuePanel);
+		        				break;
+		        			case 3:
+		         				mainPanel.remove(valuePanel);
+		        				mainPanel.remove(participantPanel);
+		        				mainPanel.add(propertyPanel);
+		        				break;
+		        			}
+		        		 }
+		              });		
+			
 			allContactsOfUserButton.addClickHandler(new ClickHandler() {
 		         @Override
 		         public void onClick(ClickEvent event){
 		        	 reportGenerator.generateAllContactsOfUserReport(user, new AsyncCallback<AllContactsOfUserReport>() {
 	    						 public void onFailure(Throwable caught) {
-	   				 				    RootPanel.get("reporttext").setVisible(false);	
-	   				 				    Label errornote=new Label("Es Existieren leider keine Kontakte");
-	   				 				    errornote.addStyleName("errornote");
-	   				 				    mainPanel.add(errornote);
-	    							 
+	    							  RootPanel.get("reporttext").setVisible(false);	
+	   				 				  Window.alert("Es ist leider ein Fehler aufgetreten. Der Report konnte nicht erstellt werden.");
 	    						 }
 	    						 public void onSuccess(AllContactsOfUserReport result) {
 	    							    							 
@@ -237,21 +285,15 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	    								 RootPanel.get("reporttext").setVisible(true);
 	    								 HTMLReportWriter writer=new HTMLReportWriter();	    								 
 	    								 writer.process(result);
-	    								 Window.alert("nach writer");
 	    								 RootPanel.get("reporttext").clear();
 	    								 RootPanel.get("reporttext").add(new HTML(writer.getReportText()));
 	    							 }
 	    						}
 	    					 });
 	        			}
-		        	 }
-		        	
-					 );
+		        	 });
 		        	 
-		    
-	 
-			
-			allSharedContactsOfUserButton.addClickHandler(new ClickHandler() {
+		    allSharedContactsOfUserButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
 					if(sb.getSuggestBox().getText() != ""){
@@ -259,10 +301,9 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 						sharedUser.setEmail(sb.getSuggestBox().getText());
 						reportGenerator.generateAllSharedContactsOfUserReport(user, sharedUser, new AsyncCallback<AllSharedContactsOfUserReport>() {
 				 				    	public void onFailure(Throwable caught) {
-//		   				 				    RootPanel.get("reporttext").setVisible(false);	
-//		   				 				    Label errornote=new Label("Es Existieren leider keine geteilten Kontakte mit dem eingegebenen Nutzer");
-//		   				 				    errornote.addStyleName("errornote");
-//		   				 				    mainPanel.add(errornote);
+		   				 				    RootPanel.get("reporttext").setVisible(false);	
+		   				 				    Window.alert("Es ist leider ein Fehler aufgetreten. Der Report konnte nicht erstellt werden.");
+
 			   						 }
 			   						 public void onSuccess(AllSharedContactsOfUserReport result) {
 			 		 				    RootPanel.get("reporttext").setVisible(true);
@@ -280,17 +321,17 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 							}
 	   				 	}
 					});
-				
-
 			
 			allContactsWithValueButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					if(sb.getSuggestBox().getText() != ""){
+					if(valueInput.getText() != ""){
 					Value v = new Value();
-					v.setContent(sb.getSuggestBox().getText());
+					v.setContent(valueInput.getText());
 					 reportGenerator.generateAllContactsWithValueReport(user, v, new AsyncCallback<AllContactsWithValueReport>() {
 						 public void onFailure(Throwable caught) {
+							RootPanel.get("reporttext").setVisible(false);	
+				 			Window.alert("Es ist leider ein Fehler aufgetreten. Der Report konnte nicht erstellt werden.");
 						 }
 						 public void onSuccess(AllContactsWithValueReport result) {
 								if (result!=null) {
@@ -298,15 +339,13 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 				 				    HTMLReportWriter writer=new HTMLReportWriter();
 				 				    writer.process(result);
 				 				    RootPanel.get("reporttext").clear();
-				 				    RootPanel.get("reporttext").add(new HTML(writer.getReportText()));
-									 
+				 				    RootPanel.get("reporttext").add(new HTML(writer.getReportText())); 
 								}
 						 }
 					 });
 					}
 				else{
 					Window.alert("Suchleiste ist leer. Bitte füllen Sie einen Suchbegriff in das Suchfeld ein.");
-					
 				}}});
 			
 			allContactsWithPropertyButton.addClickHandler(new ClickHandler() {
@@ -317,9 +356,8 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 					p.setType(propertylistbox.getSelectedItemText());
 					 reportGenerator.generateAllContactsWithPropertyReport(user, p, new AsyncCallback<AllContactsWithPropertyReport>() {
 						 public void onFailure(Throwable caught) {
-							
-							 RootPanel.get("reporttext").setVisible(false);
-							 Window.alert("Es wurde kein Kontakt mit der angegebenen Eigenschaft gefunden");
+							  RootPanel.get("reporttext").setVisible(false);	
+				 			  Window.alert("Es ist leider ein Fehler aufgetreten. Der Report konnte nicht erstellt werden.");
 						 }
 						 public void onSuccess(AllContactsWithPropertyReport result) {
 								if (result !=null) {
@@ -335,14 +373,13 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	   				if(propertyInput.getText() != ""){
 	   				Property p = new Property();
 					p.setType(propertyInput.getText());
-					 reportGenerator.generateAllContactsWithPropertyReport(user, p, new AsyncCallback<AllContactsWithPropertyReport>() {
+					reportGenerator.generateAllContactsWithPropertyReport(user, p, new AsyncCallback<AllContactsWithPropertyReport>() {
 						 public void onFailure(Throwable caught) {
 							
 							 RootPanel.get("reporttext").setVisible(false);
 							 Window.alert("Es wurde kein Kontakt mit der angegebenen Eigenschaft gefunden");
 						 }
 						 public void onSuccess(AllContactsWithPropertyReport result) {
-							 	Window.alert("geht in die onSuccess");
 							 	if (result !=null) {
 				 				    RootPanel.get("reporttext").setVisible(true);
 				 				    HTMLReportWriter writer=new HTMLReportWriter();
@@ -354,47 +391,42 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 					 });
 	   			}else{
 	   				Window.alert("Suchleiste ist leer. Bitte füllen Sie einen Suchbegriff in das Suchfeld ein.");
-	   			}}
-	   			}
+	   				}
+				}}
 			});
-			
-			
+				
 			descriptionPanel.add(searchheading);
-			addPanel.add(searchLabel);
 			sb.getSuggestBox().addStyleName("reportSuggestBox");
-			addPanel.add(sb.getSuggestBox());
 			reportbuttonPanel.add(allContactsOfUserButton);
-			addPanel.add(allSharedContactsOfUserButton);
-			addPanel.add(allContactsWithValueButton);
+			participantPanel.add(participantLabel);
+			participantPanel.add(sb.getSuggestBox());
+			participantPanel.add(allSharedContactsOfUserButton);
+			propertyPanel.add(propertyLabel);
 			propertyPanel.add(propertylistbox);
 			propertyPanel.add(allContactsWithPropertyButton);
-			
-			RootPanel.get("signout").add(signOutLink);
-			
-			RootPanel.get("report").add(reportbuttonPanel);
-			mainPanel.add(searchPanel);
-			mainPanel.add(descriptionPanel);
-			mainPanel.add(addPanel);
-			mainPanel.add(propertyPanel);
-			RootPanel.get("report").add(mainPanel);
-			
-			  
-		  }
-	 
-	 /**
-	 * Der Konstruktor von InputDialogBox
-	 * ?? was macht er ??
-	 */
-				
-	
+			valuePanel.add(valueLabel);
+			valuePanel.add(valueInput);
+			valuePanel.add(allContactsWithValueButton);
 
-	private void loadLogin() {
+			RootPanel.get("signout").add(signOutLink);
+			selectionHPanel.add(reportlistbox);
+			selectionHPanel.add(getReportButton);
+			selectionPanel.add(descriptionPanel);
+			selectionPanel.add(selectionHPanel);
+			mainPanel.add(selectionPanel);
+//			RootPanel.get("report").add(reportbuttonPanel);
+//			mainPanel.add(searchPanel);
+//			mainPanel.add(descriptionPanel);
+//			mainPanel.add(addPanel);
+//			mainPanel.add(propertyPanel);
+			RootPanel.get("report").add(mainPanel);
+	   			
+			}  
 		  
+	private void loadLogin() {
 		    signInLink.setHref(loginInfo.getLoginUrl());
 		    loginPanel.add(loginLabel);
 		    loginPanel.add(signInLink);
 		    RootPanel.get("loginRepo").add(loginPanel);
 		  }
-	 
-	 
 }
