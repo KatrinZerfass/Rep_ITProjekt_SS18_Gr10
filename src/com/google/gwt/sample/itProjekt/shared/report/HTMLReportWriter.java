@@ -86,26 +86,27 @@ public class HTMLReportWriter implements Serializable{
 		
 		result.append("<tr></tr><td>" + r.getCreated().toString()+ "</td></tr><tr></tr></table>");
 
-		AllContactInformationOfContactReport subReport2=(AllContactInformationOfContactReport) r.getSubReportAt(0);
-		this.process(subReport2);
-		result.append(this.reportText + "\n");
-	    this.resetReportText();
-		
-		for (int i = 1; i < r.getNumSubReports(); i++) {
-			if(r.getSubReportAt(i) instanceof AllContactInformationOfContactReport){
-				result.append("<hr>");
-				AllContactInformationOfContactReport subReport1=(AllContactInformationOfContactReport)
-				r.getSubReportAt(i);
-				this.process(subReport1);
-			}
-			else{
-				AllValuesOfContactReport subReport = (AllValuesOfContactReport) 			
-				r.getSubReportAt(i);
-				this.process(subReport);
-				}
-			
+		if(r.getNumSubReports()!=0){
+			AllContactInformationOfContactReport subReport2=(AllContactInformationOfContactReport) r.getSubReportAt(0);
+			this.process(subReport2);
 			result.append(this.reportText + "\n");
 		    this.resetReportText();
+			
+			for (int i = 1; i < r.getNumSubReports(); i++) {
+				if(r.getSubReportAt(i) instanceof AllContactInformationOfContactReport){
+					result.append("<hr>");
+					AllContactInformationOfContactReport subReport1=(AllContactInformationOfContactReport)
+					r.getSubReportAt(i);
+					this.process(subReport1);
+				}
+				else{
+					AllValuesOfContactReport subReport = (AllValuesOfContactReport) 			
+					r.getSubReportAt(i);
+					this.process(subReport);
+					}
+				result.append(this.reportText + "\n");
+			    this.resetReportText();
+				}	
 			}
 		this.reportText=result.toString();
 	  }
@@ -123,27 +124,29 @@ public class HTMLReportWriter implements Serializable{
 		    }
 		
 		result.append("<tr></tr><td>" + r.getCreated().toString()+ "</td></tr><tr></tr></table>");
-
-		AllContactInformationOfContactReport subReport2=(AllContactInformationOfContactReport) r.getSubReportAt(0);
-		this.process(subReport2);
-		result.append(this.reportText + "\n");
-	    this.resetReportText();
 		
-	    for (int i = 1; i < r.getNumSubReports(); i++) {
-			if(r.getSubReportAt(i) instanceof AllContactInformationOfContactReport){
-				result.append("<hr>");
-				AllContactInformationOfContactReport subReport1=(AllContactInformationOfContactReport)
-				r.getSubReportAt(i);
-				this.process(subReport1);
-			}
-			else{
-				AllValuesOfContactReport subReport = (AllValuesOfContactReport) 			
-				r.getSubReportAt(i);
-				this.process(subReport);
-				}
-			
+		if(r.getNumSubReports()!=0){
+			AllContactInformationOfContactReport subReport2=(AllContactInformationOfContactReport) r.getSubReportAt(0);
+			this.process(subReport2);
 			result.append(this.reportText + "\n");
 		    this.resetReportText();
+			
+		    for (int i = 1; i < r.getNumSubReports(); i++) {
+				if(r.getSubReportAt(i) instanceof AllContactInformationOfContactReport){
+					result.append("<hr>");
+					AllContactInformationOfContactReport subReport1=(AllContactInformationOfContactReport)
+					r.getSubReportAt(i);
+					this.process(subReport1);
+				}
+				else{
+					AllValuesOfContactReport subReport = (AllValuesOfContactReport) 			
+					r.getSubReportAt(i);
+					this.process(subReport);
+					}
+				
+				result.append(this.reportText + "\n");
+			    this.resetReportText();
+				}
 			}
 		this.reportText=result.toString();
 	}
@@ -161,33 +164,34 @@ this.resetReportText();
 		
 		result.append("<tr></tr><td>" + r.getCreated().toString()+ "</td></tr><tr></tr></table>");
 
-		
-		AllContactInformationOfContactReport subReport2=(AllContactInformationOfContactReport) r.getSubReportAt(0);
-		this.process(subReport2);
-		result.append(this.reportText + "\n");
-	    this.resetReportText();
-	    
-		for (int i = 1; i < r.getNumSubReports(); i++) {
-			if(r.getSubReportAt(i) instanceof AllContactInformationOfContactReport){
-				result.append("<hr>");
-				AllContactInformationOfContactReport subReport1=(AllContactInformationOfContactReport)
-				r.getSubReportAt(i);
-				this.process(subReport1);
-			}
-			else{
-				AllValuesOfContactReport subReport = (AllValuesOfContactReport) 			
-				r.getSubReportAt(i);
-				this.process(subReport);
-				}
-			
+		if(r.getNumSubReports()!=0){
+			AllContactInformationOfContactReport subReport2=(AllContactInformationOfContactReport) r.getSubReportAt(0);
+			this.process(subReport2);
 			result.append(this.reportText + "\n");
 		    this.resetReportText();
-			}
+		    
+			for (int i = 1; i < r.getNumSubReports(); i++) {
+				if(r.getSubReportAt(i) instanceof AllContactInformationOfContactReport){
+					result.append("<hr>");
+					AllContactInformationOfContactReport subReport1=(AllContactInformationOfContactReport)
+					r.getSubReportAt(i);
+					this.process(subReport1);
+				}
+				else{
+					AllValuesOfContactReport subReport = (AllValuesOfContactReport) 			
+					r.getSubReportAt(i);
+					this.process(subReport);
+					}
+				
+				result.append(this.reportText + "\n");
+			    this.resetReportText();
+				}
+		}
 		this.reportText=result.toString();
 		}
 	
 	public void process(AllContactsWithPropertyReport r) {
-this.resetReportText();
+		this.resetReportText();
 		
 		StringBuffer result=new StringBuffer();
 		
@@ -199,29 +203,29 @@ this.resetReportText();
 		
 		result.append("<tr></tr><td>" + r.getCreated().toString()+ "</td></tr><tr></tr></table>");
 
-		System.out.println(r.getNumSubReports());
-
-		AllContactInformationOfContactReport subReport2=(AllContactInformationOfContactReport) r.getSubReportAt(0);
-		this.process(subReport2);
-		result.append(this.reportText + "\n");
-	    this.resetReportText();
-		
-		for (int i = 1; i < r.getNumSubReports(); i++) {
-			if(r.getSubReportAt(i) instanceof AllContactInformationOfContactReport){
-				result.append("<hr>");
-				AllContactInformationOfContactReport subReportKontakt=(AllContactInformationOfContactReport)
-				r.getSubReportAt(i);
-				this.process(subReportKontakt);
-			}
-			else{
-				AllValuesOfContactReport subReport = (AllValuesOfContactReport) 			
-				r.getSubReportAt(i);
-				this.process(subReport);
-				}
-			
+		if(r.getNumSubReports()!=0){
+			AllContactInformationOfContactReport subReport2=(AllContactInformationOfContactReport) r.getSubReportAt(0);
+			this.process(subReport2);
 			result.append(this.reportText + "\n");
 		    this.resetReportText();
-			}
+			
+			for (int i = 1; i < r.getNumSubReports(); i++) {
+				if(r.getSubReportAt(i) instanceof AllContactInformationOfContactReport){
+					result.append("<hr>");
+					AllContactInformationOfContactReport subReportKontakt=(AllContactInformationOfContactReport)
+					r.getSubReportAt(i);
+					this.process(subReportKontakt);
+				}
+				else{
+					AllValuesOfContactReport subReport = (AllValuesOfContactReport) 			
+					r.getSubReportAt(i);
+					this.process(subReport);
+					}
+				
+				result.append(this.reportText + "\n");
+			    this.resetReportText();
+				}
+		}
 		this.reportText=result.toString();
 	}
 	
@@ -279,6 +283,8 @@ this.resetReportText();
 		result.append("</table>");
 	    this.reportText = result.toString();
 	}
+	
+
 	
 	/**
 	 * Auslesen the report text.

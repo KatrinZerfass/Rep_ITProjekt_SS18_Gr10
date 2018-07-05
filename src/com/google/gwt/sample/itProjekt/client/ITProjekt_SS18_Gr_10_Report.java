@@ -173,7 +173,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 				for (Property p : properties) {
 					propertylistbox.addItem(p.getType());
 				}
-				propertylistbox.addItem("Sonstiges");	
+				propertylistbox.addItem("eigene Eigenschaftsart");	
 			}
 		});
 		
@@ -184,12 +184,17 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
             	int Item = propertylistbox.getSelectedIndex();
             	
             	if(Item==(size-1)){
+            		propertyPanel.remove(allContactsWithPropertyButton);
             		propertyPanel.add(propertyInput);
+            		propertyPanel.add(allContactsWithPropertyButton);
                 	}
+            	else{
+            		propertyPanel.remove(propertyInput);
+            	}
             	}});
             	           	
         reportlistbox.addItem("Alle Kontakte");
-        reportlistbox.addItem("Geteilte Kontakte");
+        reportlistbox.addItem("Mit anderen Nutzern geteilte Kontakte");
         reportlistbox.addItem("Kontakte nach Ausprägung");
         reportlistbox.addItem("Kontakte nach Eigenschaft");
 

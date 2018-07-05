@@ -83,8 +83,7 @@ public interface ReportGenerator extends RemoteService{
 	public abstract AllValuesOfContactReport generateAllValuesOfContactReport(Contact contact, User user) throws IllegalArgumentException;
 	
 	public abstract AllContactInformationOfContactReport generateAllContactInformationOfContactReport(Contact contact, User user) throws IllegalArgumentException;
-
-	
+		
 	/**
 	 * Auslesen aller im System angemeldeten Nutzer.
 	 *

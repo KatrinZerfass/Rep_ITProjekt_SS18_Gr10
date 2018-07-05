@@ -19,6 +19,7 @@ import com.google.gwt.sample.itProjekt.shared.report.Column;
 import com.google.gwt.sample.itProjekt.shared.report.CompositeParagraph;
 import com.google.gwt.sample.itProjekt.shared.report.Row;
 import com.google.gwt.sample.itProjekt.shared.report.SimpleParagraph;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
@@ -104,6 +105,10 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 					report.addSubReport(this.generateAllValuesOfContactReport(c, user));
 					}
 					}			
+			}else{
+				SimpleParagraph errornote=new SimpleParagraph("Es wurden leider keine Kontakte des Nutzers gefunden");
+				header.addSubParagraph(errornote);
+				report.setHeaderData(header);
 			}
 			return report;
 		}
@@ -139,6 +144,10 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				report.addSubReport(this.generateAllValuesOfContactReport(c, owner));
 				}
 			}			
+		}else{
+			SimpleParagraph errornote=new SimpleParagraph("Bisher wurden keine Kontakte mit dem eingegebenen Nutzer geteilt.");
+			header.addSubParagraph(errornote);
+			report.setHeaderData(header);
 		}
 		return report;
 	}
@@ -174,6 +183,10 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				report.addSubReport(this.generateAllValuesOfContactReport(c, user));
 				}
 			}			
+		}else{
+			SimpleParagraph errornote=new SimpleParagraph("Es wurden leider keine Kontakte mit der angegebenen Ausprägung gefunden");
+			header.addSubParagraph(errornote);
+			report.setHeaderData(header);
 		}
 		return report;
 	}
@@ -208,6 +221,10 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				report.addSubReport(this.generateAllValuesOfContactReport(c, user));
 				}
 			}			
+		}else{
+			SimpleParagraph errornote=new SimpleParagraph("Es wurden leider keine Kontakte mit der angegebenen Eigenschaft gefunden");
+			header.addSubParagraph(errornote);
+			report.setHeaderData(header);
 		}
 		return report;
 	}
@@ -243,7 +260,6 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 					report.addRow(valueRow);
 					}}
 			}
-			System.out.println("Ende  Alle Ausprägungen Of Contact Report: " + report.getRows().size());
 			return report;
 		}
 		}
@@ -255,7 +271,6 @@ public AllContactInformationOfContactReport generateAllContactInformationOfConta
 			return null;
 		} 
 		else {
-		System.out.println(contact.getFirstname());
 		AllContactInformationOfContactReport report = new AllContactInformationOfContactReport();
 					
 		Row headline = new Row();
@@ -281,7 +296,6 @@ public AllContactInformationOfContactReport generateAllContactInformationOfConta
 		owner=admin.getOwnerOfContact(contact);
 		sharedUser = admin.getSourceToSharedContact(contact, user);
 		
-
 		contactRow.addColumn(new Column(String.valueOf(contact.getFirstname())));
 		contactRow.addColumn(new Column(String.valueOf(contact.getLastname())));
 		
@@ -308,11 +322,13 @@ public AllContactInformationOfContactReport generateAllContactInformationOfConta
 		
 		contactRow.addColumn(new Column(String.valueOf(contact.getCreationDate())));
 		contactRow.addColumn(new Column(String.valueOf(contact.getModificationDate())));
-
-		if (user.getEmail() == owner.getEmail()){
+		System.out.println("Vor der if schleife");
+		if (user.getEmail().equals(owner.getEmail())){
+			System.out.println("Nach der if schleife");
 			headline.addColumn(colParticipant);
-			Vector<User> allParticipants=new Vector<User>();
-			allParticipants.addAll(this.admin.getAllParticipantsOfContact(contact));	
+			Vector<User> allParticipants=this.admin.getAllParticipantsOfContact(contact);
+			System.out.println("vektor größe" + allParticipants.size());
+			System.out.println(allParticipants.size());
 			for(User u : allParticipants){
 				if (u.getEmail() != user.getEmail()){	
 				contactRow.addColumn(new Column(String.valueOf(u.getEmail())));
@@ -323,14 +339,12 @@ public AllContactInformationOfContactReport generateAllContactInformationOfConta
 		
 		}
 		report.addRow(contactRow);		
-		System.out.println("Ende Alle Kontakte Information Of Contact Report: " + report.getRows().size());
 		return report;
 
 		}			
 }
 
 
-@Override
 //public AllContactInformationOfContactReport generateAllContactInformationOfContactReport(Contact contact, User user)
 //		throws IllegalArgumentException {
 

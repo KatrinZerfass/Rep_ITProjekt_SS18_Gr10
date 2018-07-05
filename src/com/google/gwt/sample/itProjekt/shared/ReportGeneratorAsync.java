@@ -45,8 +45,4 @@ public interface ReportGeneratorAsync {
 	void generateAllContactInformationOfContactReport(Contact contact, User user,
 			AsyncCallback<AllContactInformationOfContactReport> callback);
 
-	
-	
-
-
 }
