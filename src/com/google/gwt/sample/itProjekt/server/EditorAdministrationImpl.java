@@ -574,7 +574,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 
 
 	@Override
-	public Vector<String> getAllUserSuggestions() throws IllegalArgumentException {
+	public Vector<String> getAllUserSuggestions(User activeUser) throws IllegalArgumentException {
 		
 		Vector<User> allUsers = uMapper.findAll();
 		Vector<Contact> allContacts = cMapper.findAllUserContacts();
@@ -588,10 +588,12 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 //			allUserEmails.add(u.getEmail());
 //		}
 		
+		allUsers.removeElement(activeUser);
+		
 		for(Contact c : allContacts) {
 			for(User u : allUsers) {
 				if (c.getOwner() == u.getId()) {
-					result.add(c.getFirstname() + " " + c.getLastname() + " (" + u.getEmail() + ")");
+					result.add(c.getFirstname() + " " + c.getLastname() + " - " + u.getEmail());
 				}
 			}
 				

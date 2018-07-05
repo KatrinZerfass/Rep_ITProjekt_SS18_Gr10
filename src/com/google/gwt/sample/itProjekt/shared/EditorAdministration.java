@@ -180,7 +180,7 @@ public interface EditorAdministration extends RemoteService{
 	 */
 	public User createUserContact(String firstname, String lastname, String sex, String email) throws IllegalArgumentException;
 	
-	public Vector<String> getAllUserSuggestions() throws IllegalArgumentException;
+	public Vector<String> getAllUserSuggestions(User activeUser) throws IllegalArgumentException;
 	
 	/**
 	 * Ändert den Kontaktstamm eines Kontakts in der Datenbank. 

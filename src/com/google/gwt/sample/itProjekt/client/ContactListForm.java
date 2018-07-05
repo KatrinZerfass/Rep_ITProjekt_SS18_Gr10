@@ -406,6 +406,7 @@ public class ContactListForm extends VerticalPanel{
 							}else {	
 								String[] split = inputDB.getSuggestBox().getText().split("(");
 								String userEmail = split[1].substring(0, split[1].length() - 1);
+								Window.alert(userEmail);
 								editorAdministration.shareContactList(user, userEmail, clctvm.getSelectedContactList(), new AsyncCallback<Permission>() {
 			
 									public void onFailure(Throwable arg0) {

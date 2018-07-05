@@ -285,7 +285,7 @@ public abstract class ClientsideFunctions {
 //						}
 //					}
 					
-			editorAdministration.getAllUserSuggestions(new AsyncCallback<Vector<String>>() {
+			editorAdministration.getAllUserSuggestions(user, new AsyncCallback<Vector<String>>() {
 				@Override
 				public void onFailure(Throwable arg0) {
 					// TODO Auto-generated method stub
