@@ -467,35 +467,7 @@ public class ContactForm extends VerticalPanel {
 			isLocked = true;
 			
 			if(wasChanged) {
-//				if(value.getPropertyid() == 6) { //die PropertyID 6 bezieht sich auf die Ausprägung "Straße"
-//					/*
-//					 * Wir der LockButton betätigt, welcher sich auf die Straße bezieht, so müssen folglich auch isShared der Ausprägungen
-//					 * Hausnummer, PLZ und Wohnort neu gesetzt werden, da diese vier Ausprägungen immer zusammenhängen.	
-//					 * Dazu wird der Vektor allValuesOfContact durchiteriert und nach den Ausprägungen der Anschrift durchsucht.
-//					 */
-//						for(int i= 0; i<allValuesOfContact.size(); i++) {
-//							int pid = allValuesOfContact.get(i).getPropertyid();
-//							
-//							// || Straße||Hausnummer||   PLZ    || Wohnort
-//							if(pid == 6 || pid == 7 || pid == 8 || pid ==9) {
-//								editorAdministration.editValue(contactToDisplay, pid, allValuesOfContact.get(i), 
-//												allValuesOfContact.get(i).getContent(), false, new AsyncCallback<Value>() {
-//									
-//									public void onFailure(Throwable t) {
-//										Window.alert("Das Setzen deer Ausprägung zu \"Nicht geteilt\" ist fehlgeschlagen.");
-//										
-//									}
-//									public void onSuccess(Value v) {
-//										
-//													
-//									}
-//								});
-//							}
-//						}			
-//					}
-//			
-//				
-//				else{ //es handelt sich um jede andere "normale" Ausprägung
+
 					editorAdministration.editValue(contactToDisplay, value.getPropertyid(), this.value, value.getContent(), false, new AsyncCallback<Value>() {
 				
 						public void onFailure(Throwable t) {
@@ -507,7 +479,6 @@ public class ContactForm extends VerticalPanel {
 						
 						}
 					});
-				//}
 			}
 		}
 		
@@ -1421,6 +1392,8 @@ public class ContactForm extends VerticalPanel {
 				/*
 				 * Im Folgenden wird die DialogBox aufgebaut.
 				 */
+				db.setText("Kontaktliste auswählen");
+				
 				dbPanel.setHeight("100");
 		        dbPanel.setWidth("300");
 		        dbPanel.setSpacing(10);
@@ -1851,6 +1824,7 @@ public class ContactForm extends VerticalPanel {
 			shareContactButton.setVisible(true);
 			deleteContactButton.setVisible(true);
 			addContactToContactListButton.setVisible(true);
+			removeContactFromContactListButton.setVisible(true);
 			
 			
 			
@@ -1864,12 +1838,10 @@ public class ContactForm extends VerticalPanel {
 				firstnameTextBox.setEnabled(false);
 				lastnameTextBox.setEnabled(false);
 				sexListBox.setEnabled(false);
-				removeContactFromContactListButton.setVisible(false);
 				saveChangesButton.setVisible(false);
 				newPropertyPanel.setVisible(false);
 			}else {
 				
-				removeContactFromContactListButton.setVisible(true);
 				saveChangesButton.setVisible(true);
 				newPropertyPanel.setVisible(true);
 			}
@@ -2391,8 +2363,8 @@ public class ContactForm extends VerticalPanel {
 		return this.newPropertyPanel;
 	}
 	
-	public void disableRemoveContactButton() {
-		this.removeContactFromContactListButton.setVisible(false);
-	}
+//	public void disableRemoveContactButton() {
+//		this.removeContactFromContactListButton.setVisible(false);
+//	}
 	
 }
