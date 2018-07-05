@@ -389,7 +389,7 @@ public class ContactListForm extends VerticalPanel{
 		 */
 		private class ShareContactListClickHandler implements ClickHandler {
 		
-			ClientsideFunctions.InputDialogBox inputDB;
+			ClientsideFunctions.InputDialogBox inputDB = null;
 			
 //			User shareUser = new User();
 			
@@ -398,7 +398,7 @@ public class ContactListForm extends VerticalPanel{
 					Window.alert("Sie können die Liste all Ihrer Kontakte nicht teilen!");
 				}
 				else {
-					inputDB = new ClientsideFunctions.InputDialogBox(new MultiWordSuggestOracle());
+					inputDB = new ClientsideFunctions.InputDialogBox(new MultiWordSuggestOracle(), "Bitte geben Sie die Email-Adresse des Nutzers ein mit dem Sie die Kontaktliste teilen möchten.");
 					inputDB.getOKButton().addClickHandler(new ClickHandler() {
 						public void onClick(ClickEvent event) {
 							if(inputDB.getSuggestBox().getText()== "") {

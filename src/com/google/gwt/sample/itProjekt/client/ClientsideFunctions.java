@@ -264,14 +264,13 @@ public abstract class ClientsideFunctions {
 	        show();
 	    }
 		
-		public InputDialogBox(MultiWordSuggestOracle inputOracle) {
+		public InputDialogBox(MultiWordSuggestOracle inputOracle, String labelString) {
 			
 			setOracle(inputOracle);
 	        ok.addStyleName("okbutton");
 	        close.addStyleName("closebutton");
 
-			setdialogBoxLabel("Bitte geben Sie die Email-Adresse des Nutzers ein mit dem Sie die Kontaktliste teilen möchten.");
-			
+			setdialogBoxLabel(labelString);
 //			editorAdministration.getAllUsers(new AsyncCallback<Vector<User>>() {
 //				public void onFailure(Throwable arg0) {
 //					Window.alert("Fehler beim holen aller User in der InputDialogBox");

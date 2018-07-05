@@ -8,6 +8,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.sample.itProjekt.client.ClientsideFunctions.InputDialogBox;
 import com.google.gwt.sample.itProjekt.client.ContactForm.ValueDisplay;
 import com.google.gwt.sample.itProjekt.shared.EditorAdministrationAsync;
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
@@ -1207,7 +1208,7 @@ public class ContactForm extends VerticalPanel {
 	 */
 	private class ShareContactClickHandler implements ClickHandler{
 		
-		EmailDialogBox dialog;
+		ClientsideFunctions.InputDialogBox inputDB = null;
 		
 		
 		@Override
@@ -1219,39 +1220,67 @@ public class ContactForm extends VerticalPanel {
 				Window.alert("kein Kontakt ausgewählt!");
 			}
 			else {
-				dialog = new EmailDialogBox();
+				inputDB = new ClientsideFunctions.InputDialogBox(new MultiWordSuggestOracle(), "Bitte geben Sie die Email-Adresse des Nutzers ein mit dem Sie den Kontakt teilen möchten.");
 				/*
 				 * Über eine Instanz der inneren Klasse EmailDialogBox können Objekte mit anderen Nutzern geteilt werden.
 				 */
 				
-				dialog.show();
-				
-				dialog.getOKButton().addClickHandler(new ClickHandler() {
+				inputDB = new ClientsideFunctions.InputDialogBox(new MultiWordSuggestOracle(), "Bitte geben Sie die Email-Adresse des Nutzers ein mit dem Sie die Kontaktliste teilen möchten.");
+				inputDB.getOKButton().addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {
-						
-						if(dialog.getSuggestBox().getText()== "") {
-							Window.alert("Fehler beim Teilen des Kontakts!");
+						if(inputDB.getSuggestBox().getText()== "") {
+							Window.alert("Fehler bei Teilen der Kontaktliste weil User leer");
+						}else {	
+							String[] split = inputDB.getSuggestBox().getText().split(" - ");
+							String userEmail = split[1].substring(0, split[1].length());
+							Window.alert(userEmail);
+							editorAdministration.shareContact(currentUser, userEmail, clctvm.getSelectedContact(), new AsyncCallback<Permission>() {
+		
+								public void onFailure(Throwable arg0) {
+									Window.alert("Weil onFailure");
+									inputDB.hide();
+								}
+								public void onSuccess(Permission arg0) {
+									if(arg0 != null) {
+										Window.alert("Kontaktliste erfolgreich geteilt.");
+										inputDB.hide();
+									}
+									else if(arg0 == null) {
+										Window.alert("User ist der Owner der Kontaktliste!");
+										inputDB.hide();
+									}
+								}
+							});
 						}
-						
-						editorAdministration.shareContact(currentUser, dialog.getSuggestBox().getText(), clctvm.getSelectedContact(), new AsyncCallback<Permission>() {
-
-							public void onFailure(Throwable arg0) {
-								Window.alert("Fehler beim Teilen des Kontakts!");
-								dialog.hide();
-							}
-							public void onSuccess(Permission arg0) {
-								if(arg0 != null) {
-									Window.alert("Kontakt erfolgreich geteilt.");
-									dialog.hide();
-								}
-								else {
-									Window.alert("User ist der Owner des Kontakts!");
-									dialog.hide();
-								}
-							}
-						});
 					}
 				});
+				
+//				dialog.getOKButton().addClickHandler(new ClickHandler() {
+//					public void onClick(ClickEvent event) {
+//						
+//						if(dialog.getSuggestBox().getText()== "") {
+//							Window.alert("Fehler beim Teilen des Kontakts!");
+//						}
+//						
+//						editorAdministration.shareContact(currentUser, dialog.getSuggestBox().getText(), clctvm.getSelectedContact(), new AsyncCallback<Permission>() {
+//
+//							public void onFailure(Throwable arg0) {
+//								Window.alert("Fehler beim Teilen des Kontakts!");
+//								dialog.hide();
+//							}
+//							public void onSuccess(Permission arg0) {
+//								if(arg0 != null) {
+//									Window.alert("Kontakt erfolgreich geteilt.");
+//									dialog.hide();
+//								}
+//								else {
+//									Window.alert("User ist der Owner des Kontakts!");
+//									dialog.hide();
+//								}
+//							}
+//						});
+//					}
+//				});
 			}
 		}
 	}
