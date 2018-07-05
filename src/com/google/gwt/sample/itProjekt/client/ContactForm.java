@@ -750,16 +750,17 @@ public class ContactForm extends VerticalPanel {
 			
 			/*Die ValueTextBox, in die man die neue Ausprägung eintragen kann. Sie wird nach der switch-case gesetzt */
 			ValueTextBox addValueTextBox = null;
+			addValueDBPanel.add(addValueTextBox);
 			
 			HorizontalPanel dbButtonsPanel=new HorizontalPanel();
 			addValueDBPanel.add(dbButtonsPanel);
 			
+			CloseButton closeButton = new CloseButton(addValueDB);
+			dbButtonsPanel.add(closeButton);
+			
 			Button addValueButton = new Button("Hinzufügen");
 			addValueButton.addStyleName("okbutton");
 			dbButtonsPanel.add(addValueButton);
-			
-			CloseButton closeButton = new CloseButton(addValueDB);
-			dbButtonsPanel.add(closeButton);
 			
 		
 			/*
@@ -799,7 +800,7 @@ public class ContactForm extends VerticalPanel {
 			}
 			
 			addValueTextBox = new ValueTextBox(identifier);
-			addValueDBPanel.add(addValueTextBox);
+			
 			
 			addValueButton.addClickHandler(new AddValueClickHandler(addValueDB, addValueTextBox,
 					((ValueTable) contactTable.getWidget(row, 1)), pid));
@@ -1002,7 +1003,7 @@ public class ContactForm extends VerticalPanel {
 		currentUser = ClientsideSettings.getUser();
 		
 		
-		
+	
 		
 		/*
 		 * Alle vordefinierten Eigenschaften werden aus der Datenbank ausgelesen und in einem Vektor gespeichert.
@@ -1018,6 +1019,24 @@ public class ContactForm extends VerticalPanel {
 				for (Property p : properties){
 					allPredefinedProperties.add(p);
 				}
+				
+				Label newPropertyLabel = new Label("Eigenschaft hinzufügen");
+				newPropertyLabel.addStyleName("newPropertyLabel");
+				
+				for (Property p : allPredefinedProperties) {
+					if(p.getType()!="Straße" && p.getType()!= "Hausnummer" && p.getType()!= "PLZ" && p.getType()!= "Wohnort") {
+					newPropertyListBox.addItem(p.getType());
+					}
+				}
+				newPropertyListBox.addItem("Anschrift");
+				newPropertyListBox.addItem("Sonstiges");	
+				
+				newPropertyPanel.add(newPropertyLabel);
+				newPropertyPanel.add(newPropertyListBox);
+				newPropertyPanel.addStyleName("propertyPanel");
+				newPropertyPanel.add(addNewPropertyButton);
+				
+				
 			}
 		});
 		
@@ -1049,6 +1068,7 @@ public class ContactForm extends VerticalPanel {
 		sexListBox.addItem("Sonstiges");
 		contactTable.setWidget(3, 1, sexListBox);		
 	
+		
 		/*
 		 *Die Buttons für das buttonPanel werden instantiiert, mit Stylenamen versehen und zum buttonPanel hinzugefügt
 		 */
@@ -1728,33 +1748,6 @@ public class ContactForm extends VerticalPanel {
 		if (c != null){
 			
 			contactToDisplay = c;
-			
-			
-			/*
-			 * Befüllen der Eigenschaften aus der Datenbank
-			 */
-			
-			
-			for (Property p : allPredefinedProperties) {
-				if(p.getType()!="Straße" && p.getType()!= "Hausnummer" && p.getType()!= "PLZ" && p.getType()!= "Wohnort") {
-				newPropertyListBox.addItem(p.getType());
-				}
-			}
-			newPropertyListBox.addItem("Anschrift");
-			newPropertyListBox.addItem("Sonstiges");	
-			
-			Label newPropertyLabel = new Label("Eigenschaft hinzufügen");
-			newPropertyLabel.addStyleName("newPropertyLabel");
-			newPropertyPanel.add(newPropertyLabel);
-			
-			newPropertyPanel.add(newPropertyListBox);
-			newPropertyPanel.addStyleName("propertyPanel");
-			newPropertyPanel.add(addNewPropertyButton);
-			
-			
-			
-			
-			
 			
 			
 			/*
