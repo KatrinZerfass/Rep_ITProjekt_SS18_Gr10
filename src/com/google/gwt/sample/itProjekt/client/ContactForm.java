@@ -1714,6 +1714,13 @@ public class ContactForm extends VerticalPanel {
 				});
 			}
 			
+			for(int c=0; c<newPropertyListBox.getItemCount(); c++) {
+				if (newPropertyListBox.getItemText(c) == ptype && ptype != "Sonstiges") {
+					newPropertyListBox.removeItem(c);
+					Window.alert(ptype + " aus der ListBox entfernt");
+				}
+			}
+			
 			
 
 		}
