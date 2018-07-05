@@ -12,15 +12,11 @@ import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
 import com.google.gwt.user.client.Window;
 
-/**
- * The Class ContactMapper.
- * 
- * @author Egor Krämer
- * @author Robert Mattheis
- */
+
 public class ContactMapper {
 	
-	/** Konstruktor für den ContactMapper (Singleton) 
+	/**
+	* Konstruktor für den ContactMapper (Singleton) 
 	* static weil Singleton. Einzige Instanz dieser Klasse
 	* 
 	* @author Egor Krämer
@@ -29,9 +25,9 @@ public class ContactMapper {
 	private static ContactMapper  contactmapper = null;
 	
 	/**
-	 * ContactMapper.
-	 *
 	 * Falls noch kein ContactMapper existiert wird ein neuen ContactMapper erstellt und gibt ihn zurück
+	 * 
+	 * @return erstmalig erstellter ContactMapper
 	 * 
 	 * @author Egor Krämer
 	 * @author Robert Mattheis
@@ -44,11 +40,10 @@ public class ContactMapper {
 		}
 	
 	/**
-	 * FindByID.
-	 *
 	 * Findet Contacts durch eine C_ID und speichert die dazugehörigen Werte (C_ID, firstName, lastName, gender und U_ID) in einem COntact Objekt ab und gibt dieses wieder
 	 * 
 	 * @param contact übergebenes Contact Objekt mit Attribut C_ID
+	 * @return Ein vollständiges Contact Objekt
 	 * 
 	 * @author Egor Krämer
 	 * @author Robert Mattheis
@@ -74,18 +69,18 @@ public class ContactMapper {
 		}
 		catch (SQLException e2){
 			e2.printStackTrace();
-//			return null;
+			return null;
 		}
 		return null;
 	}
 	
 	
 	/**
-	 * FindAll.
-	 *
 	 * Gibt alle Contact Objekte zurück welche mit C_ID, firstName, lastName, gender und U_ID befüllt sind
 	 * Hierfür holen wir C_ID, firstName, lastName, geder und U_ID aus der T_Contact Tabelle und speichern diese in einem Contact Objekt ab und fügen diese dem Vector hinzu
 	 * Diesen Vector befüllt mit Contacts geben wir zurück
+	 * 
+	 * @return Ein Vector voller Contact Objekte welche befüllt sind
 	 * 
 	 * @author Egor Krämer
 	 * @author Robert Mattheis
@@ -117,11 +112,11 @@ Vector<Contact> result = new Vector<Contact>();
 	}
 	
 	/**
-	 * FindAllUsers.
-	 *
 	 * Gibt alle Contact Objekte zurück welche mit C_ID, firstName, lastName, gender und U_ID befüllt sind und den IsUser flag auf true haben.
 	 * Hierfür holen wir C_ID, firstName, lastName, geder und U_ID aus der T_Contact Tabelle und speichern diese in einem Contact Objekt ab und fügen diese dem Vector hinzu
 	 * Diesen Vector befüllt mit Contacts geben wir zurück.
+	 * 
+	 * @return Ein Vector voller Contact Objekte welche befüllt sind
 	 * 
 	 * @author Egor Krämer
 	 * @author Robert Mattheis
@@ -153,12 +148,11 @@ Vector<Contact> result = new Vector<Contact>();
 	}
 	
 	/**
-	 * FindByName.
-	 *
 	 * Findet Contacts durch einen Namen und speichert die dazugehörigen Werte (C_ID, firstName, lastName, gender und U_ID) in einem Contact Objekt ab
 	 * und Speichert dieses Objekt im Vector ab und gibt diesen wieder
 	 * 
 	 * @param contact übergebenes Contact Objekt mit Attributen firstName und lastName
+	 * @return Ein Vector voller Contact Objekte welche befüllt sind
 	 * 
 	 * @author Egor Krämer
 	 * @author Robert Mattheis
@@ -191,13 +185,12 @@ Vector<Contact> result = new Vector<Contact>();
 	}
 	
 	/**
-	 * FindAllByUID.
-	 *
 	 * Findet alle Contacts die ein User erstellt hat durch seine U_ID
 	 * Alle Values werden aus T_Contact ausgelesen und in einem Contact Objekt gespeichert und einem Vector hinzugefügt und zurückgegeben
 	 * Gibt ein Vector voller Contact Objekte zurück welche ein User erstellt hat
 	 * 
 	 * @param user übergebenes User Objekt mit Attribut U_ID
+	 * @return Ein Vector voller Contact Objekte welche befüllt sind
 	 * 
 	 * @author Egor Krämer
 	 * @author Robert Mattheis
@@ -230,14 +223,13 @@ Vector<Contact> result = new Vector<Contact>();
 			}
 	
 	/**
-	 * Insert.
-	 *
 	 * Sucht nach der höchsten C_ID um diese um eins zu erhöhen und als neue C_ID zu nutzen
 	 * Befüllt T_Contact mit C_ID, firstName, lastName, gender, create_date, mod_date, U_ID
 	 * Ein Contact wird zurückgegeben
 	 *
 	 * @param contact übergebenes Contact Objekt mit Attributen C_ID, firstName, lastName und gender
 	 * @param user übergebenes User Objekt mit Attribut U_ID
+	 * @return Ein vollständiges Contact Objekt
 	 * 
 	 * @author Egor Krämer
 	 * @author Robert Mattheis
@@ -292,13 +284,12 @@ Vector<Contact> result = new Vector<Contact>();
 	
 	
 		/**
-		 * Update.
-		 *
 		 * Update von Veränderungen falls sich die firstName, lastName und/oder gender ändert
 		 * Falls Updates vorgenommen werden wird ein neuer mod_date gesetzt
 		 * Gibt ein Contact zurück
 		 * 
 		 * @param contact übergebenes Contact Objekt mit Attributen firstName, lastName, gender und C_ID
+		 * @return Ein vollständiges Contact Objekt
 		 * 
 		 * @author Egor Krämer
 		 * @author Robert Mattheis
@@ -339,8 +330,6 @@ Vector<Contact> result = new Vector<Contact>();
 		return contact;}
 		
 		/**
-		 * Delete.
-		 *
 		 * Entfernt alles aus T_Permission_Contact wo die C_ID der ID des übergebenen Objekts entspricht
 		 * Entfernt alles aus T_Value wo die C_ID der ID des übergebenen Objekts entspricht
 		 * Entfernt alles aus T_Property wo die C_ID der ID des übergebenen Objekts entspricht
@@ -415,13 +404,12 @@ Connection con = DBConnection.connection();
 		}
 		
 		/**
-		 * findAllByName.
-		 *
 		 * Findet alle C_ID, firstName, lastName, gender, U_ID, create_date und mod_date wo der firstName oder lastName so ähnlich ist wie der eingegebene String ist (name)
 		 * Befüllt das Contact Objekt mit den Attributen und fügt dieses Objekt dem Vector hinzu
 		 * Gibt ein Vector voller Contact Objekte zurück
 		 * 
 		 * @param name übergebener String name
+		 * @return Ein Vector voller Contact Objekte welche befüllt sind
 		 * 
 		 * @author Egor Krämer
 		 * @author Robert Mattheis
