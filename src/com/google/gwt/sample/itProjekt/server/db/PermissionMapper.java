@@ -510,7 +510,7 @@ public Vector <User> findAllParticipantsByCID(Contact contact){
 	Vector <User> result = new Vector <User>();		
 			try{
 				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT U_ID FROM T_Permission_Contact WHERE U_C_ID=" + contact.getId());
+				ResultSet rs = stmt.executeQuery("SELECT U_ID FROM T_Permission_Contact WHERE C_ID=" + contact.getId());
 				
 				while (rs.next()){									
 					result.addElement(UserMapper.userMapper().findByID(rs.getInt("U_ID")));
