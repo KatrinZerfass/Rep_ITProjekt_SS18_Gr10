@@ -1820,7 +1820,7 @@ public class ContactForm extends VerticalPanel {
 				firstnameTextBox.setEnabled(false);
 				lastnameTextBox.setEnabled(false);
 				sexListBox.setEnabled(false);
-				newPropertyPanel.setVisible(true);
+				newPropertyPanel.setVisible(false);
 			}
 			
 			/*
