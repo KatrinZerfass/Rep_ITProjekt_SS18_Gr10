@@ -329,8 +329,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 					
 					public void onSuccess (Vector<Contact> contacts) {
 						for (Contact c : contacts) {
-							contactsProvider.getList().add(c);
-							contactForm.disableRemoveContactButton();							
+							contactsProvider.getList().add(c);							
 						}
 					}
 				});
@@ -399,7 +398,6 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 							for (Contact c : contacts) {
 								contactsProvider.getList().add(c);
 							}
-							contactForm.disableRemoveContactButton();
 						}
 					});
 				
