@@ -459,35 +459,35 @@ public class ContactForm extends VerticalPanel {
 			isLocked = true;
 			
 			if(wasChanged) {
-				if(value.getPropertyid() == 6) { //die PropertyID 6 bezieht sich auf die Ausprägung "Straße"
-					/*
-					 * Wir der LockButton betätigt, welcher sich auf die Straße bezieht, so müssen folglich auch isShared der Ausprägungen
-					 * Hausnummer, PLZ und Wohnort neu gesetzt werden, da diese vier Ausprägungen immer zusammenhängen.	
-					 * Dazu wird der Vektor allValuesOfContact durchiteriert und nach den Ausprägungen der Anschrift durchsucht.
-					 */
-						for(int i= 0; i<allValuesOfContact.size(); i++) {
-							int pid = allValuesOfContact.get(i).getPropertyid();
-							
-							// || Straße||Hausnummer||   PLZ    || Wohnort
-							if(pid == 6 || pid == 7 || pid == 8 || pid ==9) {
-								editorAdministration.editValue(contactToDisplay, pid, allValuesOfContact.get(i), 
-												allValuesOfContact.get(i).getContent(), false, new AsyncCallback<Value>() {
-									
-									public void onFailure(Throwable t) {
-										Window.alert("Das Setzen deer Ausprägung zu \"Nicht geteilt\" ist fehlgeschlagen.");
-										
-									}
-									public void onSuccess(Value v) {
-										
-													
-									}
-								});
-							}
-						}			
-					}
-			
-				
-				else{ //es handelt sich um jede andere "normale" Ausprägung
+//				if(value.getPropertyid() == 6) { //die PropertyID 6 bezieht sich auf die Ausprägung "Straße"
+//					/*
+//					 * Wir der LockButton betätigt, welcher sich auf die Straße bezieht, so müssen folglich auch isShared der Ausprägungen
+//					 * Hausnummer, PLZ und Wohnort neu gesetzt werden, da diese vier Ausprägungen immer zusammenhängen.	
+//					 * Dazu wird der Vektor allValuesOfContact durchiteriert und nach den Ausprägungen der Anschrift durchsucht.
+//					 */
+//						for(int i= 0; i<allValuesOfContact.size(); i++) {
+//							int pid = allValuesOfContact.get(i).getPropertyid();
+//							
+//							// || Straße||Hausnummer||   PLZ    || Wohnort
+//							if(pid == 6 || pid == 7 || pid == 8 || pid ==9) {
+//								editorAdministration.editValue(contactToDisplay, pid, allValuesOfContact.get(i), 
+//												allValuesOfContact.get(i).getContent(), false, new AsyncCallback<Value>() {
+//									
+//									public void onFailure(Throwable t) {
+//										Window.alert("Das Setzen deer Ausprägung zu \"Nicht geteilt\" ist fehlgeschlagen.");
+//										
+//									}
+//									public void onSuccess(Value v) {
+//										
+//													
+//									}
+//								});
+//							}
+//						}			
+//					}
+//			
+//				
+//				else{ //es handelt sich um jede andere "normale" Ausprägung
 					editorAdministration.editValue(contactToDisplay, value.getPropertyid(), this.value, value.getContent(), false, new AsyncCallback<Value>() {
 				
 						public void onFailure(Throwable t) {
@@ -499,7 +499,7 @@ public class ContactForm extends VerticalPanel {
 						
 						}
 					});
-				}
+				//}
 			}
 		}
 		
@@ -1601,6 +1601,13 @@ public class ContactForm extends VerticalPanel {
 									contactTable.setWidget(3, 3, new ValueDisplay(new ValueTextBox("Geburtstag")));
 									((ValueDisplay) contactTable.getWidget(3, 3)).getWidget(0).setWidth("105px");
 									((ValueDisplay) contactTable.getWidget(3,3)).setValue(result);
+								
+									for(int c=0; c<newPropertyListBox.getItemCount(); c++) {
+										if (newPropertyListBox.getItemText(c) == ptype) {
+											newPropertyListBox.removeItem(c);
+											Window.alert(ptype + " aus der ListBox entfernt");
+										}
+									}
 								}
 							});
 						}
@@ -1652,6 +1659,8 @@ public class ContactForm extends VerticalPanel {
 								
 								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
 								contactTable.setWidget(row, 1, new ValueTable(pid));
+								
+								
 								
 							}
 						
@@ -1711,6 +1720,13 @@ public class ContactForm extends VerticalPanel {
 								((ValueDisplay) addressTable.getWidget(0, 2)).setValue(street, true);
 								//((DeleteValueButton) addressTable.getWidget(0,3)).setValue(street);
 								Window.alert("Adresse erfolgreich angelegt");
+								
+								for(int c=0; c<newPropertyListBox.getItemCount(); c++) {
+									if (newPropertyListBox.getItemText(c) == ptype) {
+										newPropertyListBox.removeItem(c);
+										Window.alert(ptype + " aus der ListBox entfernt");
+									}
+								}
 							}
 						});
 
@@ -1739,16 +1755,18 @@ public class ContactForm extends VerticalPanel {
 						
 						contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
 						contactTable.setWidget(row, 1, new ValueTable(pid));
+						
+						for(int c=0; c<newPropertyListBox.getItemCount(); c++) {
+							if (newPropertyListBox.getItemText(c) == ptype) {
+								newPropertyListBox.removeItem(c);
+								Window.alert(ptype + " aus der ListBox entfernt");
+							}
+						}
 					}
 				});
 			}
 			
-			for(int c=0; c<newPropertyListBox.getItemCount(); c++) {
-				if (newPropertyListBox.getItemText(c) == ptype && ptype != "Sonstiges") {
-					newPropertyListBox.removeItem(c);
-					Window.alert(ptype + " aus der ListBox entfernt");
-				}
-			}
+			
 			
 			
 
@@ -2121,20 +2139,23 @@ public class ContactForm extends VerticalPanel {
 						break;
 		
 				case 7:  // Hausnummer
-					
-						houseNrTextBox.setValue(allValuesOfContact.get(i));
+						if(houseNrTextBox != null) {
+							houseNrTextBox.setValue(allValuesOfContact.get(i));
+						}
 						break;
 						
 				
 				case 8:  // PLZ
-					
-						plzTextBox.setValue(allValuesOfContact.get(i));
+						if(plzTextBox != null) {
+							plzTextBox.setValue(allValuesOfContact.get(i));
+						}
 						break;
 				
 				
 				case 9:  // Wohnort
-					
-						cityTextBox.setValue(allValuesOfContact.get(i));
+						if(cityTextBox != null) {
+							cityTextBox.setValue(allValuesOfContact.get(i));
+						}
 						break;
 						
 				
