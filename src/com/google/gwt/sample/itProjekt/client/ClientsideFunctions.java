@@ -425,6 +425,25 @@ public abstract class ClientsideFunctions {
 	        show();
 		}
 		
+		public safetyBox(String dbLabel) {
+			okButton = new okButton();
+			dialogBoxLabel.setText(dbLabel);
+			
+			panel = new VerticalPanel();
+	        panel.setHeight("100");
+	        panel.setWidth("300");
+	        panel.setSpacing(10);
+	        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+	        panel.add(dialogBoxLabel);
+			hpanel = new HorizontalPanel();
+	        hpanel.add(okButton);
+	        panel.add(hpanel);
+	        
+	        setWidget(panel);
+	        
+	        show();
+		}
+		
 		public Button getCloseButton() {
 			return this.closeButton;
 		}
@@ -452,6 +471,11 @@ public abstract class ClientsideFunctions {
 			this.addStyleName("closebutton");
 		}
 		
+		public CloseButton(String text) {
+			this.setText(text);
+			this.addStyleName("closebutton");
+		}
+		
 		private class CloseDBClickHandler implements ClickHandler{
 			DialogBox db;
 	
@@ -471,6 +495,11 @@ public abstract class ClientsideFunctions {
 		
 		public okButton(DialogBox db) {
 			this.db = db;
+			this.setText("OK");
+			this.addStyleName("okbutton");
+		}
+		
+		public okButton() {
 			this.setText("OK");
 			this.addStyleName("okbutton");
 		}
