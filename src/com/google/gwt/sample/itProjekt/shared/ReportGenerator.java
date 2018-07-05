@@ -90,7 +90,7 @@ public interface ReportGenerator extends RemoteService{
 	 * @return Alle angemeldeten Nutzer all users
 	 * @throws IllegalArgumentException the illegal argument exception
 	 */
-	public abstract Vector<User> getAllUsers() throws IllegalArgumentException;
+	public abstract Vector<String> getAllUserSuggestions(User user) throws IllegalArgumentException;
 
 	/**
 	 * Auslesen der vordefinierten Eigenschaften.

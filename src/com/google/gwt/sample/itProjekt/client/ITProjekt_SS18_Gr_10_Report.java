@@ -95,20 +95,16 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
     		
     		setOracle(inputOracle);
     						
-    		reportGenerator.getAllUsers(new AsyncCallback<Vector<User>>() {
+    		reportGenerator.getAllUserSuggestions(user, new AsyncCallback<Vector<String>>() {
     			public void onFailure(Throwable arg0) {
     				Window.alert("Fehler beim holen aller User in der InputDialogBox");
     			}
     			@Override
-    			public void onSuccess(Vector<User> arg0) {
-    				
-    				for(User loopUser : arg0) {
-    					if (!loopUser.equals(user)) {
-    						getOracle().add(loopUser.getEmail());
-    					}
-    				}
-    				setSuggestBox(new SuggestBox(getOracle()));
-    			
+    			public void onSuccess(Vector<String> arg0) {
+					for(String s : arg0) {
+						getOracle().add(s);
+					}
+    				setSuggestBox(new SuggestBox(getOracle()));		
     			}
     		});
     	}		

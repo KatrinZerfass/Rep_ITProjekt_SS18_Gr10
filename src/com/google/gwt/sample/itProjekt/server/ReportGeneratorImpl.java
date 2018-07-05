@@ -348,6 +348,10 @@ public AllContactInformationOfContactReport generateAllContactInformationOfConta
 		return admin.getAllUsers();
 	}
 	
+	public Vector<String> getAllUserSuggestions(User user){
+		return admin.getAllUserSuggestions(user);
+	}
+	
 	public Vector<User> getAllParticipants(Contact c){
 		return this.admin.getAllParticipantsOfContact(c);
 	}

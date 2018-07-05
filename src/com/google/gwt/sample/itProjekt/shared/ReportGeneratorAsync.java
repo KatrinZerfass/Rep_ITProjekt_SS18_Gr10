@@ -38,11 +38,11 @@ public interface ReportGeneratorAsync {
 
 	void generateAllValuesOfContactReport(Contact contact, User user, AsyncCallback<AllValuesOfContactReport> callback);
 
-	void getAllUsers(AsyncCallback<Vector<User>> asyncCallback);
-
 	void getAllPredefinedPropertiesOfReport(AsyncCallback<Vector<Property>> callback);
 
 	void generateAllContactInformationOfContactReport(Contact contact, User user,
 			AsyncCallback<AllContactInformationOfContactReport> callback);
+
+	void getAllUserSuggestions(User user, AsyncCallback<Vector<String>> callback);
 
 }
