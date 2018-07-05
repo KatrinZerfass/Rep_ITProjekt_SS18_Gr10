@@ -21,9 +21,17 @@ public class ContactCell extends AbstractCell<Contact> {
 			return;
 		}
 		
+		
 		sb.appendHtmlConstant("<div id =\"contactCell\">");
-		if(value.getOwner() == ClientsideSettings.getUser().getId()) {
-			sb.appendHtmlConstant("<img src=\"owner_symbol.png\" id= \"itemSymbol\">");	
+		if(ClientsideFunctions.isOwner(value, ClientsideSettings.getUser())) {
+//		if(value.getOwner() == ClientsideSettings.getUser().getId()) {
+			if(value.getIsUser()) {
+				sb.appendHtmlConstant("<img src=\"userContact_Symbol.png\" id= \"itemSymbol\">");	
+				
+			}
+			else{
+				sb.appendHtmlConstant("<img src=\"owner_symbol.png\" id= \"itemSymbol\">");	
+			}
 		}else {
 			sb.appendHtmlConstant("<img src=\"shared_symbol.png\" id= \"itemSymbol\">");
 		}
