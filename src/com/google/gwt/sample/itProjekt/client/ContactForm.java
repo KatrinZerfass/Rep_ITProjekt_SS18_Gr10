@@ -265,8 +265,10 @@ public class ContactForm extends VerticalPanel {
 		 * Die Methode enableButton() wird aufgerufen, wenn der aktuelle Nutzer auch der Eigentümer des Kontakts ist.
 		 */
 		public void enableButtons() {
-			this.deleteValueButton.setEnabled(true);
-			this.lockButton.setEnabled(true);
+//			this.deleteValueButton.setEnabled(true);
+//			this.lockButton.setEnabled(true);
+			this.deleteValueButton.setVisible(true);
+			this.lockButton.setVisible(true);
 		}
 		
 		
@@ -274,8 +276,10 @@ public class ContactForm extends VerticalPanel {
 		 * Die Methode disableButton() wird aufgerufen, wenn der aktuelle Nutzer nur Teilhaber des Kontakts ist.
 		 */
 		public void disableButtons() {
-			this.deleteValueButton.setEnabled(false);
-			this.lockButton.setEnabled(false);
+//			this.deleteValueButton.setEnabled(false);
+//			this.lockButton.setEnabled(false);
+			this.deleteValueButton.setVisible(false);
+			this.lockButton.setVisible(false);
 		}
 		
 		
@@ -425,7 +429,8 @@ public class ContactForm extends VerticalPanel {
 			 */
 			this.getUpFace().setImage(lockUnlocked);
 			
-			this.setEnabled(false);
+			//this.setEnabled(false);
+			this.setVisible(false);
 			
 			/*
 			 * Es wird dem Button ein ClickHandler hinzugefügt, welcher die referenzierte Ausprägung auf "Nicht geteilt" bzw. "Geteilt" setzt. 
@@ -556,7 +561,8 @@ public class ContactForm extends VerticalPanel {
 			
 			this.addStyleName("deleteValueButton");
 			
-			this.setEnabled(false);
+			//this.setEnabled(false);
+			this.setVisible(false);
 			
 			this.addClickHandler(new ClickHandler() {
 				public void onClick (ClickEvent event) {
@@ -715,7 +721,8 @@ public class ContactForm extends VerticalPanel {
 			
 			
 		//wieder zurück kommentieren!
-			this.setEnabled(true);
+			//this.setEnabled(true);
+			this.setVisible(true);
 			//TODO: ?
 			
 					
@@ -1815,8 +1822,10 @@ public class ContactForm extends VerticalPanel {
 		firstnameTextBox.setEnabled(true);
 		lastnameTextBox.setEnabled(true);
 		sexListBox.setEnabled(true);
-		saveChangesButton.setEnabled(true);
-		removeContactFromContactListButton.setEnabled(true);
+	//	saveChangesButton.setEnabled(true);
+		saveChangesButton.setVisible(true);
+	//	removeContactFromContactListButton.setEnabled(true);
+		removeContactFromContactListButton.setVisible(true);
 		
 		
 	
@@ -1833,7 +1842,8 @@ public class ContactForm extends VerticalPanel {
 		
 			
 			if(!ClientsideFunctions.isOwner(contactToDisplay, currentUser)) {
-				saveChangesButton.setEnabled(false);
+			//	saveChangesButton.setEnabled(false);
+				saveChangesButton.setVisible(false);
 			//	removeContactFromContactListButton.setEnabled(false);
 				firstnameTextBox.setEnabled(false);
 				lastnameTextBox.setEnabled(false);
@@ -2242,7 +2252,9 @@ public class ContactForm extends VerticalPanel {
 					 */
 					if (ClientsideFunctions.isOwner(contactToDisplay, currentUser)) {
 						vt.getValueDisplay(vtRow).enableButtons();
-						vp.getAddValueButton().setEnabled(true);
+					//	vp.getAddValueButton().setEnabled(true);
+						vp.getAddValueButton().setVisible(true);
+						
 						if(allValuesOfContact.get(i).getIsShared() == true){
 							vt.getValueDisplay(vtRow).setLockButtonTo(true);
 						}else {
@@ -2251,7 +2263,9 @@ public class ContactForm extends VerticalPanel {
 					}
 					else {
 						vt.getValueDisplay(vtRow).disableButtons();
-						vp.getAddValueButton().setEnabled(false);
+					//	vp.getAddValueButton().setEnabled(false);
+						vp.getAddValueButton().setVisible(false);
+						
 						
 					}
 
@@ -2355,7 +2369,7 @@ public class ContactForm extends VerticalPanel {
 	}
 	
 	public void disableRemoveContactButton() {
-		this.removeContactFromContactListButton.setEnabled(false);
+		this.removeContactFromContactListButton.setVisible(false);
 	}
 	
 }
