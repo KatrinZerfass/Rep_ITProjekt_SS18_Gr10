@@ -1098,7 +1098,7 @@ public class ContactForm extends VerticalPanel {
 				failed.getOkButton().addCloseDBClickHandler(failed);
 			}
 			else {
-				inputDB = new ClientsideFunctions.InputDialogBox(new MultiWordSuggestOracle(), "Bitte geben Sie die Email-Adresse des Nutzers ein mit dem Sie den Kontakt teilen möchten.");
+				inputDB = new ClientsideFunctions.InputDialogBox(new MultiWordSuggestOracle(), "Bitte geben Sie den Nutzer ein, mit dem Sie den Kontakt teilen möchten.");
 				/*
 				 * Über eine Instanz der inneren Klasse EmailDialogBox können Objekte mit anderen Nutzern geteilt werden.
 				 */
@@ -1562,14 +1562,27 @@ public class ContactForm extends VerticalPanel {
 							
 							public void onSuccess(Property result) {
 								
-								ptype = result.getType();
-								pid = result.getId();
+								if(result == null) {
+									final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Diese Eigenschaft haben Sie bereits angelegt!", new ClientsideFunctions.OkButton());
+									failed.getOkButton().addClickHandler(new ClickHandler() {
+										
+										@Override
+										public void onClick(ClickEvent click) {
+											failed.hide();
+											return;
+										}
+									});
+								}else {
 								
-								contactTable.setWidget(row, 0, new ValuePanel(pid, row, ptype + ": "));
-								contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-								
-								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-								contactTable.setWidget(row, 1, new ValueTable(pid));
+									ptype = result.getType();
+									pid = result.getId();
+									
+									contactTable.setWidget(row, 0, new ValuePanel(pid, row, ptype + ": "));
+									contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+									
+									contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
+									contactTable.setWidget(row, 1, new ValueTable(pid));
+								}
 							}				
 						});
 					}
