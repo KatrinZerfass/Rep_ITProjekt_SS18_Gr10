@@ -1188,19 +1188,26 @@ public class ContactForm extends VerticalPanel {
 				failed.getOkButton().addCloseDBClickHandler(failed);
 			}
 			else{
-				editorAdministration.deleteContact(contactToDisplay, ClientsideFunctions.isOwner(contactToDisplay, currentUser), currentUser, new AsyncCallback<Void>() {
-					public void onFailure(Throwable arg0) {
-						Window.alert("Fehler beim Löschen des Kontakts!");
-					}
-					public void onSuccess(Void arg0){
-						final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Kontakt erfolgreich gelöscht!", new ClientsideFunctions.OkButton());
-						failed.getOkButton().addClickHandler(new ClickHandler() {
-							
-							@Override
-							public void onClick(ClickEvent arg0) {
+				final ClientsideFunctions.popUpBox safety = new ClientsideFunctions.popUpBox("Sind Sie sicher dass Sie den Kontakt löschen möchten?", new ClientsideFunctions.OkButton(), new ClientsideFunctions.CloseButton());
+				safety.getCloseButton().addCloseDBClickHandler(safety);
+				safety.getOkButton().addClickHandler(new ClickHandler() {
+					
+					public void onClick(ClickEvent click) {
+						editorAdministration.deleteContact(contactToDisplay, ClientsideFunctions.isOwner(contactToDisplay, currentUser), currentUser, new AsyncCallback<Void>() {
+							public void onFailure(Throwable arg0) {
+								Window.alert("Fehler beim Löschen des Kontakts!");
+							}
+							public void onSuccess(Void arg0){
+								final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Kontakt erfolgreich gelöscht!", new ClientsideFunctions.OkButton());
+								failed.getOkButton().addClickHandler(new ClickHandler() {
+									
+									@Override
+									public void onClick(ClickEvent arg0) {
 
-								clctvm.removeContactOfContactList(clctvm.getSelectedContactList(), contactToDisplay);
-								failed.hide();
+										clctvm.removeContactOfContactList(clctvm.getSelectedContactList(), contactToDisplay);
+										failed.hide();
+									}
+								});
 							}
 						});
 					}
@@ -1415,11 +1422,12 @@ public class ContactForm extends VerticalPanel {
 					
 					//clearContactForm();
 					
-					ClientsideFunctions.popUpBox safety = new ClientsideFunctions.popUpBox("Siend Sie sicher dass sie den Kontakt aus der Liste entfernen möchten?", new ClientsideFunctions.OkButton(), new ClientsideFunctions.CloseButton());
+					final ClientsideFunctions.popUpBox safety = new ClientsideFunctions.popUpBox("Siend Sie sicher dass sie den Kontakt aus der Liste entfernen möchten?", new ClientsideFunctions.OkButton(), new ClientsideFunctions.CloseButton());
 					safety.getCloseButton().addCloseDBClickHandler(safety);
 					safety.getOkButton().addClickHandler(new ClickHandler() {
 						
 						public void onClick(ClickEvent click) {
+							safety.hide();
 							editorAdministration.removeContactFromContactList(clctvm.getSelectedContactList(), contactToDisplay, new AsyncCallback<ContactList>() {
 								@Override
 								public void onFailure(Throwable arg0) {	

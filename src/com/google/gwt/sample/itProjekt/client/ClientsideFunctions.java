@@ -39,6 +39,8 @@ public abstract class ClientsideFunctions {
 		}
 		
 		if(text.contains("'") || text.contains("\"") || text.contains(";")) {
+			ClientsideFunctions.popUpBox signs = new ClientsideFunctions.popUpBox("Die Zeichen: ' \" und ; können nicht verwendet werden.", new CloseButton());
+			signs.getCloseButton().addCloseDBClickHandler(signs);
 			return false;
 		}
 		
@@ -264,8 +266,6 @@ public abstract class ClientsideFunctions {
 	        ok.addStyleName("okbutton");
 	        close.addStyleName("closebutton");
 	        //this.setPopupPosition(500, 200);
-
-			Window.alert("InputDialogBox instanziert");
 			
 			setText("Eingabe");
 			setAnimationEnabled(true);
@@ -308,7 +308,6 @@ public abstract class ClientsideFunctions {
 				@Override
 				public void onSuccess(Vector<String> arg0) {
 					
-					Window.alert("oracle size: " + arg0.size());
 					for(String s : arg0) {
 						getOracle().add(s);
 					}

@@ -320,12 +320,11 @@ Vector<Contact> result = new Vector<Contact>();
 				+ "mod_date ='" 
 				+ s
 				+ "' WHERE C_ID =" + contact.getId());
-				System.out.println("update complete");
+				
 			}
 		
 		catch (SQLException e2){
 			e2.printStackTrace();
-			System.out.println("catch blok");
 			return contact;
 		}
 		return contact;}
