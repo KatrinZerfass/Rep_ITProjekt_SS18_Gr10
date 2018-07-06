@@ -252,7 +252,9 @@ public class ValueMapper {
 				c.setId(ValueMapper.valueMapper().findContactByVID(value).getId());
 				
 				
-				if(ValueMapper.valueMapper().findAllByPID(p,c).size() < 1 && ValueMapper.valueMapper().findContactByVID(value).getId() != 20000000 ){
+				
+				
+				if(ValueMapper.valueMapper().findAllByPID(p,c).size() < 1 && PropertyMapper.propertyMapper().findByID(p).getContactID() != 20000000 ){
 					
 					PropertyMapper.propertyMapper().delete(p);
 				}

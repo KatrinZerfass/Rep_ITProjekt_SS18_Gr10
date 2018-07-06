@@ -423,6 +423,8 @@ public Vector<ContactList> getAllContactListsByUID(User user){
 			return result;
 		}
 
+
+
 /**
  * Sucht nach allen ContactLists die einem User zur Verfügung stehen
  * Hierfür suchen wir nach allen srcU_ID die der ID des User Objektes entsprechen in der T_Permission_Contactlist
@@ -492,7 +494,7 @@ public User getSourceUserByUIDAndCID(User user, Contact contact){
 			return user;
 		}
 /**
- * Sucht nach den Usern welche an einen Contact geteilt wurden
+ * Sucht nach den Usern welchen ein Contact geteilt wurde
  * Hierfür suchen wir nach allen U_ID die der C_ID der ID des contact Objekts in der T_Permission_Contact
  * und speichern die gefundene U_ID in ein User Objekt
  * Durch den Aufruf der findByID im UserMapper wird das User Objekt vollständig befüllt
@@ -521,6 +523,35 @@ public Vector <User> findAllParticipantsByCID(Contact contact){
 			}
 			return result;
 		}
-
+/**
+ * Sucht nach den Usern welchen eine ContactListe geteilt wurde
+ * Hierfür suchen wir nach allen U_ID die der CL_ID der ID des contact Objekts in der T_Permission_Contactlist
+ * und speichern die gefundene U_ID in ein User Objekt
+ * Durch den Aufruf der findByID im UserMapper wird das User Objekt vollständig befüllt
+ * Die User schreiben wir in ein Vektor. Zum Schluss geben wir den Vektor zurück
+ * 
+ * @param contact übergebenes Contact Objekt mit Attribut CL_ID
+ * @return Ein Vector voller User Objekte welche befüllt sind
+ * 
+ * @author Egor Krämer
+ * @author Robert Mattheis
+ */
+public Vector <User> findAllParticipantsByCLID(ContactList contactlist){
+	
+	Connection con = DBConnection.connection();
+	Vector <User> result = new Vector <User>();		
+			try{
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT U_ID FROM T_Permission_Contactlist WHERE CL_ID=" + contactlist.getId());
+				
+				while (rs.next()){									
+					result.addElement(UserMapper.userMapper().findByID(rs.getInt("U_ID")));
+				}				
+			}catch(SQLException e2){
+				e2.printStackTrace();
+				return result;
+			}
+			return result;
+		}
 
 }

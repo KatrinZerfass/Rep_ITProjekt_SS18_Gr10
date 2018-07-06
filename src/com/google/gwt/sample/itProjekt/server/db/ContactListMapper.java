@@ -12,6 +12,7 @@ import com.google.gwt.sample.itProjekt.shared.bo.Permission;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
 
 
+
 public class ContactListMapper {
 	
 	/** 
@@ -385,7 +386,17 @@ Connection con = DBConnection.connection();
 				+ ", " 
 				+ contact.getId() 
 				+ ")") ;
-						
+			
+			
+				Permission p = new Permission();
+				Vector<User> participants = new Vector<User>();
+				participants = PermissionMapper.permissionMapper().findAllParticipantsByCLID(contactlist);
+				for(User u:participants){
+				p.setShareableObjectID(contactlist.getId());
+				p.setParticipantID(u.getId());
+				p.setSourceUserID(contactlist.getOwner());
+				PermissionMapper.permissionMapper().shareContactList(p);
+				}
 				return contactlist;	
 				
 			}

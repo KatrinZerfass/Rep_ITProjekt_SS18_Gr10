@@ -302,7 +302,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		
 		return cMapper.findAllByName(name);
 	}
-	
+
 	public Vector<Contact> getAllSharedContactsOfContactList(ContactList contactlist, User user)
 			throws IllegalArgumentException {
 		Vector<Contact> allContactsInCL = getAllContactsOfContactList(contactlist);
@@ -547,7 +547,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	
 	public Property getPropertyByType(String type, Contact contact) throws IllegalArgumentException {
 		
-		Contact defaultContact = new Contact();
+		Contact defaultContact = null;
 		
 		if (contact == null) {
 			defaultContact = new Contact();
