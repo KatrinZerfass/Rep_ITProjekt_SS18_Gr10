@@ -346,50 +346,7 @@ Vector<Contact> result = new Vector<Contact>();
 		public void delete (Contact contact){
 Connection con = DBConnection.connection();
 
-			try{
 	
-				Statement stmt2 = con.createStatement();
-				stmt2.executeUpdate("DELETE FROM T_Permission_Contact WHERE C_ID =" +contact.getId());
-			}
-
-			catch (SQLException e2){
-				e2.printStackTrace();
-
-			}
-			
-			try{
-				
-				Statement stmt = con.createStatement();
-				stmt.executeUpdate("DELETE FROM T_Value WHERE C_ID =" +contact.getId());
-			}
-		
-		catch (SQLException e2){
-			e2.printStackTrace();
-			
-		}
-			
-			try{
-				
-				Statement stmt3 = con.createStatement();
-				stmt3.executeUpdate("DELETE FROM T_Property WHERE C_ID =" +contact.getId());
-			}
-		
-		catch (SQLException e2){
-			e2.printStackTrace();
-			
-		}
-			try{
-				
-				Statement stmt = con.createStatement();
-				stmt.executeUpdate("DELETE FROM T_Contact_Contactlist WHERE C_ID =" +contact.getId());
-			}
-		
-		catch (SQLException e2){
-			e2.printStackTrace();
-			
-		}
-				
-			
 			try{
 				
 				Statement stmt = con.createStatement();
