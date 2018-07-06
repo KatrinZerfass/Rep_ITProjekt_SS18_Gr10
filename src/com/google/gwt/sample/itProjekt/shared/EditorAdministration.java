@@ -512,4 +512,6 @@ public interface EditorAdministration extends RemoteService{
 	 * @throws IllegalArgumentException
 	 */
 	public Value createAddress(String street, String housenumber, String zip, String city, Contact contact) throws IllegalArgumentException;
+
+	public Vector<Contact> getContactsOfUserWithDefaultProperty(User user, Property property) throws IllegalArgumentException;
 }
