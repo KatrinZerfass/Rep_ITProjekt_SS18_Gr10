@@ -607,4 +607,20 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		}
 		return result;
 	}
+
+
+	@Override
+	public String getFullNameOfUser(User user) throws IllegalArgumentException {
+		
+		Vector<Contact> contacts = getAllOwnedContactsOfUser(user.getEmail());
+		String result = null;
+		
+		for(Contact c : contacts) {
+			if (c.getIsUser()) {
+				result = (c.getFirstname() + " " + c.getLastname());
+					return result;
+			}
+		}
+		return result;
+	}
 }
