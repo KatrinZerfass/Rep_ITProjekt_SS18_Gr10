@@ -1888,13 +1888,13 @@ public class ContactForm extends VerticalPanel {
 			 * Das Geschlecht des Kontaktes wird abgefragt und gesetzt.
 			 */
 			if (contactToDisplay.getSex() == "m") {
-				sexListBox.setItemSelected(0, true);
-			}
-			else if(contactToDisplay.getSex() == "f"){
 				sexListBox.setItemSelected(1, true);
 			}
-			else if(contactToDisplay.getSex() == "o") {
+			else if(contactToDisplay.getSex() == "f"){
 				sexListBox.setItemSelected(2, true);
+			}
+			else if(contactToDisplay.getSex() == "o") {
+				sexListBox.setItemSelected(3, true);
 			}
 			sexListBox.setEnabled(false);
 			

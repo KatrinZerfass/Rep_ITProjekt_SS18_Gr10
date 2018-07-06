@@ -104,14 +104,12 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 			}
 
 			public void onSuccess(Boolean result) {
-				Window.alert("isUserKnow: " + result);
 				if (result) {
 					editorAdministration.getUser(loginInfo.getEmailAddress(), new AsyncCallback<User>() {
 						public void onFailure(Throwable arg0) {
 							Window.alert("AsyncCallback fehlgeschlagen: getUser");
 						}
 						public void onSuccess(User arg0) {
-							Window.alert("getUser() erfolgreich");
 							ClientsideSettings.setUser(arg0);
 							user = arg0;
 							loadApplication();
@@ -120,7 +118,6 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 				}
 				
 				else {
-					Window.alert("springt in else");
 					createAccountBox = new ClientsideFunctions.InputDialogBox(loginInfo.getEmailAddress());
 					
 					createAccountBox.getOKButton().addClickHandler(new ClickHandler() {
