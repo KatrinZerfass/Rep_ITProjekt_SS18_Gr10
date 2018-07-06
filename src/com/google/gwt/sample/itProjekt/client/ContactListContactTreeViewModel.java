@@ -119,18 +119,32 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	/** Getter und Setter */ 
 	
 	/**
+	 * Setzen der Kontaktformulars
 	 * 
-	 * @param cf
+	 * @param Kontaktformular
 	 */
 	
 	public void setContactForm(ContactForm cf) {
 		contactForm = cf;
 	}
-
+	
+	
+	/**
+	 * Auslesen der selektierten Kontaktliste.
+	 * 
+	 * @return selektierte Kontaktliste  
+	 */
 	
 	public ContactList getSelectedContactList() {
 		return selectedContactList;
 	}
+	
+	/**
+	 * Kontaktliste als selektierte Kontaktliste setzen. 
+	 * 
+	 * @param die zu selektierende Kontaktliste
+	 */
+
 	
 	public void setSelectedContactList (ContactList cl) {
 		selectedContactList = cl;
@@ -139,9 +153,21 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		
 	}
 	
+	/**
+	 * Auslesen des selektierten Kontakts.
+	 * 
+	 * @return selektierter Kontakt
+	 */
+	
 	public Contact getSelectedContact() {
 		return selectedContact;
 	}
+	
+	/**
+	 * Kontakt als selektierten Kontakt setzen. 
+	 * 
+	 * @param der zu setzende Kontakt
+	 */
 
 	public void setSelectedContact(Contact c) {
 		selectedContact = c;
@@ -149,9 +175,21 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		
 	}
 	
+	/**
+	 * Auslesen der 'Meine Kontaktliste'. 
+	 * 
+	 * @return meine Kontaktliste
+	 */
+	
 	public ContactList getMyContactsContactList() {
 		return this.myContactsContactList;
 	}
+	
+    /**
+     * Kontaktliste als 'Meine Kontaktliste' setzen. 
+     * 
+     * @param die zu setzende Kontaktliste
+     */
 
 	public void setMyContactsContactList(ContactList cl) {
 		myContactsContactList = cl;
@@ -167,7 +205,9 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	
 	
 	/**
-	 * Eine neu erstellte Kontaktliste wird dem contactListDataProvider hinzugefügt und selektiert.  
+	 * Eine neu erstellte Kontaktliste wird dem contactListDataProvider hinzugefügt und selektiert.
+	 * 
+	 * @param die neu erstellte Kontaktliste
 	 */
 	public void addContactList(ContactList cl) {
 		contactListDataProvider.getList().add(cl);
@@ -177,8 +217,9 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	
 	/**
 	 * Beim Löschen der Kontaktliste wird die selektierte Liste aus dem contactListDataProvider entfernt und die 
-	 * Verknüpfung zwischen der Kontaktliste und dem ListDataProvider aufgelöst. 
-	 * @param cl
+	 * Verknüpfung zwischen der Kontaktliste und dem ListDataProvider aufgelöst.
+	 *  
+	 * @param cl die selektierte Kontaktliste
 	 */
 	
 	public void removeContactList(ContactList cl) {
@@ -187,6 +228,12 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 			contactDataProviders.remove(cl);
 		}
 	}
+	
+	/**
+	 * Ein bereits bestehender Kontakt wird einer Kontaktliste hinzugefügt. 
+	 * @param cl Kontaktliste, zu welcher der Kontakt hinzugefügt wird  
+	 * @param c	 der ausgewählte Kontakt
+	 */
 	
 	
 	public void addContactOfContactList(ContactList cl, Contact c) {
@@ -202,6 +249,12 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		
 	}
 	
+	/**
+	 * Ein selektierter Kontakt wird aus der selektierten Kontakliste gelöscht. 
+	 * @param cl die selektierte Kontaktliste
+	 * @param contact der selektierte Kontakt 
+	 */
+	
 	public void removeContactOfContactList(ContactList cl, Contact contact) {
 		if (!contactDataProviders.containsKey(cl)) {
 			return;
@@ -210,6 +263,12 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		selectionModel.setSelected(cl, true);	
 		
 	}
+	
+	/**
+	 * Das Kontaktobjekt im Cellbrowser wird nach Veränderungen in den Eigenschaften aktualisiert. 
+	 * 
+	 * @param contact Kontakt der verändert wurde 
+	 */
 	
 	public void updateContact(Contact contact){							
 		editorAdministration.getContactByID(contact.getId(), new AsyncCallback<Contact>() {			
@@ -227,6 +286,13 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 			}	
 		});
 	}
+	
+	
+	/**
+	 * 
+	 * @param cl
+	 * @param contacts
+	 */
 	
 	
 	public void addContactOfSearchResultList(ContactList cl, Vector<Contact> contacts) {
