@@ -215,10 +215,9 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		cellBrowser.setHeight("100%");
 		cellBrowser.setWidth("100%");
 		cellBrowser.setAnimationEnabled(true);
-		cellBrowser.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
-		
+		cellBrowser.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);		
 		RootPanel.get("Navigator").add(cellBrowser);
-		
+		cellBrowser.getRootTreeNode().setChildOpen(0, true);
 
 	  }
 	  
