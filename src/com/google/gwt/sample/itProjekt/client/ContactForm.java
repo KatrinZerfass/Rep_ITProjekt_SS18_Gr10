@@ -545,7 +545,7 @@ public class ContactForm extends VerticalPanel {
 								editorAdministration.deleteValue(allValuesOfContact.get(i), new AsyncCallback<Void>() {
 									public void onFailure(Throwable arg0) {}; {};
 									public void onSuccess(Void arg0) {}; {
-										final ClientsideFunctions.popUpBox deleted = new ClientsideFunctions.popUpBox("Value gelöscht", new ClientsideFunctions.okButton());
+										final ClientsideFunctions.popUpBox deleted = new ClientsideFunctions.popUpBox("Value gelöscht", new ClientsideFunctions.OkButton());
 										deleted.getOkButton().addClickHandler(new ClickHandler() {
 											
 											@Override
@@ -578,7 +578,7 @@ public class ContactForm extends VerticalPanel {
 							public void onFailure(Throwable t) {};{};
 							public void onSuccess(Void result) {}; 
 							{
-								final ClientsideFunctions.popUpBox deleted = new ClientsideFunctions.popUpBox("Value gelöscht", new ClientsideFunctions.okButton());
+								final ClientsideFunctions.popUpBox deleted = new ClientsideFunctions.popUpBox("Value gelöscht", new ClientsideFunctions.OkButton());
 								deleted.getOkButton().addClickHandler(new ClickHandler() {
 									
 									@Override
