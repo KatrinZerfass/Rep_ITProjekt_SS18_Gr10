@@ -93,16 +93,17 @@ h1 {
 	color: white;
 }
 
-.searchlabel {
-	padding: 11px 13px;
+.valuehead{
+    background: #44BB91;
+    padding: 8px;
+	color: white;
 }
-
+	
 .searchheading{
 	line-height: 1.5;
     margin: 1px 21px 12px 13px;
     width: 910px;
-    }
-
+}
 
 .gwt-TextBox {
 	margin: 0px 25px 14px 0px;
@@ -305,4 +306,8 @@ h1 {
 
 .panel{
 	margin:7px 0px;
+}
+
+.searchlabel {
+	margin: 9px 13px;
 }

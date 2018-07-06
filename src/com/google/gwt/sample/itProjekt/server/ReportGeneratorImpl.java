@@ -91,7 +91,12 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 			CompositeParagraph header=new CompositeParagraph();
 			
-			header.addSubParagraph(new SimpleParagraph("Alle Kontakte des Nutzers: " + user.getEmail()));
+			Vector<User> owneru=new Vector<User>();
+			owneru.add(user);
+			Vector<String> exactNameOfOwner=this.admin.getFullNamesOfUsers(owneru);
+			for (String s: exactNameOfOwner){
+				header.addSubParagraph(new SimpleParagraph("Alle Kontakte des Nutzers: " + s));
+			}
 			
 			report.setHeaderData(header);
 						
@@ -129,8 +134,21 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		
 		CompositeParagraph header=new CompositeParagraph();
 		
-		header.addSubParagraph(new SimpleParagraph("Angemeldeter Nutzer: " + owner.getEmail()));
-		header.addSubParagraph(new SimpleParagraph("Gesuchter Nutzer: " + receiver.getEmail()));
+		Vector<User> owneru=new Vector<User>();
+		owneru.add(owner);
+		Vector<String> exactNameOfOwner=this.admin.getFullNamesOfUsers(owneru);
+		for (String s: exactNameOfOwner){
+			header.addSubParagraph(new SimpleParagraph("Angemeldeter Nutzer: " + s));
+		}
+		
+		Vector<User> receiveru=new Vector<User>();
+		receiveru.add(receiver);
+		Vector<String> exactNameOfReceiver=this.admin.getFullNamesOfUsers(receiveru);
+		for (String s: exactNameOfReceiver){
+			header.addSubParagraph(new SimpleParagraph("Gesuchter Nutzer: " + s));
+		}
+		
+
 		
 		report.setHeaderData(header);
 		
@@ -167,7 +185,12 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		
 		CompositeParagraph header=new CompositeParagraph();
 		
-		header.addSubParagraph(new SimpleParagraph("Angemeldeter Nutzer: " + user.getEmail()));
+		Vector<User> owneru=new Vector<User>();
+		owneru.add(user);
+		Vector<String> exactNameOfOwner=this.admin.getFullNamesOfUsers(owneru);
+		for (String s: exactNameOfOwner){
+			header.addSubParagraph(new SimpleParagraph("Angemeldeter Nutzer: " + s));
+		}
 		header.addSubParagraph(new SimpleParagraph("Gesuchte Ausprägung: " + value.getContent()));
 		
 		report.setHeaderData(header);
@@ -207,7 +230,14 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		report.setTitle("Alle Kontakte mit der Eigenschaft");
 		report.setCreated(new Date());
 		CompositeParagraph header=new CompositeParagraph();	
-		header.addSubParagraph(new SimpleParagraph("Angemeldeter Nutzer: " + user.getEmail()));
+		
+		Vector<User> owneru=new Vector<User>();
+		owneru.add(user);
+		Vector<String> exactNameOfOwner=this.admin.getFullNamesOfUsers(owneru);
+		for (String s: exactNameOfOwner){
+			header.addSubParagraph(new SimpleParagraph("Angemeldeter Nutzer: " + s));
+		}	
+		
 		header.addSubParagraph(new SimpleParagraph("Gesuchte Eigenschaft: " + property.getType()));
 		report.setHeaderData(header);
 		

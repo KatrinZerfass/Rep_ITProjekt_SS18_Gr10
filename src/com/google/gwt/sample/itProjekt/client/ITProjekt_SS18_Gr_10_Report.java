@@ -190,7 +190,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
             	}});
             	           	
         reportlistbox.addItem("Alle meine Kontakte");
-        reportlistbox.addItem("Mit anderen Nutzern geteilte Kontakte");
+        reportlistbox.addItem("Alle mit einem Nutzer geteilten Kontakte");
         reportlistbox.addItem("Kontakte mit bestimmter Ausprägung");
         reportlistbox.addItem("Kontakte mit bestimmter Eigenschaft");
 
@@ -237,6 +237,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	        
 			getReportButton.addClickHandler(new ClickHandler() {
 		         public void onClick(ClickEvent event){
+		        	 	RootPanel.get("reporttext").setVisible(false);
 		       			switch (reportlistbox.getSelectedIndex()){
 		        			case 0:
 		        				mainPanel.remove(valuePanel);
@@ -358,7 +359,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			allContactsWithPropertyButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					if(propertylistbox.getSelectedItemText() != "Sonstiges"){
+					if(!propertylistbox.getSelectedItemText().equals("eigene Eigenschaftsart")){
 					Property p = new Property();
 					p.setType(propertylistbox.getSelectedItemText());
 					 reportGenerator.generateAllContactsWithPropertyReport(user, p, new AsyncCallback<AllContactsWithPropertyReport>() {
@@ -380,6 +381,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	   				if(propertyInput.getText() != ""){
 	   				Property p = new Property();
 					p.setType(propertyInput.getText());
+					Window.alert("funktioniert" + p.getType());
 					reportGenerator.generateAllContactsWithPropertyReport(user, p, new AsyncCallback<AllContactsWithPropertyReport>() {
 						 public void onFailure(Throwable caught) {
 							
