@@ -204,9 +204,6 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		
 		cMapper.insert(newContact, newUser);
 		
-		Value newValue = new Value();
-		newValue = createValue(newContact, 3, email);
-		
 		return newUser;
 	}
 
@@ -416,7 +413,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 
 
 	@Override
-	public Property getPropertyByType(String type) throws IllegalArgumentException {
+	public Vector <Property> getPropertyByType(String type) throws IllegalArgumentException {
 		
 		Property property = new Property();
 		property.setType(type);
