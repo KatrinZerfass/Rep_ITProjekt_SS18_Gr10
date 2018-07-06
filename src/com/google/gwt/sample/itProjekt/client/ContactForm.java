@@ -1323,11 +1323,16 @@ public class ContactForm extends VerticalPanel {
 			else {
 				
 				for(ValueTextBox vtb : allValueTextBoxes) {
+					
+					
 				
 					/*
 					 * Wenn in einer ValueTextBox der Inhalt verändert wurde, so wird für diese Ausprägung die Methode editValue() aufgerufen.
 					 */
 					if (vtb.getIsChanged() && vtb.getTextBoxValue() != null) {
+						if(!ClientsideFunctions.checkValue(vtb)) {
+							return;
+						}
 						editorAdministration.editValue(contactToDisplay, vtb.getTextBoxValue().getPropertyid(), vtb.getTextBoxValue(), vtb.getText(), 
 							vtb.getTextBoxValue().getIsShared(), new AsyncCallback<Value>() {
 							
@@ -1346,6 +1351,9 @@ public class ContactForm extends VerticalPanel {
 					 * vorgenommen und demzufolge wird die Methode editContact aufgerufen.
 					 */
 					else if(vtb.getIsChanged() && (vtb.equals(firstnameTextBox) || vtb.equals(lastnameTextBox))){
+						if(!ClientsideFunctions.checkValue(vtb)) {
+							return;
+						}
 						editorAdministration.editContact(contactToDisplay.getId(), firstnameTextBox.getText(), lastnameTextBox.getText(), 
 							contactToDisplay.getSex(), new AsyncCallback<Contact>() {
 								public void onFailure(Throwable arg0) {
@@ -1696,6 +1704,12 @@ public class ContactForm extends VerticalPanel {
 				
 				addAddressButton.addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {
+						
+						if(!ClientsideFunctions.checkValue(streetTextBox) || !ClientsideFunctions.checkValue(houseNrTextBox) 
+							|| !ClientsideFunctions.checkValue(plzTextBox) || !ClientsideFunctions.checkValue(cityTextBox)){
+							return;
+						}
+						
 						((VerticalPanel) contactTable.getWidget(row,0)).remove(1);
 						
 						editorAdministration.createAddress(streetTextBox.getText(), houseNrTextBox.getText(),
