@@ -415,18 +415,25 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	@Override
 	public Property getPropertyByType(String type, Contact contact) throws IllegalArgumentException {
 		
+		Contact defaultContact = new Contact();
+		
+		if (contact == null) {
+			defaultContact = new Contact();
+			defaultContact.setId(20000000);
+		}
+		else {
+			defaultContact = contact;
+		}
 		Property property = new Property();
 		Property result = new Property();
 		property.setType(type);
 		Vector<Property> vp = pMapper.findByType(property);
 		for(Property p: vp){
-			if(p.getContactID()==contact.getId()){
+			if(p.getContactID()==defaultContact.getId()){
 				result=p;
 			}
 		}
 		return result;
-		
-		
 	}
 
 
@@ -539,9 +546,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 				    }
 			    }	
 			}
-		
 		return result;
-		
 	}
 	
 	public Vector<Contact> getContactsOfValueSearchResult(User user, String textBox, ContactList selectedContactList) throws IllegalArgumentException{
