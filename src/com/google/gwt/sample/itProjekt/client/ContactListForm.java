@@ -487,8 +487,9 @@ public class ContactListForm extends VerticalPanel{
 				private class SearchButtonClickHandler implements ClickHandler {
 					
 					TextBox searchTextBox = null;
-					ContactList selectedContactList = clctvm.getSelectedContactList();	
+					ContactList selectedContactList; 	
 					boolean foundResult = false;
+					
 					public SearchButtonClickHandler(TextBox sTB) {
 						searchTextBox = sTB;
 					}
@@ -496,6 +497,7 @@ public class ContactListForm extends VerticalPanel{
 					@Override
 					public void onClick(ClickEvent arg0) {
 						foundResult = false; 
+						selectedContactList = clctvm.getSelectedContactList();
 						
 						editorAdministration.getContactsOfNameSearchResult(user, searchTextBox.getText(), selectedContactList,   new AsyncCallback<Vector<Contact>>() {
 							@Override
