@@ -121,5 +121,7 @@ public interface EditorAdministrationAsync {
 	void getAllUserSuggestions(User activeUser, AsyncCallback<Vector<String>> callback);
 
 	void getFullNamesOfUsers(Vector<User> user, AsyncCallback<Vector<String>> callback);
+
+	void getContactsOfUserWithDefaultProperty(User user, Property property, AsyncCallback<Vector<Contact>> callback);
 }
 
