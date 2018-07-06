@@ -543,16 +543,18 @@ public class ContactForm extends VerticalPanel {
 							
 							if(pid == 6 || pid == 7 || pid == 8 || pid ==9) {
 								editorAdministration.deleteValue(allValuesOfContact.get(i), new AsyncCallback<Void>() {
-								
-									public void onFailure(Throwable t) {
-										
-									}
-									
-									public void onSuccess(Void result) {	
-											Window.alert("Die Ausprägung wurde gelöscht.");
-									}
-								
-
+									public void onFailure(Throwable arg0) {}; {};
+									public void onSuccess(Void arg0) {}; {
+										final ClientsideFunctions.popUpBox deleted = new ClientsideFunctions.popUpBox("Value gelöscht", new ClientsideFunctions.okButton());
+										deleted.getOkButton().addClickHandler(new ClickHandler() {
+											
+											@Override
+											public void onClick(ClickEvent arg0) {
+												setSelected(contactToDisplay);
+												deleted.hide();
+											}
+										});
+									};
 								});
 							}
 						}			
@@ -576,7 +578,7 @@ public class ContactForm extends VerticalPanel {
 							public void onFailure(Throwable t) {};{};
 							public void onSuccess(Void result) {}; 
 							{
-								final ClientsideFunctions.popUpBox deleted = new ClientsideFunctions.popUpBox("Value gelöscht");
+								final ClientsideFunctions.popUpBox deleted = new ClientsideFunctions.popUpBox("Value gelöscht", new ClientsideFunctions.okButton());
 								deleted.getOkButton().addClickHandler(new ClickHandler() {
 									
 									@Override
@@ -589,7 +591,7 @@ public class ContactForm extends VerticalPanel {
 								//setSelected(contactToDisplay);
 								//Window.alert("Die Ausprägung wurde gelöscht. 2");
 							};
-						});//TODO WTF is this?!
+						});
 					}
 					
 				}

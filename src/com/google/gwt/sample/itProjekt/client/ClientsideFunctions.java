@@ -424,8 +424,8 @@ public abstract class ClientsideFunctions {
 	        show();
 		}
 		
-		public popUpBox(String dbLabel) {
-			okButton = new okButton();
+		public popUpBox(String dbLabel, okButton ok) {
+			okButton = ok;
 			dialogBoxLabel.setText(dbLabel);
 			
 			panel = new VerticalPanel();
@@ -436,6 +436,25 @@ public abstract class ClientsideFunctions {
 	        panel.add(dialogBoxLabel);
 			hpanel = new HorizontalPanel();
 	        hpanel.add(okButton);
+	        panel.add(hpanel);
+	        
+	        setWidget(panel);
+	        
+	        show();
+		}
+		
+		public popUpBox(String dbLabel, CloseButton close) {
+			closeButton = close;
+			dialogBoxLabel.setText(dbLabel);
+			
+			panel = new VerticalPanel();
+	        panel.setHeight("100");
+	        panel.setWidth("300");
+	        panel.setSpacing(10);
+	        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+	        panel.add(dialogBoxLabel);
+			hpanel = new HorizontalPanel();
+	        hpanel.add(closeButton);
 	        panel.add(hpanel);
 	        
 	        setWidget(panel);
