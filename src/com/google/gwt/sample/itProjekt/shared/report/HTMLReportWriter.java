@@ -239,7 +239,7 @@ this.resetReportText();
 			result.append("<tr>");
 			for(int k=0; k<row.getNumColumns();k++) {
 				if (i==0) {
-					result.append("<td  class=\"columnhead\">" + row.getColumnAt(k)
+					result.append("<td  class=\"valuehead\">" + row.getColumnAt(k)
 		              + "</td>");
 				}
 				else {
