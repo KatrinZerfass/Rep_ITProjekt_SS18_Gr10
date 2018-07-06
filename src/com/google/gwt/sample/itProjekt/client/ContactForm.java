@@ -1036,9 +1036,10 @@ public class ContactForm extends VerticalPanel {
 								public void onClick(ClickEvent arg0) {
 								
 									failed.hide();
-									return;
+									
 								}
 							});
+							return;
 						case "männlich": 
 							sex = "m";
 							break;

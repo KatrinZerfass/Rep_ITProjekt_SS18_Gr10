@@ -91,7 +91,7 @@ public abstract class ClientsideFunctions {
 					return false;
 				}
 				else {
-					final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Ungültige Eingabe!", new ClientsideFunctions.OkButton());
+					final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Ungültige PLZ!", new ClientsideFunctions.OkButton());
 					failed.getOkButton().addCloseDBClickHandler(failed);
 					return false;
 				}
