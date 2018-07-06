@@ -467,8 +467,7 @@ public class ContactForm extends VerticalPanel {
 							
 						}
 						public void onSuccess(Value v) {
-							Window.alert("Ausprägung zu \"Nicht geteilt\" gesetzt" );
-						
+							
 						}
 					});
 			}
@@ -491,7 +490,6 @@ public class ContactForm extends VerticalPanel {
 						
 					}
 					public void onSuccess(Value v) {
-						Window.alert("Ausprägung zu \"Geteilt\" gesetzt" );
 					
 					}
 				});
@@ -561,19 +559,6 @@ public class ContactForm extends VerticalPanel {
 					}
 					
 					else{
-//						editorAdministration.deleteValue(value, new AsyncCallback<Void>() {
-//					
-//							public void onFailure(Throwable t) {
-//								Window.alert("Das Löschen der Ausprägung ist fehlgeschlagen.");
-//							}
-//							
-//							public void onSuccess(Void result) {	
-//								Window.alert("Die Ausprägung wurde gelöscht.");
-//								
-//								
-//							}
-//
-//						});
 						editorAdministration.deleteValue(value, new AsyncCallback<Void>() {
 							public void onFailure(Throwable t) {};{};
 							public void onSuccess(Void result) {}; 
@@ -587,17 +572,11 @@ public class ContactForm extends VerticalPanel {
 										deleted.hide();
 									}
 								});
-								
-								//setSelected(contactToDisplay);
-								//Window.alert("Die Ausprägung wurde gelöscht. 2");
 							};
 						});
 					}
-					
 				}
-				
 			});
-				
 		}
 		
 		/**
@@ -861,115 +840,7 @@ public class ContactForm extends VerticalPanel {
 			}
 		}
 	}
-	
-	
-	
-	
-	
-	
-	/**
-	 * Die innere Klasse EmailDialogBox
-	 * 
-	 * @author JanNoller
-	 * TODO: nicht nach Clientside Funtcions auslagern?!
-	 */
-	
-	public class EmailDialogBox extends DialogBox{
-		
-		private String input;
-		
-		Label dialogBoxLabel = new Label();
-		
-        private SuggestBox sb;
-        private MultiWordSuggestOracle oracle;
-        CloseButton close=new CloseButton(this);
 
-        Button ok = new Button("OK");
-        
-
-		public EmailDialogBox() {
-			
-			oracle = new MultiWordSuggestOracle();
-			ok.addStyleName("okbutton");
-			setDialogBoxLabel("Bitte geben Sie die Email-Adresse des Nutzers ein mit dem Sie den Kontakt teilen möchten.");
-			
-			editorAdministration.getAllUsers(new AsyncCallback<Vector<User>>() {
-				public void onFailure(Throwable arg0) {
-					Window.alert("Fehler beim holen aller User in der InputDialogBox");
-				}
-				@Override
-				public void onSuccess(Vector<User> arg0) {
-					
-					for(User loopUser : arg0) {
-						if (!loopUser.equals(currentUser)) {
-							getOracle().add(loopUser.getEmail());
-						}
-					}
-					setSuggestBox(new SuggestBox(getOracle()));
-					
-					setText("Eingabe");
-					setAnimationEnabled(true);
-					setGlassEnabled(true);
-					
-					VerticalPanel panel = new VerticalPanel();
-					HorizontalPanel hpanel=new HorizontalPanel();
-			        panel.setHeight("100");
-			        panel.setWidth("300");
-			        panel.setSpacing(10);
-			        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
-			        panel.add(dialogBoxLabel);
-			        panel.add(getSuggestBox());
-			        hpanel.add(close);
-			        hpanel.add(ok);
-			        panel.add(hpanel);
-			        
-			        setWidget(panel);
-			        
-			        
-			        show();
-			       
-				}
-			});
-		}
-
-		public SuggestBox getSuggestBox() {
-			return sb;
-		}
-
-		public void setSuggestBox(SuggestBox sb) {
-			this.sb = sb;
-		}
-
-		public MultiWordSuggestOracle getOracle() {
-			return oracle;
-		}
-
-		public void setOracle(MultiWordSuggestOracle oracle) {
-			this.oracle = oracle;
-		}
-
-		public String getInput() {
-			return input;
-		}
-
-		public void setInput(String input) {
-			this.input = input;
-		}
-
-		public void setDialogBoxLabel(String labelString) {
-			this.dialogBoxLabel.setText(labelString);;
-		}
-		
-		public Button getOKButton() {
-			return this.ok;
-		}
-		
-		public void setOKButton(Button b) {
-			this.ok = b;
-		}
-	}
-
-	
 	
 	/**
 	 * Die Methode <code>onLoad()</code> wird in der EntryPoint-Klasse aufgerufen, um im GUI eine Instanz von ContactForm zu erzeugen.
@@ -1344,6 +1215,8 @@ public class ContactForm extends VerticalPanel {
 	 * @author JanNoller
 	 */
 	private class SaveChangesClickHandler implements ClickHandler{
+		
+		boolean changes = false;
 
 		@Override
 		public void onClick(ClickEvent event) {
@@ -1372,8 +1245,7 @@ public class ContactForm extends VerticalPanel {
 								Window.alert("Fehler beim Änderungen speichern. \n (Ausprägungen)");
 							}
 							public void onSuccess(Value arg0) {
-								Window.alert("Die Änderungen wurden gespeichert.\n (Ausprägungen)");
-								
+								changes = true;
 							}
 						});
 					}
@@ -1392,16 +1264,17 @@ public class ContactForm extends VerticalPanel {
 									Window.alert("Fehler beim Änderungen speichern. \n (Kontaktstamm)");
 								}
 								public void onSuccess(Contact arg0) {
+									changes = true;
 									clctvm.updateContact(arg0);
 								}
 						});
 					}
-					else {
-						
-					}
 				}
 			}
-			
+			if(changes) {
+				final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Die Änderungen wurden übernommen.", new ClientsideFunctions.OkButton());
+				success.getOkButton().addCloseDBClickHandler(success);			
+			}
 		}
 	}
 	
@@ -1499,21 +1372,15 @@ public class ContactForm extends VerticalPanel {
 				        			}
 				        			
 				        			public void onSuccess(ContactList result) {
-				        				Window.alert("Kontakt zur Kontaktliste hinzugefügt.");
+				        				final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Kontakt zur Kontaktliste hinzugefügt.", new ClientsideFunctions.OkButton());
+										success.getOkButton().addCloseDBClickHandler(success);
 				        			}
 								});
 				        	}
 				        });
 		        	}
-				});
-		        
-		       
-		        
-		        
-		       
-		        
-			}
-	        
+				});   
+			}   
 		}
 	}
 	
@@ -1530,12 +1397,14 @@ public class ContactForm extends VerticalPanel {
 			if(contactToDisplay == null) {
 				Window.alert("kein Kontakt ausgewählt");
 			}
-			else { 
+			else {
 				if(clctvm.getSelectedContactList() == clctvm.getMyContactsContactList()) {
-					Window.alert("Sie können Kontakte in dieser Kontaktliste nur löschen, nicht entfernen!");
+					final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Sie können Kontakte in dieser Kontaktliste nur löschen, nicht entfernen.", new ClientsideFunctions.OkButton());
+					success.getOkButton().addCloseDBClickHandler(success);
 				}
 				else if(!ClientsideFunctions.isOwner(clctvm.getSelectedContactList(), currentUser)) {
-					Window.alert("Sie können den Kontakt aus dieser Liste nicht entfernen, da es eine geteilte List ist.");
+					final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Sie können den Kontakt aus dieser Liste nicht entfernen, da es eine geteilte List ist.", new ClientsideFunctions.OkButton());
+					success.getOkButton().addCloseDBClickHandler(success);
 				}
 				else {
 					/*
@@ -1544,16 +1413,32 @@ public class ContactForm extends VerticalPanel {
 					 */
 					
 					//clearContactForm();
-					editorAdministration.removeContactFromContactList(clctvm.getSelectedContactList(), contactToDisplay, new AsyncCallback<ContactList>() {
+					
+					ClientsideFunctions.popUpBox safety = new ClientsideFunctions.popUpBox("Siend Sie sicher dass sie den Kontakt aus der Liste entfernen möchten?", new ClientsideFunctions.OkButton(), new ClientsideFunctions.CloseButton());
+					safety.getCloseButton().addCloseDBClickHandler(safety);
+					safety.getOkButton().addClickHandler(new ClickHandler() {
+						
 						@Override
-						public void onFailure(Throwable arg0) {	
-							Window.alert("Fehler beim entfernen des Kontakts aus der Kontaktliste!");
-						}
-						@Override
-						public void onSuccess(ContactList arg0) {
-							Window.alert("Kontakt erfolgreich aus der Kontaktliste entfernt.");
-							clctvm.removeContactOfContactList(arg0, contactToDisplay);
-							//clctvm.getNodeInfo(clctvm.getSelectedContactList());
+						public void onClick(ClickEvent click) {
+							editorAdministration.removeContactFromContactList(clctvm.getSelectedContactList(), contactToDisplay, new AsyncCallback<ContactList>() {
+								@Override
+								public void onFailure(Throwable arg0) {	
+									Window.alert("Fehler beim entfernen des Kontakts aus der Kontaktliste!");
+								}
+								@Override
+								public void onSuccess(final ContactList arg0) {
+									final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Kontakt erfolgreich aus der Kontaktliste entfernt!", new ClientsideFunctions.OkButton());
+									success.getOkButton().addClickHandler(new ClickHandler() {
+										
+										@Override
+										public void onClick(ClickEvent click) {
+											clctvm.removeContactOfContactList(arg0, contactToDisplay);
+											success.hide();
+										}
+									});
+									//clctvm.getNodeInfo(clctvm.getSelectedContactList());
+								}
+							});
 						}
 					});
 				}
@@ -1612,7 +1497,6 @@ public class ContactForm extends VerticalPanel {
 						db.hide();
 						
 						if(!ClientsideFunctions.checkValue(inputTextBox)) {
-							Window.alert("Ungültiges Geburtsdatum oder falsches Format");
 							inputTextBox.setText("");
 							
 						}else {
@@ -1633,7 +1517,6 @@ public class ContactForm extends VerticalPanel {
 									for(int c=0; c<newPropertyListBox.getItemCount(); c++) {
 										if (newPropertyListBox.getItemText(c) == ptype) {
 											newPropertyListBox.removeItem(c);
-											Window.alert(ptype + " aus der ListBox entfernt");
 										}
 									}
 								}
@@ -1681,22 +1564,18 @@ public class ContactForm extends VerticalPanel {
 								
 								ptype = result.getType();
 								pid = result.getId();
-								Window.alert("Eigenschaft anlegen erfolgreich");
+								
 								contactTable.setWidget(row, 0, new ValuePanel(pid, row, ptype + ": "));
 								contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
 								
 								contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
 								contactTable.setWidget(row, 1, new ValueTable(pid));
-								
-								
-								
-							}
-						
+							}				
 						});
-					
 					}
 				});
 			}
+			
 			else if(ptype == "Anschrift") {
 				VerticalPanel addressPanel = new VerticalPanel();
 				contactTable.setWidget(row, 0, addressPanel);
@@ -1753,7 +1632,6 @@ public class ContactForm extends VerticalPanel {
 								streetTextBox.setValue(street);
 								((ValueDisplay) addressTable.getWidget(0, 2)).setValue(street, true);
 								//((DeleteValueButton) addressTable.getWidget(0,3)).setValue(street);
-								Window.alert("Adresse erfolgreich angelegt");
 								
 								for(int c=0; c<newPropertyListBox.getItemCount(); c++) {
 									if (newPropertyListBox.getItemText(c) == ptype) {
@@ -1900,11 +1778,8 @@ public class ContactForm extends VerticalPanel {
 					allValuesOfContact = new Vector<Value>();
 					for(Value v: values) {
 						allValuesOfContact.add(v);
-					//	Window.alert("isShared des Values " + v.getContent() + " = " + v.getIsShared()); 
 					}
-//					Window.alert("Alle Ausprägungen des Kontaktes ausgelesen. \n"
-//							+ "Anzahl der Values im Vektor: " + ((Integer)allValuesOfContact.size()).toString());
-					
+	
 					for(Value v: allValuesOfContact) {
 						if(v.getPropertyid() >10) {
 							editorAdministration.getPropertyOfValue(v, new GetPropertyOfValueCallback(v));
@@ -1914,9 +1789,6 @@ public class ContactForm extends VerticalPanel {
 							}
 						}
 					}
-					
-					
-					
 				}
 			});
 			

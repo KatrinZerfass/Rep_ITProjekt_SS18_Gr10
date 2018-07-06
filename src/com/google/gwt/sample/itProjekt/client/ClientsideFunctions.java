@@ -32,7 +32,7 @@ public abstract class ClientsideFunctions {
 		String identifier = vtb.getIdentifier();
 		String text = vtb.getText().toLowerCase().trim();
 		
-		if(text.contains("dropdatabase")) {
+		if(text.contains("dropdatabase") || text.contains("drop database")) {
 			ClientsideFunctions.popUpBox no = new ClientsideFunctions.popUpBox("For droping the database please find secret drop database pixel...", new CloseButton());
 			no.getCloseButton().addCloseDBClickHandler(no);
 			return false;
