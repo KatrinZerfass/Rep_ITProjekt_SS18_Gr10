@@ -1014,7 +1014,7 @@ public class ContactForm extends VerticalPanel {
 					}
 				}
 				newPropertyListBox.addItem("Anschrift");
-				newPropertyListBox.addItem("Sonstiges");	
+				newPropertyListBox.addItem("Neue Eigenschaft anlegen");	
 				
 
 				newPropertyLabel.addStyleName("newPropertyLabel");
@@ -1602,7 +1602,7 @@ public class ContactForm extends VerticalPanel {
 				
 				
 			}
-			else if(ptype == "Sonstiges") {
+			else if(ptype == "Neue Eigenschaft anlegen") {
 				db = new DialogBox();
 				dbPanel = new VerticalPanel();
 				inputTextBox = new ValueTextBox("Sonstiges");
@@ -1710,7 +1710,6 @@ public class ContactForm extends VerticalPanel {
 								for(int c=0; c<newPropertyListBox.getItemCount(); c++) {
 									if (newPropertyListBox.getItemText(c) == ptype) {
 										newPropertyListBox.removeItem(c);
-										Window.alert(ptype + " aus der ListBox entfernt");
 									}
 								}
 							}
@@ -1745,7 +1744,6 @@ public class ContactForm extends VerticalPanel {
 						for(int c=0; c<newPropertyListBox.getItemCount(); c++) {
 							if (newPropertyListBox.getItemText(c) == ptype) {
 								newPropertyListBox.removeItem(c);
-								Window.alert(ptype + " aus der ListBox entfernt");
 							}
 						}
 					}
@@ -2129,7 +2127,6 @@ public class ContactForm extends VerticalPanel {
 							
 							}
 							
-//							newPropertyListBox.removeItem(newPropertyListBox.getItemCount());
 							for(int c=0; c<newPropertyListBox.getItemCount(); c++) {
 								if (newPropertyListBox.getItemText(c) == "Anschrift") {
 									newPropertyListBox.removeItem(c);
