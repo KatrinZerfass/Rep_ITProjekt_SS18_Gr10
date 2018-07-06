@@ -555,8 +555,8 @@ public class ContactListForm extends VerticalPanel{
 													
 													@Override
 													public void onClick(ClickEvent click) {
-														clctvm.addValueResults();
-														clctvm.addContactOfSearchResultList(clctvm.getValueResultsCL(), arg0);
+//														clctvm.addValueResults();
+//														clctvm.addContactOfSearchResultList(clctvm.getValueResultsCL(), arg0);
 														success.hide();
 													}
 												});
