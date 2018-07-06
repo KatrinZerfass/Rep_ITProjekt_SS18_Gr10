@@ -472,24 +472,47 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	
 	@Override
 	public Vector<Contact> getContactsOfUserWithProperty(User user, Property property) throws IllegalArgumentException{
-		Vector<Contact> allContactsOfUser= new Vector<Contact>();
-		allContactsOfUser = getAllContactsOfActiveUser(user);
+		Vector<Contact> allContactsOfUser= getAllContactsOfActiveUser(user);
 		Vector<Property> allPropertiesWithType= new Vector<Property>();
 		Contact c1 = new Contact();
+		Contact c2 = new Contact();
 		Vector<Contact> result=new Vector<Contact>();
 		
 		for (Contact c :allContactsOfUser){
+			System.out.println("Property: "+property.getType()+ " KontaktID: "+ c.getId());
 			allPropertiesWithType=pMapper.findByTypeAndCID(property, c);
+			if(allPropertiesWithType.size()>0){
 			for(Property p: allPropertiesWithType){
 				c1.setId(p.getContactID());
-				c1 = cMapper.findByID(c1);
-				result.addElement(c1);
-
-			}
+				c2 = cMapper.findByID(c1);
+				System.out.println(c2.getId());
+				result.addElement(c2);
+			}}
 			
 		}
 		return result;
 	}
+	@Override
+	public Vector<Contact> getContactsOfUserWithDefaultProperty(User user, Property property) throws IllegalArgumentException{
+		Vector<Contact> allContactsOfUser= new Vector<Contact>();
+		allContactsOfUser = getAllContactsOfActiveUser(user);
+		Vector <Property> pv=new Vector <Property>();
+		Vector<Contact> result=new Vector<Contact>();
+		Contact c1 = new Contact();
+		c1.setId(20000000);
+		pv=pMapper.findByTypeAndCID(property, c1);
+		for(Property p: pv){
+		Vector<Contact> allContactsWithProperty=vMapper.getAllContactsByPID(p);
+		
+		for (Contact c :allContactsOfUser){
+			if(allContactsWithProperty.contains(c)){
+				result.add(c);
+			}
+		}
+	}
+		return result;
+}
+		
 	
 	public Vector<Contact> getContactsOfNameSearchResult(User user, String textBox, ContactList selectedContactList) throws IllegalArgumentException{
 		

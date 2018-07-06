@@ -1418,7 +1418,6 @@ public class ContactForm extends VerticalPanel {
 					safety.getCloseButton().addCloseDBClickHandler(safety);
 					safety.getOkButton().addClickHandler(new ClickHandler() {
 						
-						@Override
 						public void onClick(ClickEvent click) {
 							editorAdministration.removeContactFromContactList(clctvm.getSelectedContactList(), contactToDisplay, new AsyncCallback<ContactList>() {
 								@Override
@@ -1432,7 +1431,7 @@ public class ContactForm extends VerticalPanel {
 										
 										@Override
 										public void onClick(ClickEvent click) {
-											clctvm.removeContactOfContactList(arg0, contactToDisplay);
+											clctvm.removeContactOfContactList(clctvm.getSelectedContactList(), contactToDisplay);
 											success.hide();
 										}
 									});

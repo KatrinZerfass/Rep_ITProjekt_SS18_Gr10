@@ -486,15 +486,18 @@ public class ContactListForm extends VerticalPanel{
 				 */
 				private class SearchButtonClickHandler implements ClickHandler {
 					
-					TextBox searchTextBox = null;						
+					TextBox searchTextBox = null;
+					ContactList selectedContactList; 	
+					boolean foundResult = false;
+					
 					public SearchButtonClickHandler(TextBox sTB) {
 						searchTextBox = sTB;
 					}
 								
 					@Override
 					public void onClick(ClickEvent arg0) {
-						
-						ContactList selectedContactList = clctvm.getSelectedContactList();		
+						foundResult = false; 
+						selectedContactList = clctvm.getSelectedContactList();
 						
 						editorAdministration.getContactsOfNameSearchResult(user, searchTextBox.getText(), selectedContactList,   new AsyncCallback<Vector<Contact>>() {
 							@Override
@@ -504,59 +507,76 @@ public class ContactListForm extends VerticalPanel{
 							@Override
 							public void onSuccess(final Vector<Contact> arg0){
 								if(arg0.size() != 0) {
-									final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Suche erfolgreich!", new ClientsideFunctions.OkButton());
-									success.getOkButton().addClickHandler(new ClickHandler() {
-										@Override
-										public void onClick(ClickEvent click) {
+									foundResult = true;
+//									final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Suche erfolgreich!", new ClientsideFunctions.OkButton());
+//									success.getOkButton().addClickHandler(new ClickHandler() {
+//										@Override
+//										public void onClick(ClickEvent click) {
 											clctvm.addNameResults();
 											clctvm.addContactOfSearchResultList(clctvm.getNameResultsCL(), arg0);
-											success.hide();
-										}
-									});
+//											success.hide();
+//										}
+//									});
 								}else{
-									final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Kein Suchergebnis.", new ClientsideFunctions.OkButton());
-									failed.getOkButton().addClickHandler(new ClickHandler() {
-										@Override
-										public void onClick(ClickEvent arg0) {
+//									final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Kein Suchergebnis.", new ClientsideFunctions.OkButton());
+//									failed.getOkButton().addClickHandler(new ClickHandler() {
+//										@Override
+//										public void onClick(ClickEvent arg0) {
 											clctvm.deleteNameResults();
-											failed.hide();
-										}
-									});
+//											failed.hide();
+//										}
+//									});
 								}
+								
+								editorAdministration.getContactsOfValueSearchResult(user, searchTextBox.getText(), selectedContactList, new AsyncCallback<Vector<Contact>>() {
+									
+									public void onFailure(Throwable arg0) {
+										Window.alert("Fehler beim Füllen des allContactsOfUser Vectors!");
+									}
+									@Override
+									public void onSuccess(final Vector<Contact> arg0){
+										if(arg0.size() != 0){
+											foundResult = true;
+											
+											final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Suche erfolgreich!", new ClientsideFunctions.OkButton());
+											success.getOkButton().addClickHandler(new ClickHandler() {
+												
+												@Override
+												public void onClick(ClickEvent click) {
+													clctvm.addValueResults();
+													clctvm.addContactOfSearchResultList(clctvm.getValueResultsCL(), arg0);
+													success.hide();
+												}
+											});
+										}else{
+											if(foundResult) {
+												final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Suche erfolgreich!", new ClientsideFunctions.OkButton());
+												success.getOkButton().addClickHandler(new ClickHandler() {
+													
+													@Override
+													public void onClick(ClickEvent click) {
+//														clctvm.addValueResults();
+//														clctvm.addContactOfSearchResultList(clctvm.getValueResultsCL(), arg0);
+														success.hide();
+													}
+												});
+											}else {
+												final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Kein Suchergebnis.", new ClientsideFunctions.OkButton());
+												failed.getOkButton().addClickHandler(new ClickHandler() {
+													@Override
+													public void onClick(ClickEvent arg0) {
+														clctvm.deleteValueResults();
+														failed.hide();
+													}
+												});
+											}
+										}
+									}
+								});	
 							}
 						});	
 						
-						editorAdministration.getContactsOfValueSearchResult(user, searchTextBox.getText(), selectedContactList, new AsyncCallback<Vector<Contact>>() {
-							
-							public void onFailure(Throwable arg0) {
-								Window.alert("Fehler beim Füllen des allContactsOfUser Vectors!");
-							}
-							@Override
-							public void onSuccess(final Vector<Contact> arg0){
-								if(arg0.size() != 0){
-									
-									final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Suche erfolgreich!", new ClientsideFunctions.OkButton());
-									success.getOkButton().addClickHandler(new ClickHandler() {
-										
-										@Override
-										public void onClick(ClickEvent click) {
-											clctvm.addValueResults();
-											clctvm.addContactOfSearchResultList(clctvm.getValueResultsCL(), arg0);
-											success.hide();
-										}
-									});
-								}else{
-									final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Kein Suchergebnis.", new ClientsideFunctions.OkButton());
-									failed.getOkButton().addClickHandler(new ClickHandler() {
-										@Override
-										public void onClick(ClickEvent arg0) {
-											clctvm.deleteValueResults();
-											failed.hide();
-										}
-									});
-								}
-							}
-						});	
+						
 					}
 				}
 				

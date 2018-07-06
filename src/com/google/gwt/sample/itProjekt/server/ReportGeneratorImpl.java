@@ -240,7 +240,25 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		
 		header.addSubParagraph(new SimpleParagraph("Gesuchte Eigenschaft: " + property.getType()));
 		report.setHeaderData(header);
-		
+		Vector <Property> prop=this.getAllPredefinedPropertiesOfReport();
+		for (Property p : prop){
+			if(p.getType().contains(property.getType())){
+				Vector<Contact> allContacts=this.admin.getContactsOfUserWithDefaultProperty(user, property);
+				if(allContacts.size()!=0){
+					for (Contact c: allContacts) {
+						report.addSubReport(this.generateAllContactInformationOfContactReport(c, user));
+						Vector<Value> allValues=this.admin.getAllValuesOfContact(c);
+						if (allValues.size()!=0){
+						report.addSubReport(this.generateAllValuesOfContactReport(c, user));
+						}
+					}			
+				}else{
+					SimpleParagraph errornote=new SimpleParagraph("Es wurden leider keine Kontakte mit der angegebenen Eigenschaft gefunden");
+					header.addSubParagraph(errornote);
+					report.setHeaderData(header);
+				}
+			}
+		}
 		Vector<Contact> allContacts=this.admin.getContactsOfUserWithProperty(user, property);
 		if(allContacts.size()!=0){
 			for (Contact c: allContacts) {

@@ -286,7 +286,7 @@ public Vector<Property> findByTypeAndCID(Property property, Contact contact){
 	try{
 		
 		Statement stmt = con.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT P_ID, type, C_ID FROM T_Property WHERE type ='"+ property.getType() + "' AND C_ID="+contact.getId()+ "ORDER BY P_ID");
+		ResultSet rs = stmt.executeQuery("SELECT P_ID, type, C_ID FROM T_Property WHERE type ='"+ property.getType() + "' AND C_ID="+contact.getId());
 		while (rs.next()){
 			
 			p.setId(rs.getInt("P_ID"));
@@ -298,6 +298,9 @@ public Vector<Property> findByTypeAndCID(Property property, Contact contact){
 	}
 	catch (SQLException e2){
 		e2.printStackTrace();
+		System.out.println("leer");
+		System.out.println(e2.getMessage());
+		System.out.println(e2.getSQLState());
 		return result;
 	}
 	return result;
