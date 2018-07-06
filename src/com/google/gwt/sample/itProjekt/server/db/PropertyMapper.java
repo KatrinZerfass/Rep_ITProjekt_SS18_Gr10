@@ -269,35 +269,71 @@ public void delete (Property property){
 			}
 
 /**
- * Findet alle P_ID, type und C_ID wo der type dem type des übergebenen Objektes entspricht
- * Befüllt das Property Objekt mit den Attributen und gint es wieder
+ * Findet alle P_ID, type und C_ID in welcher der type dem type des übergebenen Objektes entspricht
+ * Befüllt Property Objekte mit den Attributen und gibt einen damit gefüllten Vektor wieder
  * 
  * @param property übergebenes Property Objekt mit Attribut type
- * @return Ein vollständiges Property Objekt
+ * @return Ein Vektor voller vollständiger Property Objekt
  * 
  * @author Egor Krämer
  * @author Robert Mattheis
  */
-public Property findByType(Property property){
+public Vector<Property> findByTypeAndCID(Property property, Contact contact){
 	Connection con = DBConnection.connection();
+	Vector <Property> result = new Vector <Property>();
+	Property p = new Property();
+	
+	try{
+		
+		Statement stmt = con.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT P_ID, type, C_ID FROM T_Property WHERE type ='"+ property.getType() + "' AND C_ID="+contact.getId()+ "ORDER BY P_ID");
+		while (rs.next()){
+			
+			p.setId(rs.getInt("P_ID"));
+			p.setType(rs.getString("type"));
+			p.setContactID(rs.getInt("C_ID"));
+			result.addElement(p);	
+		}
+		
+	}
+	catch (SQLException e2){
+		e2.printStackTrace();
+		return result;
+	}
+	return result;
+}
+/**
+ * Findet alle P_ID, type und C_ID in welcher der type dem type des übergebenen Objektes entspricht
+ * Befüllt Property Objekte mit den Attributen und gibt einen damit gefüllten Vektor wieder
+ * 
+ * @param property übergebenes Property Objekt mit Attribut type
+ * @return Ein Vektor voller vollständiger Property Objekt
+ * 
+ * @author Egor Krämer
+ * @author Robert Mattheis
+ */
+public Vector<Property> findByType(Property property){
+	Connection con = DBConnection.connection();
+	Vector <Property> result = new Vector <Property>();
 	Property p = new Property();
 	
 	try{
 		
 		Statement stmt = con.createStatement();
 		ResultSet rs = stmt.executeQuery("SELECT P_ID, type, C_ID FROM T_Property WHERE type ='"+ property.getType() + "' ORDER BY P_ID");
-		if (rs.next()){
+		while (rs.next()){
 			
 			p.setId(rs.getInt("P_ID"));
 			p.setType(rs.getString("type"));
 			p.setContactID(rs.getInt("C_ID"));
-			return p;	
+			result.addElement(p);	
 		}
+		
 	}
 	catch (SQLException e2){
 		e2.printStackTrace();
-		return p;
+		return result;
 	}
-	return p;
+	return result;
 }
 }

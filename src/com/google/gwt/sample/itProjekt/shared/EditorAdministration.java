@@ -401,7 +401,7 @@ public interface EditorAdministration extends RemoteService{
 	 * @return vollständiges Eigenschaft-Objekt
 	 * @throws IllegalArgumentException
 	 */
-	public Property getPropertyByType(String type) throws IllegalArgumentException;
+	public Property getPropertyByType(String type, Contact contact) throws IllegalArgumentException;
 	
 	/**
 	 * Holt alle Nutzer aus der Datenbank.
