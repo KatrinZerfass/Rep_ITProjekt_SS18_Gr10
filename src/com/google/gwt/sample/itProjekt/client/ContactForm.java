@@ -1552,8 +1552,7 @@ public class ContactForm extends VerticalPanel {
 						@Override
 						public void onSuccess(ContactList arg0) {
 							Window.alert("Kontakt erfolgreich aus der Kontaktliste entfernt.");
-							clctvm.removeContactOfContactList(arg0, contactToDisplay);
-							//clctvm.getNodeInfo(clctvm.getSelectedContactList());
+							clctvm.removeContactOfContactList(clctvm.getSelectedContactList(), contactToDisplay);
 						}
 					});
 				}
