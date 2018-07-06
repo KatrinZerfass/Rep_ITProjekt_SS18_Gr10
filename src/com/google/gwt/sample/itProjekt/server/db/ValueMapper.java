@@ -176,7 +176,7 @@ public class ValueMapper {
 				
 				Contact c2 = new Contact();
 				c2 = ContactMapper.contactMapper().findByID(contact);
-				ContactMapper.contactMapper().update(contact);
+				ContactMapper.contactMapper().update(c2);
 				return value;	
 				
 			}
