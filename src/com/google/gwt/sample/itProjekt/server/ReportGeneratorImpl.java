@@ -310,11 +310,20 @@ public AllContactInformationOfContactReport generateAllContactInformationOfConta
 			contactRow.addColumn(new Column("sonstige"));
 			break;
 		}
-
-		contactRow.addColumn(new Column(String.valueOf(owner.getEmail())));
+		Vector<User> owneru=new Vector<User>();
+		owneru.add(owner);
+		Vector<String> exactNameOfOwner=this.admin.getFullNamesOfUsers(owneru);
+		for (String s: exactNameOfOwner){
+			contactRow.addColumn(new Column(String.valueOf(s)));
+		}
 			
 		if (sharedUser.getEmail() != user.getEmail()){	
-			contactRow.addColumn(new Column(String.valueOf(sharedUser.getEmail())));
+			Vector<User> name=new Vector<User>();
+			name.add(sharedUser);
+			Vector<String> exactName=this.admin.getFullNamesOfUsers(name);
+			for (String s: exactName){
+				contactRow.addColumn(new Column(String.valueOf(s)));
+			}
 			}else{
 				headline.removeColumn(colSharingUser);
 			}
@@ -324,10 +333,11 @@ public AllContactInformationOfContactReport generateAllContactInformationOfConta
 		if (user.getEmail().equals(owner.getEmail())){
 			Vector<User> allParticipants=this.admin.getAllParticipantsOfContact(contact);
 			if(allParticipants.size()!=0){
+				Vector <String> allNamesOfParticipants=this.admin.getFullNamesOfUsers(allParticipants);
 				headline.addColumn(colParticipant);
 				StringBuffer result=new StringBuffer();
-				for (User u: allParticipants){
-					result.append(u.getEmail());
+				for (String s: allNamesOfParticipants){
+					result.append(s);
 					result.append(", ");
 				}
 				result.deleteCharAt(result.length()-1);

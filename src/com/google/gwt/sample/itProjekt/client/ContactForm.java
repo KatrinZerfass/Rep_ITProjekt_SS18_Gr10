@@ -1051,6 +1051,7 @@ public class ContactForm extends VerticalPanel {
 		Label sexLabel = new Label("Geschlecht: ");
 		contactTable.setWidget(3, 0, sexLabel);
 		
+		sexListBox.addItem("-Auswählen-");
 		sexListBox.addItem("männlich");
 		sexListBox.addItem("weiblich");
 		sexListBox.addItem("Sonstiges");
@@ -1152,6 +1153,9 @@ public class ContactForm extends VerticalPanel {
 					
 					String sex = "o";
 					switch(sexListBox.getSelectedItemText()) {
+						case "-Auswählen-":
+							Window.alert("Bitte wählen Sie ein Geschlecht aus");
+							return;
 						case "männlich": 
 							sex = "m";
 							break;
