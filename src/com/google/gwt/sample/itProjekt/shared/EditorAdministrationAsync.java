@@ -120,6 +120,6 @@ public interface EditorAdministrationAsync {
 
 	void getAllUserSuggestions(User activeUser, AsyncCallback<Vector<String>> callback);
 
-	void getFullNameOfUser(User user, AsyncCallback<String> callback);
+	void getFullNamesOfUsers(Vector<User> user, AsyncCallback<Vector<String>> callback);
 }
 

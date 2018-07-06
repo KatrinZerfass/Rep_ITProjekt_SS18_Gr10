@@ -425,7 +425,7 @@ public class ContactForm extends VerticalPanel {
 			this.getUpFace().setImage(lockUnlocked);
 			
 			//this.setEnabled(false);
-			this.setVisible(false);
+			this.setVisible(true);
 			
 			/*
 			 * Es wird dem Button ein ClickHandler hinzugefügt, welcher die referenzierte Ausprägung auf "Nicht geteilt" bzw. "Geteilt" setzt. 
@@ -528,7 +528,7 @@ public class ContactForm extends VerticalPanel {
 			this.addStyleName("deleteValueButton");
 			
 			//this.setEnabled(false);
-			this.setVisible(false);
+			this.setVisible(true);
 			
 			this.addClickHandler(new ClickHandler() {
 				public void onClick (ClickEvent event) {
@@ -543,16 +543,18 @@ public class ContactForm extends VerticalPanel {
 							
 							if(pid == 6 || pid == 7 || pid == 8 || pid ==9) {
 								editorAdministration.deleteValue(allValuesOfContact.get(i), new AsyncCallback<Void>() {
-								
-									public void onFailure(Throwable t) {
-										
-									}
-									
-									public void onSuccess(Void result) {	
-											Window.alert("Die Ausprägung wurde gelöscht.");
-									}
-								
-
+									public void onFailure(Throwable arg0) {}; {};
+									public void onSuccess(Void arg0) {}; {
+										final ClientsideFunctions.popUpBox deleted = new ClientsideFunctions.popUpBox("Value gelöscht", new ClientsideFunctions.okButton());
+										deleted.getOkButton().addClickHandler(new ClickHandler() {
+											
+											@Override
+											public void onClick(ClickEvent arg0) {
+												setSelected(contactToDisplay);
+												deleted.hide();
+											}
+										});
+									};
 								});
 							}
 						}			
@@ -576,7 +578,7 @@ public class ContactForm extends VerticalPanel {
 							public void onFailure(Throwable t) {};{};
 							public void onSuccess(Void result) {}; 
 							{
-								final ClientsideFunctions.popUpBox deleted = new ClientsideFunctions.popUpBox("Value gelöscht");
+								final ClientsideFunctions.popUpBox deleted = new ClientsideFunctions.popUpBox("Value gelöscht", new ClientsideFunctions.okButton());
 								deleted.getOkButton().addClickHandler(new ClickHandler() {
 									
 									@Override
@@ -589,7 +591,7 @@ public class ContactForm extends VerticalPanel {
 								//setSelected(contactToDisplay);
 								//Window.alert("Die Ausprägung wurde gelöscht. 2");
 							};
-						});//TODO WTF is this?!
+						});
 					}
 					
 				}
@@ -1051,6 +1053,7 @@ public class ContactForm extends VerticalPanel {
 		Label sexLabel = new Label("Geschlecht: ");
 		contactTable.setWidget(3, 0, sexLabel);
 		
+		sexListBox.addItem("-Auswählen-");
 		sexListBox.addItem("männlich");
 		sexListBox.addItem("weiblich");
 		sexListBox.addItem("Sonstiges");
@@ -1152,6 +1155,9 @@ public class ContactForm extends VerticalPanel {
 					
 					String sex = "o";
 					switch(sexListBox.getSelectedItemText()) {
+						case "-Auswählen-":
+							Window.alert("Bitte wählen Sie ein Geschlecht aus");
+							return;
 						case "männlich": 
 							sex = "m";
 							break;
@@ -1685,7 +1691,7 @@ public class ContactForm extends VerticalPanel {
 				addressTable.setWidget(0, 2, new ValueDisplay(new ValueTextBox("Sonstiges")));
 				((ValueDisplay) addressTable.getWidget(0, 2)).remove(0);
 				
-				
+				newPropertyListBox.setSelectedIndex(0);
 				
 				
 				addAddressButton.addClickHandler(new ClickHandler() {
@@ -1884,13 +1890,13 @@ public class ContactForm extends VerticalPanel {
 			 * Das Geschlecht des Kontaktes wird abgefragt und gesetzt.
 			 */
 			if (contactToDisplay.getSex() == "m") {
-				sexListBox.setItemSelected(0, true);
-			}
-			else if(contactToDisplay.getSex() == "f"){
 				sexListBox.setItemSelected(1, true);
 			}
-			else if(contactToDisplay.getSex() == "o") {
+			else if(contactToDisplay.getSex() == "f"){
 				sexListBox.setItemSelected(2, true);
+			}
+			else if(contactToDisplay.getSex() == "o") {
+				sexListBox.setItemSelected(3, true);
 			}
 			sexListBox.setEnabled(false);
 			
@@ -2190,43 +2196,7 @@ public class ContactForm extends VerticalPanel {
 						vp = (ValuePanel) contactTable.getWidget(row-1, 0);
 						vt = (ValueTable) contactTable.getWidget(row-1, 1);
 					}
-//				}else if((!compareUser() && allValuesOfContact.get(i).getIsShared()==true))
-//					
-//						/*
-//						 * Das korrekte ValuePanel und ValueTable werden gesetzt und im Folgenden auf ihnen operiert.
-//						 */
-//					if(firstValue == true) {
-//						contactTable.setWidget(row, 0, new ValuePanel(pid, row, ptype + ": "));
-//						contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-//						vp = (ValuePanel) contactTable.getWidget(row, 0);
-//						
-//						contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-//						contactTable.setWidget(row, 1, new ValueTable(pid));
-//						vt = (ValueTable) contactTable.getWidget(row, 1);
-//						
-////					}else if(i !=0 && allValuesOfContact.get(i-1).getPropertyid() != pid ){
-////						contactTable.setWidget(row, 0, new ValuePanel(pid, row, ptype + ": "));
-////						contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-////						vp = (ValuePanel) contactTable.getWidget(row, 0);
-////						
-////						contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-////						contactTable.setWidget(row, 1, new ValueTable(pid));
-////						vt = (ValueTable) contactTable.getWidget(row, 1);
-//						
-//					}else if(i !=0 && allValuesOfContact.get(i-1).getPropertyid() == pid && allValuesOfContact.get(i-1).getIsShared() ==false){
-//						if(firstValue)
-//						contactTable.setWidget(row, 0, new ValuePanel(pid, row,  ptype +": "));
-//						contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-//						vp = (ValuePanel) contactTable.getWidget(row, 0);
-//						
-//						contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-//						contactTable.setWidget(row, 1, new ValueTable(pid));
-//						vt = (ValueTable) contactTable.getWidget(row, 1);
-//					}else {
-//						 
-//						vp = (ValuePanel) contactTable.getWidget(row-1, 0);
-//						vt = (ValueTable) contactTable.getWidget(row-1, 1);
-//					}
+
 					
 					vtRow = vt.getRowCount();
 					vt.setWidget(vtRow, 0, new ValueDisplay(new ValueTextBox(identifier)));

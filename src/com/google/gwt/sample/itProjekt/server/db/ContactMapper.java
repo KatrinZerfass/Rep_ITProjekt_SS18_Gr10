@@ -243,7 +243,7 @@ Vector<Contact> result = new Vector<Contact>();
 			
 			Timestamp ts = new Timestamp(System.currentTimeMillis()+ 7200000);
 			
-			String s = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(ts);
+			String s = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(ts);
 			
 			ResultSet rs = stmt.executeQuery("SELECT MAX(C_ID) AS maxcid FROM T_Contact");
 			if (rs.next()){
@@ -302,7 +302,7 @@ Vector<Contact> result = new Vector<Contact>();
 				Timestamp ts = new Timestamp(System.currentTimeMillis()+ 7200000);
 				
 				
-				String s = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(ts);
+				String s = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(ts);
 				
 				
 				
