@@ -387,7 +387,7 @@ Connection con = DBConnection.connection();
 				+ contact.getId() 
 				+ ")") ;
 			
-			// wenn ein Kontakt einer Kontaktliste hinzugefügt wird, 
+			
 				Permission p = new Permission();
 				Vector<User> participants = new Vector<User>();
 				participants = PermissionMapper.permissionMapper().findAllParticipantsByCLID(contactlist);
