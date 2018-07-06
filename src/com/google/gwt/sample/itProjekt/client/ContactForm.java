@@ -425,7 +425,7 @@ public class ContactForm extends VerticalPanel {
 			this.getUpFace().setImage(lockUnlocked);
 			
 			//this.setEnabled(false);
-			this.setVisible(false);
+			this.setVisible(true);
 			
 			/*
 			 * Es wird dem Button ein ClickHandler hinzugefügt, welcher die referenzierte Ausprägung auf "Nicht geteilt" bzw. "Geteilt" setzt. 
@@ -528,7 +528,7 @@ public class ContactForm extends VerticalPanel {
 			this.addStyleName("deleteValueButton");
 			
 			//this.setEnabled(false);
-			this.setVisible(false);
+			this.setVisible(true);
 			
 			this.addClickHandler(new ClickHandler() {
 				public void onClick (ClickEvent event) {
@@ -1689,7 +1689,7 @@ public class ContactForm extends VerticalPanel {
 				addressTable.setWidget(0, 2, new ValueDisplay(new ValueTextBox("Sonstiges")));
 				((ValueDisplay) addressTable.getWidget(0, 2)).remove(0);
 				
-				
+				newPropertyListBox.setSelectedIndex(0);
 				
 				
 				addAddressButton.addClickHandler(new ClickHandler() {
@@ -2194,43 +2194,7 @@ public class ContactForm extends VerticalPanel {
 						vp = (ValuePanel) contactTable.getWidget(row-1, 0);
 						vt = (ValueTable) contactTable.getWidget(row-1, 1);
 					}
-//				}else if((!compareUser() && allValuesOfContact.get(i).getIsShared()==true))
-//					
-//						/*
-//						 * Das korrekte ValuePanel und ValueTable werden gesetzt und im Folgenden auf ihnen operiert.
-//						 */
-//					if(firstValue == true) {
-//						contactTable.setWidget(row, 0, new ValuePanel(pid, row, ptype + ": "));
-//						contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-//						vp = (ValuePanel) contactTable.getWidget(row, 0);
-//						
-//						contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-//						contactTable.setWidget(row, 1, new ValueTable(pid));
-//						vt = (ValueTable) contactTable.getWidget(row, 1);
-//						
-////					}else if(i !=0 && allValuesOfContact.get(i-1).getPropertyid() != pid ){
-////						contactTable.setWidget(row, 0, new ValuePanel(pid, row, ptype + ": "));
-////						contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-////						vp = (ValuePanel) contactTable.getWidget(row, 0);
-////						
-////						contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-////						contactTable.setWidget(row, 1, new ValueTable(pid));
-////						vt = (ValueTable) contactTable.getWidget(row, 1);
-//						
-//					}else if(i !=0 && allValuesOfContact.get(i-1).getPropertyid() == pid && allValuesOfContact.get(i-1).getIsShared() ==false){
-//						if(firstValue)
-//						contactTable.setWidget(row, 0, new ValuePanel(pid, row,  ptype +": "));
-//						contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-//						vp = (ValuePanel) contactTable.getWidget(row, 0);
-//						
-//						contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-//						contactTable.setWidget(row, 1, new ValueTable(pid));
-//						vt = (ValueTable) contactTable.getWidget(row, 1);
-//					}else {
-//						 
-//						vp = (ValuePanel) contactTable.getWidget(row-1, 0);
-//						vt = (ValueTable) contactTable.getWidget(row-1, 1);
-//					}
+
 					
 					vtRow = vt.getRowCount();
 					vt.setWidget(vtRow, 0, new ValueDisplay(new ValueTextBox(identifier)));
