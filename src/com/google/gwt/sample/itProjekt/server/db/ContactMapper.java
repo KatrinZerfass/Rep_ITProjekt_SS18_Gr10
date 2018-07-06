@@ -50,12 +50,13 @@ public class ContactMapper {
 	 */
 	public Contact findByID(Contact contact){
 		Connection con = DBConnection.connection();
+		Contact c = new Contact();
 		
 		try{
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID, create_date, mod_date, isUser FROM T_Contact WHERE C_ID =" + contact.getId() + " ORDER BY C_ID");
 			if (rs.next()){
-				Contact c = new Contact();
+				
 				c.setId(rs.getInt("C_ID"));
 				c.setFirstname(rs.getString("firstName"));
 				c.setLastname(rs.getString("lastName"));
@@ -69,9 +70,9 @@ public class ContactMapper {
 		}
 		catch (SQLException e2){
 			e2.printStackTrace();
-			return null;
+			return c;
 		}
-		return null;
+		return c;
 	}
 	
 	

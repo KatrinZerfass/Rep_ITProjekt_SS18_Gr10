@@ -298,6 +298,7 @@ public Vector<Property> findByTypeAndCID(Property property, Contact contact){
 	}
 	catch (SQLException e2){
 		e2.printStackTrace();
+		System.out.println("leer");
 		return result;
 	}
 	return result;
