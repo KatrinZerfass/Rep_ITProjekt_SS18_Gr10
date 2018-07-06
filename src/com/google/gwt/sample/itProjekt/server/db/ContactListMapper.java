@@ -279,43 +279,6 @@ public class ContactListMapper {
 		 */
 		public void delete (ContactList contactlist){
 Connection con = DBConnection.connection();
-
-			
-		try{
-	
-				Statement stmt2 = con.createStatement();
-					stmt2.executeUpdate("DELETE FROM T_Permission_Contactlist WHERE CL_ID =" + contactlist.getId());
-			}
-
-			catch (SQLException e2){
-				e2.printStackTrace();
-
-				}
-		try{
-			
-						
-				Vector <Contact> c = ContactListMapper.contactListMapper().getAllContacts(contactlist);
-				
-				if(c.size()>0){
-				for(Contact c1: c){	
-			Statement stmt2 = con.createStatement();
-				stmt2.executeUpdate("DELETE FROM T_Permission_Contact WHERE C_ID =" + c1.getId());
-		}}}
-
-		catch (SQLException e2){
-			e2.printStackTrace();
-
-			}
-		try{
-			
-			Statement stmt4 = con.createStatement();
-				stmt4.executeUpdate("DELETE FROM T_Contact_Contactlist WHERE CL_ID =" + contactlist.getId());
-		}
-
-		catch (SQLException e2){
-			e2.printStackTrace();
-
-			}
 		try{
 				
 				Statement stmt = con.createStatement();
@@ -387,16 +350,6 @@ Connection con = DBConnection.connection();
 				+ contact.getId() 
 				+ ")") ;
 			
-			
-				Permission p = new Permission();
-				Vector<User> participants = new Vector<User>();
-				participants = PermissionMapper.permissionMapper().findAllParticipantsByCLID(contactlist);
-				for(User u:participants){
-				p.setShareableObjectID(contactlist.getId());
-				p.setParticipantID(u.getId());
-				p.setSourceUserID(contactlist.getOwner());
-				PermissionMapper.permissionMapper().shareContactList(p);
-				}
 				return contactlist;	
 				
 			}

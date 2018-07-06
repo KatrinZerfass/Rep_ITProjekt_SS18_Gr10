@@ -174,9 +174,6 @@ public class ValueMapper {
 				+ value.getIsShared()
 				+ ")") ;
 				
-				Contact c2 = new Contact();
-				c2 = ContactMapper.contactMapper().findByID(contact);
-				ContactMapper.contactMapper().update(c2);
 				return value;	
 				
 			}
@@ -208,11 +205,6 @@ public class ValueMapper {
 				stmt.executeUpdate("UPDATE T_Value SET P_ID ="+property.getId()+", value ='" + value.getContent()+ "', C_ID=" + contact.getId() +", isShared="
 						+ value.getIsShared() + " WHERE V_ID=" + value.getId());
 				
-				Contact c2 = new Contact();
-				
-				c2 = ContactMapper.contactMapper().findByID(contact);
-				
-				ContactMapper.contactMapper().update(c2);
 				
 			}
 			
@@ -237,30 +229,11 @@ public class ValueMapper {
 			Connection con = DBConnection.connection();
 			
 			try{
-				Contact c2 = new Contact();
-				c2 = ContactMapper.contactMapper().findByID(findContactByVID(value));
-				ContactMapper.contactMapper().update(c2);
-				
+								
 				Statement stmt = con.createStatement();
 				
-				stmt.executeUpdate("DELETE FROM T_Value WHERE V_ID =" + value.getId());
-				
-				Property p = new Property();
-				Contact c = new Contact();
-				
-				p.setId(value.getPropertyid());
-				c.setId(ValueMapper.valueMapper().findContactByVID(value).getId());
-				
-				
-				
-				
-				if(ValueMapper.valueMapper().findAllByPID(p,c).size() < 1 && PropertyMapper.propertyMapper().findByID(p).getContactID() != 20000000 ){
-					
-					PropertyMapper.propertyMapper().delete(p);
+				stmt.executeUpdate("DELETE FROM T_Value WHERE V_ID =" + value.getId());	
 				}
-				
-				
-			}
 			
 			
 		

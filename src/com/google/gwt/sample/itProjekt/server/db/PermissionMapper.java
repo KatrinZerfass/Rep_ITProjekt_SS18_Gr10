@@ -91,21 +91,18 @@ public class PermissionMapper {
 			}
 	
 /**
- * Update von Veränderungen falls sich die Shareableobject ändert
- * Falls die ID unter 30000000 liegt wird ein Contact geupdated, falls die ID �ber 30000000 liegt werden ContactLists geupdated
- * Gibt ein permission zurück
+ * Update von Veränderungen falls sich eine KontaktPermission ändert 
  * 
- * @param permission übergebenes Permission Objekt mit Attributen C_ID oder CL_ID und U_ID
+ * @param permission übergebenes Permission Objekt mit Attributen C_ID  und U_ID
  * @return Ein vollständiges Permission Objekt
  * 
  * @author Egor Krämer
  * @author Robert Mattheis
  */
-public Permission update(Permission permission){
+public Permission updateContact(Permission permission){
 		
 		Connection con = DBConnection.connection();
-		
-		if(permission.getShareableObjectID() < 30000000) {
+				
 		
 		try{
 			Statement stmt1 = con.createStatement();
@@ -118,9 +115,23 @@ public Permission update(Permission permission){
 				}
 		
 		return permission;
+			
 			}
 		
-		if(permission.getShareableObjectID() >= 30000000) {
+
+/**
+ * Update von Veränderungen falls sich eine KontaktListenPermission ändert
+ *  
+ * @param permission übergebenes Permission Objekt mit Attributen  CL_ID und U_ID
+ * @return Ein vollständiges Permission Objekt
+ * 
+ * @author Egor Krämer
+ * @author Robert Mattheis
+ */
+public Permission updateContactList(Permission permission){
+		
+		Connection con = DBConnection.connection();
+		
 			
 			try{
 			Statement stmt2 = con.createStatement();
@@ -133,14 +144,10 @@ public Permission update(Permission permission){
 				}
 			return permission;
 			}
-		return permission;
-	}
+		
 	
 	/**
-	 * Falls die ID des übergebenen Shareableobjects Objekts unter 30000000 liegt wird aus der T_Permission_Contact alles entfernt
-	 * wo die U_ID und C_ID der ID des Participants und des Shareableobjects entspricht
-	 * 
-	 * falls die ID des übergebenen Shareableobjects Objekts über 30000000 liegt wird aus der T_Permission_Contactlist alles entfernt
+	 * aus der T_Permission_Contact wird alles entfernt
 	 * wo die U_ID und C_ID der ID des Participants und des Shareableobjects entspricht
 	 * 
 	 * @param permission übergebenes Permission Objekt mit Attributen C_ID und U_ID
@@ -148,12 +155,10 @@ public Permission update(Permission permission){
 	 * @author Egor Krämer
 	 * @author Robert Mattheis
 	 */
-	public void delete (Permission permission){
+	public void deleteContact (Permission permission){
 		
 		Connection con = DBConnection.connection();
 					
-		if(permission.getShareableObjectID() < 30000000)
-			
 					try{
 						Statement stmt1 = con.createStatement();
 						stmt1.executeUpdate("DELETE FROM T_Permission_Contact WHERE C_ID =" + permission.getShareableObjectID()+ " AND U_ID=" + permission.getParticipantID());
@@ -163,9 +168,27 @@ public Permission update(Permission permission){
 					e2.printStackTrace();
 				}
 		
-		if(permission.getShareableObjectID()>= 30000000) {
+		
+	}
+	
+	/**
+	 * Aus der T_Permission_Contact wird alles entfernt
+	 * wenn die U_ID und CL_ID der ID des Participants und des Shareableobjects entspricht
+	 * 
+	 * 
+	 * @param permission übergebenes Permission Objekt mit Attributen CL_ID und U_ID
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
+	 */
+	public void deleteContactList (Permission permission){
+		
+		Connection con = DBConnection.connection();
+					
+		
 			
 					try{
+				
 					Statement stmt2 = con.createStatement();
 					stmt2.executeUpdate("DELETE FROM T_Permission_Contactlist WHERE CL_ID =" + permission.getShareableObjectID()+ " AND U_ID ="+ permission.getParticipantID());
 				
@@ -175,21 +198,13 @@ public Permission update(Permission permission){
 					
 					Vector <Contact> c1 = ContactListMapper.contactListMapper().getAllContacts(cl);
 					
-					if(c1.size()>0){
-						for(Contact c2: c1){
-							
-							Permission p = new Permission();
-							p.setShareableObjectID(c2.getId());
-							p.setParticipantID(permission.getParticipantID());
-							
-						PermissionMapper.permissionMapper().delete(p);
-					}}}
+					}
 				
 				catch (SQLException e2){
 					e2.printStackTrace();
 				}
 		}
-	}
+	
 	
 	/**
 	 * Entfernt alle Einträge aus T_Permission_Contactlist falls eine ContactList gelöscht wird
@@ -213,6 +228,8 @@ public Permission update(Permission permission){
 		e2.printStackTrace();
 	}
 }
+	
+	
 	
 	
 	/**
