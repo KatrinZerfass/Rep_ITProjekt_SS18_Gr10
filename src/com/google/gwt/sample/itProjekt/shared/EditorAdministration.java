@@ -27,6 +27,20 @@ public interface EditorAdministration extends RemoteService{
 	public void init() throws IllegalArgumentException;
 	
 	/**
+	 * Legt einen Benutzer in der Datenbank an.
+	 *
+	 * @param email Email des Nutzers
+	 * @return ein vollständiges User Objekt
+	 * @throws IllegalArgumentException
+	 */
+	public User createUser(String email) throws IllegalArgumentException;
+	
+	public User editUser(User user) throws IllegalArgumentException;
+	
+	public void deleteUser(User u) throws IllegalArgumentException;
+	
+	
+	/**
 	 * Holt die Information ob der Nutzer bereits aus der Datenbank.
 	 * Identifiziert wird dies über einen boolschen Rückgabewert, true wenn Nutzer bereits existiert, sonst false.
 	 * 
@@ -43,7 +57,7 @@ public interface EditorAdministration extends RemoteService{
 	 * @return ein vollständiges User Objekt
 	 * @throws IllegalArgumentException
 	 */
-	public User getUser (String email) throws IllegalArgumentException;
+	public User getUserByEmail (String email) throws IllegalArgumentException;
 	
 	/**
 	 * Holt die Information des Nutzers anhand seiner ID aus der Datenbank.
@@ -53,15 +67,7 @@ public interface EditorAdministration extends RemoteService{
 	 * @throws IllegalArgumentException
 	 */
 	public User getUserByID (int ID) throws IllegalArgumentException;
-	
-	/**
-	 * Legt einen Benutzer in der Datenbank an.
-	 *
-	 * @param email Email des Nutzers
-	 * @return ein vollständiges User Objekt
-	 * @throws IllegalArgumentException
-	 */
-	public User createUser(String email) throws IllegalArgumentException;
+
 	
 	/**
 	 * Holt alle Kontakte des angemeldeten Nutzers aus der Datenbank.
@@ -179,8 +185,6 @@ public interface EditorAdministration extends RemoteService{
 	 * @throws IllegalArgumentException
 	 */
 	public User createUserContact(String firstname, String lastname, String sex, String email) throws IllegalArgumentException;
-	
-	public Vector<String> getFullNamesOfUsers(Vector<User> user) throws IllegalArgumentException;
 	
 	public Vector<String> getAllUserSuggestions(User activeUser) throws IllegalArgumentException;
 	
@@ -421,7 +425,6 @@ public interface EditorAdministration extends RemoteService{
 	 * @return Vector der betroffenen Kontakte
 	 * @throws IllegalArgumentException
 	 */
-	
 	public Vector<User> getAllParticipantsOfContact(Contact contact) throws IllegalArgumentException;
 	
 	public Vector<Contact> getAllSharedContactsOfContactList(ContactList contactlist, User user) throws IllegalArgumentException;
@@ -514,4 +517,11 @@ public interface EditorAdministration extends RemoteService{
 	public Value createAddress(String street, String housenumber, String zip, String city, Contact contact) throws IllegalArgumentException;
 
 	public Vector<Contact> getContactsOfUserWithDefaultProperty(User user, Property property) throws IllegalArgumentException;
+
+	public Property editProperty(Property property) throws IllegalArgumentException;
+	
+	public void deleteProperty(Property property) throws IllegalArgumentException;
+	
+	
+	public Vector<String> getFullNamesOfUsers(Vector<User> user) throws IllegalArgumentException;
 }

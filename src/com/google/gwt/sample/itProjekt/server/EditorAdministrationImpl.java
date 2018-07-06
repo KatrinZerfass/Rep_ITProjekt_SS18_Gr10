@@ -7,23 +7,48 @@ import com.google.gwt.sample.itProjekt.shared.bo.*;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.google.gwt.sample.itProjekt.server.db.*;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class EditorAdministrationImpl.
+ */
 @SuppressWarnings("serial")
 public class EditorAdministrationImpl extends RemoteServiceServlet implements EditorAdministration{
 	
-	/**
-	 * 
-	 */
 	
-	private ContactListMapper clMapper;
-	private ContactMapper cMapper;
-	private PropertyMapper pMapper;
-	private PermissionMapper pmMapper;
+	/** Referenz auf den NutzerMapper, der Nutzerobjekte mit der Datenbank abgleicht. */
 	private UserMapper uMapper;
+	
+	/** Referenz auf den KontaktMapper, der Kontaktobjekte mit der Datenbank abgleicht. */
+	private ContactMapper cMapper;
+	
+	/** Referenz auf den KontaktlistenMapper, der Kontaktlistenobjekte mit der Datenbank abgleicht. */
+	private ContactListMapper clMapper;
+	
+	/** Referenz auf den EigenschaftenMapper, der Eigenschaftsobjekte mit der Datenbank abgleicht. */
+	private PropertyMapper pMapper;
+	
+	/** Referenz auf den AusprägungsMapper, der Ausprägungsobjekte mit der Datenbank abgleicht. */
 	private ValueMapper vMapper;
+	
+	/** Referenz auf den TeilhaberschaftsMapper, der Teilhaberschaftsobjekte mit der Datenbank abgleicht. */
+	private PermissionMapper pmMapper;
 
-	@Override
+	/*
+	   * ***************************************************************************
+	   * ABSCHNITT, Beginn: Initialisierung
+	   * ***************************************************************************
+	   */
+	
+	/**
+	 * No Argument Konstruktor
+	 *
+	 * @throws IllegalArgumentException the illegal argument exception
+	 */
+	public EditorAdministrationImpl() throws IllegalArgumentException {
+		// TODO Auto-generated constructor stub
+	}
+	
 	public void init() throws IllegalArgumentException {
-		// TODO Auto-generated method stub
 		
 		this.clMapper = ContactListMapper.contactListMapper();
 		this.cMapper = ContactMapper.contactMapper();
@@ -34,27 +59,20 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		
 	}
 	
+	  /*
+	   * ***************************************************************************
+	   * ABSCHNITT, Ende: Initialisierung
+	   * ***************************************************************************
+	   */
 
-	public boolean isUserKnown (String email) throws IllegalArgumentException{
-	
-		//Wenn der User noch nicht in der Datenbank existiert, wird ein neuer User angelegt. 
-		if(getUser(email).getEmail() == null){
-			return false;	
-		}
-		else{
-			return true;
-		}
-	}
-	
-	public User getUser(String email) {
-		return uMapper.findByEMail(email);
-	}
-	
-	@Override
-	public User getUserByID(int ID) throws IllegalArgumentException {
-
-		return uMapper.findByID(ID);
-	}
+	  /*
+	   * ***************************************************************************
+	   * ABSCHNITT, Beginn: Methoden für User-Objekte
+	   * create, edit, delete und get(ter) für User-Objekte, sowie alle Methoden, 
+	   * welche User-Objekte oder Vektoren von User-Objekten zurück geben 
+	   * oder den User direkt betreffen.
+	   * ***************************************************************************
+	   */
 	
 	@Override
 	public User createUser(String email) throws IllegalArgumentException {
@@ -65,119 +83,23 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		return uMapper.insert(newuser);
 	}
 	
-	public Vector<Contact> getAllContactsOfActiveUser(User user) throws IllegalArgumentException {
-		
-		Vector<Contact> result = new Vector<Contact>();
-		Vector<Contact> allContacts = cMapper.findAllByUID(user);
-		Vector<Contact> sharedContacts = pmMapper.getAllContactsByUID(user);
-		
-		for (Contact c : allContacts) {
-			if(c.getIsUser()) {
-				result.add(c);
-			}
-		}
-		for (Contact c : allContacts) {
-			if(!c.getIsUser()) {
-				result.add(c);
-			}
-		}
-		for (Contact c : sharedContacts) {
-			result.add(c);
-		}
-		
-		return result;
+	public User editUser(User user) throws IllegalArgumentException{
+		return uMapper.update(user);
 	}
 	
-	public Vector<ContactList> getAllOwnedContactListsOfActiveUser(User user) throws IllegalArgumentException {
-		
-		return clMapper.findAllByUID(user);
-	}
-
-	@Override
-	public Vector<ContactList> getAllContactListsOfUser(String email) throws IllegalArgumentException {
-		
-		Vector<ContactList> result = new Vector<ContactList>();
-		
-		result = clMapper.findAllByUID(getUser(email));
-		result.addAll(pmMapper.getAllContactListsByUID(getUser(email)));
-
-		return result;
-	}
-
-	@Override
-	public Vector<Contact> getAllOwnedContactsOfUser(String email) throws IllegalArgumentException {
-
-		Vector<Contact> resultcontacts = new Vector<Contact>();
-		resultcontacts = cMapper.findAllByUID(getUser(email));
-		return resultcontacts;
+	public void deleteUser(User user) throws IllegalArgumentException{
+		uMapper.delete(user);
 	}
 	
-	@Override
-	public Vector<Contact> getAllSharedContactsOfUserWithOtherUser(User source, String receiver) throws IllegalArgumentException {
-		
-		Vector<Contact> result = new Vector<Contact>();
-		Vector<Contact> sourceContacts = pmMapper.getAllContactsBySrcUID(source);
-		Vector<Contact> receiverContacts = pmMapper.getAllContactsByUID(uMapper.findByEMail(receiver));
-				
-		for (Contact c : sourceContacts) {
-			if (receiverContacts.contains(c)) {
-				result.add(c);
-			}
-		}
-		
-		return result;
-	}
-
-	@Override
-	public Vector<Contact> getAllSharedContactsWithUser(String email) throws IllegalArgumentException {
-
-		return pmMapper.getAllContactsByUID(getUser(email));
+	public User getUserByEmail(String email) {
+		return uMapper.findByEMail(email);
 	}
 	
-	
-	public Vector<Contact> getAllContactsOfContactlistForUser(ContactList contactlist, User user) throws IllegalArgumentException {
-		
-		Vector<Contact> allContactsOfActiveUser = getAllContactsOfActiveUser(user);
-		Vector<Contact> allContactsOfContactList = getAllContactsOfContactList(contactlist);
-		
-		Vector<Contact> result = new Vector<Contact>();
-		
-		for(Contact c : allContactsOfContactList){
-			if(allContactsOfActiveUser.contains(c)){
-				result.add(c);
-			}
-		}
-		return result;		
-	}
-	
+	public User getUserByID(int ID) throws IllegalArgumentException {
 
-	@Override
-	public Vector<Contact> getAllContactsOfContactList(ContactList contactlist) throws IllegalArgumentException {
-		
-		return clMapper.getAllContacts(contactlist);
+		return uMapper.findByID(ID);
 	}
 
-	@Override
-	public Contact getContactByID(int id) throws IllegalArgumentException {
-
-		Contact contact = new Contact();
-		contact.setId(id);
-		return cMapper.findByID(contact);
-	}
-
-	@Override
-	public Contact createContact(String firstname, String lastname, String sex, User user) throws IllegalArgumentException {
-
-		Contact newcontact = new Contact();
-		newcontact.setFirstname(firstname);
-		newcontact.setLastname(lastname);
-		newcontact.setSex(sex);
-		newcontact.setOwner(user.getId());
-		
-		return cMapper.insert(newcontact, user);
-	}
-	
-	@Override
 	public User createUserContact(String firstname, String lastname, String sexList, String email)
 			throws IllegalArgumentException {
 		
@@ -206,8 +128,69 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		
 		return newUser;
 	}
+	
+	public User getOwnerOfContact (Contact c) throws IllegalArgumentException {
+		User user= new User();
+		user=uMapper.findByID(c.getOwner());
+		if(user!=null){
+			return user;
+		}
+		else{
+			return null;
+		}
+	}
 
-	@Override
+	public User getSourceToSharedContact(Contact contact, User receivingUser) throws IllegalArgumentException {
+		
+		return pmMapper.getSourceUserByUIDAndCID(receivingUser, contact);
+	}
+	
+	public Vector<User> getAllUsers() throws IllegalArgumentException {
+
+		return uMapper.findAll();
+	}
+	  
+	public Vector<User> getAllParticipantsOfContact(Contact contact) throws IllegalArgumentException {
+		
+		return pmMapper.findAllParticipantsByCID(contact);
+	}
+
+	public boolean isUserKnown (String email) throws IllegalArgumentException{
+	
+		//Wenn der User noch nicht in der Datenbank existiert, wird ein neuer User angelegt. 
+		if(getUserByEmail(email).getEmail() == null){
+			return false;	
+		}
+		else{
+			return true;
+		}
+	}
+	
+	  /*
+	   * ***************************************************************************
+	   * ABSCHNITT, Ende: Methoden für User-Objekte
+	   * ***************************************************************************
+	   */
+
+	  /*
+	   * ***************************************************************************
+	   * ABSCHNITT, Beginn: Methoden für Kontakt-Objekte
+	   * create, edit, delete und get(ter) für Kontakt-Objekte, sowie alle Methoden, 
+	   * welche Kontakt-Objekte oder Vektoren von Kontakt-Objekten zurück geben.
+	   * ***************************************************************************
+	   */
+	
+	public Contact createContact(String firstname, String lastname, String sex, User user) throws IllegalArgumentException {
+
+		Contact newcontact = new Contact();
+		newcontact.setFirstname(firstname);
+		newcontact.setLastname(lastname);
+		newcontact.setSex(sex);
+		newcontact.setOwner(user.getId());
+		
+		return cMapper.insert(newcontact, user);
+	}
+	
 	public Contact editContact(int id, String firstname, String lastname, String sex) throws IllegalArgumentException {
 		
 		Contact changedcontact = new Contact();
@@ -218,26 +201,9 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 
 		return cMapper.update(changedcontact);
 	}
-
-	@Override
-	public Permission shareContact(User sourceUser, String shareUserEmail, Contact shareContact) throws IllegalArgumentException {
-		
-		if(uMapper.findByEMail(shareUserEmail).getId() != shareContact.getOwner()) {
-			Permission newpermission = new Permission();
-			newpermission.setSourceUserID(sourceUser.getId());
-			newpermission.setParticipantID(uMapper.findByEMail(shareUserEmail).getId());
-			newpermission.setShareableObjectID(shareContact.getId());
-		
-			return pmMapper.shareContact(newpermission);
-		}
-		else {
-			return null;
-		}
-	}
-
-	@Override
+	
 	public void deleteContact(Contact contact, boolean owner, User user) throws IllegalArgumentException {
-				
+		
 		if(owner == true){
 			cMapper.delete(contact);
 		
@@ -247,121 +213,83 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		
 	}
 
-	@Override
-	public ContactList createContactList(String name, User user) throws IllegalArgumentException {
+	public Contact getContactByID(int id) throws IllegalArgumentException {
 
-		ContactList newcontactlist = new ContactList();
-		newcontactlist.setName(name);
-		newcontactlist.setOwner(user.getId());
-		
-		return clMapper.insert(newcontactlist, user);
+		Contact contact = new Contact();
+		contact.setId(id);
+		return cMapper.findByID(contact);
 	}
 
-	@Override
-	public ContactList editContactList(int id, String name) throws IllegalArgumentException {
-
-		ContactList changedcontactlist = new ContactList();
-		changedcontactlist.setId(id);
-		changedcontactlist.setName(name);
+	public Vector<Contact> getAllContactsOfActiveUser(User user) throws IllegalArgumentException {
 		
-		return clMapper.update(changedcontactlist);
-	}
-
-	@Override
-	public ContactList addContactToContactList(ContactList contactlist, Contact contact)
-			throws IllegalArgumentException {
+		Vector<Contact> result = new Vector<Contact>();
+		Vector<Contact> allContacts = cMapper.findAllByUID(user);
+		Vector<Contact> sharedContacts = pmMapper.getAllContactsByUID(user);
 		
-		return clMapper.addContact(contactlist, contact);
-	}
-
-	@Override
-	public Permission shareContactList(User sourceUser, String shareUserEmail, ContactList shareContactList) throws IllegalArgumentException {
-		
-		if(uMapper.findByEMail(shareUserEmail).getId() != shareContactList.getOwner()) {
-			Permission newCLpermission = new Permission();
-			newCLpermission.setSourceUserID(sourceUser.getId());
-			newCLpermission.setParticipantID(uMapper.findByEMail(shareUserEmail).getId());
-			newCLpermission.setShareableObjectID(shareContactList.getId());
-			
-			return pmMapper.shareContactList(newCLpermission);
+		for (Contact c : allContacts) {
+			if(c.getIsUser()) {
+				result.add(c);
+			}
 		}
-		else {
-			return null;
+		for (Contact c : allContacts) {
+			if(!c.getIsUser()) {
+				result.add(c);
+			}
 		}
+		for (Contact c : sharedContacts) {
+			result.add(c);
+		}
+		
+		return result;
+	}
+	
+	public Vector<Contact> getAllOwnedContactsOfUser(String email) throws IllegalArgumentException {
+
+		Vector<Contact> resultcontacts = new Vector<Contact>();
+		resultcontacts = cMapper.findAllByUID(getUserByEmail(email));
+		return resultcontacts;
+	}
+	
+	public Vector<Contact> getAllSharedContactsWithUser(String email) throws IllegalArgumentException {
+
+		return pmMapper.getAllContactsByUID(getUserByEmail(email));
+	}
+	
+	public Vector<Contact> getAllSharedContactsOfUserWithOtherUser(User source, String receiver) throws IllegalArgumentException {
+		
+		Vector<Contact> result = new Vector<Contact>();
+		Vector<Contact> sourceContacts = pmMapper.getAllContactsBySrcUID(source);
+		Vector<Contact> receiverContacts = pmMapper.getAllContactsByUID(uMapper.findByEMail(receiver));
+				
+		for (Contact c : sourceContacts) {
+			if (receiverContacts.contains(c)) {
+				result.add(c);
+			}
+		}
+		
+		return result;
+	}
+	
+	public Vector<Contact> getAllContactsOfContactlistForUser(ContactList contactlist, User user) throws IllegalArgumentException {
+		
+		Vector<Contact> allContactsOfActiveUser = getAllContactsOfActiveUser(user);
+		Vector<Contact> allContactsOfContactList = getAllContactsOfContactList(contactlist);
+		
+		Vector<Contact> result = new Vector<Contact>();
+		
+		for(Contact c : allContactsOfContactList){
+			if(allContactsOfActiveUser.contains(c)){
+				result.add(c);
+			}
+		}
+		return result;		
 	}
 
-	@Override
-	public ContactList removeContactFromContactList(ContactList contactlist, Contact contact)
-			throws IllegalArgumentException {
-
-		return clMapper.removeContact(contactlist, contact);
+	public Vector<Contact> getAllContactsOfContactList(ContactList contactlist) throws IllegalArgumentException {
+		
+		return clMapper.getAllContacts(contactlist);
 	}
-
-	@Override
-	public void deleteContactList(ContactList contactlist, boolean owner, User user) throws IllegalArgumentException {
-		
-		if(owner == true){
-			clMapper.delete(contactlist);
-		}else{
-			deletePermission(user, contactlist);
-		}	
-	}
-
-	@Override
-	public Value createValue(Contact contact, int propertyid, String content) throws IllegalArgumentException {
-		
-		Value newvalue = new Value();
-		newvalue.setContent(content);
-		Property property = new Property();
-		property.setId(propertyid);
-		
-		return vMapper.insert(newvalue, contact, property);
-	}
-
-	@Override
-	public Value editValue(Contact contact, int propertyId, Value value, String content, boolean isshared)
-			throws IllegalArgumentException {
-		
-		Value newvalue = new Value();
-		newvalue = value;
-		newvalue.setIsShared(isshared);
-		newvalue.setContent(content);
-		Property property = new Property();
-		property.setId(propertyId);
-		
-		return vMapper.update(newvalue, contact, property);
-	}
-
-	@Override
-	public void deleteValue(Value value) throws IllegalArgumentException {
-		
-		vMapper.delete(value);
-	}
-
-	@Override
-	public Vector<Value> getAllValuesOfContact(Contact contact) throws IllegalArgumentException {
-		
-		return vMapper.getAllValueByCID(contact);
-	}
-
-	@Override
-	public Vector<ContactList> getAllContactListsWithContact(Contact contact) throws IllegalArgumentException {
-		return clMapper.findAllByCID(contact);
-	}
-
-
-	@Override
-	public void deletePermission(User user, BusinessObject bo) throws IllegalArgumentException {
-		
-		Permission permission = new Permission();
-		permission.setParticipantID(user.getId());
-		permission.setShareableObjectID(bo.getId());
-		
-		pmMapper.delete(permission);
-	}
-
-
-	@Override
+	
 	public Vector<Contact> getAllContactsWithValue(String content) throws IllegalArgumentException {
 		
 		Value value = new Value();
@@ -369,82 +297,12 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		
 		return vMapper.findAllContactsByValue(value);
 	}
-
-
-	@Override
-	public Vector<Contact> getAllContactsWithName(String name) throws IllegalArgumentException {
 	
+	public Vector<Contact> getAllContactsWithName(String name) throws IllegalArgumentException {
+		
 		return cMapper.findAllByName(name);
 	}
-
-
-	@Override
-	public Property getPropertyOfValue(Value value) throws IllegalArgumentException {
-		
-		Property property = new Property();
-		property.setId(value.getPropertyid());
-		
-		return pMapper.findByID(property);
-	}
-
-
-	@Override
-	public Vector<Value> getAllSharedValuesOfContact(Contact contact) throws IllegalArgumentException {
-		
-		return vMapper.getAllSharedValueByCID(contact);
-	}
-
-
-	@Override
-	public Vector<Property> getAllPredefinedPropertiesOf() throws IllegalArgumentException {
-		
-		return pMapper.findAllDefault();
-	}
-
-
-	@Override
-	public Property createProperty(Contact contact, String type) throws IllegalArgumentException {
-		
-		Property newProperty = new Property();
-		newProperty.setType(type);
-		
-		return pMapper.insert(newProperty, contact);
-	}
-
-
-	@Override
-	public Property getPropertyByType(String type, Contact contact) throws IllegalArgumentException {
-		
-		Contact defaultContact = new Contact();
-		
-		if (contact == null) {
-			defaultContact = new Contact();
-			defaultContact.setId(20000000);
-		}
-		else {
-			defaultContact = contact;
-		}
-		Property property = new Property();
-		Property result = new Property();
-		property.setType(type);
-		Vector<Property> vp = pMapper.findByType(property);
-		for(Property p: vp){
-			if(p.getContactID()==defaultContact.getId()){
-				result=p;
-			}
-		}
-		return result;
-	}
-
-
-	@Override
-	public Vector<User> getAllUsers() throws IllegalArgumentException {
-
-		return uMapper.findAll();
-	}
-
-
-	@Override
+	
 	public Vector<Contact> getAllSharedContactsOfContactList(ContactList contactlist, User user)
 			throws IllegalArgumentException {
 		Vector<Contact> allContactsInCL = getAllContactsOfContactList(contactlist);
@@ -460,7 +318,6 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		return result;
 	}
 	
-	@Override
 	public Vector<Contact> getAllContactsOfUserWithValue(User user, Value value) throws IllegalArgumentException{
 		Vector<Contact> allContactsOfUser= new Vector<Contact>();
 		
@@ -477,7 +334,6 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		return result;
 	}
 	
-	@Override
 	public Vector<Contact> getContactsOfUserWithProperty(User user, Property property) throws IllegalArgumentException{
 		Vector<Contact> allContactsOfUser= getAllContactsOfActiveUser(user);
 		Vector<Property> allPropertiesWithType= new Vector<Property>();
@@ -499,7 +355,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		}
 		return result;
 	}
-	@Override
+
 	public Vector<Contact> getContactsOfUserWithDefaultProperty(User user, Property property) throws IllegalArgumentException{
 		Vector<Contact> allContactsOfUser= new Vector<Contact>();
 		allContactsOfUser = getAllContactsOfActiveUser(user);
@@ -520,7 +376,6 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		return result;
 }
 		
-	
 	public Vector<Contact> getContactsOfNameSearchResult(User user, String textBox, ContactList selectedContactList) throws IllegalArgumentException{
 		
 		Vector<Contact> allContactsOfUser = new Vector<Contact>();
@@ -577,28 +432,188 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		return result;
 	}
 
-	public User getSourceToSharedContact(Contact contact, User receivingUser) throws IllegalArgumentException {
+	  /*
+	   * ***************************************************************************
+	   * ABSCHNITT, Ende: Methoden für Kontakt-Objekte
+	   * ***************************************************************************
+	   */
+
+	  /*
+	   * ***************************************************************************
+	   * ABSCHNITT, Beginn: Methoden für Kontaktlisten-Objekte
+	   * create, edit, und delete für Kontaktlisten-Objekte, sowie alle 
+	   * Methoden, welche Kontaktlisten-Objekte oder Vektoren von 
+	   * Kontaktlisten-Objekten zurück geben.
+	   * ***************************************************************************
+	   */
+	
+	public ContactList createContactList(String name, User user) throws IllegalArgumentException {
+
+		ContactList newcontactlist = new ContactList();
+		newcontactlist.setName(name);
+		newcontactlist.setOwner(user.getId());
 		
-		return pmMapper.getSourceUserByUIDAndCID(receivingUser, contact);
-	}
-
-
-	@Override
-	public Vector<Permission> getAllPermissions() throws IllegalArgumentException {
-
-		return pmMapper.findAll();
+		return clMapper.insert(newcontactlist, user);
 	}
 	
-	@Override
-	public User getOwnerOfContact (Contact c) throws IllegalArgumentException {
-		User user= new User();
-		user=uMapper.findByID(c.getOwner());
-		if(user!=null){
-			return user;
+	public ContactList editContactList(int id, String name) throws IllegalArgumentException {
+
+		ContactList changedcontactlist = new ContactList();
+		changedcontactlist.setId(id);
+		changedcontactlist.setName(name);
+		
+		return clMapper.update(changedcontactlist);
+	}
+	
+	public void deleteContactList(ContactList contactlist, boolean owner, User user) throws IllegalArgumentException {
+		
+		if(owner == true){
+			clMapper.delete(contactlist);
+		}else{
+			deletePermission(user, contactlist);
+		}	
+	}
+
+	public ContactList addContactToContactList(ContactList contactlist, Contact contact)
+			throws IllegalArgumentException {
+		
+		return clMapper.addContact(contactlist, contact);
+	}
+
+	public ContactList removeContactFromContactList(ContactList contactlist, Contact contact)
+			throws IllegalArgumentException {
+
+		return clMapper.removeContact(contactlist, contact);
+	}
+	
+	public Vector<ContactList> getAllOwnedContactListsOfActiveUser(User user) throws IllegalArgumentException {
+		
+		return clMapper.findAllByUID(user);
+	}
+
+	
+	public Vector<ContactList> getAllContactListsOfUser(String email) throws IllegalArgumentException {
+		
+		Vector<ContactList> result = new Vector<ContactList>();
+		
+		result = clMapper.findAllByUID(getUserByEmail(email));
+		result.addAll(pmMapper.getAllContactListsByUID(getUserByEmail(email)));
+
+		return result;
+	}
+
+	public Vector<ContactList> getAllContactListsWithContact(Contact contact) throws IllegalArgumentException {
+		return clMapper.findAllByCID(contact);
+	}
+
+	 /*
+	   * ***************************************************************************
+	   * ABSCHNITT, Ende: Methoden für Kontaktlisten-Objekte
+	   * ***************************************************************************
+	   */
+
+	  /*
+	   * ***************************************************************************
+	   * ABSCHNITT, Beginn: Methoden für Eigenschaften-Objekte
+	   * create, edit, und delete für Eigenschaften-Objekte, sowie alle 
+	   * Methoden, welche Eigenschaften-Objekte oder Vektoren von 
+	   * Eigenschaften-Objekten zurück geben.
+	   * ***************************************************************************
+	   */
+	
+	public Property createProperty(Contact contact, String type) throws IllegalArgumentException {
+		
+		Property newProperty = new Property();
+		newProperty.setType(type);
+		
+		return pMapper.insert(newProperty, contact);
+	}
+
+	public Property editProperty(Property property) throws IllegalArgumentException{
+		return pMapper.update(property);
+	}
+	
+	public void deleteProperty(Property property) throws IllegalArgumentException{
+		pMapper.delete(property);
+	}
+	
+	public Property getPropertyOfValue(Value value) throws IllegalArgumentException {
+		
+		Property property = new Property();
+		property.setId(value.getPropertyid());
+		
+		return pMapper.findByID(property);
+	}
+	
+	public Property getPropertyByType(String type, Contact contact) throws IllegalArgumentException {
+		
+		Contact defaultContact = new Contact();
+		
+		if (contact == null) {
+			defaultContact = new Contact();
+			defaultContact.setId(20000000);
 		}
-		else{
-			return null;
+		else {
+			defaultContact = contact;
 		}
+		Property property = new Property();
+		Property result = new Property();
+		property.setType(type);
+		Vector<Property> vp = pMapper.findByType(property);
+		for(Property p: vp){
+			if(p.getContactID()==defaultContact.getId()){
+				result=p;
+			}
+		}
+		return result;
+	}
+	
+	public Vector<Property> getAllPredefinedPropertiesOf() throws IllegalArgumentException {
+		
+		return pMapper.findAllDefault();
+	}
+
+	  /*
+	   * ***************************************************************************
+	   * ABSCHNITT, Ende: Methoden für Eigenschaften-Objekte
+	   * ***************************************************************************
+	   */
+
+	  /*
+	   * ***************************************************************************
+	   * ABSCHNITT, Beginn: Methoden für Ausprägungs-Objekte
+	   * create, edit, und delete für Ausprägungs-Objekte, sowie alle 
+	   * Methoden, welche Ausprägungs-Objekte oder Vektoren von 
+	   * Ausprägungs-Objekten zurück geben.
+	   * ***************************************************************************
+	   */
+	
+	public Value createValue(Contact contact, int propertyid, String content) throws IllegalArgumentException {
+		
+		Value newvalue = new Value();
+		newvalue.setContent(content);
+		Property property = new Property();
+		property.setId(propertyid);
+		
+		return vMapper.insert(newvalue, contact, property);
+	}
+	
+	public Value editValue(Contact contact, int propertyId, Value value, String content, boolean isshared)
+			throws IllegalArgumentException {
+		
+		Value newvalue = new Value();
+		newvalue = value;
+		newvalue.setIsShared(isshared);
+		newvalue.setContent(content);
+		Property property = new Property();
+		property.setId(propertyId);
+		
+		return vMapper.update(newvalue, contact, property);
+	}
+	
+	public void deleteValue(Value value) throws IllegalArgumentException {
+		
+		vMapper.delete(value);
 	}
 	
 	public Value createAddress(String street, String housenumber, String zip, String city, Contact contact) {
@@ -610,29 +625,100 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		
 		return streetValue;
 	}
-
-
-	@Override
-	public Vector<User> getAllParticipantsOfContact(Contact contact) throws IllegalArgumentException {
+	
+	public Vector<Value> getAllValuesOfContact(Contact contact) throws IllegalArgumentException {
 		
-		return pmMapper.findAllParticipantsByCID(contact);
+		return vMapper.getAllValueByCID(contact);
+	}
+	
+	public Vector<Value> getAllSharedValuesOfContact(Contact contact) throws IllegalArgumentException {
+		
+		return vMapper.getAllSharedValueByCID(contact);
+	}
+	
+	  /*
+	   * ***************************************************************************
+	   * ABSCHNITT, Ende: Methoden für Ausprägungs-Objekte
+	   * ***************************************************************************
+	   */
+
+	  /*
+	   * ***************************************************************************
+	   * ABSCHNITT, Beginn: Methoden für Teilhaberschaft-Objekte
+	   * create (im Falle von Teilhaberschaften entspricht dies den 
+	   * "share"-Methoden), edit, und delete für Teilhaberschaft-Objekte, sowie alle 
+	   * Methoden, welche Teilhaberschaft-Objekte oder Vektoren von 
+	   * Teilhaberschaft-Objekten zurück geben.
+	   * ***************************************************************************
+	   */
+	
+	public Permission shareContact(User sourceUser, String shareUserEmail, Contact shareContact) throws IllegalArgumentException {
+		
+		if(uMapper.findByEMail(shareUserEmail).getId() != shareContact.getOwner()) {
+			Permission newpermission = new Permission();
+			newpermission.setSourceUserID(sourceUser.getId());
+			newpermission.setParticipantID(uMapper.findByEMail(shareUserEmail).getId());
+			newpermission.setShareableObjectID(shareContact.getId());
+		
+			return pmMapper.shareContact(newpermission);
+		}
+		else {
+			return null;
+		}
 	}
 
+	public Permission shareContactList(User sourceUser, String shareUserEmail, ContactList shareContactList) throws IllegalArgumentException {
+		
+		if(uMapper.findByEMail(shareUserEmail).getId() != shareContactList.getOwner()) {
+			Permission newCLpermission = new Permission();
+			newCLpermission.setSourceUserID(sourceUser.getId());
+			newCLpermission.setParticipantID(uMapper.findByEMail(shareUserEmail).getId());
+			newCLpermission.setShareableObjectID(shareContactList.getId());
+			
+			return pmMapper.shareContactList(newCLpermission);
+		}
+		else {
+			return null;
+		}
+	}
 
-	@Override
+	public Permission editPermission(Permission permission) throws IllegalArgumentException{
+		return pmMapper.update(permission);
+	}
+
+	public void deletePermission(User user, BusinessObject bo) throws IllegalArgumentException {
+		
+		Permission permission = new Permission();
+		permission.setParticipantID(user.getId());
+		permission.setShareableObjectID(bo.getId());
+		
+		pmMapper.delete(permission);
+	}
+
+	public Vector<Permission> getAllPermissions() throws IllegalArgumentException {
+
+		return pmMapper.findAll();
+	}
+
+	  /*
+	   * ***************************************************************************
+	   * ABSCHNITT, Ende: Methoden für Teilhaberschaft-Objekte
+	   * ***************************************************************************
+	   */
+
+	  /*
+	   * ***************************************************************************
+	   * ABSCHNITT, Beginn: Methoden, welche sonstige Funktionen erfüllen.
+	   * ***************************************************************************
+	   */
+
 	public Vector<String> getAllUserSuggestions(User activeUser) throws IllegalArgumentException {
 		
 		Vector<User> allUsers = uMapper.findAll();
 		Vector<Contact> allContacts = cMapper.findAllUserContacts();
-				//cMapper.findAll();
-//		Vector<Value> contactValues = new Vector<Value>();
-//		Vector<String> allUserEmails = new Vector<String>();
+
 		Vector<String> result = new Vector<String>();
-//		String partResult = null;
-		
-//		for(User u : allUsers) {
-//			allUserEmails.add(u.getEmail());
-//		}
+
 		
 		allUsers.removeElement(activeUser);
 		
@@ -642,26 +728,15 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 					result.add(c.getFirstname() + " " + c.getLastname() + " - " + u.getEmail());
 				}
 			}
-				
-//				contactValues = vMapper.getAllValueByCID(c);
-//				for (Value v : contactValues) {
-//					if(v.getPropertyid() == 3 && allUserEmails.contains(v.getContent()) && c.getOwner() == getUser(v.getContent()).getId()) {
-//						partResult = v.getContent();
-//					}
-//				}
-//				result.add(c.getFirstname() + " " + c.getLastname() + " (" + partResult + ")");
 		}
 		return result;
 	}
 
-
-	@Override
-	public Vector<String> getFullNamesOfUsers(Vector<User> users) throws IllegalArgumentException {
-		
+	public Vector<String> getFullNamesOfUsers(Vector<User> user) throws IllegalArgumentException {
 		Vector<Contact> contacts = null;
 		Vector<String> result = new Vector<String>();
 		
-		for (User u : users) {
+		for (User u : user) {
 			contacts = getAllOwnedContactsOfUser(u.getEmail());
 			for(Contact c : contacts) {
 				if (c.getIsUser()) {

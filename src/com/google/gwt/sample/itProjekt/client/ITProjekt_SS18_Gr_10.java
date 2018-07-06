@@ -105,7 +105,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 
 			public void onSuccess(Boolean result) {
 				if (result) {
-					editorAdministration.getUser(loginInfo.getEmailAddress(), new AsyncCallback<User>() {
+					editorAdministration.getUserByEmail(loginInfo.getEmailAddress(), new AsyncCallback<User>() {
 						public void onFailure(Throwable arg0) {
 							Window.alert("AsyncCallback fehlgeschlagen: getUser");
 						}

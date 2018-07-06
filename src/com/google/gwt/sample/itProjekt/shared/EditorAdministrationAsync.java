@@ -85,7 +85,7 @@ public interface EditorAdministrationAsync {
 
 	void getAllSharedContactsOfContactList(ContactList contactlist, User user, AsyncCallback<Vector<Contact>> callback);
 
-	void getUser(String email, AsyncCallback<User> callback);
+	void getUserByEmail(String email, AsyncCallback<User> callback);
 
 	void getAllContactsOfUserWithValue(User user, Value value, AsyncCallback<Vector<Contact>> callback);
 
@@ -123,5 +123,13 @@ public interface EditorAdministrationAsync {
 	void getFullNamesOfUsers(Vector<User> user, AsyncCallback<Vector<String>> callback);
 
 	void getContactsOfUserWithDefaultProperty(User user, Property property, AsyncCallback<Vector<Contact>> callback);
+
+	void editProperty(Property property, AsyncCallback<Property> callback);
+
+	void deleteProperty(Property property, AsyncCallback<Void> callback);
+
+	void deleteUser(User u, AsyncCallback<Void> callback);
+
+	void editUser(User user, AsyncCallback<User> callback);
 }
 

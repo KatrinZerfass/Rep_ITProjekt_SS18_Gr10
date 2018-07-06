@@ -71,7 +71,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	 */
 	
 	public User getUserInformation (String email) throws IllegalArgumentException{
-		return this.admin.getUser(email);
+		return this.admin.getUserByEmail(email);
 	}
 	
 
