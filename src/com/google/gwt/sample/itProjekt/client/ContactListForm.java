@@ -315,7 +315,7 @@ public class ContactListForm extends VerticalPanel{
 					
 					@Override
 					public void onClick(ClickEvent arg0) {
-						Window.alert("user-email: " + user.getEmail());
+
 						editorAdministration.createContactList(inputDB.getMultiUseTextBox().getText(), user, new AsyncCallback<ContactList>() {
 							public void onFailure(Throwable arg0) {
 								Window.alert("Fehler beim Erstellen der Kontaktliste!");
@@ -449,10 +449,9 @@ public class ContactListForm extends VerticalPanel{
 									}
 									public void onSuccess(Permission arg0) {
 										if(arg0 != null) {
-											Window.alert("Kontaktliste erfolgreich geteilt.");
+
 											final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Kontaktliste erfolgreich geteilt!", new ClientsideFunctions.OkButton());
 											success.getOkButton().addClickHandler(new ClickHandler() {
-												
 												@Override
 												public void onClick(ClickEvent arg0) {
 													success.hide();
@@ -463,7 +462,6 @@ public class ContactListForm extends VerticalPanel{
 											inputDB.hide();
 											final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Nutzer ist der Urheber der Kontaktliste", new ClientsideFunctions.OkButton());
 											failed.getOkButton().addClickHandler(new ClickHandler() {
-												
 												@Override
 												public void onClick(ClickEvent arg0) {
 													failed.hide();
@@ -525,9 +523,7 @@ public class ContactListForm extends VerticalPanel{
 										}
 									});
 								}
-
 							}
-
 						});	
 						
 						editorAdministration.getContactsOfValueSearchResult(user, searchTextBox.getText(), selectedContactList, new AsyncCallback<Vector<Contact>>() {
@@ -536,15 +532,30 @@ public class ContactListForm extends VerticalPanel{
 								Window.alert("Fehler beim Füllen des allContactsOfUser Vectors!");
 							}
 							@Override
-							public void onSuccess(Vector<Contact> arg0){
+							public void onSuccess(final Vector<Contact> arg0){
 								if(arg0.size() != 0){
-									clctvm.addValueResults();
-									clctvm.addContactOfSearchResultList(clctvm.getValueResultsCL(), arg0);
+									
+									final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Suche erfolgreich!", new ClientsideFunctions.OkButton());
+									success.getOkButton().addClickHandler(new ClickHandler() {
+										
+										@Override
+										public void onClick(ClickEvent click) {
+											clctvm.addValueResults();
+											clctvm.addContactOfSearchResultList(clctvm.getValueResultsCL(), arg0);
+											success.hide();
+										}
+									});
 								}else{
-									clctvm.deleteValueResults();
+									final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Kein Suchergebnis.", new ClientsideFunctions.OkButton());
+									failed.getOkButton().addClickHandler(new ClickHandler() {
+										@Override
+										public void onClick(ClickEvent arg0) {
+											clctvm.deleteValueResults();
+											failed.hide();
+										}
+									});
 								}
 							}
-							
 						});	
 					}
 				}

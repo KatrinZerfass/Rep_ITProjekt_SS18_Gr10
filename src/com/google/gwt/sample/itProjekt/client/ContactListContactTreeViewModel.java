@@ -306,12 +306,16 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		}else if(value instanceof ContactList) {
 			final ListDataProvider<Contact> contactsProvider = new ListDataProvider<Contact>();
 			contactDataProviders.put((ContactList) value, contactsProvider);
+			
+			
 			/*
 			 * Bei der angeklickten Kontaktliste handelt es sich um die default myContactsContactList 
 			 */
 	
 			
 			if((ContactList) value == myContactsContactList) {
+				deleteNameResults();
+				deleteValueResults();
 				editorAdministration.getAllContactsOfActiveUser(user, new AsyncCallback<Vector<Contact>>() {
 					public void onFailure (Throwable t) {
 						
@@ -333,7 +337,8 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 			 */	
 				
 			}else if(user.getId() == ((ContactList) value).getOwner())  {
-				
+				deleteNameResults();
+				deleteValueResults();
 				editorAdministration.getAllContactsOfContactlistForUser((ContactList) value, user, new AsyncCallback<Vector<Contact>>() {
 					public void onFailure(Throwable t) {
 							Window.alert("Kontakte der Kontaktliste auslesen fehlgeschlagen");
@@ -378,6 +383,8 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 			   */
 								
 			}else {
+					deleteNameResults();
+					deleteValueResults();
 					editorAdministration.getAllSharedContactsOfContactList((ContactList) value, user, new AsyncCallback<Vector<Contact>>() {
 						public void onFailure(Throwable t) {
 							

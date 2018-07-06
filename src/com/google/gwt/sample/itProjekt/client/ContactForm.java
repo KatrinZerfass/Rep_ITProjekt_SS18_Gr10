@@ -1145,7 +1145,9 @@ public class ContactForm extends VerticalPanel {
 					firstnameTextBox.setText("");
 					lastnameTextBox.setText("");
 					//Wurden ungültige Werte für Vor- und Nachnamen eingetragen, werden die Texte resettet und es kommt eine Fehlermeldung
-					Window.alert("Ihr Kontakt konnte nicht angelegt werden, bitte versuchen Sie es erneut.");
+					
+					final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Ihr Kontakt konnte nicht angelegt werden, bitte versuchen Sie es erneut.", new ClientsideFunctions.OkButton());
+					failed.getOkButton().addCloseDBClickHandler(failed);
 					
 				}else if(ClientsideFunctions.checkValue(firstnameTextBox) && ClientsideFunctions.checkValue(lastnameTextBox)){
 					
@@ -1156,8 +1158,16 @@ public class ContactForm extends VerticalPanel {
 					String sex = "o";
 					switch(sexListBox.getSelectedItemText()) {
 						case "-Auswählen-":
-							Window.alert("Bitte wählen Sie ein Geschlecht aus");
-							return;
+							final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Bitte wählen Sie ein Geschlecht aus.", new ClientsideFunctions.OkButton());
+							failed.getOkButton().addClickHandler(new ClickHandler() {
+								
+								@Override
+								public void onClick(ClickEvent arg0) {
+								
+									failed.hide();
+									return;
+								}
+							});
 						case "männlich": 
 							sex = "m";
 							break;
@@ -1174,15 +1184,22 @@ public class ContactForm extends VerticalPanel {
 							Window.alert("Fehler beim Kontakt anlegen");
 							
 						}
-						public void onSuccess(Contact result) {
-							Window.alert("Kontakt erfolgreich angelegt.");
-							clctvm.addContactOfContactList(clctvm.getMyContactsContactList(), result);
+						public void onSuccess(final Contact result) {
+							
+							final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Kontakt erfolgreich angelegt!", new ClientsideFunctions.OkButton());
+							success.getOkButton().addClickHandler(new ClickHandler() {
+								
+								@Override
+								public void onClick(ClickEvent click) {
+									clctvm.addContactOfContactList(clctvm.getMyContactsContactList(), result);
+									success.hide();
+								}
+							});
 							//Ein neu angelegter Kontakt wird per Default immer der "Meine Kontakte"-Standardkontaktliste hinzugefügt.
 						}
 					});
 				}
 			}
-
 		}
 	}
 	
@@ -1205,7 +1222,8 @@ public class ContactForm extends VerticalPanel {
 			
 			
 			if (contactToDisplay == null) {
-				Window.alert("kein Kontakt ausgewählt!");
+				final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Kein Kontakt ausgewählt", new ClientsideFunctions.OkButton());
+				failed.getOkButton().addCloseDBClickHandler(failed);
 			}
 			else {
 				inputDB = new ClientsideFunctions.InputDialogBox(new MultiWordSuggestOracle(), "Bitte geben Sie die Email-Adresse des Nutzers ein mit dem Sie den Kontakt teilen möchten.");
@@ -1215,25 +1233,29 @@ public class ContactForm extends VerticalPanel {
 				inputDB.getOKButton().addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {
 						if(inputDB.getSuggestBox().getText()== "") {
-							Window.alert("Fehler bei Teilen der Kontaktliste weil User leer");
+							final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Bitte wählen Sie einen der vorgeschlagenen Nutzer aus.", new ClientsideFunctions.OkButton());
+							failed.getOkButton().addCloseDBClickHandler(failed);
 						}else {	
 							String[] split = inputDB.getSuggestBox().getText().split(" - ");
 							String userEmail = split[1].substring(0, split[1].length());
-							Window.alert(userEmail);
+
 							editorAdministration.shareContact(currentUser, userEmail, clctvm.getSelectedContact(), new AsyncCallback<Permission>() {
 		
 								public void onFailure(Throwable arg0) {
-									Window.alert("Weil onFailure");
 									inputDB.hide();
+									final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Bitte wählen Sie einen der vorgeschlagenen Nutzer aus.", new ClientsideFunctions.OkButton());
+									failed.getOkButton().addCloseDBClickHandler(failed);
 								}
 								public void onSuccess(Permission arg0) {
 									if(arg0 != null) {
-										Window.alert("Kontakt erfolgreich geteilt.");
 										inputDB.hide();
+										final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Kontakt erfolgreich geteilt!", new ClientsideFunctions.OkButton());
+										failed.getOkButton().addCloseDBClickHandler(failed);
 									}
 									else if(arg0 == null) {
-										Window.alert("User ist der Owner der Kontaktliste!");
 										inputDB.hide();
+										final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Nutzer ist der Besitzer des Kontakts.", new ClientsideFunctions.OkButton());
+										failed.getOkButton().addCloseDBClickHandler(failed);
 									}
 								}
 							});
@@ -1283,12 +1305,15 @@ public class ContactForm extends VerticalPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 			
-			if (contactToDisplay == null) {
-				Window.alert("kein Kontakt ausgewählt");
 			
+			
+			if (contactToDisplay == null) {
+				final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Kein Kontakt ausgewählt.", new ClientsideFunctions.OkButton());
+				failed.getOkButton().addCloseDBClickHandler(failed);
 			}
 			else if(contactToDisplay.getIsUser()) { // der ausgewählte Kontakt ist der, welcher den User repräsentiert
-				Window.alert("Sie können sich selbst nicht löschen!");
+				final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Sie können sich selbst nicht löschen.", new ClientsideFunctions.OkButton());
+				failed.getOkButton().addCloseDBClickHandler(failed);
 			}
 			else{
 				editorAdministration.deleteContact(contactToDisplay, ClientsideFunctions.isOwner(contactToDisplay, currentUser), currentUser, new AsyncCallback<Void>() {
@@ -1296,11 +1321,18 @@ public class ContactForm extends VerticalPanel {
 						Window.alert("Fehler beim Löschen des Kontakts!");
 					}
 					public void onSuccess(Void arg0){
-						Window.alert("Kontakt erfolgreich gelöscht");
-						clctvm.removeContactOfContactList(clctvm.getSelectedContactList(), contactToDisplay);
+						final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Kontakt erfolgreich gelöscht!", new ClientsideFunctions.OkButton());
+						failed.getOkButton().addClickHandler(new ClickHandler() {
+							
+							@Override
+							public void onClick(ClickEvent arg0) {
+
+								clctvm.removeContactOfContactList(clctvm.getSelectedContactList(), contactToDisplay);
+								failed.hide();
+							}
+						});
 					}
 				});
-				
 			}
 		}
 	}
