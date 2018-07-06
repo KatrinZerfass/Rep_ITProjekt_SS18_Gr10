@@ -395,18 +395,31 @@ public class ContactListForm extends VerticalPanel{
 			
 			public void onClick(ClickEvent event) {
 				if(clctvm.getSelectedContactList() == clctvm.getMyContactsContactList()) {
-					Window.alert("Sie können die Liste all Ihrer Kontakte nicht teilen!");
+					final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Sie können die Liste all Ihrer Kontakte nicht teilen!", new ClientsideFunctions.okButton());
+					failed.getOkButton().addClickHandler(new ClickHandler() {
+						
+						@Override
+						public void onClick(ClickEvent arg0) {;
+							failed.hide();
+						}
+					});
 				}
 				else {
 					inputDB = new ClientsideFunctions.InputDialogBox(new MultiWordSuggestOracle(), "Bitte geben Sie die Email-Adresse des Nutzers ein mit dem Sie die Kontaktliste teilen möchten.");
 					inputDB.getOKButton().addClickHandler(new ClickHandler() {
 						public void onClick(ClickEvent event) {
 							if(inputDB.getSuggestBox().getText()== "") {
-								Window.alert("Fehler bei Teilen der Kontaktliste weil User leer");
+								final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Fehler bei Teilen der Kontaktliste weil kein Nutzer ausgewählt wurde.", new ClientsideFunctions.okButton());
+								failed.getOkButton().addClickHandler(new ClickHandler() {
+									
+									@Override
+									public void onClick(ClickEvent arg0) {;
+										failed.hide();
+									}
+								});
 							}else {	
 								String[] split = inputDB.getSuggestBox().getText().split(" - ");
 								String userEmail = split[1].substring(0, split[1].length());
-								Window.alert(userEmail);
 								editorAdministration.shareContactList(user, userEmail, clctvm.getSelectedContactList(), new AsyncCallback<Permission>() {
 			
 									public void onFailure(Throwable arg0) {
@@ -416,11 +429,27 @@ public class ContactListForm extends VerticalPanel{
 									public void onSuccess(Permission arg0) {
 										if(arg0 != null) {
 											Window.alert("Kontaktliste erfolgreich geteilt.");
-											inputDB.hide();
+											final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Kontaktliste erfolgreich geteilt!", new ClientsideFunctions.okButton());
+											success.getOkButton().addClickHandler(new ClickHandler() {
+												
+												@Override
+												public void onClick(ClickEvent arg0) {;
+													success.hide();
+													inputDB.hide();
+												}
+											});
 										}
 										else if(arg0 == null) {
-											Window.alert("User ist der Owner der Kontaktliste!");
-											inputDB.hide();
+											
+											final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Nutzer ist der Urheber der Kontaktliste", new ClientsideFunctions.okButton());
+											failed.getOkButton().addClickHandler(new ClickHandler() {
+												
+												@Override
+												public void onClick(ClickEvent arg0) {;
+													failed.hide();
+													inputDB.hide();
+												}
+											});
 										}
 									}
 								});
@@ -456,16 +485,29 @@ public class ContactListForm extends VerticalPanel{
 								Window.alert("Fehler beim Füllen des allContactsOfUser Vectors!");
 							}
 							@Override
-							public void onSuccess(Vector<Contact> arg0){
+							public void onSuccess(final Vector<Contact> arg0){
 								if(arg0.size() != 0) {
-									clctvm.addNameResults();
-									clctvm.addContactOfSearchResultList(clctvm.getNameResultsCL(), arg0);
+									final ClientsideFunctions.popUpBox succes = new ClientsideFunctions.popUpBox("Suche erfolgreich!", new ClientsideFunctions.okButton());
+									succes.getOkButton().addClickHandler(new ClickHandler() {
+										@Override
+										public void onClick(ClickEvent click) {
+											clctvm.addNameResults();
+											clctvm.addContactOfSearchResultList(clctvm.getNameResultsCL(), arg0);
+											succes.hide();
+										}
+									});
 								}else{
-									clctvm.deleteNameResults();
+									final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Kein Suchergebnis.", new ClientsideFunctions.okButton());
+									failed.getOkButton().addClickHandler(new ClickHandler() {
+										@Override
+										public void onClick(ClickEvent arg0) {
+											clctvm.deleteNameResults();											
+										}
+									});
 								}
-								
+
 							}
-							
+
 						});	
 						
 						editorAdministration.getContactsOfValueSearchResult(user, searchTextBox.getText(), selectedContactList, new AsyncCallback<Vector<Contact>>() {

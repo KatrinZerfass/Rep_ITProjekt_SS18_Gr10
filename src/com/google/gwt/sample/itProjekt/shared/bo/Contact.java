@@ -31,14 +31,18 @@ public class Contact extends BusinessObject {
 	private Timestamp modificationdate;
 	
 	/**
-	 * Auslesen des Vornamens.  
+	 * Auslesen des Vornamens. 
+	 * 
+	 * @return String der den Vornamen des Kontakts repräsentiert. 
 	 */
 	public String getFirstname() {
 		return firstname;
 	}
 	
 	/**
-	 * Setzen des Vornamens.   
+	 * Setzen des Vornamens. 
+	 * 
+	 * @param String der den Vornamen des Kontakts repräsentiert. 
 	 */
 	public void setFirstname(String firstname) {
 		this.firstname = firstname;
@@ -46,20 +50,26 @@ public class Contact extends BusinessObject {
 	
 	/**
 	 * Auslesen des Nachnamens. 
+	 * 
+	 * @return String der den Nachnamen des Kontakts repräsentiert.  
 	 */
 	public String getLastname() {
 		return lastname;
 	}
 	
 	/**
-	 *Setzen des Nachnamens. 
+	 *Setzen des Nachnamens.
+	 *
+	 * @param String der den Nachnamen des Kontakts repräsentiert. 
 	 */
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
 	}
 	
 	/**
-	 * Auslesen des Geschlechts. 
+	 * Auslesen des Geschlechts.
+	 * 
+	 * @return String der das Geschlecht des Kontatkts repräsentiert.  
 	 */
 	public String getSex() {
 		return sex;
@@ -67,13 +77,17 @@ public class Contact extends BusinessObject {
 	
 	/**
 	 * Setzen des Geschlechts. 
+	 * 
+	 * @param String der das Geschlecht des Kontatkts repräsentiert.
 	 */
 	public void setSex(String sex) {
 		this.sex = sex;
 	}
 	
 	/**
-	 *Auslesen des Owners.  
+	 *Auslesen des Owners. 
+	 *
+	 * @return Int der den Eigentümer des Kontakts repräsentiert. 
 	 */
 
 	public int getOwner() {
@@ -82,6 +96,8 @@ public class Contact extends BusinessObject {
 	
 	/**
 	 *Setzen des Owners. 
+	 *
+	 *@param Int der den Eigentümer des Kontakts repräsentiert.
 	 */
 
 	public void setOwner(int owner) {
@@ -90,6 +106,8 @@ public class Contact extends BusinessObject {
 	
 	/**
 	 *Setzen des Erstellungsdatums. 
+	 *
+	 *@param Timestamp der das Erstellungsdatum des Kontakts repräsentiert. 
 	 */
 	
 	public void setCreationDate(Timestamp creationdate){
@@ -99,6 +117,8 @@ public class Contact extends BusinessObject {
 	
 	/**
 	 *Auslesen des Erstellungsdatums. 
+	 *
+	 *@return Timestamp der das Erstellungsdatum des Kontakts repräsentiert.
 	 */
 	
 	public Timestamp getCreationDate(){
@@ -107,6 +127,8 @@ public class Contact extends BusinessObject {
 	
 	/**
 	 *Setzen des Modifikationsdatums. 
+	 *
+	 *@param Timestamp der das Modifiktaionsdatum des Kontakts respräsentiert. 
 	 */
 	
 	public void setModificationDate(Timestamp modificationdate){
@@ -115,15 +137,30 @@ public class Contact extends BusinessObject {
 	
 	/**
 	 *Auslesen des Modifikationsdatums. 
+	 *
+	 *@return Timestamp der das Modifiktaionsdatum des Kontakts respräsentiert.
 	 */
 		
 	public Timestamp getModificationDate(){
 		return modificationdate;
 	}
+	
+	/**
+	 * Handelt es sich um den User Kontakt (Kontakt der den User repräsentiert), wird true zurückgegeben.
+	 * Auslesen des IsUser Zustands. 
+	 * 
+	 * @return Boolean der den IsUser Zustand repräsentiert. 
+	 */
 
 	public boolean getIsUser() {
 		return isUser;
 	}
+	
+	/**
+	 * Setzen des IsUser Zustands. 
+	 * 
+	 * @param Boolean der den IsUser Zustand repräsentiert. 
+	 */
 
 	public void setIsUser(boolean isUser) {
 		this.isUser = isUser;
