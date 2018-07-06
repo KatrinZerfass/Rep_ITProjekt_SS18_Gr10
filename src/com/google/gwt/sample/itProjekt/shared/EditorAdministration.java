@@ -429,6 +429,8 @@ public interface EditorAdministration extends RemoteService{
 	
 	public Vector<Contact> getAllSharedContactsOfContactList(ContactList contactlist, User user) throws IllegalArgumentException;
 
+	public Vector<User> getAllParticipantsOfContactList(ContactList contactlist) throws IllegalArgumentException;
+	
 	/**
 	 * Holt alle Kontakte mit einer bestimmten Ausprägung eines bestimmten Nutzers aus der Datenbank.
 	 *
@@ -522,6 +524,9 @@ public interface EditorAdministration extends RemoteService{
 	
 	public void deleteProperty(Property property) throws IllegalArgumentException;
 	
+	public Permission editPermissionContact(Permission permission) throws IllegalArgumentException;
+	
+	public Permission editPermissionContactList(Permission permission) throws IllegalArgumentException;
 	
 	public Vector<String> getFullNamesOfUsers(Vector<User> user) throws IllegalArgumentException;
 }

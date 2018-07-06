@@ -154,6 +154,11 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		
 		return pmMapper.findAllParticipantsByCID(contact);
 	}
+	
+	public Vector<User> getAllParticipantsOfContactList(ContactList contactlist) throws IllegalArgumentException {
+		
+		return pmMapper.findAllParticipantsByCLID(contactlist);
+	}
 
 	public boolean isUserKnown (String email) throws IllegalArgumentException{
 	
@@ -204,9 +209,22 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	
 	public void deleteContact(Contact contact, boolean owner, User user) throws IllegalArgumentException {
 		
-		if(owner == true){
-			cMapper.delete(contact);
+		Vector<Value> allValues = getAllValuesOfContact(contact);
+		Vector<ContactList> allContactLists = getAllContactListsWithContact(contact);
+		Vector<User> allUsers = getAllParticipantsOfContact(contact);
 		
+		if(owner == true){
+			for (User u : allUsers) {
+				deletePermission(u, contact);
+			}
+			for (Value v :  allValues) {
+				deleteValue(v);
+			}
+			for (ContactList cl : allContactLists) {
+				removeContactFromContactList(cl, contact);
+			}
+			
+			cMapper.delete(contact);
 		}else{
 			deletePermission(user, contact);
 		}
@@ -467,15 +485,36 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	
 	public void deleteContactList(ContactList contactlist, boolean owner, User user) throws IllegalArgumentException {
 		
+		Vector<Contact> allContacts = getAllContactsOfContactList(contactlist);
+		Vector<User> allUsers = getAllParticipantsOfContactList(contactlist);
+		
 		if(owner == true){
+			pmMapper.deleteAllByCLID(contactlist);
+			for(Contact c : allContacts) {
+				for(User u : allUsers) {
+					deletePermission(u, c);	
+				}
+				removeContactFromContactList(contactlist, c);
+			}
 			clMapper.delete(contactlist);
 		}else{
+			for(Contact c : allContacts) {
+				for(User u : allUsers) {
+					deletePermission(u, c);	
+				}
+			}
 			deletePermission(user, contactlist);
 		}	
 	}
 
 	public ContactList addContactToContactList(ContactList contactlist, Contact contact)
 			throws IllegalArgumentException {
+		
+		Vector<User> participants = new Vector<User>();
+		participants = pmMapper.findAllParticipantsByCLID(contactlist);
+		for(User u : participants){
+			shareContact(uMapper.findByID(contactlist.getOwner()), u.getEmail(), contact);
+		}
 		
 		return clMapper.addContact(contactlist, contact);
 	}
@@ -490,7 +529,6 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		
 		return clMapper.findAllByUID(user);
 	}
-
 	
 	public Vector<ContactList> getAllContactListsOfUser(String email) throws IllegalArgumentException {
 		
@@ -595,7 +633,11 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		Property property = new Property();
 		property.setId(propertyid);
 		
-		return vMapper.insert(newvalue, contact, property);
+		Value addedValue = vMapper.insert(newvalue, contact, property);
+		
+		cMapper.update(vMapper.findContactByVID(addedValue));
+		
+		return addedValue;
 	}
 	
 	public Value editValue(Contact contact, int propertyId, Value value, String content, boolean isshared)
@@ -608,12 +650,34 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		Property property = new Property();
 		property.setId(propertyId);
 		
-		return vMapper.update(newvalue, contact, property);
+		Value updatedValue = vMapper.update(newvalue, contact, property);
+		
+		cMapper.update(vMapper.findContactByVID(updatedValue));
+		
+		return updatedValue;
 	}
 	
 	public void deleteValue(Value value) throws IllegalArgumentException {
 		
-		vMapper.delete(value);
+		Property extraProperty = new Property();
+		Vector<Property> predefined = getAllPredefinedPropertiesOf();
+		
+		extraProperty.setId(value.getPropertyid());
+		
+		extraProperty = pMapper.findByID(extraProperty);
+		
+		cMapper.update(vMapper.findContactByVID(value));
+		
+		if(predefined.contains(extraProperty)) {
+			vMapper.delete(value);
+		}
+		else {
+			if (vMapper.findAllByPID(extraProperty, vMapper.findContactByVID(value)).size() == 1) {
+				pMapper.delete(extraProperty);
+
+				vMapper.delete(value);
+			}
+		}
 	}
 	
 	public Value createAddress(String street, String housenumber, String zip, String city, Contact contact) {
@@ -682,19 +746,42 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		}
 	}
 
-	public Permission editPermission(Permission permission) throws IllegalArgumentException{
-		return pmMapper.update(permission);
+	public Permission editPermissionContact(Permission permission) throws IllegalArgumentException{
+		return pmMapper.updateContact(permission);
+	}
+	
+	public Permission editPermissionContactList(Permission permission) throws IllegalArgumentException{
+		return pmMapper.updateContactList(permission);
 	}
 
 	public void deletePermission(User user, BusinessObject bo) throws IllegalArgumentException {
 		
+		ContactList cl = new ContactList();
+		Vector<Contact> allContacts = new Vector<Contact>();
+		
 		Permission permission = new Permission();
 		permission.setParticipantID(user.getId());
 		permission.setShareableObjectID(bo.getId());
-		
-		pmMapper.delete(permission);
-	}
 
+		if(bo.getClass().isInstance(cl)) {
+			allContacts = getAllContactsOfContactList((ContactList) bo);
+			if(allContacts.size()>0){
+				for(Contact c : allContacts){
+					
+					Permission p = new Permission();
+					p.setShareableObjectID(c.getId());
+					p.setParticipantID(permission.getParticipantID());
+					
+					pmMapper.delete(p);
+				}
+				pmMapper.deleteContactList(permission);
+			}
+		}
+		else {
+			pmMapper.deleteContact(permission);
+		}
+	}
+			
 	public Vector<Permission> getAllPermissions() throws IllegalArgumentException {
 
 		return pmMapper.findAll();

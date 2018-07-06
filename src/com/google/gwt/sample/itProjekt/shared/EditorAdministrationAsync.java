@@ -131,5 +131,11 @@ public interface EditorAdministrationAsync {
 	void deleteUser(User u, AsyncCallback<Void> callback);
 
 	void editUser(User user, AsyncCallback<User> callback);
+
+	void editPermissionContact(Permission permission, AsyncCallback<Permission> callback);
+
+	void editPermissionContactList(Permission permission, AsyncCallback<Permission> callback);
+
+	void getAllParticipantsOfContactList(ContactList contactlist, AsyncCallback<Vector<User>> callback);
 }
 
