@@ -1730,7 +1730,7 @@ public class ContactForm extends VerticalPanel {
 				 */
 				
 			}else {	
-				editorAdministration.getPropertyByType(ptype, new AsyncCallback<Property>() {
+				editorAdministration.getPropertyByType(ptype,contactToDisplay, new AsyncCallback<Property>() {
 					public void onFailure (Throwable t) {
 						
 					}

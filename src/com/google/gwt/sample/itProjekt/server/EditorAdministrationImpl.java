@@ -413,12 +413,20 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 
 
 	@Override
-	public Vector <Property> getPropertyByType(String type) throws IllegalArgumentException {
+	public Property getPropertyByType(String type, Contact contact) throws IllegalArgumentException {
 		
 		Property property = new Property();
+		Property result = new Property();
 		property.setType(type);
+		Vector<Property> vp = pMapper.findByType(property);
+		for(Property p: vp){
+			if(p.getContactID()==contact.getId()){
+				result=p;
+			}
+		}
+		return result;
 		
-		return pMapper.findByType(property);
+		
 	}
 
 
@@ -466,16 +474,19 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	public Vector<Contact> getContactsOfUserWithProperty(User user, Property property) throws IllegalArgumentException{
 		Vector<Contact> allContactsOfUser= new Vector<Contact>();
 		allContactsOfUser = getAllContactsOfActiveUser(user);
-		Property p=new Property();
-		p=pMapper.findByType(property);
-		
-		Vector<Contact> allContactsWithProperty=vMapper.getAllContactsByPID(p);
+		Vector<Property> allPropertiesWithType= new Vector<Property>();
+		Contact c1 = new Contact();
 		Vector<Contact> result=new Vector<Contact>();
 		
 		for (Contact c :allContactsOfUser){
-			if(allContactsWithProperty.contains(c)){
-				result.add(c);
+			allPropertiesWithType=pMapper.findByTypeAndCID(property, c);
+			for(Property p: allPropertiesWithType){
+				c1.setId(p.getContactID());
+				c1 = cMapper.findByID(c1);
+				result.addElement(c1);
+
 			}
+			
 		}
 		return result;
 	}
