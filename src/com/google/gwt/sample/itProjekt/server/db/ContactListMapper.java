@@ -357,7 +357,6 @@ Connection con = DBConnection.connection();
 				
 			}
 			catch (SQLException e2){
-				System.out.println("läuft nicht");
 				e2.printStackTrace();
 				return result;
 			}

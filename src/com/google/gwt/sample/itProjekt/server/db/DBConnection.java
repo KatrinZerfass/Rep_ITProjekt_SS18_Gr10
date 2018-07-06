@@ -73,7 +73,7 @@ public class DBConnection {
                     Class.forName("com.mysql.jdbc.GoogleDriver"); 
                     //dieser Link baut die DB Verbindung zu Google auf anhand des Instanznamen, des Usernames und des Passwords -> unsicher weil Password hard gecodet
                     con = DriverManager.getConnection("jdbc:google:mysql://it-projekt-gruppe-10-203610:europe-west1:itprojektdb/itpdb2?user=root&password=root");
-                    System.out.println("Verbindung zur Google Datenbank hergestellt");
+                   
                     
                 } else {
                 	// Load the class that provides the new
@@ -82,7 +82,7 @@ public class DBConnection {
                 	Class.forName("com.mysql.jdbc.Driver");
                 	//dieser Link baut die DB Verbindung zu einer lokalen Datenbank auf anhand des Instanznamen, des Usernames und des Passwords -> Erleichtert das Testen
                 	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/test_schema", "root", "itprojekt");
-                    System.out.println("Lokale Verbindung hergestellt");               
+                                  
                 }
                 
                 

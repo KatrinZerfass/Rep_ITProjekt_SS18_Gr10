@@ -55,6 +55,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	VerticalPanel selectionPanel = new VerticalPanel ();
 	HorizontalPanel selectionHPanel= new HorizontalPanel();
 	
+	
 	HorizontalPanel reportbuttonPanel=new HorizontalPanel();
 	HorizontalPanel searchPanel=new HorizontalPanel();
 	HorizontalPanel descriptionPanel = new HorizontalPanel();
@@ -381,12 +382,11 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	   				if(propertyInput.getText() != ""){
 	   				Property p = new Property();
 					p.setType(propertyInput.getText());
-					Window.alert("funktioniert" + p.getType());
 					reportGenerator.generateAllContactsWithPropertyReport(user, p, new AsyncCallback<AllContactsWithPropertyReport>() {
 						 public void onFailure(Throwable caught) {
 							
 							 RootPanel.get("reporttext").setVisible(false);
-							 Window.alert("Es wurde kein Kontakt mit der angegebenen Eigenschaft gefunden");
+							 Window.alert("Es ist leider ein Fehler aufgetreten. Der Report konnte nicht erstellt werden.");
 						 }
 						 public void onSuccess(AllContactsWithPropertyReport result) {
 							 	if (result !=null) {
