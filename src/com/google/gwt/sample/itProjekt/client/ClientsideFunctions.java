@@ -267,7 +267,8 @@ public abstract class ClientsideFunctions {
 			setOracle(inputOracle);
 	        ok.addStyleName("okbutton");
 	        close.addStyleName("closebutton");
-
+	        this.setPopupPosition(500, 200);
+	        
 			setdialogBoxLabel(labelString);
 					
 			editorAdministration.getAllUserSuggestions(user, new AsyncCallback<Vector<String>>() {
@@ -396,8 +397,8 @@ public abstract class ClientsideFunctions {
 	}
 	
 	public static class popUpBox extends DialogBox {
-		Button closeButton = null;
-		Button okButton = null;
+		CloseButton closeButton = null;
+		OkButton okButton = null;
 		VerticalPanel panel = null;
 		HorizontalPanel hpanel = null;
 		
@@ -405,9 +406,11 @@ public abstract class ClientsideFunctions {
 		
 		public popUpBox(DialogBox db, String dbLabel) {
 			closeButton = new CloseButton(db);
-			okButton = new okButton(db);
+			okButton = new OkButton();
 			dialogBoxLabel.setText(dbLabel);
 			
+			this.setText("Meldung");
+			this.setPopupPosition(500, 200);
 			panel = new VerticalPanel();
 	        panel.setHeight("100");
 	        panel.setWidth("300");
@@ -424,10 +427,35 @@ public abstract class ClientsideFunctions {
 	        show();
 		}
 		
-		public popUpBox(String dbLabel, okButton ok) {
+		public popUpBox(String dbLabel, OkButton ok, CloseButton close) {
+			closeButton = close;
 			okButton = ok;
 			dialogBoxLabel.setText(dbLabel);
 			
+			this.setText("Meldung");
+			this.setPopupPosition(500, 200);
+			panel = new VerticalPanel();
+	        panel.setHeight("100");
+	        panel.setWidth("300");
+	        panel.setSpacing(10);
+	        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+	        panel.add(dialogBoxLabel);
+			hpanel = new HorizontalPanel();
+			hpanel.add(closeButton);
+	        hpanel.add(okButton);
+	        panel.add(hpanel);
+	        
+	        setWidget(panel);
+	        
+	        show();
+		}
+		
+		public popUpBox(String dbLabel, OkButton ok) {
+			okButton = ok;
+			dialogBoxLabel.setText(dbLabel);
+			
+			this.setText("Meldung");
+			this.setPopupPosition(500, 200);
 			panel = new VerticalPanel();
 	        panel.setHeight("100");
 	        panel.setWidth("300");
@@ -447,6 +475,8 @@ public abstract class ClientsideFunctions {
 			closeButton = close;
 			dialogBoxLabel.setText(dbLabel);
 			
+			this.setText("Meldung");
+			this.setPopupPosition(500, 200);
 			panel = new VerticalPanel();
 	        panel.setHeight("100");
 	        panel.setWidth("300");
@@ -462,19 +492,19 @@ public abstract class ClientsideFunctions {
 	        show();
 		}
 		
-		public Button getCloseButton() {
+		public CloseButton getCloseButton() {
 			return this.closeButton;
 		}
 		
-		public void setCloseButton(Button b) {
+		public void setCloseButton(CloseButton b) {
 			this.closeButton = b;
 		}
 		
-		public Button getOkButton() {
+		public OkButton getOkButton() {
 			return this.okButton;
 		}
 		
-		public void setOkButton(Button b) {
+		public void setOkButton(OkButton b) {
 			this.okButton = b;
 		}
 	}
@@ -494,6 +524,15 @@ public abstract class ClientsideFunctions {
 			this.addStyleName("closebutton");
 		}
 		
+		public CloseButton() {
+			this.setText("Abbrechen");
+			this.addStyleName("closebutton");
+		}
+		
+		public void addCloseDBClickHandler(DialogBox db) {
+			this.addClickHandler(new CloseDBClickHandler(db));
+		}
+		
 		private class CloseDBClickHandler implements ClickHandler{
 			DialogBox db;
 	
@@ -508,16 +547,15 @@ public abstract class ClientsideFunctions {
 		}
 	}
 	
-	public static class okButton extends Button{
-		DialogBox db;
+	public static class OkButton extends Button{
+
 		
-		public okButton(DialogBox db) {
-			this.db = db;
-			this.setText("OK");
+		public OkButton(String text) {
+			this.setText(text);
 			this.addStyleName("okbutton");
 		}
 		
-		public okButton() {
+		public OkButton() {
 			this.setText("OK");
 			this.addStyleName("okbutton");
 		}

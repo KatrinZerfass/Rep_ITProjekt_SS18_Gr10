@@ -204,9 +204,6 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		
 		cMapper.insert(newContact, newUser);
 		
-		Value newValue = new Value();
-		newValue = createValue(newContact, 3, email);
-		
 		return newUser;
 	}
 
