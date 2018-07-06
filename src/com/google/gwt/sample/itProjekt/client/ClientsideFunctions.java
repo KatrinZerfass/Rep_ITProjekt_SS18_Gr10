@@ -32,17 +32,30 @@ public abstract class ClientsideFunctions {
 		String identifier = vtb.getIdentifier();
 		String text = vtb.getText().toLowerCase().trim();
 		
+		if(text.contains("dropdatabase")) {
+			ClientsideFunctions.popUpBox no = new ClientsideFunctions.popUpBox("For droping the database please find secret drop database pixel...", new CloseButton());
+			no.getCloseButton().addCloseDBClickHandler(no);
+			return false;
+		}
+		
+		if(text.contains("'") || text.contains("\"") || text.contains(";")) {
+			return false;
+		}
+		
 		switch(identifier) {
 			case "Name":
 				if (!text.matches("\\d+")) {
 					if(!text.isEmpty()) {
 						return true;
 					}else {
+						final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Ungültige Zeichen im Namen!", new ClientsideFunctions.OkButton());
+						failed.getOkButton().addCloseDBClickHandler(failed);
 						return false;
 					}
 				}
 				else {
-					Window.alert("Ungültige Zeichen im Namen!");
+					final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Ungültige Zeichen im Namen!", new ClientsideFunctions.OkButton());
+					failed.getOkButton().addCloseDBClickHandler(failed);
 					return false;
 				}
 			case "Straße":
@@ -50,7 +63,8 @@ public abstract class ClientsideFunctions {
 					return true;
 				}
 				else {
-					Window.alert("Ungültiger Straßenname!");
+					final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Ungültiger Straßenname!", new ClientsideFunctions.OkButton());
+					failed.getOkButton().addCloseDBClickHandler(failed);
 					return false;
 				}
 			case "Hausnummer":
@@ -58,7 +72,8 @@ public abstract class ClientsideFunctions {
 					return true;
 				}
 				else {
-					Window.alert("Ungültige Hausnummer!");
+					final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Ungültige Hausnummer!", new ClientsideFunctions.OkButton());
+					failed.getOkButton().addCloseDBClickHandler(failed);
 					return false;
 				}
 			case "PLZ":
@@ -66,23 +81,27 @@ public abstract class ClientsideFunctions {
 					return true;
 				}
 				else if (text.matches("\\d+") && text.length() != 5) {
-					Window.alert("Bitte geben Sie eine gültige PLZ ein!");
+					final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Bitte geben Sie eine gültige PLZ ein!", new ClientsideFunctions.OkButton());
+					failed.getOkButton().addCloseDBClickHandler(failed);
 					return false;
 				}
 				else if(!text.matches("\\d+") && text.length() == 5) {
-					Window.alert("Ungültige Zeichen in der PLZ!");
+					final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Ungültige Zeichen in der PLZ!", new ClientsideFunctions.OkButton());
+					failed.getOkButton().addCloseDBClickHandler(failed);
 					return false;
 				}
 				else {
-					Window.alert("Ungültige Eingabe!");
+					final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Ungültige Eingabe!", new ClientsideFunctions.OkButton());
+					failed.getOkButton().addCloseDBClickHandler(failed);
 					return false;
 				}
 			case "Stadt":
-				if (text.matches("[A-ZÜÄÖ][a-züäöß]*")) {
+				if (!text.matches("\\d+")) {
 					return true;
 				}
 				else {
-					Window.alert("Ungültiger Stadtname!");
+					final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Ungültiger Stadtname!", new ClientsideFunctions.OkButton());
+					failed.getOkButton().addCloseDBClickHandler(failed);
 					return false;
 				}
 			case "Telefonnummer":
@@ -90,7 +109,8 @@ public abstract class ClientsideFunctions {
 					return true;
 				}
 				else {
-					Window.alert("Ungültige Telefonnummer!");
+					final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Ungültige Telefonnummer!", new ClientsideFunctions.OkButton());
+					failed.getOkButton().addCloseDBClickHandler(failed);
 					return false;
 				}
 			case "Geburtstag":
@@ -98,7 +118,8 @@ public abstract class ClientsideFunctions {
 					return true;
 				}
 				else {
-					Window.alert("Ungültiges Geburtsdatum!");
+					final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Ungültiges Geburtsdatum!", new ClientsideFunctions.OkButton());
+					failed.getOkButton().addCloseDBClickHandler(failed);
 					return false;
 				}
 			case "Email":
@@ -106,7 +127,8 @@ public abstract class ClientsideFunctions {
 					return true;
 				}
 				else {
-					Window.alert("Ungültige e-Mail-Adresse!");
+					final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Ungültige e-Mail-Adresse!", new ClientsideFunctions.OkButton());
+					failed.getOkButton().addCloseDBClickHandler(failed);
 					return false;
 				}
 			case "Homepage": 
@@ -114,7 +136,8 @@ public abstract class ClientsideFunctions {
 					return true;
 				}
 				else {
-					Window.alert("Ungültige Homepage!");
+					final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Ungültige Homepage!", new ClientsideFunctions.OkButton());
+					failed.getOkButton().addCloseDBClickHandler(failed);
 					return false;
 				}
 				
@@ -123,7 +146,8 @@ public abstract class ClientsideFunctions {
 					return true;
 				}
 				else {
-					Window.alert("Ungültige Zeichen im Arbeitgebernamen!");
+					final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Ungültige Zeichen im Arbeitgebernamen!", new ClientsideFunctions.OkButton());
+					failed.getOkButton().addCloseDBClickHandler(failed);
 					return false;
 				}
 				
@@ -146,7 +170,8 @@ public abstract class ClientsideFunctions {
 			}
 		}
 		else {
-			Window.alert("Ungültige Zeichen im Namen!");
+			final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Ungültige Zeichen im Namen!", new ClientsideFunctions.OkButton());
+			failed.getOkButton().addCloseDBClickHandler(failed);
 			return false;
 		}
 	}
@@ -187,7 +212,8 @@ public abstract class ClientsideFunctions {
         Button ok = new Button("OK");
 		
 		public InputDialogBox(String userEmail) {
-			Window.alert("InputDialogBox instanziert");
+			
+	    //    this.setPopupPosition(500, 200);
 			
 			setMultiUseTextBox(new TextBox());
 			getMultiUseTextBox().getElement().setPropertyString("placeholder", "Vorname...");
@@ -229,7 +255,7 @@ public abstract class ClientsideFunctions {
 	        setWidget(panel);
 	        
 	        show();
-			
+			center();
 		}
         
 		public InputDialogBox(TextBox inputtb) {
@@ -237,6 +263,7 @@ public abstract class ClientsideFunctions {
 			setMultiUseTextBox(inputtb);
 	        ok.addStyleName("okbutton");
 	        close.addStyleName("closebutton");
+	        //this.setPopupPosition(500, 200);
 
 			Window.alert("InputDialogBox instanziert");
 			
@@ -260,6 +287,7 @@ public abstract class ClientsideFunctions {
 	        setWidget(panel);
 	        
 	        show();
+	        center();
 	    }
 		
 		public InputDialogBox(MultiWordSuggestOracle inputOracle, String labelString) {
@@ -267,7 +295,7 @@ public abstract class ClientsideFunctions {
 			setOracle(inputOracle);
 	        ok.addStyleName("okbutton");
 	        close.addStyleName("closebutton");
-	        this.setPopupPosition(500, 200);
+	       // this.setPopupPosition(500, 200);
 	        
 			setdialogBoxLabel(labelString);
 					
@@ -307,6 +335,7 @@ public abstract class ClientsideFunctions {
 			        setWidget(panel);
 			        
 			        show();
+			        center();
 				}
 			});
 		}
@@ -410,7 +439,7 @@ public abstract class ClientsideFunctions {
 			dialogBoxLabel.setText(dbLabel);
 			
 			this.setText("Meldung");
-			this.setPopupPosition(500, 200);
+		//	this.setPopupPosition(500, 200);
 			panel = new VerticalPanel();
 	        panel.setHeight("100");
 	        panel.setWidth("300");
@@ -425,6 +454,7 @@ public abstract class ClientsideFunctions {
 	        setWidget(panel);
 	        
 	        show();
+	        center();
 		}
 		
 		public popUpBox(String dbLabel, OkButton ok, CloseButton close) {
@@ -433,7 +463,7 @@ public abstract class ClientsideFunctions {
 			dialogBoxLabel.setText(dbLabel);
 			
 			this.setText("Meldung");
-			this.setPopupPosition(500, 200);
+		//	this.setPopupPosition(500, 200);
 			panel = new VerticalPanel();
 	        panel.setHeight("100");
 	        panel.setWidth("300");
@@ -448,6 +478,7 @@ public abstract class ClientsideFunctions {
 	        setWidget(panel);
 	        
 	        show();
+	        center();
 		}
 		
 		public popUpBox(String dbLabel, OkButton ok) {
@@ -455,7 +486,7 @@ public abstract class ClientsideFunctions {
 			dialogBoxLabel.setText(dbLabel);
 			
 			this.setText("Meldung");
-			this.setPopupPosition(500, 200);
+		//	this.setPopupPosition(500, 200);
 			panel = new VerticalPanel();
 	        panel.setHeight("100");
 	        panel.setWidth("300");
@@ -469,6 +500,7 @@ public abstract class ClientsideFunctions {
 	        setWidget(panel);
 	        
 	        show();
+	        center();
 		}
 		
 		public popUpBox(String dbLabel, CloseButton close) {
@@ -476,7 +508,7 @@ public abstract class ClientsideFunctions {
 			dialogBoxLabel.setText(dbLabel);
 			
 			this.setText("Meldung");
-			this.setPopupPosition(500, 200);
+		//	this.setPopupPosition(500, 200);
 			panel = new VerticalPanel();
 	        panel.setHeight("100");
 	        panel.setWidth("300");
@@ -490,6 +522,7 @@ public abstract class ClientsideFunctions {
 	        setWidget(panel);
 	        
 	        show();
+	        center();
 		}
 		
 		public CloseButton getCloseButton() {
@@ -558,6 +591,23 @@ public abstract class ClientsideFunctions {
 		public OkButton() {
 			this.setText("OK");
 			this.addStyleName("okbutton");
+		}
+		
+		public void addCloseDBClickHandler(DialogBox db) {
+			this.addClickHandler(new CloseDBClickHandler(db));
+		}
+		
+		private class CloseDBClickHandler implements ClickHandler{
+			DialogBox db;
+	
+			
+			public CloseDBClickHandler(DialogBox db) {
+				this.db=db;
+			}
+			
+			public void onClick(ClickEvent event) {
+				db.hide();
+			}
 		}
 	}
 }
