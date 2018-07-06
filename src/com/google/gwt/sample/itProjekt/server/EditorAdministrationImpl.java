@@ -38,7 +38,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	public boolean isUserKnown (String email) throws IllegalArgumentException{
 	
 		//Wenn der User noch nicht in der Datenbank existiert, wird ein neuer User angelegt. 
-		if(uMapper.findByEMail(email).getEmail() == null){
+		if(getUser(email).getEmail() == null){
 			return false;	
 		}
 		else{
@@ -67,9 +67,20 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	
 	public Vector<Contact> getAllContactsOfActiveUser(User user) throws IllegalArgumentException {
 		
-		Vector<Contact> result = cMapper.findAllByUID(user);
+		Vector<Contact> result = new Vector<Contact>();
+		Vector<Contact> allContacts = cMapper.findAllByUID(user);
 		Vector<Contact> sharedContacts = pmMapper.getAllContactsByUID(user);
 		
+		for (Contact c : allContacts) {
+			if(c.getIsUser()) {
+				result.add(c);
+			}
+		}
+		for (Contact c : allContacts) {
+			if(!c.getIsUser()) {
+				result.add(c);
+			}
+		}
 		for (Contact c : sharedContacts) {
 			result.add(c);
 		}
@@ -87,8 +98,8 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		
 		Vector<ContactList> result = new Vector<ContactList>();
 		
-		result = clMapper.findAllByUID(uMapper.findByEMail(email));
-		result.addAll(pmMapper.getAllContactListsByUID(uMapper.findByEMail(email)));
+		result = clMapper.findAllByUID(getUser(email));
+		result.addAll(pmMapper.getAllContactListsByUID(getUser(email)));
 
 		return result;
 	}
@@ -97,7 +108,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	public Vector<Contact> getAllOwnedContactsOfUser(String email) throws IllegalArgumentException {
 
 		Vector<Contact> resultcontacts = new Vector<Contact>();
-		resultcontacts = cMapper.findAllByUID(uMapper.findByEMail(email));
+		resultcontacts = cMapper.findAllByUID(getUser(email));
 		return resultcontacts;
 	}
 	
@@ -120,7 +131,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	@Override
 	public Vector<Contact> getAllSharedContactsWithUser(String email) throws IllegalArgumentException {
 
-		return pmMapper.getAllContactsByUID(uMapper.findByEMail(email));
+		return pmMapper.getAllContactsByUID(getUser(email));
 	}
 	
 	
