@@ -180,7 +180,7 @@ public interface EditorAdministration extends RemoteService{
 	 */
 	public User createUserContact(String firstname, String lastname, String sex, String email) throws IllegalArgumentException;
 	
-	public String getFullNameOfUser(User user) throws IllegalArgumentException;
+	public Vector<String> getFullNamesOfUsers(Vector<User> user) throws IllegalArgumentException;
 	
 	public Vector<String> getAllUserSuggestions(User activeUser) throws IllegalArgumentException;
 	

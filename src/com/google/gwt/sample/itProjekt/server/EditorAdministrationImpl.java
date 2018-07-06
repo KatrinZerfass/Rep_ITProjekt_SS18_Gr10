@@ -4,7 +4,6 @@ import java.util.Vector;
 
 import com.google.gwt.sample.itProjekt.shared.*;
 import com.google.gwt.sample.itProjekt.shared.bo.*;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.google.gwt.sample.itProjekt.server.db.*;
 
@@ -610,15 +609,17 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 
 
 	@Override
-	public String getFullNameOfUser(User user) throws IllegalArgumentException {
+	public Vector<String> getFullNamesOfUsers(Vector<User> users) throws IllegalArgumentException {
 		
-		Vector<Contact> contacts = getAllOwnedContactsOfUser(user.getEmail());
-		String result = null;
+		Vector<Contact> contacts = null;
+		Vector<String> result = new Vector<String>();
 		
-		for(Contact c : contacts) {
-			if (c.getIsUser()) {
-				result = (c.getFirstname() + " " + c.getLastname());
-					return result;
+		for (User u : users) {
+			contacts = getAllOwnedContactsOfUser(u.getEmail());
+			for(Contact c : contacts) {
+				if (c.getIsUser()) {
+					result.addElement(c.getFirstname() + " " + c.getLastname());
+				}
 			}
 		}
 		return result;
