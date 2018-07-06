@@ -415,7 +415,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	@Override
 	public Property getPropertyByType(String type, Contact contact) throws IllegalArgumentException {
 		
-		Contact defaultContact = new Contact();
+		Contact defaultContact = null;
 		
 		if (contact == null) {
 			defaultContact = new Contact();
