@@ -119,5 +119,7 @@ public interface EditorAdministrationAsync {
 	void getAllParticipantsOfContact(Contact contact, AsyncCallback<Vector<User>> callback);
 
 	void getAllUserSuggestions(User activeUser, AsyncCallback<Vector<String>> callback);
+
+	void getFullNameOfUser(User user, AsyncCallback<String> callback);
 }
 
