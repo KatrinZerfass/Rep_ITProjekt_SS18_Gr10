@@ -772,7 +772,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 					p.setShareableObjectID(c.getId());
 					p.setParticipantID(permission.getParticipantID());
 					
-					pmMapper.delete(p);
+					pmMapper.deleteContact(p);
 				}
 				pmMapper.deleteContactList(permission);
 			}
