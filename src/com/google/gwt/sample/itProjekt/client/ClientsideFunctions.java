@@ -295,9 +295,9 @@ public abstract class ClientsideFunctions {
         Button ok = new Button("OK");
 		
 		/**
-		 * Instantiates a new input dialog box.
+		 * Instanziert eine InputDialogBox, welche genutzt wird um einen neuen Nutzer anzulegen.
 		 *
-		 * @param userEmail the user email
+		 * @param userEmail Email des neuen Nutzers
 		 */
 		public InputDialogBox(String userEmail) {
 			
@@ -345,9 +345,9 @@ public abstract class ClientsideFunctions {
 		}
         
 		/**
-		 * Instantiates a new input dialog box.
+		 * Instanziert eine InputDialogBox, welche genutzt wird um eine neue Kontaktliste anzulegen.
 		 *
-		 * @param inputtb the inputtb
+		 * @param inputtb TextBox, welche genutzt wird um Namen der Kontaktliste einzutragen
 		 */
 		public InputDialogBox(TextBox inputtb) {
 			
@@ -379,10 +379,11 @@ public abstract class ClientsideFunctions {
 	    }
 		
 		/**
-		 * Instantiates a new input dialog box.
+		 * Instanziert eine InputDialogBox, welche genutzt wird um eine neue Kontaktliste anzulegen.
+		 * Verfügbare Kontaktlisten werden anhand des angemeldeten Nutzers identifiziert
 		 *
-		 * @param list the list
-		 * @param currentUser the current user
+		 * @param list ListBox in welcher verfügbare Kontaktlisten angezeigt werden sollen
+		 * @param currentUser angemeldeter Nutzer
 		 */
 		public InputDialogBox(ListBox list, User currentUser) {
 			

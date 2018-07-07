@@ -1020,7 +1020,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	 * @return vollständiges Ausprägung-Objekt
 	 * @throws IllegalArgumentException
 	 */
-	public Value createAddress(String street, String housenumber, String zip, String city, Contact contact) {
+	public Value createAddress(String street, String housenumber, String zip, String city, Contact contact) throws IllegalArgumentException{
 		
 		Value streetValue = createValue(contact, 6, street);
 		createValue(contact, 7, housenumber);
@@ -1028,6 +1028,23 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		createValue(contact, 9, city);
 		
 		return streetValue;
+	}
+	
+	public void deleteAddress(Value street, Contact contact) throws IllegalArgumentException {
+		
+		Property streetProperty = new Property();
+		streetProperty.setId(street.getPropertyid());
+		Property houseNr = new Property();
+		houseNr.setId(street.getPropertyid() + 1);
+		Property zip = new Property();
+		zip.setId(street.getPropertyid() + 2);
+		Property city = new Property();
+		city.setId(street.getPropertyid() + 3);
+		
+		deleteValue(vMapper.findAllByPID(city, contact).elementAt(0));
+		deleteValue(vMapper.findAllByPID(zip, contact).elementAt(0));
+		deleteValue(vMapper.findAllByPID(houseNr, contact).elementAt(0));
+		deleteValue(vMapper.findAllByPID(streetProperty, contact).elementAt(0));
 	}
 	
 	/**
