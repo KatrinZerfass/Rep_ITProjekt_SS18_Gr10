@@ -6,9 +6,6 @@ import com.google.gwt.sample.itProjekt.shared.LoginService;
 import com.google.gwt.sample.itProjekt.shared.LoginServiceAsync;
 import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
-
-import java.util.Vector;
-
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -24,18 +21,20 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
- * Die Entry-point-Klasse für den Editor
+ * Die Entry-point-Klasse für den Editor.
  */
 public class ITProjekt_SS18_Gr_10 implements EntryPoint {
+	
 	/**
-	 * The message displayed to the user when the server cannot be reached or
-	 * returns an error.
+	 * Diese Nachricht wird angezeigt, wenn der Client keine Verbindung zum Server aufbauen 
+	 * kann.  
 	 */
+	
 	private static final String SERVER_ERROR = "An error occurred while "
 			+ "attempting to contact the server. Please check your network " + "connection and try again.";
 
 	
-	/* Die Instanzenvariablen, die mit dem Login-Service zusammenhängen. */
+	/** Die Instanzenvariablen, die mit dem Login-Service zusammenhängen. */
 	private LoginInfo loginInfo = null;
 	private VerticalPanel loginPanel = new VerticalPanel();
 	private Label loginLabel = new Label(
@@ -58,7 +57,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	
 	  
 	/**
-	 * Die Methode onModuelLoad() wird beim Starten der Anwendung aufgerufen
+	 * Die Methode onModuelLoad() wird beim Starten der Anwendung aufgerufen.
 	 */
 	public void onModuleLoad() {
 		  
@@ -87,17 +86,14 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	  
 	  
 	  
-  /*
-   * Die Methode loadApplication() wird aufgerufen, wenn der Benutzer eingeloggt ist. Sie beinhaltet 
-   * die eigentliche Applikation.  
-   */
+ 
   	public void loadUserInformation() {
 	    	
 		if(editorAdministration == null) {
 			editorAdministration = ClientsideSettings.getEditorAdministration();
 	    }
 
-	    // Anlegen des User Objekts & Abspeichern in einer lokalen Variabel
+	    // Anlegen des User Objekts & Abspeichern in einer lokalen Variabel.
 	    
 	    editorAdministration.isUserKnown(loginInfo.getEmailAddress(), new AsyncCallback<Boolean>() {
 			
@@ -152,16 +148,21 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 				}
 			}
 	    });
-  	}	    				
+  	}
+  	
+  	
 		
+  	 /**
+     * Die Methode loadApplication() wird aufgerufen, wenn der Benutzer eingeloggt ist. Sie beinhaltet 
+     * die eigentliche Applikation.  
+     */
   	
   	public void loadApplication(){
-  		
-  		//Window.alert(loginInfo.getNickname());
-  		
+  		 		
 		/*
-		 * Im Folgenden wird das GUI aufgebaut
+		 * Im Folgenden wird das GUI aufgebaut.
 		 */
+  		
 	    VerticalPanel loginPanel = new VerticalPanel();
 	    signedInUser = new Label();
 	    	    
@@ -204,10 +205,8 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		RootPanel.get("ButtonsPanel").add(buttonsPanel);
 		
 		HorizontalPanel newPropertyPanel = cf.getNewPropertyPanel();
-		RootPanel.get("PropertyPanel").add(newPropertyPanel);
-		
-	
-		
+		RootPanel.get("PropertyPanel").add(newPropertyPanel);		
+			
 		
 		/*
 		 * TreeViewModel und ContactForm werden miteinander verbunden.
@@ -253,175 +252,6 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	    loginPanel.add(loginLabel);
 	    loginPanel.add(signInLink);
 	    RootPanel.get("Login").add(loginPanel);
-	}
-	 
-  	
-	
-	
-//			editorAdministration.getAllUsers(new AsyncCallback<Vector<User>>() {
-//				@Override
-//				public void onFailure(Throwable arg0) {
-//					Window.alert("Fehler beim holen der User aus der Datenbank im ShareContactListClickHandler!");
-//				}
-//				@Override
-//				public void onSuccess(Vector<User> arg0) {
-//					allUsers = arg0;
-//				}
-//			});
-//			
-//			inputDB.getOKButton().addClickHandler(new ClickHandler() {
-//				
-//				@Override
-//				public void onClick(ClickEvent arg0) {
-//					
-//					editorAdministration.getUser(inputDB.getTextBox().getText(), new AsyncCallback<User>() {
-//						@Override
-//						public void onFailure(Throwable arg0) {
-//							Window.alert("Fehler beim holen des Users für das teilen der Kontaktliste!");
-//						}
-//						@Override
-//						public void onSuccess(User arg0) {
-//							shareUser = arg0;
-//							Window.alert("Email: shareUser " + shareUser.getEmail());
-//							Window.alert(inputDB.getTextBox().getText());
-//						}
-//					});
-//					
-//					if(allUsers.contains(shareUser) && shareUser != user) {
-//						editorAdministration.shareContactList(user, shareUser, clctvm.getSelectedContactList(), new AsyncCallback<Permission>() {
-//							@Override
-//							public void onFailure(Throwable arg0) {
-//								Window.alert("Fehler beim Teilen der Kontaktliste!");
-//								inputDB.hide();
-//							}
-//							@Override
-//							public void onSuccess(Permission arg0) {
-//								Window.alert("Kontaktliste erfolgreich geteilt.");
-//								inputDB.hide();
-//							}
-//						});
-//					}
-//					else {
-//						Window.alert("Ungültiger Benutzer!");
-//						inputDB.hide();
-//					}
-//				}
-//			});
-//		}
-//	}
-	
-	
-					
-					
-//					editorAdministration.getAllContactsWithName(searchTextBox.getText(), new AsyncCallback<Vector<Contact>>() {
-//						@Override
-//						public void onFailure(Throwable arg0) {
-//							Window.alert("Fehler beim Suchen der Kontakte nach Namen im cMapper!");
-//						}
-//						@Override
-//						public void onSuccess(Vector<Contact> arg0) {
-//							nameResults = arg0;
-//							
-//							editorAdministration.getAllContactsWithValue(searchTextBox.getText(), new AsyncCallback<Vector<Contact>>() {
-//								@Override
-//								public void onFailure(Throwable arg0) {
-//									Window.alert("Fehler beim Suchen der Kontakte nach Value im vMapper!");	
-//								}
-//								@Override
-//								public void onSuccess(Vector<Contact> arg0) {
-//									valueResults = arg0;
-//									
-//									if (nameResults.size() > 0) {
-//										clctvm.addNameResults();
-//										for (Contact c : nameResults) {
-//											if (allContactsOfUser.contains(c)) {
-//												finalNameResult.add(c);
-//											}
-//										}
-//										
-//										clctvm.addContactOfSearchResultList(clctvm.getNameResultsCL(), finalNameResult);
-//									}
-////									else {
-////										clctvm.removeContactList(clctvm.getNameResultsCL());
-////									}
-//									if (valueResults.size() > 0) {
-//										clctvm.addValueResults();
-//										for (Contact c : valueResults) {
-//											if (allContactsOfUser.contains(c)) {
-//											finalValueResult.add(c);
-//											}
-//										}
-//										clctvm.addContactOfSearchResultList(clctvm.getValueResultsCL(), finalValueResult);
-//									}
-//									else {
-//										clctvm.removeContactList(clctvm.getValueResultsCL());
-//									}
-//									if (nameResults.size() == 0 && valueResults.size() == 0) {
-//										Window.alert("Kein Suchergebnis!");
-//										clctvm.removeContactList(clctvm.getNameResultsCL());
-//										clctvm.removeContactList(clctvm.getValueResultsCL());
-//									}
-//								}
-//							});
-//						}
-//					});
-//				}
-//			});
-			
-//TODO fliegt raus wenn triple callback tut			
-			
-//			editorAdministration.getAllContactsWithName(searchTextBox.getText(), new AsyncCallback<Vector<Contact>>() {
-//				@Override
-//				public void onFailure(Throwable arg0) {
-//					Window.alert("Fehler beim Suchen der Kontakte nach Namen im cMapper!");
-//				}
-//				@Override
-//				public void onSuccess(Vector<Contact> arg0) {
-//					nameResults = arg0;
-//				}
-//			});
-			
-//			editorAdministration.getAllContactsWithValue(searchTextBox.getText(), new AsyncCallback<Vector<Contact>>() {
-//				@Override
-//				public void onFailure(Throwable arg0) {
-//					Window.alert("Fehler beim Suchen der Kontakte nach Value im vMapper!");	
-//				}
-//				@Override
-//				public void onSuccess(Vector<Contact> arg0) {
-//					valueResults = arg0;
-//				}
-//			});
-			
-//			if (nameResults.size() > 0) {
-//				clctvm.addNameResults();
-//				for (Contact c : nameResults) {
-//					if (allContactsOfUser.contains(c)) {
-//						clctvm.addContactOfContactList(clctvm.getNameResultsCL(), c);
-//					}
-//				}
-//			}
-//			else {
-//				clctvm.removeContactList(clctvm.getNameResultsCL());
-//			}
-//			if (valueResults.size() > 0) {
-//				clctvm.addValueResults();
-//				for (Contact c : valueResults) {
-//					if (allContactsOfUser.contains(c)) {
-//						clctvm.addContactOfContactList(clctvm.getValueResultsCL(), c);
-//					}
-//				}
-//			}
-//			else {
-//				clctvm.removeContactList(clctvm.getValueResultsCL());
-//			}
-//			if (nameResults.size() == 0 && valueResults.size() == 0) {
-//				Window.alert("Kein Suchergebnis!");
-//				clctvm.removeContactList(clctvm.getNameResultsCL());
-//				clctvm.removeContactList(clctvm.getValueResultsCL());
-//			}
-//		}
-//	}
-	
-	
+	}	
 	
 }	 
