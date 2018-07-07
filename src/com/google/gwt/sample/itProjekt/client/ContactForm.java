@@ -696,8 +696,9 @@ public class ContactForm extends VerticalPanel {
 				public void onClick (ClickEvent event) {
 					
 					//addValuePopUp(propertyId, row);	
-					final ClientsideFunctions.InputDialogBox input = new ClientsideFunctions.InputDialogBox(propertyId, row, new ValueTextBox(null));
-					input.getOKButton().addClickHandler(new AddValueClickHandler(input, input.getVTextBox(), ((ValueTable) contactTable.getWidget(row, 1)), row));
+					ValueTextBox vtb = new ValueTextBox("");
+					final ClientsideFunctions.InputDialogBox input = new ClientsideFunctions.InputDialogBox(propertyId, row, vtb);
+					input.getOKButton().addClickHandler(new AddValueClickHandler(input, input.getVTextBox(), ((ValueTable) contactTable.getWidget(row, 1)), propertyId));
 					
 				}
 			});

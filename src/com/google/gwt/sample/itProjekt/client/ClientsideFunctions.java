@@ -299,7 +299,7 @@ public abstract class ClientsideFunctions {
 	        ok.addStyleName("okbutton");
 	        close.addStyleName("closebutton");
 			
-			setText("Eingabe");
+			setText("Neue Eigenschaftsart hinzufügen");
 			setAnimationEnabled(true);
 			setGlassEnabled(true);
 			
@@ -400,12 +400,10 @@ public abstract class ClientsideFunctions {
 			setdialogBoxLabel(labelString);
 					
 			editorAdministration.getAllUserSuggestions(user, new AsyncCallback<Vector<String>>() {
-				@Override
 				public void onFailure(Throwable arg0) {
 					// TODO Auto-generated method stub
 					
 				}
-				@Override
 				public void onSuccess(Vector<String> arg0) {
 					
 					for(String s : arg0) {
