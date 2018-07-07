@@ -282,6 +282,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 						Vector<Value> allValues=this.admin.getAllValuesOfContact(c);
 						if (allValues.size()!=0){
 						report.addSubReport(this.generateAllValuesOfContactReport(c, user));
+						errornoteCounter++;
 						}
 					}			
 				}else{
@@ -300,6 +301,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				Vector<Value> allValues=this.admin.getAllValuesOfContact(c);
 				if (allValues.size()!=0){
 				report.addSubReport(this.generateAllValuesOfContactReport(c, user));
+				errornoteCounter++;
 				}
 			}			
 		}else{
