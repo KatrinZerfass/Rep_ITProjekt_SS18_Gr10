@@ -250,6 +250,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 
 @Override
 	public AllContactsWithPropertyReport generateAllContactsWithPropertyReport(User user, Property property){
+	int errornoteCounter = 0;
 	
 	if(this.getEditorAdministration()==null) {
 		
@@ -284,10 +285,12 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 						}
 					}			
 				}else{
+					if(errornoteCounter == 0){
 					SimpleParagraph errornote=new SimpleParagraph("Es wurden leider keine Kontakte mit der angegebenen Eigenschaft gefunden");
 					header.addSubParagraph(errornote);
 					report.setHeaderData(header);
-				}
+					errornoteCounter++;
+				}}
 			}
 		}
 		Vector<Contact> allContacts=this.admin.getContactsOfUserWithProperty(user, property);
@@ -300,9 +303,11 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 				}
 			}			
 		}else{
+			if(errornoteCounter == 0){
 			SimpleParagraph errornote=new SimpleParagraph("Es wurden leider keine Kontakte mit der angegebenen Eigenschaft gefunden");
 			header.addSubParagraph(errornote);
 			report.setHeaderData(header);
+			errornoteCounter++;}
 		}
 		return report;
 	}
