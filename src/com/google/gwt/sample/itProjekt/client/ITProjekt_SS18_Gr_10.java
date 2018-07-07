@@ -164,7 +164,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		 */
 	    VerticalPanel loginPanel = new VerticalPanel();
 	    HorizontalPanel signedInUserPanel = new HorizontalPanel();
-	    Label signedInUserLabel = new Label("Eingelogged als: ");
+	    Label signedInUserLabel = new Label("Angemeldet als:      ");
 	    signedInUserPanel.add(signedInUserLabel);
 	    signedInUserName = new Label();
 	    
@@ -173,7 +173,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	    		
 	    	}
 	    	public void onSuccess(String result) {
-	    		signedInUserName.setText(result);
+	    		signedInUserName.setText("  " + result);
 	    	
 	    		
 	    	}
