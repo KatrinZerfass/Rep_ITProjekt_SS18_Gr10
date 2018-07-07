@@ -1,6 +1,8 @@
 package com.google.gwt.sample.itProjekt.shared;
 
 import java.util.Vector;
+
+import com.google.gwt.sample.itProjekt.client.ClientsideFunctions.InputDialogBox;
 import com.google.gwt.sample.itProjekt.shared.bo.*;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -54,11 +56,23 @@ public interface EditorAdministration extends RemoteService{
 	 * @throws IllegalArgumentException
 	 */
 	public User createUser(String email) throws IllegalArgumentException;
-	//TODO: comment
+
+	/**
+	 * Überschreibt einen Nutzer in der Datenbank.
+	 * 
+	 * @param user neuer Nutzer
+	 * @return vollständiges Nutzer-Objekt
+	 * @throws IllegalArgumentException
+	 */
 	public User editUser(User user) throws IllegalArgumentException;
-	//TODO: comment
+
+	/**
+	 * Löscht einen Nutzer aus der Datenbank.
+	 * 
+	 * @param user Nutzer
+	 * @throws IllegalArgumentException
+	 */
 	public void deleteUser(User u) throws IllegalArgumentException;
-	
 	
 	/**
 	 * Holt die Information des Nutzers anhand seiner Email-Adresse aus der Datenbank.
@@ -85,7 +99,6 @@ public interface EditorAdministration extends RemoteService{
 	 * @param lastname Nachname
 	 * @param sex Geschlecht
 	 * @param email Email-Adresse
-	 * @param user Nutzer
 	 * @return vollständiges Nutzer-Objekt
 	 * @throws IllegalArgumentException
 	 */
@@ -130,7 +143,14 @@ public interface EditorAdministration extends RemoteService{
 	 * @throws IllegalArgumentException
 	 */
 	public Vector<User> getAllParticipantsOfContact(Contact contact) throws IllegalArgumentException;
-	//TODO: comment
+	
+	/**
+	 * Holt alle Teilhaber einer Kontaktliste aus der Datenbank.
+	 *
+	 * @param contactlist Kontaktliste
+	 * @return Vector der betroffenen Nutzer
+	 * @throws IllegalArgumentException
+	 */
 	public Vector<User> getAllParticipantsOfContactList(ContactList contactlist) throws IllegalArgumentException;
 	
 	  /*
@@ -183,6 +203,7 @@ public interface EditorAdministration extends RemoteService{
 
 	/**
 	 * Löscht einen Kontakt aus der Datenbank, falls der Nutzer jener ist, welcher den Kontakt erstellt hat.
+	 * In diesem Fall werden zusätzlich auch alle Teilhaberschaften am Kontakt und Ausprägungen des Kontakts gelöscht.
 	 * Ist der Nutzer nur Teilhaber des Kontakts wird nur die Teilhaberschaft des Nutzers gelöscht.
 	 * Dies wird über einen boolschen Wert identifiziert (true für Urheber, false für Teilhaber)
 	 *
@@ -275,7 +296,17 @@ public interface EditorAdministration extends RemoteService{
 	 * @throws IllegalArgumentException
 	 */
 	public Vector<Contact> getAllContactsWithName(String name) throws IllegalArgumentException;
-	//TODO: comment
+	
+	/**
+	 * Holt alle Kontakte einer Kontaktliste aus der Datenbank, für die ein Nutzer eine Teilhaberschaft besitzt.
+	 * Falls der Nutzer einen Kontakt aus einer ihm geteilten Kontaktliste entfernt wird dieser mit Hilfe dieser Methode
+	 * nicht mehr angezeigt.
+	 *
+	 * @param contactlist Kontaktliste
+	 * @param user Nutzer
+	 * @return Vector der betroffenen Kontakte
+	 * @throws IllegalArgumentException
+	 */
 	public Vector<Contact> getAllSharedContactsOfContactList(ContactList contactlist, User user) throws IllegalArgumentException;
 
 	/**
@@ -297,7 +328,15 @@ public interface EditorAdministration extends RemoteService{
 	 * @throws IllegalArgumentException
 	 */
 	public Vector<Contact> getContactsOfUserWithProperty(User user, Property Property) throws IllegalArgumentException;
-	//TODO: comment
+
+	/**
+	 * Holt alle Kontakte eines Nutzers, welche eine bestimmte Eigenschaft haben aus der Datenbank.
+	 * 
+	 * @param user Nutzer
+	 * @param property Eigenschaft
+	 * @return Vector der betroffenen Kontakte
+	 * @throws IllegalArgumentException
+	 */
 	public Vector<Contact> getContactsOfUserWithDefaultProperty(User user, Property property) throws IllegalArgumentException;
 
 	/**
@@ -443,9 +482,22 @@ public interface EditorAdministration extends RemoteService{
 	 * @throws IllegalArgumentException
 	 */
 	public Property createProperty(Contact contact, String type) throws IllegalArgumentException;
-	//TODO: comment
+
+	/**
+	 * Ändert eine Eigenschaft in der Datenbank.
+	 * 
+	 * @param property neue Eigenschaft
+	 * @return vollständiges Eigenschaft Objekt
+	 * @throws IllegalArgumentException
+	 */
 	public Property editProperty(Property property) throws IllegalArgumentException;
-	//TODO: comment
+
+	/**
+	 * Löscht eine Eigenschaft aus der Datenbank.
+	 * 
+	 * @param property Eigenschaft
+	 * @throws IllegalArgumentException
+	 */
 	public void deleteProperty(Property property) throws IllegalArgumentException;
 
 	/**
@@ -540,6 +592,15 @@ public interface EditorAdministration extends RemoteService{
 	 */
 	public Value createAddress(String street, String housenumber, String zip, String city, Contact contact) throws IllegalArgumentException;
 
+	/**
+	 * Löscht die vier Ausprägungen Straße, Hausnummer, PLZ und Stadt, welche eine Adresse repräsentieren.
+	 * 
+	 * @param street Straße
+	 * @param houseNr Hausnummer
+	 * @param zip PLZ
+	 * @param city Stadt
+	 * @throws IllegalArgumentException
+	 */
 	public void deleteAddress(Value street, Value houseNr, Value zip, Value city) throws IllegalArgumentException;
 	
 	/**
@@ -597,9 +658,23 @@ public interface EditorAdministration extends RemoteService{
 	 * @throws IllegalArgumentException
 	 */
 	public Permission shareContactList(User sourceUser, String shareUserEmail, ContactList shareContactList) throws IllegalArgumentException;
-	//TODO: comment
+
+	/**
+	 * Ändert eine Teilhaberschaft an einem Kontakt in der Datenbank.
+	 * 
+	 * @param permission neue Teilhaberschaft
+	 * @return vollständiges Teilhaberschaft Objekt
+	 * @throws IllegalArgumentException
+	 */
 	public Permission editPermissionContact(Permission permission) throws IllegalArgumentException;
-	//TODO: comment
+	
+	/**
+	 * Ändert eine Teilhaberschaft an einer Kontaktliste in der Datenbank.
+	 * 
+	 * @param permission neue Teilhaberschaft
+	 * @return vollständiges Teilhaberschaft Objekt
+	 * @throws IllegalArgumentException
+	 */
 	public Permission editPermissionContactList(Permission permission) throws IllegalArgumentException;
 
 	/**
@@ -633,10 +708,32 @@ public interface EditorAdministration extends RemoteService{
 	   * ABSCHNITT, Beginn: Methoden, welche sonstige Funktionen erfüllen.
 	   * ***************************************************************************
 	   */
-	//TODO: comment
+
+	/**
+	 * Holt Klarnamen eines Nutzers aus der Datenbank.
+	 * 
+	 * @param user Nutzer
+	 * @return Klarname des Nutzers
+	 * @throws IllegalArgumentException
+	 */
 	public String getFullNameOfUser(User user) throws IllegalArgumentException;
-	//TODO: comment
+
+	/**
+	 * Holt Klarnamen mehrer Nutzer auf einmal aus der Datenbank.
+	 * 
+	 * @param user Nutzer
+	 * @return Vector der Klarnamen
+	 * @throws IllegalArgumentException
+	 */
 	public Vector<String> getFullNamesOfUsers(Vector<User> user) throws IllegalArgumentException;
-	//TODO: comment
+	
+	/**
+	 * Holt Strings zum füllen der SuggestBox der {@link InputDialogBox} Klasse aus der Datenbank.
+	 * Diese beinhalten nicht den Namen des angemeldeten Nutzers.
+	 * 
+	 * @param activeUser angemeldeter Nutzer
+	 * @return Vector der Strings
+	 * @throws IllegalArgumentException
+	 */
 	public Vector<String> getAllUserSuggestions(User activeUser) throws IllegalArgumentException;
 }

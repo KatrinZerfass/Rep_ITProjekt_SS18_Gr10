@@ -5,11 +5,13 @@ import java.util.Vector;
 import com.google.gwt.sample.itProjekt.shared.*;
 import com.google.gwt.sample.itProjekt.shared.bo.*;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.google.gwt.sample.itProjekt.client.ClientsideFunctions.InputDialogBox;
 import com.google.gwt.sample.itProjekt.server.db.*;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class EditorAdministrationImpl.
+ * Implementierungsklasse des Interface EditorAdministration.
+ * 
+ * @author JanNoller
  */
 @SuppressWarnings("serial")
 public class EditorAdministrationImpl extends RemoteServiceServlet implements EditorAdministration{
@@ -34,10 +36,10 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	private PermissionMapper pmMapper;
 
 	/*
-	   * ***************************************************************************
-	   * ABSCHNITT, Beginn: Initialisierung
-	   * ***************************************************************************
-	   */
+	 * ***************************************************************************
+	 * ABSCHNITT, Beginn: Initialisierung
+	 * ***************************************************************************
+	 */
 	
 	/**
 	 * No Argument Konstruktor
@@ -45,7 +47,6 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	 * @throws IllegalArgumentException the illegal argument exception
 	 */
 	public EditorAdministrationImpl() throws IllegalArgumentException {
-		// TODO Auto-generated constructor stub
 	}
 	/**
 	 * Initialisierung des Objekts. Diese Methode ist vor dem Hintergrund von GWT
@@ -56,6 +57,9 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	 */
 	public void init() throws IllegalArgumentException {
 		
+		/**
+		 * Referenzen auf die DatenbankMapper, der Businessobjekte mit der Datenbank abgleichen.
+		 */
 		this.clMapper = ContactListMapper.contactListMapper();
 		this.cMapper = ContactMapper.contactMapper();
 		this.pMapper = PropertyMapper.propertyMapper();
@@ -65,20 +69,20 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		
 	}
 	
-	  /*
-	   * ***************************************************************************
-	   * ABSCHNITT, Ende: Initialisierung
-	   * ***************************************************************************
-	   */
+	/*
+	 * ***************************************************************************
+	 * ABSCHNITT, Ende: Initialisierung
+	 * ***************************************************************************
+	 */
 
-	  /*
-	   * ***************************************************************************
-	   * ABSCHNITT, Beginn: Methoden für User-Objekte
-	   * create, edit, delete und get(ter) für User-Objekte, sowie alle Methoden, 
-	   * welche User-Objekte oder Vektoren von User-Objekten zurück geben 
-	   * oder den User direkt betreffen.
-	   * ***************************************************************************
-	   */
+    /*
+	 * ***************************************************************************
+	 * ABSCHNITT, Beginn: Methoden für User-Objekte
+	 * create, edit, delete und get(ter) für User-Objekte, sowie alle Methoden, 
+	 * welche User-Objekte oder Vektoren von User-Objekten zurück geben 
+	 * oder den User direkt betreffen.
+	 * ***************************************************************************
+	 */
 	
 	/**
 	 * Legt einen Benutzer in der Datenbank an.
@@ -94,23 +98,40 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		
 		return uMapper.insert(newuser);
 	}
-	//TODO: comment
+	/**
+	 * Überschreibt einen Nutzer in der Datenbank.
+	 * 
+	 * @param user neuer Nutzer
+	 * @return vollständiges Nutzer-Objekt
+	 * @throws IllegalArgumentException
+	 */
 	public User editUser(User user) throws IllegalArgumentException{
 		return uMapper.update(user);
 	}
-	//TODO: comment
+	
+	/**
+	 * Löscht einen Nutzer aus der Datenbank.
+	 * 
+	 * @param user Nutzer
+	 * @throws IllegalArgumentException
+	 */
 	public void deleteUser(User user) throws IllegalArgumentException{
 		uMapper.delete(user);
 	}
-	//TODO: comment
+	
+	/**
+	 * Holt einen Nutzer anhand seiner Emailadresse aus der Datenbank.
+	 * 
+	 * @param email Emailadresse des Nutzers
+	 */
 	public User getUserByEmail(String email) {
 		return uMapper.findByEMail(email);
 	}
 	
 	/**
-	 * Holt die Information des Nutzers anhand seiner Email-Adresse aus der Datenbank.
+	 * Holt die Information des Nutzers anhand seiner ID aus der Datenbank.
 	 *
-	 * @param email Email des Nutzers
+	 * @param ID id des Nutzer
 	 * @return ein vollständiges User Objekt
 	 * @throws IllegalArgumentException
 	 */
@@ -126,7 +147,6 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	 * @param lastname Nachname
 	 * @param sex Geschlecht
 	 * @param email Email-Adresse
-	 * @param user Nutzer
 	 * @return vollständiges Nutzer-Objekt
 	 * @throws IllegalArgumentException
 	 */
@@ -205,20 +225,24 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	}
 	
 	/**
-	 * Holt alle Kontakte einer Kontaktliste aus der Datenbank, für die ein Nutzer eine Teilhaberschaft besitzt.
-	 * Falls der Nutzer einen Kontakt aus einer ihm geteilten Kontaktliste entfernt wird dieser mit Hilfe dieser Methode
-	 * nicht mehr angezeigt.
+	 * Holt alle Teilhaber eines Kontakts aus der Datenbank.
 	 *
 	 * @param contactlist Kontaktliste
-	 * @param user Nutzer
-	 * @return Vector der betroffenen Kontakte
+	 * @return Vector der betroffenen Nutzer
 	 * @throws IllegalArgumentException
 	 */
 	public Vector<User> getAllParticipantsOfContact(Contact contact) throws IllegalArgumentException {
 		
 		return pmMapper.findAllParticipantsByCID(contact);
 	}
-	//TODO: comment
+
+	/**
+	 * Holt alle Teilhaber einer Kontaktliste aus der Datenbank.
+	 *
+	 * @param contactlist Kontaktliste
+	 * @return Vector der betroffenen Nutzer
+	 * @throws IllegalArgumentException
+	 */
 	public Vector<User> getAllParticipantsOfContactList(ContactList contactlist) throws IllegalArgumentException {
 		
 		return pmMapper.findAllParticipantsByCLID(contactlist);
@@ -301,6 +325,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	
 	/**
 	 * Löscht einen Kontakt aus der Datenbank, falls der Nutzer jener ist, welcher den Kontakt erstellt hat.
+	 * In diesem Fall werden zusätzlich auch alle Teilhaberschaften am Kontakt und Ausprägungen des Kontakts gelöscht.
 	 * Ist der Nutzer nur Teilhaber des Kontakts wird nur die Teilhaberschaft des Nutzers gelöscht.
 	 * Dies wird über einen boolschen Wert identifiziert (true für Urheber, false für Teilhaber)
 	 *
@@ -315,7 +340,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		Vector<ContactList> allContactLists = getAllContactListsWithContact(contact);
 		Vector<User> allUsers = getAllParticipantsOfContact(contact);
 		
-		if(owner == true){
+		if(contact.getOwner() == user.getId()){
 			for (User u : allUsers) {
 				deletePermission(u, contact);
 			}
@@ -349,6 +374,10 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 
 	/**
 	 * Holt alle Kontakte des angemeldeten Nutzers aus der Datenbank.
+	 * Sortiert werden diese wie folgt:<br>
+	 * 1. Kontakt welcher den Nutzer repräsentiert.<br>
+	 * 2. Kontakte, welche der Nutzer erstellt hat.<br>
+	 * 3. Kontakte, welche dem Nutzer geteilt wurden.
 	 *
 	 * @param user der angemeldete Nutzer
 	 * @return Vector aller Kontakte des angemeldeten Nutzers 
@@ -487,7 +516,17 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		
 		return cMapper.findAllByName(name);
 	}
-//TODO: comment
+	
+	/**
+	 * Holt alle Kontakte einer Kontaktliste aus der Datenbank, für die ein Nutzer eine Teilhaberschaft besitzt.
+	 * Falls der Nutzer einen Kontakt aus einer ihm geteilten Kontaktliste entfernt wird dieser mit Hilfe dieser Methode
+	 * nicht mehr angezeigt.
+	 *
+	 * @param contactlist Kontaktliste
+	 * @param user Nutzer
+	 * @return Vector der betroffenen Kontakte
+	 * @throws IllegalArgumentException
+	 */
 	public Vector<Contact> getAllSharedContactsOfContactList(ContactList contactlist, User user)
 			throws IllegalArgumentException {
 		Vector<Contact> allContactsInCL = getAllContactsOfContactList(contactlist);
@@ -550,31 +589,42 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 				c2 = cMapper.findByID(c1);
 				System.out.println(c2.getId());
 				result.addElement(c2);
-			}}
-			
+			}}		
 		}
 		return result;
 	}
-//TODO: comment
+	
+	/**
+	 * Holt alle Kontakte eines Nutzers, welche eine bestimmte Eigenschaft haben aus der Datenbank.
+	 * 
+	 * @param user Nutzer
+	 * @param property Eigenschaft
+	 * @return Vector der betroffenen Kontakte
+	 * @throws IllegalArgumentException
+	 */
 	public Vector<Contact> getContactsOfUserWithDefaultProperty(User user, Property property) throws IllegalArgumentException{
+		
 		Vector<Contact> allContactsOfUser= new Vector<Contact>();
 		allContactsOfUser = getAllContactsOfActiveUser(user);
-		Vector <Property> pv=new Vector <Property>();
-		Vector<Contact> result=new Vector<Contact>();
-		Contact c1 = new Contact();
-		c1.setId(20000000);
-		pv=pMapper.findByTypeAndCID(property, c1);
-		for(Property p: pv){
-		Vector<Contact> allContactsWithProperty=vMapper.getAllContactsByPID(p);
 		
-		for (Contact c :allContactsOfUser){
-			if(allContactsWithProperty.contains(c)){
-				result.add(c);
+		Vector <Property> pv = new Vector <Property>();
+		Vector<Contact> result = new Vector<Contact>();
+		Contact c1 = new Contact();
+		
+		c1.setId(20000000);
+		pv = pMapper.findByTypeAndCID(property, c1);
+		
+		for(Property p: pv){
+			Vector<Contact> allContactsWithProperty = vMapper.getAllContactsByPID(p);
+		
+			for (Contact c :allContactsOfUser){
+				if(allContactsWithProperty.contains(c)){
+					result.add(c);
+				}
 			}
 		}
-	}
 		return result;
-}
+	}
 	
 	/**
 	 * Holt alle Kontakte welche im Namen (Vor- oder Nachname) eine Zeichenfolge beinhalten,
@@ -704,6 +754,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	
 	/**
 	 * Löscht eine Kontaktliste aus der Datenbank, falls der Nutzer jener ist, welcher die Kontaktliste erstellt hat.
+	 * Löscht in diesem Fall auch alle Teilhaberschaften an der Kontaktliste und den Kontakten.
 	 * Ist der Nutzer nur Teilhaber der Kontaktliste wird nur die Teilhaberschaft des Nutzers gelöscht.
 	 * Dies wird über einen boolschen Wert identifiziert (true für Urheber, false für Teilhaber)
 	 *
@@ -844,11 +895,24 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 			return null;
 		}
 	}
-	//TODO: comment
+
+	/**
+	 * Ändert eine Eigenschaft in der Datenbank.
+	 * 
+	 * @param property neue Eigenschaft
+	 * @return vollständiges Eigenschaft Objekt
+	 * @throws IllegalArgumentException
+	 */
 	public Property editProperty(Property property) throws IllegalArgumentException{
 		return pMapper.update(property);
 	}
-	//TODO: comment
+	
+	/**
+	 * Löscht eine Eigenschaft aus der Datenbank.
+	 * 
+	 * @param property Eigenschaft
+	 * @throws IllegalArgumentException
+	 */
 	public void deleteProperty(Property property) throws IllegalArgumentException{
 		pMapper.delete(property);
 	}
@@ -1030,6 +1094,15 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		return streetValue;
 	}
 	
+	/**
+	 * Löscht die vier Ausprägungen Straße, Hausnummer, PLZ und Stadt, welche eine Adresse repräsentieren.
+	 * 
+	 * @param street Straße
+	 * @param houseNr Hausnummer
+	 * @param zip PLZ
+	 * @param city Stadt
+	 * @throws IllegalArgumentException
+	 */
 	public void deleteAddress(Value street, Value houseNr, Value zip, Value city) throws IllegalArgumentException {
 		
 		deleteValue(street);
@@ -1080,6 +1153,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	
 	/**
 	 * Teilt einen Kontakt mit einem bestimmten Nutzer.
+	 * Entspricht "creatPermissionForContact".
 	 *
 	 * @param sourceUser "teilender" Nutzer
 	 * @param shareUserEmail Email-Adresse des Empfängers
@@ -1104,6 +1178,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 
 	/**
 	 * Teilt Kontaktliste mit einem Nutzer.
+	 * Entspricht "createPermissionForContactList".
 	 *
 	 * @param sourceUser "teilender" Nutzer
 	 * @param shareUserEmail Email-Adress des Empfängers
@@ -1125,11 +1200,25 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 			return null;
 		}
 	}
-	//TODO: comment
+	
+	/**
+	 * Ändert eine Teilhaberschaft an einem Kontakt in der Datenbank.
+	 * 
+	 * @param permission neue Teilhaberschaft
+	 * @return vollständiges Teilhaberschaft Objekt
+	 * @throws IllegalArgumentException
+	 */
 	public Permission editPermissionContact(Permission permission) throws IllegalArgumentException{
 		return pmMapper.updateContact(permission);
 	}
-	//TODO: comment	
+	
+	/**
+	 * Ändert eine Teilhaberschaft an einer Kontaktliste in der Datenbank.
+	 * 
+	 * @param permission neue Teilhaberschaft
+	 * @return vollständiges Teilhaberschaft Objekt
+	 * @throws IllegalArgumentException
+	 */
 	public Permission editPermissionContactList(Permission permission) throws IllegalArgumentException{
 		return pmMapper.updateContactList(permission);
 	}
@@ -1195,7 +1284,13 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	   * ***************************************************************************
 	   */
 	
-	//TODO: comment
+	/**
+	 * Holt Klarnamen eines Nutzers aus der Datenbank.
+	 * 
+	 * @param user Nutzer
+	 * @return Klarname des Nutzers
+	 * @throws IllegalArgumentException
+	 */
 	public String getFullNameOfUser(User user) throws IllegalArgumentException {
 		
 		String result = null;
@@ -1208,7 +1303,14 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		}
 		return result;
 	}
-	//TODO: comment
+	
+	/**
+	 * Holt Klarnamen mehrer Nutzer auf einmal aus der Datenbank.
+	 * 
+	 * @param user Nutzer
+	 * @return Vector der Klarnamen
+	 * @throws IllegalArgumentException
+	 */
 	public Vector<String> getFullNamesOfUsers(Vector<User> user) throws IllegalArgumentException {
 		Vector<Contact> contacts = null;
 		Vector<String> result = new Vector<String>();
@@ -1223,7 +1325,15 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		}
 		return result;
 	}
-	//TODO: comment
+	
+	/**
+	 * Holt Strings zum füllen der SuggestBox der {@link InputDialogBox} Klasse aus der Datenbank.
+	 * Diese beinhalten nicht den Namen des angemeldeten Nutzers.
+	 * 
+	 * @param activeUser angemeldeter Nutzer
+	 * @return Vector der Strings
+	 * @throws IllegalArgumentException
+	 */
 	public Vector<String> getAllUserSuggestions(User activeUser) throws IllegalArgumentException {
 		
 		Vector<User> allUsers = uMapper.findAll();
