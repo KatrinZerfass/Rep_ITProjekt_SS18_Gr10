@@ -527,30 +527,35 @@ public class ContactForm extends VerticalPanel {
 				public void onClick (ClickEvent event) {
 					
 					if(value.getPropertyid() == 6) { 
+					
 					/*
-					 * Es handelt sich um den DeleteValueButton, welcher sich auf die Straße bezieht. Folglich müssen auch die Ausprägungen
-					 * Hausnummer, PLZ und Wohnort mitgelöscht werden.	
+					 * Es handelt sich um den DeleteValueButton, welcher sich auf die Straße bezieht. Wird eine Straße gelöscht, 
+					 * müssen auch Hausnummer, PLZ und Wohnort gelöscht werden, damit die gesamte Anschrift aus der GUI fliegt. 
 					 */
-//						for(int i= 0; i<allValuesOfContact.size(); i++) {
-//							int pid = allValuesOfContact.get(i).getPropertyid();
-//							
-//							if(pid == 6 || pid == 7 || pid == 8 || pid ==9) {
-								editorAdministration.deleteAddress(value, contactToDisplay, new AsyncCallback<Void>() {
-									public void onFailure(Throwable arg0) {}; {};
-									public void onSuccess(Void arg0) {}; {
-										final ClientsideFunctions.popUpBox deleted = new ClientsideFunctions.popUpBox("Adresse gelöscht.", new ClientsideFunctions.OkButton());
-										deleted.getOkButton().addClickHandler(new ClickHandler() {
-											
-											@Override
-											public void onClick(ClickEvent arg0) {
-												setSelected(contactToDisplay);
-												deleted.hide();
-											}
-										});
-									};
+						for(int i= 0; i<allValuesOfContact.size(); i++) {
+							int pid = allValuesOfContact.get(i).getPropertyid();
+							
+							if(pid == 6 || pid == 7 || pid == 8 || pid ==9) {
+								editorAdministration.deleteValue(allValuesOfContact.get(i), new AsyncCallback<Void>() {
+									public void onFailure(Throwable arg0) {
+													
+									}
+									public void onSuccess(Void arg0) {
+										
+									}
 								});
-							//}
-						//}			
+							}
+						}	
+						//Bestätigungsmeldung
+						final ClientsideFunctions.popUpBox deleted = new ClientsideFunctions.popUpBox("Adresse gelöscht.", new ClientsideFunctions.OkButton());
+						deleted.getOkButton().addClickHandler(new ClickHandler() {
+							
+							@Override
+							public void onClick(ClickEvent arg0) {
+								setSelected(contactToDisplay);
+								deleted.hide();
+							}
+						});
 					}
 					
 					else{
@@ -669,19 +674,14 @@ public class ContactForm extends VerticalPanel {
 			this.setStyleName("addValueButton");
 			this.propertyId= pid;
 			this.row= r;
-			
-			
-		//wieder zurück kommentieren!
-			//this.setEnabled(true);
+		
 			this.setVisible(true);
-			//TODO: ?
 			
 					
 			this.addClickHandler(new ClickHandler() {
 				
 				public void onClick (ClickEvent event) {
-					
-					//addValuePopUp(propertyId, row);	
+						
 					ValueTextBox vtb = new ValueTextBox("");
 					final ClientsideFunctions.InputDialogBox input = new ClientsideFunctions.InputDialogBox(propertyId, row, vtb);
 					input.getOKButton().addClickHandler(new AddValueClickHandler(input, input.getVTextBox(), ((ValueTable) contactTable.getWidget(row, 1)), propertyId));
@@ -690,96 +690,11 @@ public class ContactForm extends VerticalPanel {
 			});
 		}
 		
-		
-		/**
-		 * Die Methode addValuePopUp erzeugt ein PopUp, in das man eine neue Ausprägung eintragen kann
-		 * 
-		 * @param pid die referenzierte Eigenschaftsart. Wird vom ClickHandler übergeben.
-		 * @param row die Zeile der ContactTable, in der sich die Eigenschaftsart befindet. Wird vom ClickHandler übergeben.
-		 */
-//		public void addValuePopUp(int pid, int row) {
-//			
-//			/* Die DialogBox, welche aufpoppt */
-//			DialogBox addValueDB = new DialogBox();
-//			addValueDB.setText("Neue Ausprägung hinzufügen");
-//			addValueDB.setAnimationEnabled(true);
-//			addValueDB.setGlassEnabled(true);
-//			
-//			/*Das innere Panel der DialogBox */
-//			VerticalPanel addValueDBPanel = new VerticalPanel();
-//			addValueDBPanel.setHeight("100px");
-//			addValueDBPanel.setWidth("230px");
-//		    addValueDBPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
-//		    addValueDB.add(addValueDBPanel);
-//		    			
-//			Label addValueLabel = new Label();
-//			addValueDBPanel.add(addValueLabel);
-//			
-//			/*Die ValueTextBox, in die man die neue Ausprägung eintragen kann. Sie wird nach der switch-case gesetzt */
-//			ValueTextBox addValueTextBox = null;
-//					
-//		
-//			/*
-//			 * Je nachdem, um welche Art von Eigenschaft es sich handelt, wird der Identifier gesetzt, mit dem nach der switch-case
-//			 * die ValueTextBox erstellt wird. Der Identifier dient der Methode checkValue aus den ClientsideFunctions, welche auf korrekte 
-//			 * Eingabe überprüft.
-//			 */
-//			String identifier = null;
-//			
-//			switch(pid) {
-//			
-//				case 1: identifier = "Telefonnummer";
-//						addValueLabel.setText("Neue geschäftliche Telefonnummer: ");
-//						break;
-//						
-//				case 2: identifier = "Telefonnummer";
-//						addValueLabel.setText("Neue private Telefonnummer: ");
-//						break;
-//						
-//				case 3: identifier = "Email";
-//						addValueLabel.setText("Neue e-Mail-Adresse: ");
-//						break;
-//						
-//				case 5: identifier = "Arbeitsplatz";
-//						addValueLabel.setText("Neue Arbeitsstelle: ");
-//						break;
-//						
-//				case 10: identifier = "Homepage";
-//						addValueLabel.setText("Neue Homepage: ");
-//						break;
-//				default: 
-//						identifier = "Sonstiges";
-//						addValueLabel.setText("Neue Ausprägung: ");
-//						break;
-//					
-//				
-//			}
-//			
-//			addValueTextBox = new ValueTextBox(identifier);
-//			addValueDBPanel.add(addValueTextBox);
-//			
-//			HorizontalPanel dbButtonsPanel=new HorizontalPanel();
-//			addValueDBPanel.add(dbButtonsPanel);
-//			
-//			CloseButton closeButton = new CloseButton(addValueDB);
-//			dbButtonsPanel.add(closeButton);
-//			
-//			Button addValueButton = new Button("Hinzufügen");
-//			addValueButton.addStyleName("okbutton");
-//			dbButtonsPanel.add(addValueButton);
-//			
-//			
-//			addValueButton.addClickHandler(new AddValueClickHandler(addValueDB, addValueTextBox,
-//					((ValueTable) contactTable.getWidget(row, 1)), pid));
-//			
-//			
-//			addValueDB.show();
-//
-//		}
+
 		
 		/**
 		 * Der innere Klasse AddValueClickHandler innerhalb der inneren Klasse AddValueButton.
-		 * Wird aufgerufen, nachdem der Benutzer eine neue Ausprägung einträgt und in der DialogBox auf "Hinzufügen" klickt.
+		 * Wird aufgerufen, nachdem der Benutzer eine neue Ausprägung einträgt und in der InputDialogBox auf "Hinzufügen" klickt.
 		 *
 		 * @author KatrinZerfass
 		 */
@@ -852,7 +767,6 @@ public class ContactForm extends VerticalPanel {
 		
 		this.add(contactTable);
 		contactTable.setStyleName("contactTable");
-		//TODO: hier mit anderen werten probieren?!
 		contactTable.getColumnFormatter().setWidth(0, "30px");
 		
 		
@@ -862,7 +776,6 @@ public class ContactForm extends VerticalPanel {
 		currentUser = ClientsideSettings.getUser();
 		
 		
-
 		
 		/*
 		 * Alle vordefinierten Eigenschaften werden aus der Datenbank ausgelesen und in einem Vektor gespeichert.
@@ -878,22 +791,24 @@ public class ContactForm extends VerticalPanel {
 				for (Property p : properties){
 					allPredefinedProperties.add(p);
 				}
-				
+				/*
+				 * Die vordefinierten Eigenschaften werden der ListBox aller Eigenschaften hinzugefügt.
+				 */
 				for (Property p : allPredefinedProperties) {
 					if(p.getType()!="Straße" && p.getType()!= "Hausnummer" && p.getType()!= "PLZ" && p.getType()!= "Wohnort") {
 					newPropertyListBox.addItem(p.getType());
 					}
 				}
+				
 				newPropertyListBox.addItem("Anschrift");
 				newPropertyListBox.addItem("Neue Eigenschaft anlegen");	
-				
 
+				
 				newPropertyLabel.addStyleName("newPropertyLabel");
 				newPropertyPanel.add(newPropertyLabel);
 				newPropertyPanel.add(newPropertyListBox);
 				newPropertyPanel.addStyleName("propertyPanel");
 				newPropertyPanel.add(addNewPropertyButton);
-				//newPropertyPanel.setVisible(true);
 				
 				
 			}
@@ -930,7 +845,7 @@ public class ContactForm extends VerticalPanel {
 	
 		
 		/*
-		 *Die Buttons für das buttonPanel werden instantiiert, mit Stylenamen versehen und zum buttonPanel hinzugefügt
+		 * Die Buttons für das buttonPanel werden instantiiert, mit Stylenamen versehen und zum buttonPanel hinzugefügt
 		 */
 		Button addContactButton = new Button("Neuen Kontakt anlegen");
 		addContactButton.addStyleName("buttonPanel");
@@ -958,10 +873,7 @@ public class ContactForm extends VerticalPanel {
 		
 	
 		buttonsPanel.setStyleName("buttonsPanel");
-		
-		
 		addNewPropertyButton.addStyleName("addNewPropertyButton");
-		
 		newPropertyListBox.addStyleName("newPropertyListBox");
 		
 		
@@ -997,7 +909,8 @@ public class ContactForm extends VerticalPanel {
 	 */
 	
 	/**
-	 * Die innere Klasse NewContactClickHandler.
+	 * Die innere Klasse NewContactClickHandler. Betätigt der Nutzer den "Neuen Kontakt anlegen"-Button, wird eine Instanz des
+	 * NewContactClickHandlers aufgerufen.  
 	 * 
 	 * @author KatrinZerfass
 	 */
@@ -1006,38 +919,39 @@ public class ContactForm extends VerticalPanel {
 		public void onClick(ClickEvent event) {
 			
 			if(contactToDisplay != null) {
-				setSelected(null);
 				//das ContactForm wird gecleared, damit ein neuer Kontakt angelegt werden kann 
+				setSelected(null);
 				
 			}else {
 				if(!ClientsideFunctions.checkValue(firstnameTextBox) || !ClientsideFunctions.checkValue(lastnameTextBox) ) {
+					//Wurden ungültige Werte für Vor- und Nachnamen eingetragen, werden die Texte resettet und es kommt eine Fehlermeldung
 					firstnameTextBox.setText("");
 					lastnameTextBox.setText("");
-					//Wurden ungültige Werte für Vor- und Nachnamen eingetragen, werden die Texte resettet und es kommt eine Fehlermeldung
 					
+					//Fehlermeldung, falls die Werte ungültig sind
 					final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Ihr Kontakt konnte nicht angelegt werden, bitte versuchen Sie es erneut.", new ClientsideFunctions.OkButton());
 					failed.getOkButton().addCloseDBClickHandler(failed);
 					
 				}else if(ClientsideFunctions.checkValue(firstnameTextBox) && ClientsideFunctions.checkValue(lastnameTextBox)){
 					
 					/*
-					 * Im Folgenden wird ein neuer Kontakt im System angelegt
+					 * Sind alle Eingaben gültig, wird im Folgenden ein neuer Kontakt im System angelegt
 					 */
 					
 					String sex = "o";
 					switch(sexListBox.getSelectedItemText()) {
 						case "-Auswählen-":
+							//Fehlermeldung, falls noch kein Geschlecht ausgewählt wurde
 							final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Bitte wählen Sie ein Geschlecht aus.", new ClientsideFunctions.OkButton());
 							failed.getOkButton().addClickHandler(new ClickHandler() {
 								
-								@Override
 								public void onClick(ClickEvent arg0) {
 								
 									failed.hide();
-									
 								}
 							});
 							return;
+							
 						case "männlich": 
 							sex = "m";
 							break;
@@ -1056,16 +970,17 @@ public class ContactForm extends VerticalPanel {
 						}
 						public void onSuccess(final Contact result) {
 							
+							//Bestätigungsmeldung
 							final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Kontakt erfolgreich angelegt!", new ClientsideFunctions.OkButton());
 							success.getOkButton().addClickHandler(new ClickHandler() {
 								
-								@Override
 								public void onClick(ClickEvent click) {
+									//Ein neu angelegter Kontakt wird per Default immer der "Meine Kontakte"-Standardkontaktliste hinzugefügt.
 									clctvm.addContactOfContactList(clctvm.getMyContactsContactList(), result);
 									success.hide();
 								}
 							});
-							//Ein neu angelegter Kontakt wird per Default immer der "Meine Kontakte"-Standardkontaktliste hinzugefügt.
+							
 						}
 					});
 				}
@@ -1076,42 +991,47 @@ public class ContactForm extends VerticalPanel {
 	
 	
 	/**
-	 * Die innere Klasse shareContactClickHandler.
-	 * TODO: comments
+	 * Die innere Klasse shareContactClickHandler. Klickt der Benutzer auf den "Kontakt teilen"-Button, so wird eine
+	 * Instanz des ShareContactClickHandlers aufgerufen.
 	 * 
 	 *  @author JanNoller
 	 */
 	private class ShareContactClickHandler implements ClickHandler{
 		
+		//DialogBox, in der der Nutzer, mit dem man teilen möchte, ausgewählt werden kann 
 		ClientsideFunctions.InputDialogBox inputDB = null;
 		
-		
-		@Override
 		public void onClick(ClickEvent event) {
-			
-			
-			
+			//Fehlermeldung, falls kein Kontakt ausgewählt ist
 			if (contactToDisplay == null) {
 				final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Kein Kontakt ausgewählt.", new ClientsideFunctions.OkButton());
 				failed.getOkButton().addCloseDBClickHandler(failed);
-			}
-			else {
+			
+			}else {
+		
 				inputDB = new ClientsideFunctions.InputDialogBox(new MultiWordSuggestOracle(), "Bitte geben Sie den Nutzer ein, mit dem Sie den Kontakt teilen möchten.");
-				/*
-				 * Über eine Instanz der inneren Klasse EmailDialogBox können Objekte mit anderen Nutzern geteilt werden.
-				 */
+				
 				inputDB.getOKButton().addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {
 						if(inputDB.getSuggestBox().getText()== "") {
+							
+							//falls kein Nutzer ausgewählt wurde, erscheint eine Fehlermeldung
 							final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Bitte wählen Sie einen der vorgeschlagenen Nutzer aus.", new ClientsideFunctions.OkButton());
 							failed.getOkButton().addCloseDBClickHandler(failed);
+							
 						}else {	
+							/*
+							 * Einträge der Suggestbox bestehen aus Klarnamen und e-mail-Adressen der Nutzer
+							 * Im folgenden wird die e-Mail-Adresse vom restlichen String getrennt, um diese im Serveraufruf
+							 * shareContact() als Argument zu übergeben.
+							 */
 							String[] split = inputDB.getSuggestBox().getText().split(" - ");
 							String userEmail = split[1].substring(0, split[1].length());
-
+	
 							editorAdministration.shareContact(currentUser, userEmail, clctvm.getSelectedContact(), new AsyncCallback<Permission>() {
 		
 								public void onFailure(Throwable arg0) {
+									//Fehlermeldung
 									inputDB.hide();
 									final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Bitte wählen Sie einen der vorgeschlagenen Nutzer aus.", new ClientsideFunctions.OkButton());
 									failed.getOkButton().addCloseDBClickHandler(failed);
@@ -1119,11 +1039,13 @@ public class ContactForm extends VerticalPanel {
 								public void onSuccess(Permission arg0) {
 									if(arg0 != null) {
 										inputDB.hide();
-										final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Kontakt erfolgreich geteilt.", new ClientsideFunctions.OkButton());
-										failed.getOkButton().addCloseDBClickHandler(failed);
+										//Bestätigungsmeldung für das Teilen des Kontakts
+										final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Kontakt erfolgreich geteilt.", new ClientsideFunctions.OkButton());
+										success.getOkButton().addCloseDBClickHandler(success);
 									}
 									else if(arg0 == null) {
 										inputDB.hide();
+										//Meldet, falls es sich bei dem eingetragenen Nutzer um den Eigentümer des Kontakts handelt
 										final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Nutzer ist der Besitzer des Kontakts.", new ClientsideFunctions.OkButton());
 										failed.getOkButton().addCloseDBClickHandler(failed);
 									}
@@ -1132,33 +1054,6 @@ public class ContactForm extends VerticalPanel {
 						}
 					}
 				});
-				
-//				dialog.getOKButton().addClickHandler(new ClickHandler() {
-//					public void onClick(ClickEvent event) {
-//						
-//						if(dialog.getSuggestBox().getText()== "") {
-//							Window.alert("Fehler beim Teilen des Kontakts!");
-//						}
-//						
-//						editorAdministration.shareContact(currentUser, dialog.getSuggestBox().getText(), clctvm.getSelectedContact(), new AsyncCallback<Permission>() {
-//
-//							public void onFailure(Throwable arg0) {
-//								Window.alert("Fehler beim Teilen des Kontakts!");
-//								dialog.hide();
-//							}
-//							public void onSuccess(Permission arg0) {
-//								if(arg0 != null) {
-//									Window.alert("Kontakt erfolgreich geteilt.");
-//									dialog.hide();
-//								}
-//								else {
-//									Window.alert("User ist der Owner des Kontakts!");
-//									dialog.hide();
-//								}
-//							}
-//						});
-//					}
-//				});
 			}
 		}
 	}
@@ -1166,42 +1061,47 @@ public class ContactForm extends VerticalPanel {
 	
 	
 	/**
-	 * Die innere Klasse deleteContactClickHandler.
-	 * TODO: comments
+	 * Die innere Klasse deleteContactClickHandler. Klickt der Nutzer den Button "Kontakt löschen", wird eine
+	 * Instanz von DeleteContactClickHandler aufgerufen. 
+	 *
 	 * @author JanNoller
 	 */
 	private class DeleteContactClickHandler implements ClickHandler{
-		
-		@Override
+	
 		public void onClick(ClickEvent event) {
 			
 			if (contactToDisplay == null) {
+				//Fehlermeldung, falls kein Kontakt ausgewählt ist
 				final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Kein Kontakt ausgewählt.", new ClientsideFunctions.OkButton());
 				failed.getOkButton().addCloseDBClickHandler(failed);
 			}
-			else if(contactToDisplay.getIsUser()) { // der ausgewählte Kontakt ist der, welcher den User repräsentiert
-				final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Es ist nicht möglich den eigenen Kontakt zu löschen.", new ClientsideFunctions.OkButton());
+			else if(contactToDisplay.getIsUser()) { 
+				// der ausgewählte Kontakt ist der, welcher den User selbst repräsentiert
+				final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Es ist nicht möglich, den eigenen Kontakt zu löschen.", new ClientsideFunctions.OkButton());
 				failed.getOkButton().addCloseDBClickHandler(failed);
 			}
 			else{
+				//PopUp, die den Benutzer fragt, ob er sich sicher ist, dass er den Kontakt löschen will
 				final ClientsideFunctions.popUpBox safety = new ClientsideFunctions.popUpBox("Sind Sie sicher, dass Sie den Kontakt löschen möchten?", new ClientsideFunctions.OkButton(), new ClientsideFunctions.CloseButton());
 				safety.getCloseButton().addCloseDBClickHandler(safety);
+				
 				safety.getOkButton().addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {
 						safety.hide();
+						//Bestätigt der Nutzer, wird der Kontakt gelöscht
 						editorAdministration.deleteContact(contactToDisplay, ClientsideFunctions.isOwner(contactToDisplay, currentUser), currentUser, new AsyncCallback<Void>() {
 							public void onFailure(Throwable arg0) {
 								Window.alert("Fehler beim Löschen des Kontakts!");
 							}
 							public void onSuccess(Void arg0){
-								final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Kontakt erfolgreich gelöscht.", new ClientsideFunctions.OkButton());
-								failed.getOkButton().addClickHandler(new ClickHandler() {
-									
-									@Override
+								//Bestätigungsmeldung
+								final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Kontakt erfolgreich gelöscht.", new ClientsideFunctions.OkButton());
+								
+								success.getOkButton().addClickHandler(new ClickHandler() {
 									public void onClick(ClickEvent arg0) {
-
+										//der Kontakt fliegt auch im GUI aus der Default-Liste "Meine Kontakte" raus
 										clctvm.removeContactOfContactList(clctvm.getSelectedContactList(), contactToDisplay);
-										failed.hide();
+										success.hide();
 									}
 								});
 							}
@@ -1214,7 +1114,8 @@ public class ContactForm extends VerticalPanel {
 
 	
 	/**
-	 * Die innere Klasse saveChangesClickHandler.#
+	 * Die innere Klasse saveChangesClickHandler. Klickt ein Benutzer den "Änderungen speichern"-Button, wird eine
+	 * Instanz von SaveChangesClickHandler aufgerufen.
 	 * 
 	 * @author JanNoller
 	 */
@@ -1222,36 +1123,38 @@ public class ContactForm extends VerticalPanel {
 		
 		boolean changes = false;
 
-		@Override
 		public void onClick(ClickEvent event) {
 			
 			if (contactToDisplay == null) {
-				Window.alert("Kein Kontakt ausgewählt");
-						
+				//Fehlermeldung, falls kein Kontakt ausgewählt ist
+				final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Kein Kontakt ausgewählt.", new ClientsideFunctions.OkButton());
+				failed.getOkButton().addCloseDBClickHandler(failed);
 			}
 			else {
-				
+				/*
+				 * Der Vektor allValuesTextBoxes enthält alle im Kontaktformular instantiierten ValueTextBoxen
+				 * Er wird durchiteriert und zu jeder ValueTextBox wird der Wert der boolschen Variable 
+				 * "isChanged" überprüft. Ist er "true", werden dort Änderungen übernommen. 
+				 */
 				for(ValueTextBox vtb : allValueTextBoxes) {
 					
-					
-				
-					/*
-					 * Wenn in einer ValueTextBox der Inhalt verändert wurde, so wird für diese Ausprägung die Methode editValue() aufgerufen.
-					 */
 					if (vtb.getIsChanged() && vtb.getTextBoxValue() != null) {
 						if(!ClientsideFunctions.checkValue(vtb)) {
+							//ist eine Ausprägung geändert worden, aber enthält ungültige Zeichen, so bricht die Methode ab
 							return;
+						}else {
+							//ist die Änderung stimmig, wird sie in die Datenbank übernommen
+							editorAdministration.editValue(contactToDisplay, vtb.getTextBoxValue().getPropertyid(), vtb.getTextBoxValue(), vtb.getText(), 
+								vtb.getTextBoxValue().getIsShared(), new AsyncCallback<Value>() {
+								
+								public void onFailure(Throwable arg0) {	
+									Window.alert("Fehler beim Änderungen speichern. \n (Ausprägungen)");
+								}
+								public void onSuccess(Value arg0) {
+									changes = true;
+								}
+							});
 						}
-						editorAdministration.editValue(contactToDisplay, vtb.getTextBoxValue().getPropertyid(), vtb.getTextBoxValue(), vtb.getText(), 
-							vtb.getTextBoxValue().getIsShared(), new AsyncCallback<Value>() {
-							
-							public void onFailure(Throwable arg0) {	
-								Window.alert("Fehler beim Änderungen speichern. \n (Ausprägungen)");
-							}
-							public void onSuccess(Value arg0) {
-								changes = true;
-							}
-						});
 					}
 					
 					/*
@@ -1260,22 +1163,29 @@ public class ContactForm extends VerticalPanel {
 					 */
 					else if(vtb.getIsChanged() && (vtb.equals(firstnameTextBox) || vtb.equals(lastnameTextBox))){
 						if(!ClientsideFunctions.checkValue(vtb)) {
+							//befinden sich ungültige Zeichen im Namen, bricht die Methode ab
 							return;
+						}else {
+							//andernfalls werden die Änderungen am Namen in die Datenbank übernommen
+							editorAdministration.editContact(contactToDisplay.getId(), firstnameTextBox.getText(), lastnameTextBox.getText(), 
+								contactToDisplay.getSex(), new AsyncCallback<Contact>() {
+								
+									public void onFailure(Throwable arg0) {
+										Window.alert("Fehler beim Änderungen speichern. \n (Kontaktstamm)");
+									}
+									public void onSuccess(Contact arg0) {
+										changes = true;
+										//der neue Kontaktname wird auch im TreeViewModel upgedatet
+										clctvm.updateContact(arg0);
+										
+									}
+							});
 						}
-						editorAdministration.editContact(contactToDisplay.getId(), firstnameTextBox.getText(), lastnameTextBox.getText(), 
-							contactToDisplay.getSex(), new AsyncCallback<Contact>() {
-								public void onFailure(Throwable arg0) {
-									Window.alert("Fehler beim Änderungen speichern. \n (Kontaktstamm)");
-								}
-								public void onSuccess(Contact arg0) {
-									changes = true;
-									clctvm.updateContact(arg0);
-								}
-						});
 					}
 				}
 			}
 			if(changes) {
+				//Besätigungsmeldung, dass Änderungen übernommen worden sind 
 				final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Die Änderungen wurden übernommen.", new ClientsideFunctions.OkButton());
 				success.getOkButton().addCloseDBClickHandler(success);			
 			}
@@ -1284,9 +1194,10 @@ public class ContactForm extends VerticalPanel {
 	
 	
 	/**
-	 * Die innere Klasse AddContactToContactListClickHandler.
+	 * Die innere Klasse AddContactToContactListClickHandler. Klickt ein Benutzer auf den Button "Kontakt zu einer 
+	 * Kontaktliste hinzufügen, wird eine Instanz von AddContactToContactListClickHandler erzeugt. 
 	 * 
-	 * @author JanNoller (& KatrinZerfass)
+	 * @author JanNoller & KatrinZerfass
 	 */
 	private class AddContactToContactListClickHandler implements ClickHandler {
 		
@@ -1295,13 +1206,12 @@ public class ContactForm extends VerticalPanel {
 		public void onClick(ClickEvent event) {
 			
 			if(contactToDisplay ==null) {
-				Window.alert("Kein Kontakt ausgewählt.");
+				//Fehlermeldung, falls kein Kontakt ausgewählt ist
+				final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Kein Kontakt ausgewählt.", new ClientsideFunctions.OkButton());
+				failed.getOkButton().addCloseDBClickHandler(failed);
 			}
 			else {
-				/*
-				 * Im Folgenden wird die DialogBox aufgebaut.
-				 */
-				
+				//es erscheint eine DialogBox, in der der Nutzer eine Kontaktliste auswählen kann 
 				final InputDialogBox input = new InputDialogBox(new ListBox(), currentUser);
 				input.getOKButton().addClickHandler(new ClickHandler() {
 
@@ -1310,14 +1220,13 @@ public class ContactForm extends VerticalPanel {
 						for (ContactList cl : input.getContactLists()) {
 		        			if (input.getListBox().getSelectedItemText() == cl.getName()) {
 		        				chosenCL = cl;
+		        				//die ausgewählte Kontaktliste wird der Variable chosenCL zugewiesen
 		        			}
 		        		}
 		        		
 		        		input.hide();
 		        		
-		        		/*
-		 		        * Hat der Nutzer eine Kontaktliste ausgewählt und klickt "OK", so wird der Kontakt dieser Kontaktliste hinzugefügt.
-		 		        */
+		 		        //Hat der Nutzer eine Kontaktliste ausgewählt und klickt "OK", so wird der Kontakt dieser Kontaktliste hinzugefügt
 		        		editorAdministration.addContactToContactList(chosenCL, contactToDisplay, new AsyncCallback<ContactList>() {
 		        			
 		        			public void onFailure(Throwable z) {
@@ -1325,6 +1234,7 @@ public class ContactForm extends VerticalPanel {
 		        			}
 		        			
 		        			public void onSuccess(ContactList result) {
+		        				//Bestätigungsmeldung, dass der Kontakt der Liste hinzugefügt wird 
 		        				final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Kontakt zur Kontaktliste hinzugefügt.", new ClientsideFunctions.OkButton());
 								success.getOkButton().addCloseDBClickHandler(success);
 		        			}
@@ -1338,7 +1248,8 @@ public class ContactForm extends VerticalPanel {
 
 	
 	/**
-	 * Die innere Klasse RemoveContactFromContactListClickHandler.
+	 * Die innere Klasse RemoveContactFromContactListClickHandler. Klickt der Nutzer den "Kontakt aus der
+	 * Kontaktliste entfernen"-Button, so wird eine Instanz von RemoveContactFromContactListClickHandler erzeugt. 
 	 * 
 	 * @author JanNoller
 	 */
@@ -1346,48 +1257,51 @@ public class ContactForm extends VerticalPanel {
 		
 		public void onClick(ClickEvent event) {
 			if(contactToDisplay == null) {
-				Window.alert("Kein Kontakt ausgewählt");
+				//Fehlermeldung, falls kein Kontakt ausgewählt ist
+				final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Kein Kontakt ausgewählt.", new ClientsideFunctions.OkButton());
+				failed.getOkButton().addCloseDBClickHandler(failed);
 			}
 			else {
 				if(clctvm.getSelectedContactList() == clctvm.getMyContactsContactList()) {
-					final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Sie können aus dieser Kontaktliste keine Kontakte löschen.", new ClientsideFunctions.OkButton());
-					success.getOkButton().addCloseDBClickHandler(success);
+					//Fehlermeldung, falls es sich bei der Kontaktliste um die Default Liste "Meine Kontakte" handelt
+					final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Sie können aus dieser Kontaktliste keine Kontakte löschen.", new ClientsideFunctions.OkButton());
+					failed.getOkButton().addCloseDBClickHandler(failed);
 				}
 				else if(!ClientsideFunctions.isOwner(clctvm.getSelectedContactList(), currentUser)) {
+					//Fehlermeldung, wenn der Nutzer nicht der Eigentümer der Kontaktliste ist
 					final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Sie können den Kontakt aus dieser Liste nicht entfernen, da es eine geteilte Liste ist.", new ClientsideFunctions.OkButton());
 					success.getOkButton().addCloseDBClickHandler(success);
 				}
 				else {
 					/*
-					 * Handelt es sich weder um die Default-Liste "Meine Kontakte", noch um eine geteilte Liste, so wird der ausgewählte Kontakt 
-					 * aus der ausgewählten Liste entfernt
+					 * Handelt es sich weder um die Default-Liste "Meine Kontakte", noch um eine geteilte Liste, so wird der Benutzer gefragt, ob
+					 * er den Kontakt wirklich entfernen möchte. 
 					 */
-					
-					//clearContactForm();
-					
 					final ClientsideFunctions.popUpBox safety = new ClientsideFunctions.popUpBox("Sind Sie sicher, dass Sie den Kontakt aus der Liste entfernen möchten?", new ClientsideFunctions.OkButton(), new ClientsideFunctions.CloseButton());
 					safety.getCloseButton().addCloseDBClickHandler(safety);
 					safety.getOkButton().addClickHandler(new ClickHandler() {
 						
 						public void onClick(ClickEvent click) {
 							safety.hide();
+							//hat der Benutzer mit "Ok" bestätigt, wird der Kontakt aus der Liste entfernt
 							editorAdministration.removeContactFromContactList(clctvm.getSelectedContactList(), contactToDisplay, new AsyncCallback<ContactList>() {
-								@Override
+								
 								public void onFailure(Throwable arg0) {	
 									Window.alert("Fehler beim Entfernen des Kontakts aus der Kontaktliste.");
 								}
-								@Override
+						
 								public void onSuccess(final ContactList arg0) {
+									//Bestätigungsmeldung, wenn der Kontakt entfernt wurde
 									final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Kontakt erfolgreich aus der Kontaktliste entfernt.", new ClientsideFunctions.OkButton());
 									success.getOkButton().addClickHandler(new ClickHandler() {
 										
-										@Override
+									
 										public void onClick(ClickEvent click) {
+											//der Konakt wird auch im GUI aus der Kontaktliste entfernt
 											clctvm.removeContactOfContactList(clctvm.getSelectedContactList(), contactToDisplay);
 											success.hide();
 										}
 									});
-									//clctvm.getNodeInfo(clctvm.getSelectedContactList());
 								}
 							});
 						}
@@ -1399,63 +1313,43 @@ public class ContactForm extends VerticalPanel {
 	
 	
 	/**
-	 * Die innere Klasse NewPropertyClickHandler.
+	 * Die innere Klasse NewPropertyClickHandler. Klickt ein Benutzer auf den "Hinzufügen" Button unten
+	 * im NewPropertyPanel, so wird eine Instanz von NewPropertyClickHandler erzeugt.
+	 * Im Folgenden wird abgeprüft, um welche Eigenschaftsart es sich handelt. Bei Geburtsdatum, Anschrift und
+	 * neu anzulegenden Eigenschaften besteht eine spezielle Behandlung (s.u.).
 	 * 
 	 * @author KatrinZerfass
 	 */
 	private class NewPropertyClickHandler implements ClickHandler{
-//		DialogBox db = null;
-//		VerticalPanel dbPanel = null;
+		
 		ValueTextBox inputTextBox = null;
-//		HorizontalPanel dbButtonsPanel = null;
 		int pid;
 		String ptype;
 		int row;
 
-		
-		
 		public void onClick(ClickEvent event) {
+			//ptype wird die aus der Listbox ausgewählten Eigenschaftsart zugewiesen
 			ptype = newPropertyListBox.getSelectedItemText();
 			row = contactTable.getRowCount();
 			
 			if(ptype == "Geburtstag") {
 				inputTextBox = new ValueTextBox("Geburtstag");
 				inputTextBox.getElement().setPropertyString("placeholder", "dd.mm.yyyy");
+				
+				//es erscheint eine DialogBox, in welche ein Geburtsdatum eingetragen werden kann
 				final InputDialogBox input = new InputDialogBox(inputTextBox, "Geburtsdatum eintragen");
 				input.getOKButton().addClickHandler(new ClickHandler() {
-					
-//				db = new DialogBox();
-//				dbPanel = new VerticalPanel();
-//				inputTextBox = new ValueTextBox("Geburtstag");
-//				
-//				dbButtonsPanel = new HorizontalPanel();
-//
-//				db.setText("Geburtsdatum eintragen");
-			
-//				CloseButton closeButton = new CloseButton(db);
-//				dbButtonsPanel.add(closeButton);
-//				
-//				Button addBirthdayButton = new Button("Hinzufügen");
-//				dbButtonsPanel.add(addBirthdayButton);
-//				addBirthdayButton.addStyleName("okbutton");
-//			
-//				dbPanel.add(inputTextBox);
-//				dbPanel.add(dbButtonsPanel);
-//
-//				
-//				db.add(dbPanel);
-//				db.show();
-				
-				
-//				addBirthdayButton.addClickHandler(new ClickHandler(){
+
 					public void onClick(ClickEvent event) {
 						input.hide();
-//						db.hide();
+
 						
 						if(!ClientsideFunctions.checkValue(inputTextBox)) {
+							//wird ein ungültiges Geburtsdatum eingetragen, wird die Textbox resettet
 							inputTextBox.setText("");
 							
 						}else {
+							//andernfalls wird das Geburtsdatum für den Kontakt erstellt
 							editorAdministration.createValue(contactToDisplay, 4, inputTextBox.getText(), new AsyncCallback<Value>() {
 								public void onFailure (Throwable t) {
 									Window.alert("Geburtsdatum anlegen gescheitert.");
@@ -1463,6 +1357,11 @@ public class ContactForm extends VerticalPanel {
 								
 								public void onSuccess(Value result) {
 								
+									/*
+									 * Ein neu angelegtes Geburtsdatum erscheint im Kontaktformular oben neben dem Geschlecht.
+									 * Das zugehörige Label und das zugehörige ValueDisplay werden direkt in die entsprechenden
+									 * Zellen der contactTable gesetzt.
+									 */
 									Label birthdateLabel = new Label("Geburtsdatum: ");
 									contactTable.setWidget(3, 2, birthdateLabel);
 									
@@ -1470,6 +1369,7 @@ public class ContactForm extends VerticalPanel {
 									((ValueDisplay) contactTable.getWidget(3, 3)).getWidget(0).setWidth("105px");
 									((ValueDisplay) contactTable.getWidget(3,3)).setValue(result);
 								
+									//wurde einmal ein Geburtsdatum angelegt, wird die Auswahlmöglichkeit aus der ListBox entfernt, da Geburtsdatum einmalig ist
 									for(int c=0; c<newPropertyListBox.getItemCount(); c++) {
 										if (newPropertyListBox.getItemText(c) == ptype) {
 											newPropertyListBox.removeItem(c);
@@ -1485,23 +1385,25 @@ public class ContactForm extends VerticalPanel {
 			}
 			else if(ptype == "Neue Eigenschaft anlegen") {
 				
+				//DialogBox, in der man eine neue Eigenschaftsart anlegen kann 
 				final InputDialogBox input = new InputDialogBox(new ValueTextBox("Sonstiges"), "Neue Eigenschaftsart anlegen");
 				input.getOKButton().addClickHandler(new ClickHandler() {
 					
 					public void onClick(ClickEvent arg0) {
 						input.hide();
+						//die neue Eigenschaft für diesen Kontakt wird erstellt
 						editorAdministration.createProperty(contactToDisplay, input.getVTextBox().getText(), new AsyncCallback<Property>() {
 							public void onFailure (Throwable t) {
 								Window.alert("Eigenschaft anlegen gescheitert.");
 							}
 							
 							public void onSuccess(Property result) {
-								
+					
 								if(result == null) {
+									//Fehlermeldung, falls diese Eigenschaft schonmal für den Kontakt angelegt wurde
 									final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Diese Eigenschaft haben Sie bereits angelegt.", new ClientsideFunctions.OkButton());
 									failed.getOkButton().addClickHandler(new ClickHandler() {
 										
-										@Override
 										public void onClick(ClickEvent click) {
 											failed.hide();
 											return;
@@ -1511,7 +1413,7 @@ public class ContactForm extends VerticalPanel {
 								
 									ptype = result.getType();
 									pid = result.getId();
-									
+									//die entsprechenden Elemente für die neue Eigenschaft werden in der contactTable hinzugefügt
 									contactTable.setWidget(row, 0, new ValuePanel(pid, row, ptype + ": "));
 									contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
 									
@@ -1522,75 +1424,22 @@ public class ContactForm extends VerticalPanel {
 						});
 					}
 				});
-				
-//				db = new DialogBox();
-//				dbPanel = new VerticalPanel();
-//				inputTextBox = new ValueTextBox("Sonstiges");
-//				dbButtonsPanel = new HorizontalPanel();
-//
-//				db.setText("Neue Eigenschaftsart hinzufügen");
-//				
-//				CloseButton closeButton = new CloseButton(db);
-//				dbButtonsPanel.add(closeButton);
-//				
-//				Button addPropertyButton = new Button("Hinzufügen");
-//				dbButtonsPanel.add(addPropertyButton);
-//				addPropertyButton.addStyleName("okbutton");
-//			
-//				dbPanel.add(inputTextBox);
-//				dbPanel.add(dbButtonsPanel);
-//				
-//
-//				db.add(dbPanel);
-//				db.show();
-//					
-//				addPropertyButton.addClickHandler(new ClickHandler(){
-//					public void onClick(ClickEvent event) {
-//
-//						db.hide();
-//						
-//						
-//						editorAdministration.createProperty(contactToDisplay, inputTextBox.getText(), new AsyncCallback<Property>() {
-//							public void onFailure (Throwable t) {
-//								Window.alert("Eigenschaft anlegen gescheitert");
-//							}
-//							
-//							public void onSuccess(Property result) {
-//								
-//								if(result == null) {
-//									final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Diese Eigenschaft haben Sie bereits angelegt!", new ClientsideFunctions.OkButton());
-//									failed.getOkButton().addClickHandler(new ClickHandler() {
-//										
-//										@Override
-//										public void onClick(ClickEvent click) {
-//											failed.hide();
-//											return;
-//										}
-//									});
-//								}else {
-//								
-//									ptype = result.getType();
-//									pid = result.getId();
-//									
-//									contactTable.setWidget(row, 0, new ValuePanel(pid, row, ptype + ": "));
-//									contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-//									
-//									contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-//									contactTable.setWidget(row, 1, new ValueTable(pid));
-//								}
-//							}				
-//						});
-//					}
-//				});
+
 			}
 			
 			else if(ptype == "Anschrift") {
+				/*
+				 * Bei der Anschrift besteht die Besonderheit, dass sie immer aus den 4 Ausprägungen Straße, Hausnummer,
+				 * PLZ und Wohnort bestehen muss. Demensprechend wird sie im Kontaktformular auch in einer speziellen
+				 * Tabelle angezeigt.
+				 */
 				VerticalPanel addressPanel = new VerticalPanel();
 				contactTable.setWidget(row, 0, addressPanel);
 				
 				Label addressLabel = new Label("Anschrift: ");
 				addressPanel.add(addressLabel);
 				
+				//Button, um die Anschrift nach Eintragen aller Werte anzulegen
 				Button addAddressButton = new Button("Anlegen");
 				addAddressButton.addStyleName("addNewPropertyButton");
 				addAddressButton.addStyleName("anlegenbutton");
@@ -1600,6 +1449,7 @@ public class ContactForm extends VerticalPanel {
 				contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
 				contactTable.setWidget(row, 1, addressTable);
 				
+				//Alle zur Anschrift gehörenden TextBoxen werden initialisiert
 				streetTextBox = new ValueTextBox("Straße");
 				houseNrTextBox = new ValueTextBox("Hausnummer");
 				plzTextBox = new ValueTextBox("PLZ");
@@ -1609,6 +1459,7 @@ public class ContactForm extends VerticalPanel {
 				addressTable.setWidget(0, 1, houseNrTextBox);
 				addressTable.setWidget(1, 0, plzTextBox);
 				addressTable.setWidget(1, 1, cityTextBox);
+				
 				streetTextBox.getElement().setPropertyString("placeholder", "Straße...");
 				houseNrTextBox.getElement().setPropertyString("placeholder", "Hausnummer...");
 				plzTextBox.getElement().setPropertyString("placeholder", "PLZ...");
@@ -1620,15 +1471,17 @@ public class ContactForm extends VerticalPanel {
 				
 				newPropertyListBox.setSelectedIndex(0);
 				
-				
+				//ClickHandler des Buttons "Anlegen"
 				addAddressButton.addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {
 						
 						if(!ClientsideFunctions.checkValue(streetTextBox) || !ClientsideFunctions.checkValue(houseNrTextBox) 
 							|| !ClientsideFunctions.checkValue(plzTextBox) || !ClientsideFunctions.checkValue(cityTextBox)){
+							//befinden sich ungültige Werte in der Anschrift, bricht die Methode ab
 							return;
 						}
 						
+						//der Anlegen Button wird entfernt und es wird die Adressen angelegt
 						((VerticalPanel) contactTable.getWidget(row,0)).remove(1);
 						
 						editorAdministration.createAddress(streetTextBox.getText(), houseNrTextBox.getText(),
@@ -1639,14 +1492,15 @@ public class ContactForm extends VerticalPanel {
 							public void onSuccess(Value street) {
 								streetTextBox.setValue(street);
 								((ValueDisplay) addressTable.getWidget(0, 2)).setValue(street, true);
-								//((DeleteValueButton) addressTable.getWidget(0,3)).setValue(street);
-								
+							
+								//die Anschrift kann nur einmal hinzugefügt werden, daher wird die Option aus der ListBox genommen
 								for(int c=0; c<newPropertyListBox.getItemCount(); c++) {
 									if (newPropertyListBox.getItemText(c) == ptype) {
 										newPropertyListBox.removeItem(c);
 									}
 								}
 								
+								//Bestätigungsmeldung, dass die Anschrift angelegt wurde
 								final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Anschrift erfolgreich angelegt!", new ClientsideFunctions.OkButton());
 								success.getOkButton().addCloseDBClickHandler(success);
 							}
@@ -1655,16 +1509,10 @@ public class ContactForm extends VerticalPanel {
 						
 					}
 				});
-				
-				
-				/*
-				 * Da es sich bei der Anschrift nicht um ValueDisplays handelt, muss auf die beiden Buttons seperat
-				 * operiert werden. Ihnen wird jeweils die Straße als Ausprägung gesetzt, da es nur möglich ist, einen
-				 * einzelnen Wert als Value zu setzten. Trotzdem operieren diese Buttons beim Klicken auf die gesamten
-				 * vier Ausprägungen, die zur Anschrift gehören.
-				 */
+			
 				
 			}else {	
+				//handelt es sich um eine ganz normale Eigenschaft ohne besondere Behandlung, wird diese angelegt
 				editorAdministration.getPropertyByType(ptype, null, new AsyncCallback<Property>() {
 					public void onFailure (Throwable t) {
 						
@@ -1672,12 +1520,14 @@ public class ContactForm extends VerticalPanel {
 					
 					public void onSuccess(Property result) {
 						pid = result.getId();
+						//die entsprechenden Elemente werden in die contactTable hinzugefügt
 						contactTable.setWidget(row, 0, new ValuePanel(pid, row, ptype + ": "));
 						contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
 						
 						contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
 						contactTable.setWidget(row, 1, new ValueTable(pid));
 						
+						//eine bereits hinzugefügte Eigenschaft wird aus der ListBox entfernt
 						for(int c=0; c<newPropertyListBox.getItemCount(); c++) {
 							if (newPropertyListBox.getItemText(c) == ptype) {
 								newPropertyListBox.removeItem(c);
