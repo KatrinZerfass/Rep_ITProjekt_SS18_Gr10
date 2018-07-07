@@ -20,8 +20,6 @@ import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.sample.itProjekt.client.ContactForm.CloseButton;
-import com.google.gwt.sample.itProjekt.client.ContactForm.ValueTable;
 import com.google.gwt.sample.itProjekt.client.ContactForm.ValueTextBox;
 
 public abstract class ClientsideFunctions {
