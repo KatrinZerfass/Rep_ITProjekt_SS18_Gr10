@@ -680,8 +680,8 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 			vMapper.delete(value);
 		}
 		else {
-			vMapper.delete(value);
-			if (vMapper.findAllByPID(extraProperty, vMapper.findContactByVID(value)).size() == 0) {
+			if (vMapper.findAllByPID(extraProperty, vMapper.findContactByVID(value)).size() == 1) {
+				vMapper.delete(value);
 				pMapper.delete(extraProperty);
 			}
 		}
