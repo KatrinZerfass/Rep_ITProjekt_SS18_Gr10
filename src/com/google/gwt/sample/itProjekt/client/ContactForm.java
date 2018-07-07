@@ -1547,11 +1547,11 @@ public class ContactForm extends VerticalPanel {
 		
 	
 	/**
-	 * Die Methode clearContactFrom() wird aufgerufen, wenn der addContactButton gedrückt wird. Die Felder leeren sich und ein neuer Kontakt
-	 * kann eingetragen werden.
-	 * 
+	 * Die Methode clearContactFrom() wird immer zu Beginn der Methode setSelected(Contact c) aufgerufen, um
+	 * bei Aufruf eines neuen Kontakts das Kontaktformular zu leeren und komplett neu zu laden. 
 	 */
 	public void clearContactForm() {
+		
 		contactTable.clear();
 		contactTable.removeAllRows();
 		buttonsPanel.clear();
@@ -1574,10 +1574,12 @@ public class ContactForm extends VerticalPanel {
 	
 	
 	/**
-	 * Zeigt den selektierten Kontakt an.
+	 * Die Methode setSelected wird immer bei Auswahl eines Elements aus dem Cellbrowser ausgewählt.
+	 * Wird eine Kontaktlitse angeklickt, wird sie mit dem Argument null aufgerufen.
+	 * Wird ein Kontakt angeklickt, wird sie mit dem entsprechenden Kontakt als Argument aufgerufen.
 	 *
-	 * @param c der selektierte Kontakt
-	 * @author KatrinZerfass & JanNoller
+	 * @param c der selektierte Kontakt bzw. null
+	 * @author KatrinZerfass
 	 */
 	public void setSelected(Contact c) {
 		
@@ -1594,14 +1596,13 @@ public class ContactForm extends VerticalPanel {
 		saveChangesButton.setVisible(false);
 	
 		
-		
-		
-	
 		if (c != null){
 			
+			//es wurde ein Kontakt-Objekt übergeben, welches in die Instanzenvariable contactToDisplay gesetzt wird
 			contactToDisplay = c;
-			newPropertyPanel.setVisible(true);
 			
+			//Optionen und Interaktionsmöglichkeiten für Kontakte werden eingeblendet
+			newPropertyPanel.setVisible(true);
 			shareContactButton.setVisible(true);
 			deleteContactButton.setVisible(true);
 			addContactToContactListButton.setVisible(true);
@@ -1611,10 +1612,8 @@ public class ContactForm extends VerticalPanel {
 			
 			/*
 			 * Der angemeldete Nutzer wird mit dem Eigentümer verglichen. Ist er ausschließlich Teilhaber, so werden bestimmte Buttons
-			 * bereits im Vorfeld ausgegraut.
+			 * und Funktionen, an denen er keine Berechtigungen hat, nicht mehr angezeigt.
 			 */
-		
-			
 			if(!ClientsideFunctions.isOwner(contactToDisplay, currentUser)) {
 				firstnameTextBox.setEnabled(false);
 				lastnameTextBox.setEnabled(false);
@@ -1627,40 +1626,12 @@ public class ContactForm extends VerticalPanel {
 				newPropertyPanel.setVisible(true);
 			}
 			
-			/*
-			 * Alle Ausprägungen des contactToDisplay werden ausgelesen und in einem Vector<Values> gespeichert.
-			 */
-			editorAdministration.getAllValuesOfContact(contactToDisplay, new AsyncCallback<Vector<Value>>() {
-				public void onFailure(Throwable t) {
-					Window.alert("Fehler beim Auslesen der Ausprägungen des Kontakts.");
-					
-				}
-				public void onSuccess(Vector<Value> values) {
-					allValuesOfContact = new Vector<Value>();
-					for(Value v: values) {
-						allValuesOfContact.add(v);
-					}
-	
-					for(Value v: allValuesOfContact) {
-						if(v.getPropertyid() >10) {
-							editorAdministration.getPropertyOfValue(v, new GetPropertyOfValueCallback(v));
-						}else{
-							if(v == allValuesOfContact.lastElement()) {
-								displayAllValuesOfContact();
-							}
-						}
-					}
-				}
-			});
-			
 			
 			/*
-			 * Vor und Nachname des Kontakts werden gesetzt und die TextBoxen dem Vector aller ValueTextBoxen hinzugefügt.
+			 * Vor und Nachname des Kontakts werden befüllt.
 			 */
 			firstnameTextBox.setText(contactToDisplay.getFirstname());
-			allValueTextBoxes.add(firstnameTextBox);
 			lastnameTextBox.setText(contactToDisplay.getLastname());
-			allValueTextBoxes.add(lastnameTextBox);
 			
 			
 			/*
@@ -1678,24 +1649,66 @@ public class ContactForm extends VerticalPanel {
 			sexListBox.setEnabled(false);
 			
 			
-				
+			/*
+			 * Alle Ausprägungen des contactToDisplay werden ausgelesen und in einem Vector<Values> gespeichert.
+			 */
+			editorAdministration.getAllValuesOfContact(contactToDisplay, new AsyncCallback<Vector<Value>>() {
+				public void onFailure(Throwable t) {
+					Window.alert("Fehler beim Auslesen der Ausprägungen des Kontakts.");
+					
+				}
+				public void onSuccess(Vector<Value> values) {
+					allValuesOfContact = new Vector<Value>();
+					for(Value v: values) {
+						allValuesOfContact.add(v);
+					}
+					
+					/*
+					 * Außerdem wird für jede Ausprägung, die eine EigenschaftsID über 10 hat (d.h. es handelt sich
+					 * nicht um Default-Eigenschaften, sondern um neu hinzugefügte), die jeweilige Eigenschaft dazu 
+					 * ebenfalls aus der Datenbank ausgelesen. Dies geschieht in der inneren Klasse GetPropertyOfValueCallback.
+					 * Diese ist nach der Methode setSelected(Contact c) definiert.
+					 */
+					for(Value v: allValuesOfContact) {
+						if(v.getPropertyid() >10) {
+							editorAdministration.getPropertyOfValue(v, new GetPropertyOfValueCallback(v));
+						}else{
+							if(v == allValuesOfContact.lastElement()) {
+								/*
+								 * Wenn die letzte Ausprägung aus dem Vektor ausgelesen wurde, wird die Methode 
+								 * displayAllValuesOfContact aufgerufen, welche die Ausprägungen dann im GUI anzeigt. 
+								 */
+								displayAllValuesOfContact();
+							}
+						}
+					}
+				}
+			});
+			
+			
 		
 		/*
-		 * Wenn setSelected mit dem Parameter "null" aufgerufen wird, so werden anstelle der Ausprägungen in die einzelnen TextBoxen jeweils
-		 * Placeholder gesetzt, die andeuten, was in diese TextBox einzutragen ist.
+		 * Wenn setSelected mit dem Argument "null" aufgerufen wird, so werden anstelle der Ausprägungen in die 
+		 * bestehenden TextBoxen jeweils Placeholder gesetzt, die andeuten, was in diese TextBox einzutragen ist.
 		 */
 		}else {
 			contactToDisplay = null;
+			newPropertyPanel.setVisible(false);
 			firstnameTextBox.getElement().setPropertyString("placeholder", "Vorname...");
 			firstnameTextBox.setText("");
 			lastnameTextBox.getElement().setPropertyString("placeholder", "Nachname...");
 			lastnameTextBox.setText("");
-			newPropertyPanel.setVisible(false);
-
 		}
 				
 	}
 	
+	/**
+	 * Die innere Klasse GetPropertyOfValueCallback vollzieht den Callback für das Auslesen einer
+	 * selbst hinzugefügten Eigenschaft zu einer bestimmen Ausprägung. Alle solcher Eigenschaften 
+	 * eines Kontakts werden dem Vektor allNewPropertiesOfContact hinzugefügt. 
+	 * 
+	 * @author KatrinZerfass
+	 */
 	public class GetPropertyOfValueCallback implements AsyncCallback<Property>{
 		Value v;
 		
@@ -1712,13 +1725,16 @@ public class ContactForm extends VerticalPanel {
 			allNewPropertiesOfContact.add(p);
 			if(v == allValuesOfContact.lastElement()) {
 				displayAllValuesOfContact();
+				/* wenn es sich bei der Ausprägung um die letzte im Vektor handelte, wird die Methode
+				 * displayAllValuesOfContact aufgerufen, welche nachfolgend die Ausprägungen im GUI anzeigt. 
+				 */
+				
 			}
 		}
 	}
 	
 	public void displayAllValuesOfContact() {
 		
-		//allValueTextBoxes = new Vector<ValueTextBox>();
 		/*
 		 * Der Vector allValuesOfContact, welcher alle Ausprägungen des anzuzeigenden Kontaktes enthält, wird durchiteriert
 		 * und jede Ausprägung wird im dazugehörigen ValueDisplay der jeweiligen Eigenschaftsart angezeigt.
