@@ -1030,21 +1030,12 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		return streetValue;
 	}
 	
-	public void deleteAddress(Value street, Contact contact) throws IllegalArgumentException {
+	public void deleteAddress(Value street, Value houseNr, Value zip, Value city) throws IllegalArgumentException {
 		
-		Property streetProperty = new Property();
-		streetProperty.setId(street.getPropertyid());
-		Property houseNr = new Property();
-		houseNr.setId(street.getPropertyid() + 1);
-		Property zip = new Property();
-		zip.setId(street.getPropertyid() + 2);
-		Property city = new Property();
-		city.setId(street.getPropertyid() + 3);
-		
-		deleteValue(vMapper.findAllByPID(city, contact).elementAt(0));
-		deleteValue(vMapper.findAllByPID(zip, contact).elementAt(0));
-		deleteValue(vMapper.findAllByPID(houseNr, contact).elementAt(0));
-		deleteValue(vMapper.findAllByPID(streetProperty, contact).elementAt(0));
+		deleteValue(street);
+		deleteValue(houseNr);
+		deleteValue(zip);
+		deleteValue(city);
 	}
 	
 	/**

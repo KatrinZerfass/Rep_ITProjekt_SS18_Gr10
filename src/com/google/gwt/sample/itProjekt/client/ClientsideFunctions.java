@@ -261,38 +261,18 @@ public abstract class ClientsideFunctions {
 	 */
 	public static class InputDialogBox extends DialogBox{
 		
-		/** The input. */
+		/** Diverse Attribute und GWT Elemente die zur Realisierung der InputDialogBox benötigt werden. */
 		private String input;
-		
-		/** The dialog box label. */
 		Label dialogBoxLabel = new Label();
-		
-        /** The multi use text box. */
         private TextBox multiUseTextBox;
-        
-        /** The name text box. */
         private TextBox nameTextBox;
-        
-        /** The list box. */
         private ListBox listBox;
-        
-        /** The v text box. */
         private ValueTextBox vTextBox;
-        
-        /** The sb. */
         private SuggestBox sb;
-        
-        /** The oracle. */
         private MultiWordSuggestOracle oracle;
-        
-        /** The contact lists. */
         private Vector<ContactList> contactLists;
-		
-		/** The close. */
-		CloseButton close=new CloseButton(this);
-
-        /** The ok. */
-        Button ok = new Button("OK");
+		CloseButton close = new CloseButton(this);
+        OkButton ok = new OkButton();
 		
 		/**
 		 * Instanziert eine InputDialogBox, welche genutzt wird um einen neuen Nutzer anzulegen.
@@ -436,9 +416,10 @@ public abstract class ClientsideFunctions {
 	    }
 		
 		/**
-		 * Instantiates a new input dialog box.
+		 * Instanziert eine InputDialogBox, welche genutzt wird um eine neue Eigenschaft anzulegen.
 		 *
-		 * @param vtb the vtb
+		 * @param vtb {@linkValueTextBox}, welche mit Namen der neuen Eigenschaft gefüllt werden soll
+		 * @param title Text der angezeigt wird
 		 */
 		public InputDialogBox(ValueTextBox vtb, String title) {
 			
@@ -449,8 +430,7 @@ public abstract class ClientsideFunctions {
 			setText(title);
 			setAnimationEnabled(true);
 			setGlassEnabled(true);
-			
-	        
+			      
 			VerticalPanel panel = new VerticalPanel();
 	        panel.setHeight("100");
 	        panel.setWidth("300");
@@ -470,11 +450,12 @@ public abstract class ClientsideFunctions {
 	    }
 		
 		/**
-		 * Instantiates a new input dialog box.
+		 * Instanziert eine InputDialogBox, welche genutzt wird um eine neue Ausprägungen hinzuzufügen.
+		 * Wichtig sind hierbei wie viele Ausprägungen bereits angezeigt werden.
 		 *
-		 * @param pid the pid
-		 * @param row the row
-		 * @param vtb the vtb
+		 * @param pid ID der betroffenen Eigenschaft
+		 * @param row Zeile im {@link ContactForm} in der die neue Ausprägung angezeigt werden soll
+		 * @param vtb {@link ValueTextBox}
 		 */
 		public InputDialogBox(int pid, int row, ValueTextBox vtb) {
 			
@@ -482,7 +463,6 @@ public abstract class ClientsideFunctions {
 			setAnimationEnabled(true);
 			setGlassEnabled(true);
 			
-			/*Das innere Panel der DialogBox */
 			VerticalPanel addValueDBPanel = new VerticalPanel();
 			addValueDBPanel.setHeight("100px");
 			addValueDBPanel.setWidth("230px");
@@ -545,17 +525,17 @@ public abstract class ClientsideFunctions {
 	    }
 		
 		/**
-		 * Instantiates a new input dialog box.
+		 * Instanziert eine InputDialogBox, welche genutzt wird um Kontakte und Kontaktlisten zu teilen.
+		 * Enthält eine SuggestBox, welche mit Nutzer Klarnamen und deren Emailadressen befüllt wird.
 		 *
-		 * @param inputOracle the input oracle
-		 * @param labelString the label string
+		 * @param inputOracle neues Oracle, Input für die SuggestBox
+		 * @param labelString angezeigte Nachricht
 		 */
 		public InputDialogBox(MultiWordSuggestOracle inputOracle, String labelString) {
 			
 			setOracle(inputOracle);
 	        ok.addStyleName("okbutton");
 	        close.addStyleName("closebutton");
-	       // this.setPopupPosition(500, 200);
 	        
 			setdialogBoxLabel(labelString);
 					
@@ -598,20 +578,20 @@ public abstract class ClientsideFunctions {
 		}
 		
 		/**
-		 * Gets the OK button.
+		 * Getter für OkButton
 		 *
-		 * @return the OK button
+		 * @return OkButton
 		 */
-		public Button getOKButton() {
+		public OkButton getOKButton() {
 			return this.ok;
 		}
 		
 		/**
-		 * Sets the OK button.
+		 * Setter für OkButton
 		 *
-		 * @param b the new OK button
+		 * @param b neuer OkButton
 		 */
-		public void setOKButton(Button b) {
+		public void setOKButton(OkButton b) {
 			this.ok = b;
 		}
 		
@@ -634,9 +614,9 @@ public abstract class ClientsideFunctions {
 		}
 
 		/**
-		 * Gets the label.
+		 * Getter für Label
 		 *
-		 * @return the label
+		 * @return Label
 		 */
 		public Label getdialogBoxLabel () {
 			return this.dialogBoxLabel;
@@ -652,126 +632,126 @@ public abstract class ClientsideFunctions {
 		}
 		
 		/**
-		 * Gets the multi use text box.
+		 * Getter für MultiUseTextBox.
 		 *
-		 * @return the multi use text box
+		 * @return MultiUseTextBox
 		 */
 		public TextBox getMultiUseTextBox() {
 			return this.multiUseTextBox;
 		}
 		
 		/**
-		 * Sets the multi use text box.
+		 * Setter für MultiUseTextBox.
 		 *
-		 * @param tb the new multi use text box
+		 * @param tb neue MultiUseTextBox
 		 */
 		public void setMultiUseTextBox(TextBox tb) {
 			this.multiUseTextBox = tb;
 		}
 
 		/**
-		 * Gets the suggest box.
+		 * Getter für SuggestBox.
 		 *
-		 * @return the suggest box
+		 * @return SuggestBox
 		 */
 		public SuggestBox getSuggestBox() {
 			return sb;
 		}
 
 		/**
-		 * Sets the suggest box.
+		 * Setter für SuggestBox.
 		 *
-		 * @param sb the new suggest box
+		 * @param sb neue SuggestBox
 		 */
 		public void setSuggestBox(SuggestBox sb) {
 			this.sb = sb;
 		}
 
 		/**
-		 * Gets the oracle.
+		 * Getter für Oracle.
 		 *
-		 * @return the oracle
+		 * @return Oracle
 		 */
 		public MultiWordSuggestOracle getOracle() {
 			return oracle;
 		}
 
 		/**
-		 * Sets the oracle.
+		 * Setter für Oracle.
 		 *
-		 * @param oracle the new oracle
+		 * @param oracle neues Oracle
 		 */
 		public void setOracle(MultiWordSuggestOracle oracle) {
 			this.oracle = oracle;
 		}
 
 		/**
-		 * Gets the name text box.
+		 * Getter für NameTextBox.
 		 *
-		 * @return the name text box
+		 * @return NameTextBox
 		 */
 		public TextBox getNameTextBox() {
 			return nameTextBox;
 		}
 
 		/**
-		 * Sets the name text box.
+		 * Setter für NameTextBox.
 		 *
-		 * @param nameTextBox the new name text box
+		 * @param nameTextBox neue NameTextBox
 		 */
 		public void setNameTextBox(TextBox nameTextBox) {
 			this.nameTextBox = nameTextBox;
 		}
 
 		/**
-		 * Gets the list box.
+		 * Getter für ListBox.
 		 *
-		 * @return the list box
+		 * @return ListBox
 		 */
 		public ListBox getListBox() {
 			return listBox;
 		}
 
 		/**
-		 * Sets the list box.
+		 * Setter für ListBox.
 		 *
-		 * @param listBox the new list box
+		 * @param listBox neue ListBox
 		 */
 		public void setListBox(ListBox listBox) {
 			this.listBox = listBox;
 		}
 
 		/**
-		 * Gets the v text box.
+		 * Getter für ValueTextBox.
 		 *
-		 * @return the v text box
+		 * @return ValueTextBox
 		 */
 		public ValueTextBox getVTextBox() {
 			return vTextBox;
 		}
 
 		/**
-		 * Sets the v text box.
+		 * Setter für ValueTextBox.
 		 *
-		 * @param vTextBox the new v text box
+		 * @param vTextBox ValueTextBox
 		 */
 		public void setVTextBox(ValueTextBox vTextBox) {
 			this.vTextBox = vTextBox;
 		}
 
 		/**
-		 * Gets the contact lists.
+		 * Getter für Kontaktliste.
 		 *
-		 * @return the contact lists
+		 * @return Kontaktliste.
 		 */
 		public Vector<ContactList> getContactLists() {
 			return contactLists;
 		}
 
 		/**
-		 * Sets the contact lists.
+		 * Setter für Kontaktliste.
 		 *
-		 * @param contactLists the new contact lists
+		 * @param contactLists Kontaktliste
 		 */
 		public void setContactLists(Vector<ContactList> contactLists) {
 			this.contactLists = contactLists;
@@ -779,61 +759,23 @@ public abstract class ClientsideFunctions {
 	}
 	
 	/**
-	 * The Class popUpBox.
+	 * Die Klasse popUpBox ersetzt Window.alert() und dient zusätzlich zur Sicherheitsabfrage beim löschen.
 	 */
 	public static class popUpBox extends DialogBox {
 		
-		/** The close button. */
+
 		CloseButton closeButton = null;
-		
-		/** The ok button. */
 		OkButton okButton = null;
-		
-		/** The panel. */
 		VerticalPanel panel = null;
-		
-		/** The hpanel. */
 		HorizontalPanel hpanel = null;
-		
-		/** The dialog box label. */
 		Label dialogBoxLabel = new Label();
 		
 		/**
-		 * Instantiates a new pop up box.
+		 * Instanziert popUpBox, welche zur Sicherheitsabfrage beim löschen dient.
 		 *
-		 * @param db the db
-		 * @param dbLabel the db label
-		 */
-		public popUpBox(DialogBox db, String dbLabel) {
-			closeButton = new CloseButton(db);
-			okButton = new OkButton();
-			dialogBoxLabel.setText(dbLabel);
-			
-			this.setText("Meldung");
-		//	this.setPopupPosition(500, 200);
-			panel = new VerticalPanel();
-	        panel.setHeight("100");
-	        panel.setWidth("300");
-	        panel.setSpacing(10);
-	        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
-	        panel.add(dialogBoxLabel);
-			hpanel = new HorizontalPanel();
-			hpanel.add(closeButton);
-	        hpanel.add(okButton);
-	        panel.add(hpanel);
-
-	        setWidget(panel);
-	        
-	        show();
-	        center();
-		}
-		
-		/**
-		 * Instantiates a new pop up box.
-		 *
-		 * @param dbLabel the db label
-		 * @param ok the ok
-		 * @param close the close
+		 * @param dbLabel angezeigter Text
+		 * @param ok OkButton
+		 * @param close CloseButton
 		 */
 		public popUpBox(String dbLabel, OkButton ok, CloseButton close) {
 			closeButton = close;
@@ -841,7 +783,6 @@ public abstract class ClientsideFunctions {
 			dialogBoxLabel.setText(dbLabel);
 			
 			this.setText("Meldung");
-		//	this.setPopupPosition(500, 200);
 			panel = new VerticalPanel();
 	        panel.setHeight("100");
 	        panel.setWidth("300");
@@ -860,17 +801,16 @@ public abstract class ClientsideFunctions {
 		}
 		
 		/**
-		 * Instantiates a new pop up box.
+		 * Instantiates neue popUpBox, dient als simples Feedback für gerade ausgeführte Aktion.
 		 *
-		 * @param dbLabel the db label
-		 * @param ok the ok
+		 * @param dbLabel angezeigter Text
+		 * @param ok OkButton
 		 */
 		public popUpBox(String dbLabel, OkButton ok) {
 			okButton = ok;
 			dialogBoxLabel.setText(dbLabel);
 			
 			this.setText("Meldung");
-		//	this.setPopupPosition(500, 200);
 			panel = new VerticalPanel();
 	        panel.setHeight("100");
 	        panel.setWidth("300");
@@ -888,17 +828,16 @@ public abstract class ClientsideFunctions {
 		}
 		
 		/**
-		 * Instantiates a new pop up box.
+		 * Instantiates neue popUpBox, dient als simples Feedback für gerade ausgeführte Aktion.
 		 *
-		 * @param dbLabel the db label
-		 * @param close the close
+		 * @param dbLabel angezeigter Text
+		 * @param ok CloseButton
 		 */
 		public popUpBox(String dbLabel, CloseButton close) {
 			closeButton = close;
 			dialogBoxLabel.setText(dbLabel);
 			
 			this.setText("Meldung");
-		//	this.setPopupPosition(500, 200);
 			panel = new VerticalPanel();
 	        panel.setHeight("100");
 	        panel.setWidth("300");
@@ -916,36 +855,36 @@ public abstract class ClientsideFunctions {
 		}
 		
 		/**
-		 * Gets the close button.
+		 * Getter für CloseButton.
 		 *
-		 * @return the close button
+		 * @return CloseButton
 		 */
 		public CloseButton getCloseButton() {
 			return this.closeButton;
 		}
 		
 		/**
-		 * Sets the close button.
+		 * Setter für CloseButton.
 		 *
-		 * @param b the new close button
+		 * @param b neuer CloseButton
 		 */
 		public void setCloseButton(CloseButton b) {
 			this.closeButton = b;
 		}
 		
 		/**
-		 * Gets the ok button.
+		 * Getter für OkButton.
 		 *
-		 * @return the ok button
+		 * @return OkButton
 		 */
 		public OkButton getOkButton() {
 			return this.okButton;
 		}
 		
 		/**
-		 * Sets the ok button.
+		 * Setter für OkButton
 		 *
-		 * @param b the new ok button
+		 * @param b neuer OkButton
 		 */
 		public void setOkButton(OkButton b) {
 			this.okButton = b;
@@ -953,17 +892,17 @@ public abstract class ClientsideFunctions {
 	}
 	
 	/**
-	 * The Class CloseButton.
+	 * Die Klasse CloseButton erweitert Button um einen Style und standard Clickhandler.
 	 */
 	public static class CloseButton extends Button{
 		
-		/** The db. */
+		/** zu schließende DialogBox */
 		DialogBox db;
 		
 		/**
-		 * Instantiates a new close button.
+		 * Instanziert CloseButton, übergabe enthält zu schließende DialogBox.
 		 *
-		 * @param db the db
+		 * @param db zu schließende DialogBox
 		 */
 		public CloseButton(DialogBox db) {
 			this.db = db;
@@ -973,9 +912,9 @@ public abstract class ClientsideFunctions {
 		}
 		
 		/**
-		 * Instantiates a new close button.
+		 * Instanziert CloseButton mit verändertem Text.
 		 *
-		 * @param text the text
+		 * @param text neuer Text des CloseButtons
 		 */
 		public CloseButton(String text) {
 			this.setText(text);
@@ -983,7 +922,7 @@ public abstract class ClientsideFunctions {
 		}
 		
 		/**
-		 * Instantiates a new close button.
+		 * Instanziert CloseButton.
 		 */
 		public CloseButton() {
 			this.setText("Abbrechen");
@@ -991,35 +930,24 @@ public abstract class ClientsideFunctions {
 		}
 		
 		/**
-		 * Adds the close DB click handler.
+		 * Fügt standard ClickHandler zum schließen einer DialogBox zum Button hinzu.
 		 *
-		 * @param db the db
+		 * @param db DialogBox
 		 */
 		public void addCloseDBClickHandler(DialogBox db) {
 			this.addClickHandler(new CloseDBClickHandler(db));
 		}
 		
 		/**
-		 * The Class CloseDBClickHandler.
+		 * Standard ClickHandler zum schließen einer DialogBox.
 		 */
 		private class CloseDBClickHandler implements ClickHandler{
 			
-			/** The db. */
 			DialogBox db;
 	
-			
-			/**
-			 * Instantiates a new close DB click handler.
-			 *
-			 * @param db the db
-			 */
 			public CloseDBClickHandler(DialogBox db) {
 				this.db=db;
 			}
-			
-			/* (non-Javadoc)
-			 * @see com.google.gwt.event.dom.client.ClickHandler#onClick(com.google.gwt.event.dom.client.ClickEvent)
-			 */
 			public void onClick(ClickEvent event) {
 				db.hide();
 			}
@@ -1027,15 +955,15 @@ public abstract class ClientsideFunctions {
 	}
 	
 	/**
-	 * The Class OkButton.
+	 * Die Klasse OkButton erweitert Button um einen Style und standard Clickhandler.
 	 */
 	public static class OkButton extends Button{
 
 		
 		/**
-		 * Instantiates a new ok button.
+		 * Instanziert OkButton mit verändertem Text.
 		 *
-		 * @param text the text
+		 * @param text der neue Text des Buttons
 		 */
 		public OkButton(String text) {
 			this.setText(text);
@@ -1043,7 +971,7 @@ public abstract class ClientsideFunctions {
 		}
 		
 		/**
-		 * Instantiates a new ok button.
+		 * Instanziert OkButton.
 		 */
 		public OkButton() {
 			this.setText("OK");
@@ -1051,35 +979,24 @@ public abstract class ClientsideFunctions {
 		}
 		
 		/**
-		 * Adds the close DB click handler.
+		 * Fügt standard ClickHandler zum schließen einer DialogBox zum Button hinzu.
 		 *
-		 * @param db the db
+		 * @param db DialogBox
 		 */
 		public void addCloseDBClickHandler(DialogBox db) {
 			this.addClickHandler(new CloseDBClickHandler(db));
 		}
 		
 		/**
-		 * The Class CloseDBClickHandler.
+		 * Standard ClickHandler zum schließen einer DialogBox.
 		 */
 		private class CloseDBClickHandler implements ClickHandler{
 			
-			/** The db. */
 			DialogBox db;
 	
-			
-			/**
-			 * Instantiates a new close DB click handler.
-			 *
-			 * @param db the db
-			 */
 			public CloseDBClickHandler(DialogBox db) {
 				this.db=db;
 			}
-			
-			/* (non-Javadoc)
-			 * @see com.google.gwt.event.dom.client.ClickHandler#onClick(com.google.gwt.event.dom.client.ClickEvent)
-			 */
 			public void onClick(ClickEvent event) {
 				db.hide();
 			}

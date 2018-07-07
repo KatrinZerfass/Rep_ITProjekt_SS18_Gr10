@@ -540,7 +540,7 @@ public interface EditorAdministration extends RemoteService{
 	 */
 	public Value createAddress(String street, String housenumber, String zip, String city, Contact contact) throws IllegalArgumentException;
 
-	public void deleteAddress(Value streetName, Contact contact) throws IllegalArgumentException;
+	public void deleteAddress(Value street, Value houseNr, Value zip, Value city) throws IllegalArgumentException;
 	
 	/**
 	 * Holt alle Ausprägungen eines bestimmten Kontakts aus der Datenbank.
