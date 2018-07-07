@@ -563,8 +563,14 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		
 		Property newProperty = new Property();
 		newProperty.setType(type);
+	//	pMapper.findByTypeAndCID(newProperty, contact);
 		
-		return pMapper.insert(newProperty, contact);
+		if(pMapper.findByTypeAndCID(newProperty, contact).size() == 0) {
+			return null;
+		}else {
+			//Hier Abfrage: gibt es schon einen Datensatz in der T_Property zu diesem Contact mit dieser Type? Wenn ja, return null
+			return pMapper.insert(newProperty, contact);
+		}
 	}
 
 	public Property editProperty(Property property) throws IllegalArgumentException{
