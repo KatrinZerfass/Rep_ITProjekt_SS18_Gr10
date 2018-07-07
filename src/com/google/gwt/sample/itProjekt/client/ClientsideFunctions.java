@@ -43,7 +43,7 @@ public abstract class ClientsideFunctions {
 	 * Reguläre Ausdruck für Email-Adressen entstammt der Seite:
 	 * <a href="http://emailregex.com/">http://emailregex.com/</a><br>
 	 * 
-	 * Reguläre Ausdruck für Websites entstammt der Seite:
+	 * Regulärer Ausdruck für Websites entstammt der Seite:
 	 * <a href="https://stackoverflow.com/questions/2490310/regular-expression-for-checking-website-url">https://stackoverflow.com/</a>
 	 *
 	 * @param vtb zu überprüfende ValueTextBox
