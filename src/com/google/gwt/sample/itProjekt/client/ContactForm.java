@@ -254,8 +254,6 @@ public class ContactForm extends VerticalPanel {
 		 * Die Methode enableButton() wird aufgerufen, wenn der aktuelle Nutzer auch der Eigentümer des Kontakts ist.
 		 */
 		public void enableButtons() {
-//			this.deleteValueButton.setEnabled(true);
-//			this.lockButton.setEnabled(true);
 			this.deleteValueButton.setVisible(true);
 			this.lockButton.setVisible(true);
 		}
@@ -265,8 +263,6 @@ public class ContactForm extends VerticalPanel {
 		 * Die Methode disableButton() wird aufgerufen, wenn der aktuelle Nutzer nur Teilhaber des Kontakts ist.
 		 */
 		public void disableButtons() {
-//			this.deleteValueButton.setEnabled(false);
-//			this.lockButton.setEnabled(false);
 			this.deleteValueButton.setVisible(false);
 			this.lockButton.setVisible(false);
 		}
@@ -425,7 +421,6 @@ public class ContactForm extends VerticalPanel {
 			 */
 			this.getUpFace().setImage(lockUnlocked);
 			
-			//this.setEnabled(false);
 			this.setVisible(true);
 			
 			/*
@@ -526,7 +521,6 @@ public class ContactForm extends VerticalPanel {
 			
 			this.addStyleName("deleteValueButton");
 			
-			//this.setEnabled(false);
 			this.setVisible(true);
 			
 			this.addClickHandler(new ClickHandler() {
@@ -537,14 +531,14 @@ public class ContactForm extends VerticalPanel {
 					 * Es handelt sich um den DeleteValueButton, welcher sich auf die Straße bezieht. Folglich müssen auch die Ausprägungen
 					 * Hausnummer, PLZ und Wohnort mitgelöscht werden.	
 					 */
-						for(int i= 0; i<allValuesOfContact.size(); i++) {
-							int pid = allValuesOfContact.get(i).getPropertyid();
-							
-							if(pid == 6 || pid == 7 || pid == 8 || pid ==9) {
-								editorAdministration.deleteValue(allValuesOfContact.get(i), new AsyncCallback<Void>() {
+//						for(int i= 0; i<allValuesOfContact.size(); i++) {
+//							int pid = allValuesOfContact.get(i).getPropertyid();
+//							
+//							if(pid == 6 || pid == 7 || pid == 8 || pid ==9) {
+								editorAdministration.deleteAddress(value, contactToDisplay, new AsyncCallback<Void>() {
 									public void onFailure(Throwable arg0) {}; {};
 									public void onSuccess(Void arg0) {}; {
-										final ClientsideFunctions.popUpBox deleted = new ClientsideFunctions.popUpBox("Value gelöscht.", new ClientsideFunctions.OkButton());
+										final ClientsideFunctions.popUpBox deleted = new ClientsideFunctions.popUpBox("Adresse gelöscht.", new ClientsideFunctions.OkButton());
 										deleted.getOkButton().addClickHandler(new ClickHandler() {
 											
 											@Override
@@ -555,8 +549,8 @@ public class ContactForm extends VerticalPanel {
 										});
 									};
 								});
-							}
-						}			
+							//}
+						//}			
 					}
 					
 					else{
