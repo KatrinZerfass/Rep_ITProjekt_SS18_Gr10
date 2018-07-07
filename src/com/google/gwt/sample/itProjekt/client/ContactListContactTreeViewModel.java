@@ -362,14 +362,11 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	public void addContactOfSearchResultList(ContactList cl, Vector<Contact> contacts) {
 		if(cl == nameResultsCL) {
 			nameResults = contacts;
-			contactListDataProvider.getList().add(cl);
-			selectionModel.setSelected(cl, true);		
-			
+			contactListDataProvider.getList().add(cl);			
 		}
 		if(cl == valueResultsCL) {
 			valueResults = contacts;
 			contactListDataProvider.getList().add(cl);
-			selectionModel.setSelected(cl, true);
 		}	
 	}
 	
