@@ -5,8 +5,20 @@ import java.util.Date;
 import java.util.Vector;
 
 /**
- * Die abstrakte Report Klasse, welche als Basis f�r die einzelnen statischen Reports ist.
- * @author Anna-MariaGmeiner
+ * <p>
+ * Die abstrakte Report Klasse, welche als Basis für die einzelnen statischen Reports ist.
+ *  Reports sind als <code>Serializable</code>
+ * deklariert, damit sie von dem Server an den Client gesendet werden können.
+ * Der Zugriff auf Reports erfolgt also nach deren Bereitstellung lokal auf dem
+ * Client.
+ * </p>
+ * <p>
+ * Ein Report besitzt eine Reihe von Standardelementen. Sie werden mittels
+ * Attributen modelliert und dort dokumentiert.
+ * </p>
+ * 
+ * @see Report
+ * @author Thies
  */
 public abstract class Report implements Serializable {
 	

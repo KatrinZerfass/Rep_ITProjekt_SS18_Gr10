@@ -2,12 +2,16 @@ package com.google.gwt.sample.itProjekt.shared.report;
 
 import java.io.Serializable;
 
-
-// 
 /**
- * Die Klasse SimpleParagraph, welche reinen Text enth�lt.
- * @author Anna-MariaGmeiner
- */
+ * * Die Klasse SimpleParagraph, welche reinen Text enthält.
+ * Diese Klasse stellt einzelne Absätze dar. Der Absatzinhalt wird als String
+ * gespeichert. Der Anwender sollte in diesem Strinig keinerlei
+ * Formatierungssymbole einfügen, da diese in der Regel zielformatspezifisch
+ * sind.
+ * 
+ * @author Thies
+ */ 
+
 public class SimpleParagraph extends Paragraph implements Serializable {
 	
 	/** Die Konstante serialVersionUID, welche als Versionsnummer bei der Serialisierung dient. */
