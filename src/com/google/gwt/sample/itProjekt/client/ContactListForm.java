@@ -12,16 +12,21 @@ import com.google.gwt.sample.itProjekt.shared.bo.User;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.PushButton;
-import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+
+/**
+ * Die Klasse ContactListForm dient der Darstellung der Buttons, welche zum Teilen, Löschen 
+ * und Anlegen von Kontaktlisten benötigt werden. Außerdem repräsentiert die Klasse ein Suchfeld, 
+ * in dem nach Kontakten und Ausprägungen in einer Kontaktliste gesucht werden kann.
+ * @author KatrinZerfass & JoshuaHill & JanNoller 
+ */
 
 public class ContactListForm extends VerticalPanel{
 	
@@ -95,202 +100,6 @@ public class ContactListForm extends VerticalPanel{
 			contactListPanel.setCellHorizontalAlignment(searchPanel, HasHorizontalAlignment.ALIGN_RIGHT);
 		}
 	
-	
-
-//		public class CloseButton extends Button{
-//			InputDialogBox db;
-//			
-//			public CloseButton(InputDialogBox db) {
-//				this.db = db;
-//				this.addClickHandler(new CloseDBClickHandler(db)); 
-//				this.setText("Abbrechen");
-//				this.addStyleName("closebutton");
-//			}
-//			
-//			private class CloseDBClickHandler implements ClickHandler{
-//				InputDialogBox db;
-//		
-//				
-//				public CloseDBClickHandler(InputDialogBox db) {
-//					this.db=db;
-//				}
-//				
-//				public void onClick(ClickEvent event) {
-//					db.hide();
-//				}
-//				
-//			}
-//			
-//		}
-		
-		
-		
-		/**
-		 * Die innere Klasse InputDialogBox.
-		 * ?? was macht sie ??
-		 * 
-		 * @author JanNoller
-		 */
-//		public class InputDialogBox extends DialogBox{
-//			
-//			private String input;
-//			
-//			Label dialogBoxLabel = new Label();
-//			
-//	        private TextBox tb;
-//	        private SuggestBox sb;
-//	        private MultiWordSuggestOracle oracle;
-//			CloseButton close=new CloseButton(this);
-//
-//	        Button ok = new Button("OK");
-//			
-//			/**
-//			 * Der Konstruktor von InputDialogBox
-//			 * ?? was macht er ??
-//			 */
-//			public InputDialogBox(TextBox inputtb) {
-//				
-//				setTextBox(inputtb);
-//		        ok.addStyleName("okbutton");
-//		        close.addStyleName("closebutton");
-//
-//				Window.alert("InputDialogBox instanziert");
-//				
-//				setText("Eingabe");
-//				setAnimationEnabled(true);
-//				setGlassEnabled(true);
-//				
-//		        
-//				VerticalPanel panel = new VerticalPanel();
-//		        panel.setHeight("100");
-//		        panel.setWidth("300");
-//		        panel.setSpacing(10);
-//		        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
-//		        panel.add(dialogBoxLabel);
-//				HorizontalPanel hpanel=new HorizontalPanel();
-//				hpanel.add(close);
-//		        hpanel.add(ok);
-//		        panel.add(tb);
-//		        panel.add(hpanel);
-//
-//		        setWidget(panel);
-//		        
-//		        show();
-//		    }
-//			
-//			public InputDialogBox(MultiWordSuggestOracle inputOracle) {
-//				
-//				setOracle(inputOracle);
-//		        ok.addStyleName("okbutton");
-//		        close.addStyleName("closebutton");
-//
-//				setdialogBoxLabel("Bitte geben Sie die Email-Adresse des Nutzers ein mit dem Sie die Kontaktliste teilen möchten.");
-//				
-//				editorAdministration.getAllUsers(new AsyncCallback<Vector<User>>() {
-//					public void onFailure(Throwable arg0) {
-//						Window.alert("Fehler beim holen aller User in der InputDialogBox");
-//					}
-//					@Override
-//					public void onSuccess(Vector<User> arg0) {
-//						
-//						for(User loopUser : arg0) {
-//							if (!loopUser.equals(user)) {
-//								getOracle().add(loopUser.getEmail());
-//							}
-//						}
-//						setSuggestBox(new SuggestBox(getOracle()));
-//						
-//						setText("Eingabe");
-//						setAnimationEnabled(true);
-//						setGlassEnabled(true);
-//						
-//						VerticalPanel panel = new VerticalPanel();
-//
-//				        panel.setHeight("100");
-//				        panel.setWidth("300");
-//				        panel.setSpacing(10);
-//				        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
-//				        panel.add(dialogBoxLabel);
-//						panel.add(getSuggestBox());
-//						HorizontalPanel hpanel= new HorizontalPanel();
-//				        hpanel.add(close);
-//				        hpanel.add(ok);
-//				        panel.add(hpanel);
-//				        setWidget(panel);
-//				        
-//				        show();
-//					}
-//				});
-//			}
-//			
-//			public Button getOKButton() {
-//				return this.ok;
-//			}
-//			
-//			public void setOKButton(Button b) {
-//				this.ok = b;
-//			}
-//			
-//			/**
-//			 * Getter von input.
-//			 *
-//			 * @return den Input
-//			 */
-//			public String getInput() {
-//				return this.input;
-//			}
-//			
-//			/**
-//			 * Setter von input.
-//			 *
-//			 * @param input der Input
-//			 */
-//			public void setInput(String input) {
-//				this.input = input;
-//			}
-//
-//			/**
-//			 * Gets the label.
-//			 *
-//			 * @return the label
-//			 */
-//			public Label getdialogBoxLabel () {
-//				return this.dialogBoxLabel;
-//			}
-//			
-//			/**
-//			 * Setter des Labels.
-//			 *
-//			 * @param labelText der Text des Labels.
-//			 */
-//			public void setdialogBoxLabel (String labelText) {
-//				this.dialogBoxLabel.setText(labelText);
-//			}
-//			
-//			public TextBox getTextBox() {
-//				return this.tb;
-//			}
-//			
-//			public void setTextBox(TextBox tb) {
-//				this.tb = tb;
-//			}
-//
-//			public SuggestBox getSuggestBox() {
-//				return sb;
-//			}
-//
-//			public void setSuggestBox(SuggestBox sb) {
-//				this.sb = sb;
-//			}
-//
-//			public MultiWordSuggestOracle getOracle() {
-//				return oracle;
-//			}
-//
-//			public void setOracle(MultiWordSuggestOracle oracle) {
-//				this.oracle = oracle;
-//			}
-//		}
 	
 		
 	
@@ -506,24 +315,12 @@ public class ContactListForm extends VerticalPanel{
 							public void onSuccess(final Vector<Contact> arg0){
 								if(arg0.size() != 0) {
 									foundResult = true;
-//									final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Suche erfolgreich!", new ClientsideFunctions.OkButton());
-//									success.getOkButton().addClickHandler(new ClickHandler() {
-//										@Override
-//										public void onClick(ClickEvent click) {
 											clctvm.addNameResults();
 											clctvm.addContactOfSearchResultList(clctvm.getNameResultsCL(), arg0);
-//											success.hide();
-//										}
-//									});
+
 								}else{
-//									final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Kein Suchergebnis.", new ClientsideFunctions.OkButton());
-//									failed.getOkButton().addClickHandler(new ClickHandler() {
-//										@Override
-//										public void onClick(ClickEvent arg0) {
 											clctvm.deleteNameResults();
-//											failed.hide();
-//										}
-//									});
+
 								}
 								
 								editorAdministration.getContactsOfValueSearchResult(user, searchTextBox.getText(), selectedContactList, new AsyncCallback<Vector<Contact>>() {
@@ -553,8 +350,6 @@ public class ContactListForm extends VerticalPanel{
 													
 													@Override
 													public void onClick(ClickEvent click) {
-//														clctvm.addValueResults();
-//														clctvm.addContactOfSearchResultList(clctvm.getValueResultsCL(), arg0);
 														success.hide();
 													}
 												});
@@ -587,26 +382,6 @@ public class ContactListForm extends VerticalPanel{
 			this.clctvm= clctvm;
 			
 		}
-
-		
-		
-		/**
-		 * Die Methode compareUser() vergleicht den aktuell angemeldeten Nutzer mit dem Eigentümer des Kontakts.
-		 * 
-		 * @return true= Eigentümer oder false= Teilhaber
-		 * @author JanNoller
-		 */		
-	
-				
-//		public boolean compareUser () {
-//			
-//			if (user.getId() == clctvm.getSelectedContact().getOwner()) {
-//				return true;
-//			}
-//			else {
-//				return false;
-//			}
-//		}
 
 				
 }
