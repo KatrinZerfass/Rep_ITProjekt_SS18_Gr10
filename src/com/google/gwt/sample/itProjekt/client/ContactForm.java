@@ -552,7 +552,7 @@ public class ContactForm extends VerticalPanel {
 								editorAdministration.deleteValue(allValuesOfContact.get(i), new AsyncCallback<Void>() {
 									public void onFailure(Throwable arg0) {}; {};
 									public void onSuccess(Void arg0) {}; {
-										final ClientsideFunctions.popUpBox deleted = new ClientsideFunctions.popUpBox("Value gelöscht", new ClientsideFunctions.OkButton());
+										final ClientsideFunctions.popUpBox deleted = new ClientsideFunctions.popUpBox("Value gelöscht.", new ClientsideFunctions.OkButton());
 										deleted.getOkButton().addClickHandler(new ClickHandler() {
 											
 											@Override
@@ -572,7 +572,7 @@ public class ContactForm extends VerticalPanel {
 							public void onFailure(Throwable t) {};{};
 							public void onSuccess(Void result) {}; 
 							{
-								final ClientsideFunctions.popUpBox deleted = new ClientsideFunctions.popUpBox("Value gelöscht", new ClientsideFunctions.OkButton());
+								final ClientsideFunctions.popUpBox deleted = new ClientsideFunctions.popUpBox("Value gelöscht.", new ClientsideFunctions.OkButton());
 								deleted.getOkButton().addClickHandler(new ClickHandler() {
 									
 									@Override
@@ -1065,7 +1065,7 @@ public class ContactForm extends VerticalPanel {
 	
 					editorAdministration.createContact(firstnameTextBox.getText(), lastnameTextBox.getText(), sex, currentUser, new AsyncCallback<Contact>(){
 						public void onFailure(Throwable t) {
-							Window.alert("Fehler beim Kontakt anlegen");
+							Window.alert("Fehler beim Kontakt Anlegen.");
 							
 						}
 						public void onSuccess(final Contact result) {
@@ -1106,7 +1106,7 @@ public class ContactForm extends VerticalPanel {
 			
 			
 			if (contactToDisplay == null) {
-				final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Kein Kontakt ausgewählt", new ClientsideFunctions.OkButton());
+				final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Kein Kontakt ausgewählt.", new ClientsideFunctions.OkButton());
 				failed.getOkButton().addCloseDBClickHandler(failed);
 			}
 			else {
@@ -1133,7 +1133,7 @@ public class ContactForm extends VerticalPanel {
 								public void onSuccess(Permission arg0) {
 									if(arg0 != null) {
 										inputDB.hide();
-										final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Kontakt erfolgreich geteilt!", new ClientsideFunctions.OkButton());
+										final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Kontakt erfolgreich geteilt.", new ClientsideFunctions.OkButton());
 										failed.getOkButton().addCloseDBClickHandler(failed);
 									}
 									else if(arg0 == null) {
@@ -1196,7 +1196,7 @@ public class ContactForm extends VerticalPanel {
 				failed.getOkButton().addCloseDBClickHandler(failed);
 			}
 			else if(contactToDisplay.getIsUser()) { // der ausgewählte Kontakt ist der, welcher den User repräsentiert
-				final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Sie können sich selbst nicht löschen.", new ClientsideFunctions.OkButton());
+				final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Es ist nicht möglich den eigenen Kontakt zu löschen.", new ClientsideFunctions.OkButton());
 				failed.getOkButton().addCloseDBClickHandler(failed);
 			}
 			else{
@@ -1209,7 +1209,7 @@ public class ContactForm extends VerticalPanel {
 								Window.alert("Fehler beim Löschen des Kontakts!");
 							}
 							public void onSuccess(Void arg0){
-								final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Kontakt erfolgreich gelöscht!", new ClientsideFunctions.OkButton());
+								final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Kontakt erfolgreich gelöscht.", new ClientsideFunctions.OkButton());
 								failed.getOkButton().addClickHandler(new ClickHandler() {
 									
 									@Override
@@ -1241,7 +1241,7 @@ public class ContactForm extends VerticalPanel {
 		public void onClick(ClickEvent event) {
 			
 			if (contactToDisplay == null) {
-				Window.alert("kein Kontakt ausgewählt");
+				Window.alert("Kein Kontakt ausgewählt");
 						
 			}
 			else {
@@ -1316,7 +1316,7 @@ public class ContactForm extends VerticalPanel {
 		public void onClick(ClickEvent event) {
 			
 			if(contactToDisplay ==null) {
-				Window.alert("kein Kontakt ausgewählt");
+				Window.alert("Kein Kontakt ausgewählt.");
 			}
 			else {
 				/*
@@ -1387,7 +1387,7 @@ public class ContactForm extends VerticalPanel {
 				        		editorAdministration.addContactToContactList(chosenCL, contactToDisplay, new AsyncCallback<ContactList>() {
 				        			
 				        			public void onFailure(Throwable z) {
-				        				Window.alert("Fehler beim Hinzufügen des Kontakts zur Kontaktliste!");
+				        				Window.alert("Fehler beim Hinzufügen des Kontakts zur Kontaktliste.");
 				        			}
 				        			
 				        			public void onSuccess(ContactList result) {
@@ -1414,15 +1414,15 @@ public class ContactForm extends VerticalPanel {
 		
 		public void onClick(ClickEvent event) {
 			if(contactToDisplay == null) {
-				Window.alert("kein Kontakt ausgewählt");
+				Window.alert("Kein Kontakt ausgewählt");
 			}
 			else {
 				if(clctvm.getSelectedContactList() == clctvm.getMyContactsContactList()) {
-					final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Sie können Kontakte in dieser Kontaktliste nur löschen, nicht entfernen.", new ClientsideFunctions.OkButton());
+					final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Sie können aus dieser Kontaktliste keine Kontakte löschen.", new ClientsideFunctions.OkButton());
 					success.getOkButton().addCloseDBClickHandler(success);
 				}
 				else if(!ClientsideFunctions.isOwner(clctvm.getSelectedContactList(), currentUser)) {
-					final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Sie können den Kontakt aus dieser Liste nicht entfernen, da es eine geteilte List ist.", new ClientsideFunctions.OkButton());
+					final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Sie können den Kontakt aus dieser Liste nicht entfernen, da es eine geteilte Liste ist.", new ClientsideFunctions.OkButton());
 					success.getOkButton().addCloseDBClickHandler(success);
 				}
 				else {
@@ -1441,11 +1441,11 @@ public class ContactForm extends VerticalPanel {
 							editorAdministration.removeContactFromContactList(clctvm.getSelectedContactList(), contactToDisplay, new AsyncCallback<ContactList>() {
 								@Override
 								public void onFailure(Throwable arg0) {	
-									Window.alert("Fehler beim entfernen des Kontakts aus der Kontaktliste!");
+									Window.alert("Fehler beim Entfernen des Kontakts aus der Kontaktliste.");
 								}
 								@Override
 								public void onSuccess(final ContactList arg0) {
-									final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Kontakt erfolgreich aus der Kontaktliste entfernt!", new ClientsideFunctions.OkButton());
+									final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Kontakt erfolgreich aus der Kontaktliste entfernt.", new ClientsideFunctions.OkButton());
 									success.getOkButton().addClickHandler(new ClickHandler() {
 										
 										@Override
@@ -1520,7 +1520,7 @@ public class ContactForm extends VerticalPanel {
 						}else {
 							editorAdministration.createValue(contactToDisplay, 4, inputTextBox.getText(), new AsyncCallback<Value>() {
 								public void onFailure (Throwable t) {
-									Window.alert("Geburtsdatum anlegen gescheitert");
+									Window.alert("Geburtsdatum anlegen gescheitert.");
 								}
 								
 								public void onSuccess(Value result) {
@@ -1554,13 +1554,13 @@ public class ContactForm extends VerticalPanel {
 						input.hide();
 						editorAdministration.createProperty(contactToDisplay, input.getVTextBox().getText(), new AsyncCallback<Property>() {
 							public void onFailure (Throwable t) {
-								Window.alert("Eigenschaft anlegen gescheitert");
+								Window.alert("Eigenschaft anlegen gescheitert.");
 							}
 							
 							public void onSuccess(Property result) {
 								
 								if(result == null) {
-									final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Diese Eigenschaft haben Sie bereits angelegt!", new ClientsideFunctions.OkButton());
+									final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Diese Eigenschaft haben Sie bereits angelegt.", new ClientsideFunctions.OkButton());
 									failed.getOkButton().addClickHandler(new ClickHandler() {
 										
 										@Override
@@ -1696,7 +1696,7 @@ public class ContactForm extends VerticalPanel {
 						editorAdministration.createAddress(streetTextBox.getText(), houseNrTextBox.getText(),
 								plzTextBox.getText(), cityTextBox.getText(), contactToDisplay, new AsyncCallback<Value>(){
 							public void onFailure(Throwable t) {
-								Window.alert("Probleme beim Anlegen der Adresse");
+								Window.alert("Probleme beim Anlegen der Adresse.");
 							}
 							public void onSuccess(Value street) {
 								streetTextBox.setValue(street);
@@ -1844,7 +1844,7 @@ public class ContactForm extends VerticalPanel {
 			 */
 			editorAdministration.getAllValuesOfContact(contactToDisplay, new AsyncCallback<Vector<Value>>() {
 				public void onFailure(Throwable t) {
-					Window.alert("Fehler beim Auslesen der Ausprägungen des Kontakts");
+					Window.alert("Fehler beim Auslesen der Ausprägungen des Kontakts.");
 					
 				}
 				public void onSuccess(Vector<Value> values) {
@@ -1916,7 +1916,7 @@ public class ContactForm extends VerticalPanel {
 		}
 		
 		public void onFailure(Throwable t) {
-			Window.alert("Fehler beim Auslesen der neuen Eigenschaft");
+			Window.alert("Fehler beim Auslesen der neuen Eigenschaft.");
 			
 		}
 		
