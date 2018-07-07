@@ -24,7 +24,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 /**
  * Die Klasse ContactListForm dient der Darstellung der Buttons, welche zum Teilen, Löschen 
  * und Anlegen von Kontaktlisten benötigt werden. Außerdem repräsentiert die Klasse ein Suchfeld, 
- * in dem nach Kontakten und Ausprägungen in einer Kontaktliste gesucht werden kann.
+ * in dem nach Kontakten und Ausprägungen in einer Kontaktliste gesucht werden können.
  * @author KatrinZerfass & JoshuaHill & JanNoller 
  */
 
@@ -99,10 +99,7 @@ public class ContactListForm extends VerticalPanel{
 			contactListPanel.add(searchPanel);
 			contactListPanel.setCellHorizontalAlignment(searchPanel, HasHorizontalAlignment.ALIGN_RIGHT);
 		}
-	
-	
-		
-	
+
 		
 		/**
 		 * Die innere Klasse NewContactListClickHandler. 

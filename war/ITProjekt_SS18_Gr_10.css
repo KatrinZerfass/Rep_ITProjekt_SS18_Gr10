@@ -469,15 +469,7 @@ body{
   padding: 3px;
   background: white;
 }
-.gwt-DialogBox .dialogBottomCenter {
-  background: url(images/hborder.png) repeat-x 0px -2945px;
-}
-.gwt-DialogBox .dialogMiddleLeft {
-  background: url(images/vborder.png) repeat-y -31px 0px;
-}
-.gwt-DialogBox .dialogMiddleRight {
-  background: url(images/vborder.png) repeat-y -32px 0px;
-}
+
 .gwt-DialogBox .dialogTopLeftInner {
   width: 10px;
   height: 8px;
@@ -497,18 +489,7 @@ body{
   height: 12px;
   zoom: 1;
 }
-.gwt-DialogBox .dialogTopLeft {
-  background: url(images/circles.png) no-repeat -20px 0px;
-}
-.gwt-DialogBox .dialogTopRight {
-  background: url(images/circles.png) no-repeat -28px 0px;
-}
-.gwt-DialogBox .dialogBottomLeft {
-  background: url(images/circles.png) no-repeat 0px -36px;
-}
-.gwt-DialogBox .dialogBottomRight {
-  background: url(images/circles.png) no-repeat -8px -36px;
-}
+
 
 .gwt-SuggestBox {
   padding: 5px 4px;
@@ -575,26 +556,7 @@ body{
   height: 0px;
   zoom: 1;
 }
-.gwt-SuggestBoxPopup .suggestPopupTopLeft {
-  background: url(images/circles.png) no-repeat 0px -6px;
-  width:5px;
-  height:5px;
-}
-.gwt-SuggestBoxPopup .suggestPopupTopRight {
-  background: url(images/circles.png) no-repeat -5px -6px;
-  width:5px;
-  height:5px;
-}
-.gwt-SuggestBoxPopup .suggestPopupBottomLeft {
-  background: url(images/circles.png) no-repeat 0px -11px;
-  width:5px;
-  height:5px;
-}
-.gwt-SuggestBoxPopup .suggestPopupBottomRight {
-  background: url(images/circles.png) no-repeat -5px -11px;
-  width:5px;
-  height:5px;
-}
+
 
 .okbutton{
 	background-color: #18878b;

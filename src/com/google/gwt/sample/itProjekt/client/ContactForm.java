@@ -32,6 +32,14 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
  * Die Klasse ContactForm dient der Darstellung von Kontakten mit all ihren Eigenschaften und deren Ausprägungen.
+ * 
+ * #####  Struktur der Klasse:  ######
+ * -Instanzenvariablen
+ * -innere Klassen, welche GUI-Elemente verkörpern
+ * -Methode onLoad()
+ * -alle ClickHandler als eigene innere Klassen
+ * -weitere Methoden, die für den Aufbau des Kontaktformulars notwendig sind
+ * 
  * @author KatrinZerfass & JanNoller & Anna-MariaGmeiner 
  */
 
@@ -107,50 +115,6 @@ public class ContactForm extends VerticalPanel {
 	Button removeContactFromContactListButton = null;
 	
 
-//	/**
-//	 * Die innere Klasse CloseButton.
-//	 * Sie dient der Darstellung von "Abbrechen"-Buttons auf jeder instantiierten DialogBox. Dieser bietet dem Nutzer die Möglichkeit,
-//	 * den Vorgang abzubrechen und die DialogBox zu schließen.
-//	 * 
-//	 *  @author KatrinZerfass
-//	 */
-//	
-//	public class CloseButton extends Button{
-//		
-//		DialogBox db;
-//		
-//		/**
-//		 * Der Konstruktor von LockButton. Die DialogBox, in der der CloseButton hinzugefügt wird, wird als Übergabeparameter definiert.
-//		 */
-//		public CloseButton(DialogBox db) {
-//			this.db = db;
-//			this.addClickHandler(new CloseDBClickHandler(db)); 
-//			this.setText("Abbrechen");
-//			this.addStyleName("closebutton");
-//		}
-//		
-//		/**
-//		 * Der ClickHandler wird im Konstruktor dem CloseButton hinzugefügt. Er schließt die DialogBox.
-//		 * @author Zerfass
-//		 *
-//		 */
-//		private class CloseDBClickHandler implements ClickHandler{
-//			DialogBox db;
-//	
-//			
-//			public CloseDBClickHandler(DialogBox db) {
-//				this.db=db;
-//			}
-//			
-//			public void onClick(ClickEvent event) {
-//				db.hide();
-//			}
-//			
-//		}
-//		
-//	}
-	
-	
 	
 	
 	/**
@@ -559,6 +523,7 @@ public class ContactForm extends VerticalPanel {
 					}
 					
 					else{
+						//es handelt sich um eine "ganz normale" andere Ausprägung
 						editorAdministration.deleteValue(value, new AsyncCallback<Void>() {
 							public void onFailure(Throwable t) {};{};
 							public void onSuccess(Void result) {}; 
@@ -683,7 +648,9 @@ public class ContactForm extends VerticalPanel {
 				public void onClick (ClickEvent event) {
 						
 					ValueTextBox vtb = new ValueTextBox("");
+					//eine DialogBox, in die man die neue Ausprägung eintragen kann 
 					final ClientsideFunctions.InputDialogBox input = new ClientsideFunctions.InputDialogBox(propertyId, row, vtb);
+					//dem "Hinzufügen"-Button der DialogBox wird ein AddValueClickHandler hinzugefügt, welcher die entsprechendene Ausprägung erstellt
 					input.getOKButton().addClickHandler(new AddValueClickHandler(input, input.getVTextBox(), ((ValueTable) contactTable.getWidget(row, 1)), propertyId));
 					
 				}
@@ -1312,6 +1279,7 @@ public class ContactForm extends VerticalPanel {
 	}
 	
 	
+	
 	/**
 	 * Die innere Klasse NewPropertyClickHandler. Klickt ein Benutzer auf den "Hinzufügen" Button unten
 	 * im NewPropertyPanel, so wird eine Instanz von NewPropertyClickHandler erzeugt.
@@ -1547,11 +1515,11 @@ public class ContactForm extends VerticalPanel {
 		
 	
 	/**
-	 * Die Methode clearContactFrom() wird aufgerufen, wenn der addContactButton gedrückt wird. Die Felder leeren sich und ein neuer Kontakt
-	 * kann eingetragen werden.
-	 * 
+	 * Die Methode clearContactFrom() wird immer zu Beginn der Methode setSelected(Contact c) aufgerufen, um
+	 * bei Aufruf eines neuen Kontakts das Kontaktformular zu leeren und komplett neu zu laden. 
 	 */
 	public void clearContactForm() {
+		
 		contactTable.clear();
 		contactTable.removeAllRows();
 		buttonsPanel.clear();
@@ -1574,10 +1542,12 @@ public class ContactForm extends VerticalPanel {
 	
 	
 	/**
-	 * Zeigt den selektierten Kontakt an.
+	 * Die Methode setSelected wird immer bei Auswahl eines Elements aus dem Cellbrowser ausgewählt.
+	 * Wird eine Kontaktlitse angeklickt, wird sie mit dem Argument null aufgerufen.
+	 * Wird ein Kontakt angeklickt, wird sie mit dem entsprechenden Kontakt als Argument aufgerufen.
 	 *
-	 * @param c der selektierte Kontakt
-	 * @author KatrinZerfass & JanNoller
+	 * @param c der selektierte Kontakt bzw. null
+	 * @author KatrinZerfass
 	 */
 	public void setSelected(Contact c) {
 		
@@ -1594,14 +1564,13 @@ public class ContactForm extends VerticalPanel {
 		saveChangesButton.setVisible(false);
 	
 		
-		
-		
-	
 		if (c != null){
 			
+			//es wurde ein Kontakt-Objekt übergeben, welches in die Instanzenvariable contactToDisplay gesetzt wird
 			contactToDisplay = c;
-			newPropertyPanel.setVisible(true);
 			
+			//Optionen und Interaktionsmöglichkeiten für Kontakte werden eingeblendet
+			newPropertyPanel.setVisible(true);
 			shareContactButton.setVisible(true);
 			deleteContactButton.setVisible(true);
 			addContactToContactListButton.setVisible(true);
@@ -1611,10 +1580,8 @@ public class ContactForm extends VerticalPanel {
 			
 			/*
 			 * Der angemeldete Nutzer wird mit dem Eigentümer verglichen. Ist er ausschließlich Teilhaber, so werden bestimmte Buttons
-			 * bereits im Vorfeld ausgegraut.
+			 * und Funktionen, an denen er keine Berechtigungen hat, nicht mehr angezeigt.
 			 */
-		
-			
 			if(!ClientsideFunctions.isOwner(contactToDisplay, currentUser)) {
 				firstnameTextBox.setEnabled(false);
 				lastnameTextBox.setEnabled(false);
@@ -1627,40 +1594,12 @@ public class ContactForm extends VerticalPanel {
 				newPropertyPanel.setVisible(true);
 			}
 			
-			/*
-			 * Alle Ausprägungen des contactToDisplay werden ausgelesen und in einem Vector<Values> gespeichert.
-			 */
-			editorAdministration.getAllValuesOfContact(contactToDisplay, new AsyncCallback<Vector<Value>>() {
-				public void onFailure(Throwable t) {
-					Window.alert("Fehler beim Auslesen der Ausprägungen des Kontakts.");
-					
-				}
-				public void onSuccess(Vector<Value> values) {
-					allValuesOfContact = new Vector<Value>();
-					for(Value v: values) {
-						allValuesOfContact.add(v);
-					}
-	
-					for(Value v: allValuesOfContact) {
-						if(v.getPropertyid() >10) {
-							editorAdministration.getPropertyOfValue(v, new GetPropertyOfValueCallback(v));
-						}else{
-							if(v == allValuesOfContact.lastElement()) {
-								displayAllValuesOfContact();
-							}
-						}
-					}
-				}
-			});
-			
 			
 			/*
-			 * Vor und Nachname des Kontakts werden gesetzt und die TextBoxen dem Vector aller ValueTextBoxen hinzugefügt.
+			 * Vor und Nachname des Kontakts werden befüllt.
 			 */
 			firstnameTextBox.setText(contactToDisplay.getFirstname());
-			allValueTextBoxes.add(firstnameTextBox);
 			lastnameTextBox.setText(contactToDisplay.getLastname());
-			allValueTextBoxes.add(lastnameTextBox);
 			
 			
 			/*
@@ -1678,24 +1617,66 @@ public class ContactForm extends VerticalPanel {
 			sexListBox.setEnabled(false);
 			
 			
-				
+			/*
+			 * Alle Ausprägungen des contactToDisplay werden ausgelesen und in einem Vector<Values> gespeichert.
+			 */
+			editorAdministration.getAllValuesOfContact(contactToDisplay, new AsyncCallback<Vector<Value>>() {
+				public void onFailure(Throwable t) {
+					Window.alert("Fehler beim Auslesen der Ausprägungen des Kontakts.");
+					
+				}
+				public void onSuccess(Vector<Value> values) {
+					allValuesOfContact = new Vector<Value>();
+					for(Value v: values) {
+						allValuesOfContact.add(v);
+					}
+					
+					/*
+					 * Außerdem wird für jede Ausprägung, die eine EigenschaftsID über 10 hat (d.h. es handelt sich
+					 * nicht um Default-Eigenschaften, sondern um neu hinzugefügte), die jeweilige Eigenschaft dazu 
+					 * ebenfalls aus der Datenbank ausgelesen. Dies geschieht in der inneren Klasse GetPropertyOfValueCallback.
+					 * Diese ist nach der Methode setSelected(Contact c) definiert.
+					 */
+					for(Value v: allValuesOfContact) {
+						if(v.getPropertyid() >10) {
+							editorAdministration.getPropertyOfValue(v, new GetPropertyOfValueCallback(v));
+						}else{
+							if(v == allValuesOfContact.lastElement()) {
+								/*
+								 * Wenn die letzte Ausprägung aus dem Vektor ausgelesen wurde, wird die Methode 
+								 * displayAllValuesOfContact aufgerufen, welche die Ausprägungen dann im GUI anzeigt. 
+								 */
+								displayAllValuesOfContact();
+							}
+						}
+					}
+				}
+			});
+			
+			
 		
 		/*
-		 * Wenn setSelected mit dem Parameter "null" aufgerufen wird, so werden anstelle der Ausprägungen in die einzelnen TextBoxen jeweils
-		 * Placeholder gesetzt, die andeuten, was in diese TextBox einzutragen ist.
+		 * Wenn setSelected mit dem Argument "null" aufgerufen wird, so werden anstelle der Ausprägungen in die 
+		 * bestehenden TextBoxen jeweils Placeholder gesetzt, die andeuten, was in diese TextBox einzutragen ist.
 		 */
 		}else {
 			contactToDisplay = null;
+			newPropertyPanel.setVisible(false);
 			firstnameTextBox.getElement().setPropertyString("placeholder", "Vorname...");
 			firstnameTextBox.setText("");
 			lastnameTextBox.getElement().setPropertyString("placeholder", "Nachname...");
 			lastnameTextBox.setText("");
-			newPropertyPanel.setVisible(false);
-
 		}
 				
 	}
 	
+	/**
+	 * Die innere Klasse GetPropertyOfValueCallback vollzieht den Callback für das Auslesen einer
+	 * selbst hinzugefügten Eigenschaft zu einer bestimmen Ausprägung. Alle solcher Eigenschaften 
+	 * eines Kontakts werden dem Vektor allNewPropertiesOfContact hinzugefügt. 
+	 * 
+	 * @author KatrinZerfass
+	 */
 	public class GetPropertyOfValueCallback implements AsyncCallback<Property>{
 		Value v;
 		
@@ -1712,37 +1693,50 @@ public class ContactForm extends VerticalPanel {
 			allNewPropertiesOfContact.add(p);
 			if(v == allValuesOfContact.lastElement()) {
 				displayAllValuesOfContact();
+				/* wenn es sich bei der Ausprägung um die letzte im Vektor handelte, wird die Methode
+				 * displayAllValuesOfContact aufgerufen, welche nachfolgend die Ausprägungen im GUI anzeigt. 
+				 */
+				
 			}
 		}
 	}
 	
+	
+	/**
+	 * Die Methode displayAllValuesOfContact() beinhaltet Abfragen und Strukturen, welche einem Nutzer alle Eigenschaften und Ausprägungen 
+	 * des von ihm ausgewählten Kontakts anzeigt. Dabei wird stets auf die entsprechenden Berechtigungen des Nutzers am Kontakt geachtet.   
+	 * 
+	 * @author KatrinZerfass
+	 */
+	
 	public void displayAllValuesOfContact() {
-		
-		//allValueTextBoxes = new Vector<ValueTextBox>();
-		/*
-		 * Der Vector allValuesOfContact, welcher alle Ausprägungen des anzuzeigenden Kontaktes enthält, wird durchiteriert
-		 * und jede Ausprägung wird im dazugehörigen ValueDisplay der jeweiligen Eigenschaftsart angezeigt.
-		 * 
-		 * Bei den Eigenschaftsarten mit der P_ID 1, 2, 3, 5, und 10 können jeweils mehrere Ausprägungen vorhanden sein.
-		 * Die genaue Funktionalität hierzu ist in "case 1" vollständig durchkommentiert, in den folgenden Cases verhält es sich 
-		 * immer genau gleich. Der einzige Unterschied sind nur das ValuePanel und ValueTable, welche zu Beginn jedes Cases gesetzt werden
-		 * und sich jeweils in einer anderen Zeile der contactTable befinden, je nachdem um welche Eigenschaftsart es sich handelt.
-		 * 
-		 */ 
-		
-		int row;
-		int vtRow;
-		
-		ValuePanel vp = null; //das ValuePanel der jeweiligen Eigenschaftsart
+				
+		ValuePanel vp = null; 	 //das ValuePanel der jeweiligen Eigenschaftsart
 		ValueTable vt = null;	 //die ValueTable der jeweiligen Eigenschaftsart
-	
-	
 		
+		int row; //die nächste Zeile der contactTable
+		int vtRow; //die nächste Zeile der jeweiligen ValueTable
+	
+	
+		/*
+		 * Der Vektor allValuesOfContact wird durchiteriert. In jeder Iteration wird die Ausprägung an der 
+		 * Stelle i ausgelesen und deren zugehörige Propertyid wird in einer lokalen Variable pid gespeichert.
+		 */
 		for(int i=0; i<=allValuesOfContact.size(); i++) {
 			int pid = allValuesOfContact.get(i).getPropertyid();
 			
-			String identifier = null;
+			String identifier = null; //der Identifier, der für die checkValue() von ValueTextBoxen benötigt wird
 			
+			/*
+			 * In den folgenden Abfragen, wird die Variable isFirstValue gesetzt.
+			 * Sie wird immer dann "true" gesetzt, wenn es sich bei der aktuellen Ausprägung um die erste
+			 * ihrer Eigenschaftsart handelt, die einem Benutzer in seinem GUI angezeigt wird.
+			 * Ist dies der Fall, so wird ein neues ValuePanel sowie eine neue ValueTable erstellt. 
+			 * 
+			 * Ist isFirstValue "false", dann wird später kein neues ValuePanel und keine neue ValueTablen
+			 * angelegt, sondern auf die VP und VT von der vorherigen Ausprägung referenziert. Eine neue Ausprägung 
+			 * wird dann in der nächsten Zeile der bereits bestehenden ValueTable angezeigt. 
+			 */
 			boolean isFirstValue = false;
 			
 			if(ClientsideFunctions.isOwner(contactToDisplay, currentUser)){
@@ -1776,6 +1770,10 @@ public class ContactForm extends VerticalPanel {
 			
 			String ptype = null;
 			
+			/*
+			 * Im Folgenden wird zur jeweiligen Ausprägung die zugehörige Eigenschaftsart aus einem
+			 * der beiden Eigenschafts-Vektoren ausgelesen und die Variable "ptype" wird entsprechend gesetzt. 
+			 */
 			if(pid<=10) {
 				for (Property p: allPredefinedProperties) {
 					if(pid == p.getId()){
@@ -1791,7 +1789,10 @@ public class ContactForm extends VerticalPanel {
 				}
 			}
 		
-		
+			/*
+			 * In der folgenden switch-case werden je nach Eigenschaftsart die identifiers für
+			 * die späteren ValueTextBoxen gesetzt. 
+			 */
 			
 			switch (pid) {
 				
@@ -1808,16 +1809,20 @@ public class ContactForm extends VerticalPanel {
 						
 				case 3:  // e-Mail
 						identifier = "Email";
+						
 						break;
 						
 						
 				case 4:  // Geburtstag
-					identifier = "Geburtstag";
-					if(ClientsideFunctions.isOwner(contactToDisplay, currentUser) || (!ClientsideFunctions.isOwner(contactToDisplay, currentUser) && allValuesOfContact.get(i).getIsShared()==true)) {
-							/*
-							 * Eine Ausprägung zu Geburtstag kann nur einmal vorhanden sein. Demzufolge gibt es hierfür auch keine ValueTable.
-							 * Das ValueDisplay, in dem sich die TextBox für das Geburtsdatum befindet, wird direkt angesprochen.
-							 */
+						identifier = "Geburtstag";
+						/*
+						 * Bei Geburtstag besteht die besonderheit, dass keine neue ValueTable angelegt wird,
+						 * da das Geburtsdatum nur einmal existieren kann. Es wird direkt in die contactTable
+						 * oben rechts neben das Geschlecht eingefügt.
+						 */
+						if(ClientsideFunctions.isOwner(contactToDisplay, currentUser) || (!ClientsideFunctions.isOwner(contactToDisplay, currentUser) && allValuesOfContact.get(i).getIsShared()==true)) {
+							//das Geburtsdatum wird nur angezeigt, wenn der Nutzer Eigentümer des Kontaktes ist oder wenn er Teilhaber ist und das Geburtsdatum auf "geteilt" gesetzt wurde
+							
 							Label birthdateLabel = new Label(ptype + ": ");
 							contactTable.setWidget(3, 2, birthdateLabel);
 							
@@ -1825,6 +1830,10 @@ public class ContactForm extends VerticalPanel {
 							((ValueDisplay) contactTable.getWidget(3, 3)).getWidget(0).setWidth("105px");
 							((ValueDisplay) contactTable.getWidget(3,3)).setValue(allValuesOfContact.get(i));
 							
+							/*
+							 * Je nachdem, ob der Benutzer Eigentümer oder Teilhaber des anzuzeigenden Kontaktes ist, werden die Buttons 
+							 * für das Löschen und Sperren des Geburtsdatums angezeigt oder eben nicht. 
+							 */
 							if (ClientsideFunctions.isOwner(contactToDisplay, currentUser)) {
 								((ValueDisplay) contactTable.getWidget(3, 3)).enableButtons();
 								
@@ -1832,19 +1841,18 @@ public class ContactForm extends VerticalPanel {
 									((ValueDisplay) contactTable.getWidget(3, 3)).setLockButtonTo(true);
 								}else {
 									((ValueDisplay) contactTable.getWidget(3, 3)).setLockButtonTo(false);
-								}
-								
+								}	
 							}
 							else {
 								((ValueDisplay) contactTable.getWidget(3, 3)).disableButtons();
 							}
 							
+							//das Geburtsdatum wird aus der Eigenschafts-Listbox herausgenommen, da es dem Kontakt bereits hinzugefügt wurde
 							for(int c=0; c<newPropertyListBox.getItemCount(); c++) {
 								if (newPropertyListBox.getItemText(c) == ptype) {
 									newPropertyListBox.removeItem(c);
 								}
-							}
-//							
+							}							
 						}
 						break;
 					
@@ -1852,19 +1860,26 @@ public class ContactForm extends VerticalPanel {
 						
 				case 5: // Arbeitsplatz
 						identifier = "Arbeitsplatz";
+						
 						break;
 						
 				
-				/*
-				 * Bei der Anschrift kann ebenfalls nur eine Ausprägung vorhanden sein. Demzufolge wurden die ValueTextBoxen hierfür
-				 * als Instanzenvariablen von ContactForm deklariert und können nun hier direkt angesprochen werden.
-				 * Sie befinden sich alle in der umschließenden FlexTable adressTable.
-				 */
+				
 				case 6:  // Straße
+						/*
+						 * Bei der Anschrift besteht ebenfalls eine besondere Behandlung. Sie besteht immer aus den vier Ausprägungen Straße,
+						 * Hausnummer, PLZ und Wohnort. Diese werden zusammen in einer speziellen Tabelle angezeigt, der addressTable.
+						 * Diese wird in die nächste freie Zeile der contactTable gesetzt. 
+						 * 
+						 * Wird eine Ausprägung der Eigenschaftsart "Straße" ausgelesen, so werden direkt alle Elemente für das Anzeigen der ganzen
+						 * Anschrift aufgebaut. In den cases 7, 8 und 9 werden dann die restlichen drei Textboxen noch befüllt. 
+						 */
 						
 						row = contactTable.getRowCount();
-						if(ClientsideFunctions.isOwner(contactToDisplay, currentUser) || (!ClientsideFunctions.isOwner(contactToDisplay, currentUser) && allValuesOfContact.get(i).getIsShared()==true)) {
 						
+						if(ClientsideFunctions.isOwner(contactToDisplay, currentUser) || (!ClientsideFunctions.isOwner(contactToDisplay, currentUser) && allValuesOfContact.get(i).getIsShared()==true)) {
+							//die Anschrift wird nur angezeigt, wenn der Nutzer Eigentümer des Kontaktes ist oder wenn er Teilhaber ist und die Anschrift auf "geteilt" gesetzt wurde
+							
 							Label addressLabel = new Label("Anschrift: ");
 							contactTable.setWidget(row, 0, addressLabel);
 							
@@ -1877,37 +1892,38 @@ public class ContactForm extends VerticalPanel {
 							cityTextBox = new ValueTextBox("Stadt");
 				
 							addressTable.setWidget(0, 0, streetTextBox);
+							streetTextBox.setValue(allValuesOfContact.get(i));
+							
+							//werden in den cases 7, 8, und 9 noch befüllt
 							addressTable.setWidget(0, 1, houseNrTextBox);
 							addressTable.setWidget(1, 0, plzTextBox);
 							addressTable.setWidget(1, 1, cityTextBox);
 								
 							addressTable.getFlexCellFormatter().setRowSpan(0, 2, 2);
 							addressTable.setWidget(0, 2, new ValueDisplay(new ValueTextBox("")));
-							((ValueDisplay) addressTable.getWidget(0, 2)).remove(0);
 							
 							/*
-							 * Da es sich bei der Anschrift nicht um ValueDisplays handelt, muss auf die beiden Buttons seperat
-							 * operiert werden. Ihnen wird jeweils die Straße als Ausprägung gesetzt, da es nur möglich ist, einen
-							 * einzelnen Wert als Value zu setzten. Trotzdem operieren diese Buttons beim Klicken auf die gesamten
-							 * vier Ausprägungen, die zur Anschrift gehören.
+							 * Die ValueTextBox des ValueDisplays wird wieder entfernt und die Ausprägung der Straße wird in das ValueDisplay gesetzt,
+							 * sodass der darin enthaltene DeleteValueButton und der LockButton auf die Straße referenzieren.
 							 */
-							streetTextBox.setValue(allValuesOfContact.get(i));
+							((ValueDisplay) addressTable.getWidget(0, 2)).remove(0);
 							((ValueDisplay) addressTable.getWidget(0, 2)).setValue(allValuesOfContact.get(i));
 							
 							
+							/*
+							 * Je nachdem, ob der Benutzer Eigentümer oder Teilhaber des anzuzeigenden Kontaktes ist, werden die Buttons 
+							 * für das Löschen und Sperren der Anschrift angezeigt oder eben nicht. 
+							 */
 							if(ClientsideFunctions.isOwner(contactToDisplay, currentUser)) {
 								((ValueDisplay) addressTable.getWidget(0, 2)).enableButtons();
-//								((LockButton) addressTable.getWidget(0, 2)).setEnabled(true);
-//								((DeleteValueButton) addressTable.getWidget(0,3)).setEnabled(true);
 							}
 							else {
 								
 								((ValueDisplay) addressTable.getWidget(0, 2)).disableButtons();
-//								((LockButton) addressTable.getWidget(0, 2)).setEnabled(false);
-//								((DeleteValueButton) addressTable.getWidget(0,3)).setEnabled(false);
-							
 							}
 							
+							
+							//die Anschrift wird aus der Eigenschafts-Listbox herausgenommen, da sie dem Kontakt bereits hinzugefügt wurde
 							for(int c=0; c<newPropertyListBox.getItemCount(); c++) {
 								if (newPropertyListBox.getItemText(c) == "Anschrift") {
 									newPropertyListBox.removeItem(c);
@@ -1915,7 +1931,9 @@ public class ContactForm extends VerticalPanel {
 							}
 							
 						}
+						
 						break;
+						
 		
 				case 7:  // Hausnummer
 						if(houseNrTextBox != null) {
@@ -1942,25 +1960,30 @@ public class ContactForm extends VerticalPanel {
 						identifier = "Homepage";
 						break;
 		
-				default: 
-					
+				default: // eine vom Benutzer neu hinzugefügte Eigenschaft
 						identifier = "Sonstiges";	
 				
 						break;
 						
 					
-				} //ende der switch case
+				}
 			
-
+			
+			/*
+			 * Für alle Fälle, die weder das Geburtsdatum noch die Anschrift betreffen, werden in nachfolgendem Code die GUI-Elemente zum
+			 * Anzeigen der Ausprägungen aufgebaut. Diese bestehen immer aus einem ValuePanel und einer ValueTable für jede Eigenschaftsart.
+			 * Gibt es mehrere Ausprägungen einer Eigenschaftsart, werden diese als neue Zeilen der bestehenden ValueTable angezeigt. 
+			 */
 			if(pid != 4 && pid!= 6 && pid!=7 && pid !=8 && pid!=9) {
 				
-
+				//ein neues ValuePanel & ValueTable werden immer in die nächste freie Zeile der contactTable eingefügt
 				row = contactTable.getRowCount();
 
 				if(ClientsideFunctions.isOwner(contactToDisplay, currentUser) || (!ClientsideFunctions.isOwner(contactToDisplay, currentUser) && allValuesOfContact.get(i).getIsShared()==true)) {
-
+					//die Ausprägung wird nur angezeigt, wenn der Nutzer Eigentümer des Kontaktes ist oder wenn er Teilhaber ist und die Ausprägung auf "geteilt" gesetzt wurde
 					
 					if(isFirstValue) {
+						//ist die Ausprägung die erste ihrer Eigenschaftsart, die angezeigt wird, werden ValuePanel & ValueTable neu erstellt
 						contactTable.setWidget(row, 0, new ValuePanel(pid, row, ptype + ": "));
 						contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
 						vp = (ValuePanel) contactTable.getWidget(row, 0);
@@ -1968,24 +1991,27 @@ public class ContactForm extends VerticalPanel {
 						contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
 						contactTable.setWidget(row, 1, new ValueTable(pid));
 						vt = (ValueTable) contactTable.getWidget(row, 1);
+						
 					}else {
+						//besteht bereits eine angezeigte Ausprägung dieser Eigenschaftsart, so referenziert die neue Ausprägung deren VP und VT 
 						vp = (ValuePanel) contactTable.getWidget(row-1, 0);
 						vt = (ValueTable) contactTable.getWidget(row-1, 1);
 					}
 
 					
 					vtRow = vt.getRowCount();
+					//in die nächste freie Zeile der ValueTable wird das neue ValueDisplay für die Ausprägung eingefügt
 					vt.setWidget(vtRow, 0, new ValueDisplay(new ValueTextBox(identifier)));
 					vt.getValueDisplay(vtRow).setValue(allValuesOfContact.get(i));
 					
 					
-
+					
 					/*
-					 * Das korrekte ValuePanel und ValueTable werden gesetzt und im Folgenden auf ihnen operiert.
-					 */
+					 * Je nachdem, ob der Benutzer Eigentümer oder Teilhaber des anzuzeigenden Kontaktes ist, werden einerseits der AddValueButton im ValuePanel,
+					 * sowie andererseits DeleteValueButton und LockButton im ValueDisplay der Ausprägung angezeigt oder eben nicht. 
+					 */				
 					if (ClientsideFunctions.isOwner(contactToDisplay, currentUser)) {
 						vt.getValueDisplay(vtRow).enableButtons();
-					//	vp.getAddValueButton().setEnabled(true);
 						vp.getAddValueButton().setVisible(true);
 						
 						if(allValuesOfContact.get(i).getIsShared() == true){
@@ -1994,15 +2020,13 @@ public class ContactForm extends VerticalPanel {
 							vt.getValueDisplay(vtRow).setLockButtonTo(false);
 						}
 					}
+					
 					else {
 						vt.getValueDisplay(vtRow).disableButtons();
-					//	vp.getAddValueButton().setEnabled(false);
 						vp.getAddValueButton().setVisible(false);
-						
-						
 					}
 
-				
+					//die Eigenschaftsart der Ausprägung wird aus der Eigenschafts-Listbox herausgenommen, da sie dem Kontakt bereits hinzugefügt wurde
 					for(int c=0; c<newPropertyListBox.getItemCount(); c++) {
 						if (newPropertyListBox.getItemText(c) == ptype) {
 							newPropertyListBox.removeItem(c);
@@ -2011,98 +2035,45 @@ public class ContactForm extends VerticalPanel {
 			
 				}
 		
-			}//ende der for-schleife
+			}
 		}
 	}
 	
-//	private class GetPropertyOfValueCallback implements AsyncCallback<Property>{
-//		int row;
-//		int pid;
-//		ValueTable vt;
-//		ValuePanel vp;
-//		Value value;
-//		
-//		public GetPropertyOfValueCallback(int row, int pid, ValueTable vt, ValuePanel vp, Value value) {
-//			this.row=row;
-//			this.pid = pid;
-//			this.vt=vt;
-//			this.vp=vp;
-//			this.value = value;
-//		}
-//		
-//		public void onFailure(Throwable t) {
-//			
-//		}
-//		public void onSuccess(Property result) {
-//			Window.alert("row im getpropertyofvaluecallback: " + ((Integer) row).toString());
-//			//11
-//			
-//			if(contactTable.isCellPresent(row, 0)) {
-//				if (contactTable.getWidget(row, 0) == null) {
-//					contactTable.setWidget(row, 0, new ValuePanel(pid, row, result.getType() + ": "));
-//					contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-//				}
-//			}else {
-//				Window.alert("else: neues Value Panel");
-//				contactTable.setWidget(row, 0, new ValuePanel(pid, row, result.getType() + ": "));
-//				contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
-//			}
-//			vp = (ValuePanel) contactTable.getWidget(row, 0);
-//							
-//			
-//			if (contactTable.isCellPresent(row, 1)) {
-//				if (contactTable.getWidget(row, 1) == null) {
-//					contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-//					contactTable.setWidget(row, 1, new ValueTable(pid));
-//				}
-//				
-//			}else {
-//				contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
-//				contactTable.setWidget(row, 1, new ValueTable(pid));
-//			}
-//			vt = (ValueTable) contactTable.getWidget(row, 1);
-//			int vtRow = vt.getRowCount();
-//			vt.setWidget(vtRow, 0, new ValueDisplay(new ValueTextBox("Sonstiges")));
-//			vt.getValueDisplay(vtRow).setValue(value);
-//			
-//			
-//			/*
-//			 * Gleiches Prinzip wie gerade schon, nur jetzt für das soeben neu hinzugefügte ValueDisplay.
-//			 */
-//			if (compareUser()) {
-//				vt.getValueDisplay(vtRow).enableButtons();
-//				vp.getAddValueButton().setEnabled(true);
-//			}
-//			else {
-//				vt.getValueDisplay(vtRow).disableButtons();
-//				vp.getAddValueButton().setEnabled(false);
-//			}
-//			
-//		}
-//	}
-//	
+
 	
 	
 	/**
 	 * Setzt das referenzierte TreeViewModel
 	 *
-	 * @param ContactListContactTreeViewModel das referenzierte TreeViewModel
+	 * @param clctvm das referenzierte TreeViewModel
+	 * @author KatrinZerfass
 	 */
 	public void setClctvm(ContactListContactTreeViewModel clctvm) {
 		this.clctvm= clctvm;
 		
 	}
 	
+	
+	/**
+	 * Gibt das buttonsPanel des Kontaktformulars zurück, um es in der Entry-Point-Klasse einem eigenen Div zuzuweisen. 
+	 * 
+	 * @return das buttonsPanel
+	 * @author KatrinZerfass
+	 */
 	public VerticalPanel getButtonsPanel() {
 		return this.buttonsPanel;
 	}
 	
+	
+	/**
+	 * Gibt das newPropertyPanel des Kontaktformulars zurück, um es in der Entry-Point-Klasse einem eigenen Div zuzuweisen. 
+	 * 
+	 * @return das newPropertyPanel
+	 * @author KatrinZerfass
+	 */
 	public HorizontalPanel getNewPropertyPanel() {
 		return this.newPropertyPanel;
 	}
 	
-//	public void disableRemoveContactButton() {
-//		this.removeContactFromContactListButton.setVisible(false);
-//	}
 	
 }
