@@ -124,7 +124,9 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		newContact.setSex(sex);
 		newContact.setIsUser(true);
 		
-		cMapper.insert(newContact, newUser);
+		newContact = cMapper.insert(newContact, newUser);
+		
+		createValue(newContact, 3, email);
 		
 		return newUser;
 	}
@@ -566,10 +568,10 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	//	pMapper.findByTypeAndCID(newProperty, contact);
 		
 		if(pMapper.findByTypeAndCID(newProperty, contact).size() == 0) {
-			return null;
+			return pMapper.insert(newProperty, contact);
 		}else {
 			//Hier Abfrage: gibt es schon einen Datensatz in der T_Property zu diesem Contact mit dieser Type? Wenn ja, return null
-			return pMapper.insert(newProperty, contact);
+			return null;
 		}
 	}
 
