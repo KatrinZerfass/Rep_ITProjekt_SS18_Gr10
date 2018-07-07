@@ -496,7 +496,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 					deleteNameResults();
 					deleteValueResults();
 					
-					editorAdministration.getAllSharedContactsOfContactList((ContactList) value, user, new AsyncCallback<Vector<Contact>>() {
+					editorAdministration.getAllContactsOfContactlistForUser((ContactList) value, user, new AsyncCallback<Vector<Contact>>() {
 						public void onFailure(Throwable t) {
 								}
 						public void onSuccess(Vector<Contact> contacts) {
