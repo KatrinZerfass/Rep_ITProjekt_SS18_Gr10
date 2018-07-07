@@ -49,13 +49,11 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	      "Please sign in to your Google Account to access the application.");
 	private Anchor signInLink = new Anchor("Sign In");
 	private Anchor signOutLink = new Anchor("Sign Out");
-	
-	
+		
 	VerticalPanel mainPanel = new VerticalPanel ();
 	VerticalPanel selectionPanel = new VerticalPanel ();
 	HorizontalPanel selectionHPanel= new HorizontalPanel();
-	
-	
+		
 	HorizontalPanel reportbuttonPanel=new HorizontalPanel();
 	HorizontalPanel searchPanel=new HorizontalPanel();
 	HorizontalPanel descriptionPanel = new HorizontalPanel();
@@ -77,11 +75,11 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	Label valueLabel = new Label("Ausprägung: ");
 	Label propertyLabel = new Label("Eigenschaft: ");
 
-
 	TextBox propertyInput = new TextBox();
 	TextBox valueInput = new TextBox();
 	ListBox propertylistbox = new ListBox();
 	ListBox reportlistbox = new ListBox();
+	
 	Button getReportButton = new Button("Zum Report");
 	Button allContactsOfUserButton = new Button("Report ausgeben");
 	Button allSharedContactsOfUserButton = new Button("Report ausgeben");
@@ -131,69 +129,8 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			
 	
 	public void onModuleLoad() {
-		
-		reportGenerator=ClientsideSettings.getReportGenerator();
-		RootPanel.get("reporttext").setVisible(false);
-		
-		/**
-		 * Instanziierung der SuggestBox für die Eingabe der Email.
-		**/
-
-		/**Layout**/		
-		searchheading.addStyleName("searchheading");
-		signOutLink.addStyleName("signout");
-		signInLink.addStyleName("reportbutton");		
-		propertyLabel.addStyleName("searchlabel");
-		valueLabel.addStyleName("searchlabel");
-		participantLabel.addStyleName("searchlabel");
-		reportbuttonPanel.addStyleName("top-buttons");
-		valuePanel.addStyleName("panel");
-		propertyPanel.addStyleName("panel");
-		participantPanel.addStyleName("panel");
-		getReportButton.addStyleName("reportbutton");
-		allContactsOfUserButton.addStyleName("reportbutton");
-		allSharedContactsOfUserButton.addStyleName("reportbutton");
-		allContactsWithValueButton.addStyleName("reportbutton");
-		allContactsWithPropertyButton.addStyleName("reportbutton");
-		propertyInput.addStyleName("sonstigeinput");
-		valueInput.addStyleName("reportSuggestBox");
-		
-		/**
-		 * Auslesen der vordefinierten Eigenschaften aus der Datenbank, um diese zur ListBox hinzuzufügen.
-		**/
-		
-		reportGenerator.getAllPredefinedPropertiesOfReport(new AsyncCallback<Vector<Property>>(){
-			public void onFailure(Throwable t) {
-				Window.alert("Auslesen aller vordefinierten Eigenschaften fehlgeschlagen");
-			}
-			public void onSuccess(Vector<Property> properties) {
-				for (Property p : properties) {
-					propertylistbox.addItem(p.getType());
-				}
-				propertylistbox.addItem("eigene Eigenschaftsart");	
-			}
-		});
-		
-		propertylistbox.addChangeHandler(new ChangeHandler() {
-            @Override
-            public void onChange(ChangeEvent event) {
-            	int size=propertylistbox.getItemCount();
-            	int Item = propertylistbox.getSelectedIndex();
-            	
-            	if(Item==(size-1)){
-            		propertyPanel.remove(allContactsWithPropertyButton);
-            		propertyPanel.add(propertyInput);
-            		propertyPanel.add(allContactsWithPropertyButton);
-                	}
-            	else{
-            		propertyPanel.remove(propertyInput);
-            	}
-            	}});
-            	           	
-        reportlistbox.addItem("Alle meine Kontakte");
-        reportlistbox.addItem("Alle mit einem Nutzer geteilten Kontakte");
-        reportlistbox.addItem("Kontakte mit bestimmter Ausprägung");
-        reportlistbox.addItem("Kontakte mit bestimmter Eigenschaft");
+				
+		signInLink.addStyleName("reportbutton");
 
 		LoginServiceAsync loginService = GWT.create(LoginService.class);
 	    loginService.login("https://it-projekt-gruppe-10-203610.appspot.com/ITProjekt_SS18_Gr_10_Report.html", new AsyncCallback<LoginInfo>() {
@@ -209,6 +146,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	    	}
 	    });
 	  }
+	
 		
 	/**
 	 * Auslesen der Nutzerinformationen und abspeichern der Informationen in die Variable user.
@@ -234,13 +172,108 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	    });
   	}
 	
+	
 	/**
 	 * Laden der Applikation.
 	**/
 	 public void loadApplication() { 
-	  		 
+
 			signOutLink.setHref(loginInfo.getLogoutUrl());
-	        
+								
+
+			/**Layout**/		
+			searchheading.addStyleName("searchheading");
+			signOutLink.addStyleName("signout");					
+			propertyLabel.addStyleName("searchlabel");
+			valueLabel.addStyleName("searchlabel");
+			participantLabel.addStyleName("searchlabel");
+			reportbuttonPanel.addStyleName("top-buttons");
+			valuePanel.addStyleName("panel");
+			propertyPanel.addStyleName("panel");
+			participantPanel.addStyleName("panel");
+			getReportButton.addStyleName("reportbutton");
+			allContactsOfUserButton.addStyleName("reportbutton");
+			allSharedContactsOfUserButton.addStyleName("reportbutton");
+			allContactsWithValueButton.addStyleName("reportbutton");
+			allContactsWithPropertyButton.addStyleName("reportbutton");
+			propertyInput.addStyleName("sonstigeinput");
+			valueInput.addStyleName("reportSuggestBox");
+			
+			
+			/**
+			 * Auslesen der vordefinierten Eigenschaften aus der Datenbank, um diese zur ListBox hinzuzufügen.
+			**/
+			
+			reportGenerator.getAllPredefinedPropertiesOfReport(new AsyncCallback<Vector<Property>>(){
+				public void onFailure(Throwable t) {
+					Window.alert("Auslesen aller vordefinierten Eigenschaften fehlgeschlagen");
+				}
+				public void onSuccess(Vector<Property> properties) {
+					for (Property p : properties) {
+						propertylistbox.addItem(p.getType());
+					}
+					propertylistbox.addItem("eigene Eigenschaftsart");	
+				}
+			});
+			
+			
+			propertylistbox.addChangeHandler(new ChangeHandler() {
+	            @Override
+	            public void onChange(ChangeEvent event) {
+	            	int size=propertylistbox.getItemCount();
+	            	int Item = propertylistbox.getSelectedIndex();
+	            	
+	            	if(Item==(size-1)){
+	            		propertyPanel.remove(allContactsWithPropertyButton);
+	            		propertyPanel.add(propertyInput);
+	            		propertyPanel.add(allContactsWithPropertyButton);
+	                	}
+	            	else{
+	            		propertyPanel.remove(propertyInput);
+	            	}
+	            	}});
+	            	           	
+	        reportlistbox.addItem("Alle meine Kontakte");
+	        reportlistbox.addItem("Alle mit einem Nutzer geteilten Kontakte");
+	        reportlistbox.addItem("Kontakte mit bestimmter Ausprägung");
+	        reportlistbox.addItem("Kontakte mit bestimmter Eigenschaft");
+
+			
+			
+			
+			/**
+			 * Befüllen des Hauptpanels  
+			**/  
+			
+			descriptionPanel.add(searchheading);
+			sb.getSuggestBox().addStyleName("reportSuggestBox");
+			reportbuttonPanel.add(allContactsOfUserButton);
+			
+			participantPanel.add(participantLabel);
+			participantPanel.add(sb.getSuggestBox());
+			participantPanel.add(allSharedContactsOfUserButton);
+			
+			propertyPanel.add(propertyLabel);
+			propertyPanel.add(propertylistbox);
+			propertyPanel.add(allContactsWithPropertyButton);
+			
+			valuePanel.add(valueLabel);
+			valuePanel.add(valueInput);
+			valuePanel.add(allContactsWithValueButton);
+					
+			selectionHPanel.add(reportlistbox);
+			selectionHPanel.add(getReportButton);
+			selectionPanel.add(descriptionPanel);
+			selectionPanel.add(selectionHPanel);
+			
+			mainPanel.add(selectionPanel);
+			
+		 	RootPanel.get("reporttext").setVisible(false);
+			RootPanel.get("signout").add(signOutLink);
+			RootPanel.get("report").add(mainPanel);
+			
+
+			
 			
 			/**
 			 * Hinzufügen eines Clickhandlers um den passenden Report auszuwählen.
@@ -285,7 +318,9 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 		        				break;
 		        			}
 		        		 }
-		              });		
+		              });
+			
+			
 			/**
 			 * Hinzufügen eines Clickhandlers um den Report für alle Kontakte des Nutzers zu generieren.
 			**/
@@ -310,6 +345,8 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	    					 });
 	        			}
 		        	 });
+			
+			
 			/**
 			 * Hinzufügen eines Clickhandlers um den Report für "alle geteilten Kontakte mit einem Nutzers" zu generieren.
 			**/    	 
@@ -344,6 +381,8 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 							}
 	   				 	}
 					});
+		    
+		    
 		    /**
 			 * Hinzufügen eines Clickhandlers um den Report für "alle Kontakte mit einer bestimmten Ausprägung" zu generieren.
 			**/  
@@ -373,6 +412,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 					final ClientsideFunctions.popUpBox emptyTextbox = new ClientsideFunctions.popUpBox("Suchleiste ist leer. Bitte füllen Sie einen Suchbegriff in das Suchfeld ein.", new ClientsideFunctions.OkButton());
 					emptyTextbox.getOkButton().addCloseDBClickHandler(emptyTextbox);
 				}}});
+			
 			
 			/**
 			 * Hinzufügen eines Clickhandlers um den Report für "alle Kontakte mit einer bestimmten Eigenschaft" zu generieren.
@@ -425,33 +465,11 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	   				}
 				}}
 			});
-			
-			/**
-			 * Befüllen des Hauptpanels  
-			**/  
-			
-			descriptionPanel.add(searchheading);
-			sb.getSuggestBox().addStyleName("reportSuggestBox");
-			reportbuttonPanel.add(allContactsOfUserButton);
-			participantPanel.add(participantLabel);
-			participantPanel.add(sb.getSuggestBox());
-			participantPanel.add(allSharedContactsOfUserButton);
-			propertyPanel.add(propertyLabel);
-			propertyPanel.add(propertylistbox);
-			propertyPanel.add(allContactsWithPropertyButton);
-			valuePanel.add(valueLabel);
-			valuePanel.add(valueInput);
-			valuePanel.add(allContactsWithValueButton);
-
-			RootPanel.get("signout").add(signOutLink);
-			selectionHPanel.add(reportlistbox);
-			selectionHPanel.add(getReportButton);
-			selectionPanel.add(descriptionPanel);
-			selectionPanel.add(selectionHPanel);
-			mainPanel.add(selectionPanel);
-			RootPanel.get("report").add(mainPanel);
 	   			
-			}  
+		}  
+	 
+	 
+	 
 	 	/**
 		 * Laden des Logins und befüllen des LoginPanels.
 		**/  
@@ -461,5 +479,5 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 		    loginPanel.add(loginLabel);
 		    loginPanel.add(signInLink);
 		    RootPanel.get("loginRepo").add(loginPanel);
-		  }
+	}
 }
