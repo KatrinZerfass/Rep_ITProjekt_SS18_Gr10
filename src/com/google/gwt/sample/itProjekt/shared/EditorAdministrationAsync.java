@@ -137,4 +137,6 @@ public interface EditorAdministrationAsync {
 	void shareContactList(User sourceUser, String shareUserEmail, ContactList shareContactList,
 			AsyncCallback<Permission> callback);
 
+	void getFullNameOfUser(User user, AsyncCallback<String> callback);
+
 }
