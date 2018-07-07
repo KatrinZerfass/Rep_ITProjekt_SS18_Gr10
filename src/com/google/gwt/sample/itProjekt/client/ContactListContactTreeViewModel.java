@@ -195,7 +195,44 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		myContactsContactList = cl;
 
 		this.setSelectedContactList(myContactsContactList);
+	}
+		
 	
+	/**
+	 * Auslesen der virtuellen Kontaktliste 'Suchergebnis im Namen'
+	 * 
+	 * @return nameResultsCL
+	 */
+	
+	public ContactList getNameResultsCL() {
+		return nameResultsCL;
+	}
+
+	/**
+	 * Setzen der virtuellen Kontaktliste 'Suchergebnis im Namen'
+	 * @param nameResultsCL
+	 */
+
+	public void setNameResultsCL(ContactList nameResultsCL) {
+		this.nameResultsCL = nameResultsCL;
+	}
+
+	/**
+	 * Auslesen der virtuellen Kontaktliste 'Suchergebnis in den Eigenschaften'
+	 * @return valueResultsCL
+	 */
+
+	public ContactList getValueResultsCL() {
+		return valueResultsCL;
+	}
+	
+	/**
+	 * Setzen der virtuellen Kontaktliste 'Suchergebnis in den Eigenschaften'
+	 * @param valueResultsCL
+	 */
+	
+	public void setValueResultsCL(ContactList valueResultsCL) {
+		this.valueResultsCL = valueResultsCL;
 	}
 	
 
@@ -504,32 +541,19 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	return null;	
 	}
 	
-
-	
+	/**
+	 * Es wird geprüft, ob es sich bei dem übergebenen Objekt um ein Kontakt Objekt handelt. 
+	 *  
+	 * @param das zu untersuchende Objekt
+	 * @return boolean 
+	 */
 
 	public boolean isLeaf(Object value) {
 		return (value instanceof Contact);
 	}
 
 
-	public ContactList getNameResultsCL() {
-		return nameResultsCL;
-	}
-
-
-	public void setNameResultsCL(ContactList nameResultsCL) {
-		this.nameResultsCL = nameResultsCL;
-	}
-
-
-	public ContactList getValueResultsCL() {
-		return valueResultsCL;
-	}
-
-
-	public void setValueResultsCL(ContactList valueResultsCL) {
-		this.valueResultsCL = valueResultsCL;
-	}
+	
 
 
 
