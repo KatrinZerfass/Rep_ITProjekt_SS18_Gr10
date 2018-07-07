@@ -38,7 +38,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	private LoginInfo loginInfo = null;
 	private VerticalPanel loginPanel = new VerticalPanel();
 	private Label loginLabel = new Label(
-	      "Please sign in to your Google Account to access the application.");
+	      "Bitte loggen Sie sich mit ihrem Google-Account ein um die Anwendung zu nutzen.");
 	private Anchor signInLink = new Anchor("Sign In");
 	private Anchor signOutLink = new Anchor("Sign Out");
 	
@@ -133,7 +133,8 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 										if(arg0 == null) {
 											Window.alert("arg0 = null");
 										}
-										Window.alert("Herzlich Willkommen!");
+										final ClientsideFunctions.popUpBox welcome = new ClientsideFunctions.popUpBox("Herzlich Willkommen bei SCIT.", new ClientsideFunctions.OkButton());
+										welcome.getOkButton().addCloseDBClickHandler(welcome);
 										createAccountBox.hide();
 										ClientsideSettings.setUser(arg0);
 										user = arg0;

@@ -325,8 +325,9 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 		   								 }
 		   					 });
 						}
-						else{
-							Window.alert("Suchleiste ist leer. Bitte füllen Sie einen Suchbegriff in das Suchfeld ein.");
+						else{							
+							final ClientsideFunctions.popUpBox emptyTextbox = new ClientsideFunctions.popUpBox("Suchleiste ist leer. Bitte füllen Sie einen Suchbegriff in das Suchfeld ein.", new ClientsideFunctions.OkButton());
+							emptyTextbox.getOkButton().addCloseDBClickHandler(emptyTextbox);
 							}
 	   				 	}
 					});
@@ -354,7 +355,8 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 					 });
 					}
 				else{
-					Window.alert("Suchleiste ist leer. Bitte füllen Sie einen Suchbegriff in das Suchfeld ein.");
+					final ClientsideFunctions.popUpBox emptyTextbox = new ClientsideFunctions.popUpBox("Suchleiste ist leer. Bitte füllen Sie einen Suchbegriff in das Suchfeld ein.", new ClientsideFunctions.OkButton());
+					emptyTextbox.getOkButton().addCloseDBClickHandler(emptyTextbox);
 				}}});
 			
 			allContactsWithPropertyButton.addClickHandler(new ClickHandler() {
@@ -399,7 +401,8 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 						 }
 					 });
 	   			}else{
-	   				Window.alert("Suchleiste ist leer. Bitte füllen Sie einen Suchbegriff in das Suchfeld ein.");
+	   				final ClientsideFunctions.popUpBox emptyTextbox = new ClientsideFunctions.popUpBox("Suchleiste ist leer. Bitte füllen Sie einen Suchbegriff in das Suchfeld ein.", new ClientsideFunctions.OkButton());
+					emptyTextbox.getOkButton().addCloseDBClickHandler(emptyTextbox);
 	   				}
 				}}
 			});
