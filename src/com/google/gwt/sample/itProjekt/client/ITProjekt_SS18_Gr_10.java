@@ -7,6 +7,7 @@ import com.google.gwt.sample.itProjekt.shared.LoginServiceAsync;
 import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
 
+import java.util.Vector;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -160,12 +161,32 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		/*
 		 * Im Folgenden wird das GUI aufgebaut
 		 */
+	    VerticalPanel loginPanel = new VerticalPanel();
+	    HorizontalPanel signedInUserPanel = new HorizontalPanel();
+	    Label signedInUserLabel = new Label("Eingelogged als: ");
+	    signedInUserPanel.add(signedInUserLabel);
+	    Label signedInUserName = new Label();
+//	    editorAdministration.getFullNameOfUser(user, AsyncCallback<String>(){
+//	    	public void onFailure(Throwable t) {
+//	    		
+//	    	}
+//	    	public void onSuccess(String result) {
+//	    		signedInUserName.setText(result);
+//	    	
+//	    		
+//	    	}
+//	    });
+	    signedInUserPanel.add(signedInUserName);
+	    
 	    
 	    signOutLink.setHref(loginInfo.getLogoutUrl());
 	    signOutLink.addStyleName("signout");
 		signInLink.addStyleName("reportbutton");
 		
-		RootPanel.get("Login").add(signOutLink);
+		loginPanel.add(signOutLink);
+		loginPanel.add(signedInUserPanel);
+		
+		RootPanel.get("Login").add(loginPanel);
 		
 		/*
 		 * Das Div "ContactForm" beinhaltet eine Instanz von ContactForm
