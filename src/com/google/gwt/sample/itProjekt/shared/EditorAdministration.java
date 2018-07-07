@@ -5,6 +5,11 @@ import com.google.gwt.sample.itProjekt.shared.bo.*;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
+/*
+ * ***************************************************************************
+ * ABSCHNITT, Beginn: Initialisierung
+ * ***************************************************************************
+ */
 
 /**
  * <p>
@@ -26,6 +31,21 @@ public interface EditorAdministration extends RemoteService{
 	 */
 	public void init() throws IllegalArgumentException;
 	
+	 /*
+	   * ***************************************************************************
+	   * ABSCHNITT, Ende: Initialisierung
+	   * ***************************************************************************
+	   */
+
+	  /*
+	   * ***************************************************************************
+	   * ABSCHNITT, Beginn: Methoden für User-Objekte
+	   * create, edit, delete und get(ter) für User-Objekte, sowie alle Methoden, 
+	   * welche User-Objekte oder Vektoren von User-Objekten zurück geben 
+	   * oder den User direkt betreffen.
+	   * ***************************************************************************
+	   */
+	
 	/**
 	 * Legt einen Benutzer in der Datenbank an.
 	 *
@@ -34,9 +54,9 @@ public interface EditorAdministration extends RemoteService{
 	 * @throws IllegalArgumentException
 	 */
 	public User createUser(String email) throws IllegalArgumentException;
-	
+	//TODO: comment
 	public User editUser(User user) throws IllegalArgumentException;
-	
+	//TODO: comment
 	public void deleteUser(User u) throws IllegalArgumentException;
 	
 	
@@ -110,8 +130,22 @@ public interface EditorAdministration extends RemoteService{
 	 * @throws IllegalArgumentException
 	 */
 	public Vector<User> getAllParticipantsOfContact(Contact contact) throws IllegalArgumentException;
-
+	//TODO: comment
 	public Vector<User> getAllParticipantsOfContactList(ContactList contactlist) throws IllegalArgumentException;
+	
+	  /*
+	   * ***************************************************************************
+	   * ABSCHNITT, Ende: Methoden für User-Objekte
+	   * ***************************************************************************
+	   */
+
+	  /*
+	   * ***************************************************************************
+	   * ABSCHNITT, Beginn: Methoden für Kontakt-Objekte
+	   * create, edit, delete und get(ter) für Kontakt-Objekte, sowie alle Methoden, 
+	   * welche Kontakt-Objekte oder Vektoren von Kontakt-Objekten zurück geben.
+	   * ***************************************************************************
+	   */
 
 	/**
 	 * Holt die Information ob der Nutzer bereits aus der Datenbank.
@@ -241,7 +275,7 @@ public interface EditorAdministration extends RemoteService{
 	 * @throws IllegalArgumentException
 	 */
 	public Vector<Contact> getAllContactsWithName(String name) throws IllegalArgumentException;
-
+	//TODO: comment
 	public Vector<Contact> getAllSharedContactsOfContactList(ContactList contactlist, User user) throws IllegalArgumentException;
 
 	/**
@@ -263,7 +297,7 @@ public interface EditorAdministration extends RemoteService{
 	 * @throws IllegalArgumentException
 	 */
 	public Vector<Contact> getContactsOfUserWithProperty(User user, Property Property) throws IllegalArgumentException;
-
+	//TODO: comment
 	public Vector<Contact> getContactsOfUserWithDefaultProperty(User user, Property property) throws IllegalArgumentException;
 
 	/**
@@ -291,6 +325,21 @@ public interface EditorAdministration extends RemoteService{
 	 */
 	public Vector<Contact> getContactsOfValueSearchResult(User user, String textBox, ContactList selectedContactList) throws IllegalArgumentException;
 
+	  /*
+	   * ***************************************************************************
+	   * ABSCHNITT, Ende: Methoden für Kontakt-Objekte
+	   * ***************************************************************************
+	   */
+
+	  /*
+	   * ***************************************************************************
+	   * ABSCHNITT, Beginn: Methoden für Kontaktlisten-Objekte
+	   * create, edit, und delete für Kontaktlisten-Objekte, sowie alle 
+	   * Methoden, welche Kontaktlisten-Objekte oder Vektoren von 
+	   * Kontaktlisten-Objekten zurück geben.
+	   * ***************************************************************************
+	   */
+	
 	/**
 	 * Legt einen neue Kontaktliste an.
 	 *
@@ -370,6 +419,21 @@ public interface EditorAdministration extends RemoteService{
 	 */
 	public Vector<ContactList> getAllContactListsWithContact(Contact contact) throws IllegalArgumentException;
 	
+	 /*
+	   * ***************************************************************************
+	   * ABSCHNITT, Ende: Methoden für Kontaktlisten-Objekte
+	   * ***************************************************************************
+	   */
+
+	  /*
+	   * ***************************************************************************
+	   * ABSCHNITT, Beginn: Methoden für Eigenschaften-Objekte
+	   * create, edit, und delete für Eigenschaften-Objekte, sowie alle 
+	   * Methoden, welche Eigenschaften-Objekte oder Vektoren von 
+	   * Eigenschaften-Objekten zurück geben.
+	   * ***************************************************************************
+	   */
+	
 	/**
 	 * Legt eine neuen, nicht vordedinierte Eigenschaft für einen bestimmten Kontakt in der Datenbank an.
 	 *
@@ -379,9 +443,9 @@ public interface EditorAdministration extends RemoteService{
 	 * @throws IllegalArgumentException
 	 */
 	public Property createProperty(Contact contact, String type) throws IllegalArgumentException;
-
+	//TODO: comment
 	public Property editProperty(Property property) throws IllegalArgumentException;
-
+	//TODO: comment
 	public void deleteProperty(Property property) throws IllegalArgumentException;
 
 	/**
@@ -410,6 +474,21 @@ public interface EditorAdministration extends RemoteService{
 	 * @throws IllegalArgumentException
 	 */
 	public Vector<Property> getAllPredefinedPropertiesOf() throws IllegalArgumentException;
+	
+	 /*
+	   * ***************************************************************************
+	   * ABSCHNITT, Ende: Methoden für Eigenschaften-Objekte
+	   * ***************************************************************************
+	   */
+
+	  /*
+	   * ***************************************************************************
+	   * ABSCHNITT, Beginn: Methoden für Ausprägungs-Objekte
+	   * create, edit, und delete für Ausprägungs-Objekte, sowie alle 
+	   * Methoden, welche Ausprägungs-Objekte oder Vektoren von 
+	   * Ausprägungs-Objekten zurück geben.
+	   * ***************************************************************************
+	   */
 
 	/**
 	 * Legt eine Ausprägung zu einer Eigenschaft für einen bestimmten Kontakt in der Datenbank an.
@@ -478,6 +557,22 @@ public interface EditorAdministration extends RemoteService{
 	 * @throws IllegalArgumentException
 	 */
 	public Vector<Value> getAllSharedValuesOfContact(Contact contact) throws IllegalArgumentException;
+	
+	/*
+	   * ***************************************************************************
+	   * ABSCHNITT, Ende: Methoden für Ausprägungs-Objekte
+	   * ***************************************************************************
+	   */
+
+	  /*
+	   * ***************************************************************************
+	   * ABSCHNITT, Beginn: Methoden für Teilhaberschaft-Objekte
+	   * create (im Falle von Teilhaberschaften entspricht dies den 
+	   * "share"-Methoden), edit, und delete für Teilhaberschaft-Objekte, sowie alle 
+	   * Methoden, welche Teilhaberschaft-Objekte oder Vektoren von 
+	   * Teilhaberschaft-Objekten zurück geben.
+	   * ***************************************************************************
+	   */
 
 	/**
 	 * Teilt einen Kontakt mit einem bestimmten Nutzer.
@@ -500,9 +595,9 @@ public interface EditorAdministration extends RemoteService{
 	 * @throws IllegalArgumentException
 	 */
 	public Permission shareContactList(User sourceUser, String shareUserEmail, ContactList shareContactList) throws IllegalArgumentException;
-
+	//TODO: comment
 	public Permission editPermissionContact(Permission permission) throws IllegalArgumentException;
-
+	//TODO: comment
 	public Permission editPermissionContactList(Permission permission) throws IllegalArgumentException;
 
 	/**
@@ -524,10 +619,22 @@ public interface EditorAdministration extends RemoteService{
 	 * @throws IllegalArgumentException
 	 */
 	public Vector<Permission> getAllPermissions() throws IllegalArgumentException;
+	
+	  /*
+	   * ***************************************************************************
+	   * ABSCHNITT, Ende: Methoden für Teilhaberschaft-Objekte
+	   * ***************************************************************************
+	   */
 
+	  /*
+	   * ***************************************************************************
+	   * ABSCHNITT, Beginn: Methoden, welche sonstige Funktionen erfüllen.
+	   * ***************************************************************************
+	   */
+	//TODO: comment
 	public String getFullNameOfUser(User user) throws IllegalArgumentException;
-
+	//TODO: comment
 	public Vector<String> getFullNamesOfUsers(Vector<User> user) throws IllegalArgumentException;
-
+	//TODO: comment
 	public Vector<String> getAllUserSuggestions(User activeUser) throws IllegalArgumentException;
 }
