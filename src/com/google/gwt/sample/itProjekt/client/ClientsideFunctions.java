@@ -207,6 +207,7 @@ public abstract class ClientsideFunctions {
         private TextBox multiUseTextBox;
         private TextBox nameTextBox;
         private ListBox sexListBox;
+        private ValueTextBox vTextBox;
         private SuggestBox sb;
         private MultiWordSuggestOracle oracle;
 		CloseButton close=new CloseButton(this);
@@ -282,6 +283,35 @@ public abstract class ClientsideFunctions {
 			hpanel.add(close);
 	        hpanel.add(ok);
 	        panel.add(multiUseTextBox);
+	        panel.add(hpanel);
+
+	        setWidget(panel);
+	        
+	        show();
+	        center();
+	    }
+		
+		public InputDialogBox(ValueTextBox vtb) {
+			
+			setVTextBox(vtb);
+	        ok.addStyleName("okbutton");
+	        close.addStyleName("closebutton");
+			
+			setText("Eingabe");
+			setAnimationEnabled(true);
+			setGlassEnabled(true);
+			
+	        
+			VerticalPanel panel = new VerticalPanel();
+	        panel.setHeight("100");
+	        panel.setWidth("300");
+	        panel.setSpacing(10);
+	        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+	        panel.add(dialogBoxLabel);
+			HorizontalPanel hpanel=new HorizontalPanel();
+			hpanel.add(close);
+	        hpanel.add(ok);
+	        panel.add(vTextBox);
 	        panel.add(hpanel);
 
 	        setWidget(panel);
@@ -421,6 +451,14 @@ public abstract class ClientsideFunctions {
 
 		public void setSexListBox(ListBox sexListBox) {
 			this.sexListBox = sexListBox;
+		}
+
+		public ValueTextBox getVTextBox() {
+			return vTextBox;
+		}
+
+		public void setVTextBox(ValueTextBox vTextBox) {
+			this.vTextBox = vTextBox;
 		}
 	}
 	
