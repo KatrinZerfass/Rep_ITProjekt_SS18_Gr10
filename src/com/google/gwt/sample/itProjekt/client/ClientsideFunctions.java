@@ -439,13 +439,13 @@ public abstract class ClientsideFunctions {
 		 *
 		 * @param vtb the vtb
 		 */
-		public InputDialogBox(ValueTextBox vtb) {
+		public InputDialogBox(ValueTextBox vtb, String title) {
 			
 			setVTextBox(vtb);
 	        ok.addStyleName("okbutton");
 	        close.addStyleName("closebutton");
 			
-			setText("Neue Eigenschaftsart hinzufügen");
+			setText(title);
 			setAnimationEnabled(true);
 			setGlassEnabled(true);
 			

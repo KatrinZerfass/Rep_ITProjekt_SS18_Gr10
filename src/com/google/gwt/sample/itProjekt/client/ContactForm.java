@@ -8,7 +8,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.sample.itProjekt.client.ClientsideFunctions.InputDialogBox;
-import com.google.gwt.sample.itProjekt.client.ContactForm.ValueTable;
 import com.google.gwt.sample.itProjekt.shared.EditorAdministrationAsync;
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
@@ -21,14 +20,12 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.PushButton;
-import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -99,15 +96,10 @@ public class ContactForm extends VerticalPanel {
 	ClickHandler saveChangesClickHandler = null;
 	ClickHandler addPropertyClickHandler = null;
 	
-	
-	
 	/**Der aktuell angemeldete Nutzer */
 	User currentUser = new User();
 	
-	/*
-	 * Buttons, auf die später auch außerhalb der Methode onLoad() zugegriffen werden muss (wegen disablen, falls der Nutzer 
-	 * nur Teilhaber ist). Deshalb wurden sie als Instanzenvariablen deklariert.
-	 */
+	/* Buttons, um Interaktionen mit Kontakten zu ermöglichen */
 	Button shareContactButton = null;	
 	Button deleteContactButton = null;
 	Button addContactToContactListButton = null;
@@ -115,48 +107,48 @@ public class ContactForm extends VerticalPanel {
 	Button removeContactFromContactListButton = null;
 	
 
-	/**
-	 * Die innere Klasse CloseButton.
-	 * Sie dient der Darstellung von "Abbrechen"-Buttons auf jeder instantiierten DialogBox. Dieser bietet dem Nutzer die Möglichkeit,
-	 * den Vorgang abzubrechen und die DialogBox zu schließen.
-	 * 
-	 *  @author KatrinZerfass
-	 */
-	
-	public class CloseButton extends Button{
-		
-		DialogBox db;
-		
-		/**
-		 * Der Konstruktor von LockButton. Die DialogBox, in der der CloseButton hinzugefügt wird, wird als Übergabeparameter definiert.
-		 */
-		public CloseButton(DialogBox db) {
-			this.db = db;
-			this.addClickHandler(new CloseDBClickHandler(db)); 
-			this.setText("Abbrechen");
-			this.addStyleName("closebutton");
-		}
-		
-		/**
-		 * Der ClickHandler wird im Konstruktor dem CloseButton hinzugefügt. Er schließt die DialogBox.
-		 * @author Zerfass
-		 *
-		 */
-		private class CloseDBClickHandler implements ClickHandler{
-			DialogBox db;
-	
-			
-			public CloseDBClickHandler(DialogBox db) {
-				this.db=db;
-			}
-			
-			public void onClick(ClickEvent event) {
-				db.hide();
-			}
-			
-		}
-		
-	}
+//	/**
+//	 * Die innere Klasse CloseButton.
+//	 * Sie dient der Darstellung von "Abbrechen"-Buttons auf jeder instantiierten DialogBox. Dieser bietet dem Nutzer die Möglichkeit,
+//	 * den Vorgang abzubrechen und die DialogBox zu schließen.
+//	 * 
+//	 *  @author KatrinZerfass
+//	 */
+//	
+//	public class CloseButton extends Button{
+//		
+//		DialogBox db;
+//		
+//		/**
+//		 * Der Konstruktor von LockButton. Die DialogBox, in der der CloseButton hinzugefügt wird, wird als Übergabeparameter definiert.
+//		 */
+//		public CloseButton(DialogBox db) {
+//			this.db = db;
+//			this.addClickHandler(new CloseDBClickHandler(db)); 
+//			this.setText("Abbrechen");
+//			this.addStyleName("closebutton");
+//		}
+//		
+//		/**
+//		 * Der ClickHandler wird im Konstruktor dem CloseButton hinzugefügt. Er schließt die DialogBox.
+//		 * @author Zerfass
+//		 *
+//		 */
+//		private class CloseDBClickHandler implements ClickHandler{
+//			DialogBox db;
+//	
+//			
+//			public CloseDBClickHandler(DialogBox db) {
+//				this.db=db;
+//			}
+//			
+//			public void onClick(ClickEvent event) {
+//				db.hide();
+//			}
+//			
+//		}
+//		
+//	}
 	
 	
 	
@@ -1418,10 +1410,10 @@ public class ContactForm extends VerticalPanel {
 	 * @author KatrinZerfass
 	 */
 	private class NewPropertyClickHandler implements ClickHandler{
-		DialogBox db = null;
-		VerticalPanel dbPanel = null;
+//		DialogBox db = null;
+//		VerticalPanel dbPanel = null;
 		ValueTextBox inputTextBox = null;
-		HorizontalPanel dbButtonsPanel = null;
+//		HorizontalPanel dbButtonsPanel = null;
 		int pid;
 		String ptype;
 		int row;
@@ -1433,33 +1425,38 @@ public class ContactForm extends VerticalPanel {
 			row = contactTable.getRowCount();
 			
 			if(ptype == "Geburtstag") {
-				db = new DialogBox();
-				dbPanel = new VerticalPanel();
 				inputTextBox = new ValueTextBox("Geburtstag");
 				inputTextBox.getElement().setPropertyString("placeholder", "dd.mm.yyyy");
-				dbButtonsPanel = new HorizontalPanel();
-
-				db.setText("Geburtsdatum eintragen");
+				final InputDialogBox input = new InputDialogBox(inputTextBox, "Geburtsdatum eintragen");
+				input.getOKButton().addClickHandler(new ClickHandler() {
+					
+//				db = new DialogBox();
+//				dbPanel = new VerticalPanel();
+//				inputTextBox = new ValueTextBox("Geburtstag");
+//				
+//				dbButtonsPanel = new HorizontalPanel();
+//
+//				db.setText("Geburtsdatum eintragen");
 			
-				CloseButton closeButton = new CloseButton(db);
-				dbButtonsPanel.add(closeButton);
+//				CloseButton closeButton = new CloseButton(db);
+//				dbButtonsPanel.add(closeButton);
+//				
+//				Button addBirthdayButton = new Button("Hinzufügen");
+//				dbButtonsPanel.add(addBirthdayButton);
+//				addBirthdayButton.addStyleName("okbutton");
+//			
+//				dbPanel.add(inputTextBox);
+//				dbPanel.add(dbButtonsPanel);
+//
+//				
+//				db.add(dbPanel);
+//				db.show();
 				
-				Button addBirthdayButton = new Button("Hinzufügen");
-				dbButtonsPanel.add(addBirthdayButton);
-				addBirthdayButton.addStyleName("okbutton");
-			
-				dbPanel.add(inputTextBox);
-				dbPanel.add(dbButtonsPanel);
-
 				
-				db.add(dbPanel);
-				db.show();
-				
-				
-				addBirthdayButton.addClickHandler(new ClickHandler(){
+//				addBirthdayButton.addClickHandler(new ClickHandler(){
 					public void onClick(ClickEvent event) {
-
-						db.hide();
+						input.hide();
+//						db.hide();
 						
 						if(!ClientsideFunctions.checkValue(inputTextBox)) {
 							inputTextBox.setText("");
@@ -1494,7 +1491,7 @@ public class ContactForm extends VerticalPanel {
 			}
 			else if(ptype == "Neue Eigenschaft anlegen") {
 				
-				final InputDialogBox input = new InputDialogBox(new ValueTextBox("Sonstiges"));
+				final InputDialogBox input = new InputDialogBox(new ValueTextBox("Sonstiges"), "Neue Eigenschaftsart anlegen");
 				input.getOKButton().addClickHandler(new ClickHandler() {
 					
 					public void onClick(ClickEvent arg0) {
