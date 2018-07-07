@@ -139,4 +139,6 @@ public interface EditorAdministrationAsync {
 
 	void getFullNameOfUser(User user, AsyncCallback<String> callback);
 
+	void deleteAddress(Value streetName, Contact contact, AsyncCallback<Void> callback);
+
 }
