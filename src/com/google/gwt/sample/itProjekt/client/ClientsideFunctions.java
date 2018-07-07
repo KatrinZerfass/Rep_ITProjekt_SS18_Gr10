@@ -22,28 +22,63 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.sample.itProjekt.client.ContactForm.ValueTextBox;
 
+/**
+ * Ergänzt die Klasse {@link ClientsideSettingsie} um weitere Funktionen und Dienste,
+ * die für alle Client-seitigen Klassen relevant sind.
+ * 
+ * @author JanNoller
+ */
 public abstract class ClientsideFunctions {
 	
+	/** Objekt zur Kommunikation mit dem Server-seitgen 
+	 * Dienst namens editorAdministration*/
 	private static EditorAdministrationAsync editorAdministration = ClientsideSettings.getEditorAdministration();
+	
+	/** Client-seitiges Nutzer-Object, repräsentiert den angemeldeten Nutzer. */
 	private static User user = ClientsideSettings.getUser();
 	
+	/**
+	 * Überprüft den Inhalt der Klasse {@link ValueTextBox} auf Korrektheit mit Hilfe von regulären Ausdrücken.
+	 *
+	 * Reguläre Ausdruck für Email-Adressen entstammt der Seite:
+	 * <a href="http://emailregex.com/">http://emailregex.com/</a><br>
+	 * 
+	 * Reguläre Ausdruck für Websites entstammt der Seite:
+	 * <a href="https://stackoverflow.com/questions/2490310/regular-expression-for-checking-website-url">https://stackoverflow.com/</a>
+	 *
+	 * @param vtb zu überprüfende ValueTextBox
+	 * @return true wenn Inhalt in Ordnung
+	 */
 	public static boolean checkValue (ValueTextBox vtb) {
 		
+		/**
+		 * Holt den zu überprüfenden Text aus der ValueTextBox und normalisiert diesen.
+		 * (nur Kleinbuchstaben, keine Leerzeichen)
+		 */
 		String identifier = vtb.getIdentifier();
 		String text = vtb.getText().toLowerCase().trim();
 		
+		/**
+		 * Schützt Datenbank vor SQL-Injections
+		 */
 		if(text.contains("dropdatabase") || text.contains("drop database")) {
 			ClientsideFunctions.popUpBox no = new ClientsideFunctions.popUpBox("For droping the database please find secret drop database pixel...", new CloseButton());
 			no.getCloseButton().addCloseDBClickHandler(no);
 			return false;
 		}
 		
+		/**
+		 * Schützt Datenbank vor SQL-Injections
+		 */
 		if(text.contains("'") || text.contains("\"") || text.contains(";")) {
 			ClientsideFunctions.popUpBox signs = new ClientsideFunctions.popUpBox("Die Zeichen: ' \" und ; können nicht verwendet werden.", new CloseButton());
 			signs.getCloseButton().addCloseDBClickHandler(signs);
 			return false;
 		}
 		
+		/**
+		 * Zeichenfolgen werden hier mit Hilfe von regulären Ausdrücken überprüft
+		 */
 		switch(identifier) {
 			case "Name":
 				if (!text.matches("\\d+")) {
@@ -162,6 +197,13 @@ public abstract class ClientsideFunctions {
 		}	
 	}
 	
+	/**
+	 * Weitere Funktion zur Überprüfung von Text mit Hilfe eines regulären Ausdrucks,
+	 * hier allerdings nur für den Namen mit einem String als Übergabeparameter.
+	 *
+	 * @param text zu überprüfender String
+	 * @return true wenn Zeichenfolge in Ordnung
+	 */
 	public static boolean checkName (String text) {
 			
 		if (!text.matches("\\d+")) {
@@ -178,6 +220,13 @@ public abstract class ClientsideFunctions {
 		}
 	}
 	
+	/**
+	 * Überprüft ob übergebener Nutzer der Urheber eines Kontakt-Objekts ist.
+	 *
+	 * @param c Kontakt
+	 * @param user Nutzer
+	 * @return true wenn der Nutzer der Urheber ist
+	 */
 	public static boolean isOwner (Contact c, User user) {
 		
 		if (user.getId() == c.getOwner()) {
@@ -188,6 +237,13 @@ public abstract class ClientsideFunctions {
 		}
 	}
 	
+	/**
+	 * Überprüft ob übergebener Nutzer der Urheber eines Kontaktlisten-Objekts ist.
+	 *
+	 * @param cl Kontaktliste
+	 * @param user Nutzer
+	 * @return true wenn der Nutzer der Urheber ist
+	 */
 	public static boolean isOwner (ContactList cl, User user) {
 		
 		if (user.getId() == cl.getOwner()) {
@@ -198,26 +254,52 @@ public abstract class ClientsideFunctions {
 		}
 	}
 	
+	/**
+	 * Die Klasse InputDialogBox wird genutzt um Eingaben des Nutzers zu ermöglichen.
+	 * Hierfür stehen einige GWT-Elemente zur Auswahl, welche für unterschiedliche Funktionen zu
+	 * Fenstern zusammengesetzt werden.
+	 */
 	public static class InputDialogBox extends DialogBox{
 		
+		/** The input. */
 		private String input;
 		
+		/** The dialog box label. */
 		Label dialogBoxLabel = new Label();
 		
+        /** The multi use text box. */
         private TextBox multiUseTextBox;
+        
+        /** The name text box. */
         private TextBox nameTextBox;
+        
+        /** The list box. */
         private ListBox listBox;
+        
+        /** The v text box. */
         private ValueTextBox vTextBox;
+        
+        /** The sb. */
         private SuggestBox sb;
+        
+        /** The oracle. */
         private MultiWordSuggestOracle oracle;
+        
+        /** The contact lists. */
         private Vector<ContactList> contactLists;
+		
+		/** The close. */
 		CloseButton close=new CloseButton(this);
 
+        /** The ok. */
         Button ok = new Button("OK");
 		
+		/**
+		 * Instantiates a new input dialog box.
+		 *
+		 * @param userEmail the user email
+		 */
 		public InputDialogBox(String userEmail) {
-			
-	    //    this.setPopupPosition(500, 200);
 			
 			setMultiUseTextBox(new TextBox());
 			getMultiUseTextBox().getElement().setPropertyString("placeholder", "Vorname...");
@@ -262,6 +344,11 @@ public abstract class ClientsideFunctions {
 			center();
 		}
         
+		/**
+		 * Instantiates a new input dialog box.
+		 *
+		 * @param inputtb the inputtb
+		 */
 		public InputDialogBox(TextBox inputtb) {
 			
 			setMultiUseTextBox(inputtb);
@@ -291,6 +378,12 @@ public abstract class ClientsideFunctions {
 	        center();
 	    }
 		
+		/**
+		 * Instantiates a new input dialog box.
+		 *
+		 * @param list the list
+		 * @param currentUser the current user
+		 */
 		public InputDialogBox(ListBox list, User currentUser) {
 			
 			setListBox(list);
@@ -341,6 +434,11 @@ public abstract class ClientsideFunctions {
 	        center();
 	    }
 		
+		/**
+		 * Instantiates a new input dialog box.
+		 *
+		 * @param vtb the vtb
+		 */
 		public InputDialogBox(ValueTextBox vtb) {
 			
 			setVTextBox(vtb);
@@ -370,6 +468,13 @@ public abstract class ClientsideFunctions {
 	        center();
 	    }
 		
+		/**
+		 * Instantiates a new input dialog box.
+		 *
+		 * @param pid the pid
+		 * @param row the row
+		 * @param vtb the vtb
+		 */
 		public InputDialogBox(int pid, int row, ValueTextBox vtb) {
 			
 			setText("Neue Ausprägung hinzufügen");
@@ -438,6 +543,12 @@ public abstract class ClientsideFunctions {
 	        center();
 	    }
 		
+		/**
+		 * Instantiates a new input dialog box.
+		 *
+		 * @param inputOracle the input oracle
+		 * @param labelString the label string
+		 */
 		public InputDialogBox(MultiWordSuggestOracle inputOracle, String labelString) {
 			
 			setOracle(inputOracle);
@@ -485,10 +596,20 @@ public abstract class ClientsideFunctions {
 			});
 		}
 		
+		/**
+		 * Gets the OK button.
+		 *
+		 * @return the OK button
+		 */
 		public Button getOKButton() {
 			return this.ok;
 		}
 		
+		/**
+		 * Sets the OK button.
+		 *
+		 * @param b the new OK button
+		 */
 		public void setOKButton(Button b) {
 			this.ok = b;
 		}
@@ -529,71 +650,159 @@ public abstract class ClientsideFunctions {
 			this.dialogBoxLabel.setText(labelText);
 		}
 		
+		/**
+		 * Gets the multi use text box.
+		 *
+		 * @return the multi use text box
+		 */
 		public TextBox getMultiUseTextBox() {
 			return this.multiUseTextBox;
 		}
 		
+		/**
+		 * Sets the multi use text box.
+		 *
+		 * @param tb the new multi use text box
+		 */
 		public void setMultiUseTextBox(TextBox tb) {
 			this.multiUseTextBox = tb;
 		}
 
+		/**
+		 * Gets the suggest box.
+		 *
+		 * @return the suggest box
+		 */
 		public SuggestBox getSuggestBox() {
 			return sb;
 		}
 
+		/**
+		 * Sets the suggest box.
+		 *
+		 * @param sb the new suggest box
+		 */
 		public void setSuggestBox(SuggestBox sb) {
 			this.sb = sb;
 		}
 
+		/**
+		 * Gets the oracle.
+		 *
+		 * @return the oracle
+		 */
 		public MultiWordSuggestOracle getOracle() {
 			return oracle;
 		}
 
+		/**
+		 * Sets the oracle.
+		 *
+		 * @param oracle the new oracle
+		 */
 		public void setOracle(MultiWordSuggestOracle oracle) {
 			this.oracle = oracle;
 		}
 
+		/**
+		 * Gets the name text box.
+		 *
+		 * @return the name text box
+		 */
 		public TextBox getNameTextBox() {
 			return nameTextBox;
 		}
 
+		/**
+		 * Sets the name text box.
+		 *
+		 * @param nameTextBox the new name text box
+		 */
 		public void setNameTextBox(TextBox nameTextBox) {
 			this.nameTextBox = nameTextBox;
 		}
 
+		/**
+		 * Gets the list box.
+		 *
+		 * @return the list box
+		 */
 		public ListBox getListBox() {
 			return listBox;
 		}
 
+		/**
+		 * Sets the list box.
+		 *
+		 * @param listBox the new list box
+		 */
 		public void setListBox(ListBox listBox) {
 			this.listBox = listBox;
 		}
 
+		/**
+		 * Gets the v text box.
+		 *
+		 * @return the v text box
+		 */
 		public ValueTextBox getVTextBox() {
 			return vTextBox;
 		}
 
+		/**
+		 * Sets the v text box.
+		 *
+		 * @param vTextBox the new v text box
+		 */
 		public void setVTextBox(ValueTextBox vTextBox) {
 			this.vTextBox = vTextBox;
 		}
 
+		/**
+		 * Gets the contact lists.
+		 *
+		 * @return the contact lists
+		 */
 		public Vector<ContactList> getContactLists() {
 			return contactLists;
 		}
 
+		/**
+		 * Sets the contact lists.
+		 *
+		 * @param contactLists the new contact lists
+		 */
 		public void setContactLists(Vector<ContactList> contactLists) {
 			this.contactLists = contactLists;
 		}
 	}
 	
+	/**
+	 * The Class popUpBox.
+	 */
 	public static class popUpBox extends DialogBox {
+		
+		/** The close button. */
 		CloseButton closeButton = null;
+		
+		/** The ok button. */
 		OkButton okButton = null;
+		
+		/** The panel. */
 		VerticalPanel panel = null;
+		
+		/** The hpanel. */
 		HorizontalPanel hpanel = null;
 		
+		/** The dialog box label. */
 		Label dialogBoxLabel = new Label();
 		
+		/**
+		 * Instantiates a new pop up box.
+		 *
+		 * @param db the db
+		 * @param dbLabel the db label
+		 */
 		public popUpBox(DialogBox db, String dbLabel) {
 			closeButton = new CloseButton(db);
 			okButton = new OkButton();
@@ -618,6 +827,13 @@ public abstract class ClientsideFunctions {
 	        center();
 		}
 		
+		/**
+		 * Instantiates a new pop up box.
+		 *
+		 * @param dbLabel the db label
+		 * @param ok the ok
+		 * @param close the close
+		 */
 		public popUpBox(String dbLabel, OkButton ok, CloseButton close) {
 			closeButton = close;
 			okButton = ok;
@@ -642,6 +858,12 @@ public abstract class ClientsideFunctions {
 	        center();
 		}
 		
+		/**
+		 * Instantiates a new pop up box.
+		 *
+		 * @param dbLabel the db label
+		 * @param ok the ok
+		 */
 		public popUpBox(String dbLabel, OkButton ok) {
 			okButton = ok;
 			dialogBoxLabel.setText(dbLabel);
@@ -664,6 +886,12 @@ public abstract class ClientsideFunctions {
 	        center();
 		}
 		
+		/**
+		 * Instantiates a new pop up box.
+		 *
+		 * @param dbLabel the db label
+		 * @param close the close
+		 */
 		public popUpBox(String dbLabel, CloseButton close) {
 			closeButton = close;
 			dialogBoxLabel.setText(dbLabel);
@@ -686,26 +914,56 @@ public abstract class ClientsideFunctions {
 	        center();
 		}
 		
+		/**
+		 * Gets the close button.
+		 *
+		 * @return the close button
+		 */
 		public CloseButton getCloseButton() {
 			return this.closeButton;
 		}
 		
+		/**
+		 * Sets the close button.
+		 *
+		 * @param b the new close button
+		 */
 		public void setCloseButton(CloseButton b) {
 			this.closeButton = b;
 		}
 		
+		/**
+		 * Gets the ok button.
+		 *
+		 * @return the ok button
+		 */
 		public OkButton getOkButton() {
 			return this.okButton;
 		}
 		
+		/**
+		 * Sets the ok button.
+		 *
+		 * @param b the new ok button
+		 */
 		public void setOkButton(OkButton b) {
 			this.okButton = b;
 		}
 	}
 	
+	/**
+	 * The Class CloseButton.
+	 */
 	public static class CloseButton extends Button{
+		
+		/** The db. */
 		DialogBox db;
 		
+		/**
+		 * Instantiates a new close button.
+		 *
+		 * @param db the db
+		 */
 		public CloseButton(DialogBox db) {
 			this.db = db;
 			this.addClickHandler(new CloseDBClickHandler(db)); 
@@ -713,59 +971,114 @@ public abstract class ClientsideFunctions {
 			this.addStyleName("closebutton");
 		}
 		
+		/**
+		 * Instantiates a new close button.
+		 *
+		 * @param text the text
+		 */
 		public CloseButton(String text) {
 			this.setText(text);
 			this.addStyleName("closebutton");
 		}
 		
+		/**
+		 * Instantiates a new close button.
+		 */
 		public CloseButton() {
 			this.setText("Abbrechen");
 			this.addStyleName("closebutton");
 		}
 		
+		/**
+		 * Adds the close DB click handler.
+		 *
+		 * @param db the db
+		 */
 		public void addCloseDBClickHandler(DialogBox db) {
 			this.addClickHandler(new CloseDBClickHandler(db));
 		}
 		
+		/**
+		 * The Class CloseDBClickHandler.
+		 */
 		private class CloseDBClickHandler implements ClickHandler{
+			
+			/** The db. */
 			DialogBox db;
 	
 			
+			/**
+			 * Instantiates a new close DB click handler.
+			 *
+			 * @param db the db
+			 */
 			public CloseDBClickHandler(DialogBox db) {
 				this.db=db;
 			}
 			
+			/* (non-Javadoc)
+			 * @see com.google.gwt.event.dom.client.ClickHandler#onClick(com.google.gwt.event.dom.client.ClickEvent)
+			 */
 			public void onClick(ClickEvent event) {
 				db.hide();
 			}
 		}
 	}
 	
+	/**
+	 * The Class OkButton.
+	 */
 	public static class OkButton extends Button{
 
 		
+		/**
+		 * Instantiates a new ok button.
+		 *
+		 * @param text the text
+		 */
 		public OkButton(String text) {
 			this.setText(text);
 			this.addStyleName("okbutton");
 		}
 		
+		/**
+		 * Instantiates a new ok button.
+		 */
 		public OkButton() {
 			this.setText("OK");
 			this.addStyleName("okbutton");
 		}
 		
+		/**
+		 * Adds the close DB click handler.
+		 *
+		 * @param db the db
+		 */
 		public void addCloseDBClickHandler(DialogBox db) {
 			this.addClickHandler(new CloseDBClickHandler(db));
 		}
 		
+		/**
+		 * The Class CloseDBClickHandler.
+		 */
 		private class CloseDBClickHandler implements ClickHandler{
+			
+			/** The db. */
 			DialogBox db;
 	
 			
+			/**
+			 * Instantiates a new close DB click handler.
+			 *
+			 * @param db the db
+			 */
 			public CloseDBClickHandler(DialogBox db) {
 				this.db=db;
 			}
 			
+			/* (non-Javadoc)
+			 * @see com.google.gwt.event.dom.client.ClickHandler#onClick(com.google.gwt.event.dom.client.ClickEvent)
+			 */
 			public void onClick(ClickEvent event) {
 				db.hide();
 			}
