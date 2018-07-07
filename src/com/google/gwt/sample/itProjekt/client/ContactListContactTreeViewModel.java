@@ -267,7 +267,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	/**
 	 * Das Kontaktobjekt im Cellbrowser wird nach Veränderungen in den Eigenschaften aktualisiert. 
 	 * 
-	 * @param contact Kontakt der verändert wurde 
+	 * @param contact der veränderte Kontakt 
 	 */
 	
 	public void updateContact(Contact contact){							
@@ -289,9 +289,36 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	
 	
 	/**
+	 * Anlegen einer virtuellen Kontaktliste für die Suchergebnisse im Namen.
+	 */		
+	
+	public void addNameResults () {			
+		deleteNameResults();
+		nameResultsCL = new ContactList();
+		nameResultsCL.setId(0);
+		nameResultsCL.setName("Suchergebnis im Namen");
+		
+	}
+	
+	/**
+	 * Anlegen einer virtuellen Kontaktliste für die Suchergebnisse in den Eigenschaften.
+	 */	
+	
+	public void addValueResults () {	
+		deleteValueResults();		
+		valueResultsCL = new ContactList();
+		valueResultsCL.setId(1);
+		valueResultsCL.setName("Suchergebnis in den Eigenschaften");
+		
+	}
+	
+	
+	/**
+	 * Hinzufügen von Kontakten in die virtuellen Kontaktlisten "Suchergebnis in den Eigenschaften" und 
+	 * Suchergebnis im Namen".
 	 * 
-	 * @param cl
-	 * @param contacts
+	 * @param cl die betroffene virtuelle Kontaktliste
+	 * @param contacts die Kontakte der Suchergebnisse 
 	 */
 	
 	
@@ -310,25 +337,17 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	}
 	
 	
-	public void addNameResults () {			
-		deleteNameResults();
-		nameResultsCL = new ContactList();
-		nameResultsCL.setId(0);
-		nameResultsCL.setName("Suchergebnis im Namen");
-		
-	}
-	
-	public void addValueResults () {	
-		deleteValueResults();		
-		valueResultsCL = new ContactList();
-		valueResultsCL.setId(1);
-		valueResultsCL.setName("Suchergebnis in den Eigenschaften");
-		
-	}
+	/**
+	 * Löschen der virtuellen Kontaktliste "Suchergebnis im Namen".
+	 */
 	
 	public void deleteNameResults () {
 		contactListDataProvider.getList().remove(nameResultsCL);
 	}
+	
+	/**
+	 * Löschen der virtuellen Kontaktliste "Suchergebnis in den Eigenschaften".
+	 */
 	
 	public void deleteValueResults () {
 		contactListDataProvider.getList().remove(valueResultsCL);
@@ -340,18 +359,17 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	 * Die Methode getNodeInfo gibt für jeden Knoten im TreeViewModel dessen Kinder wieder 
 	 */
 	public <T> NodeInfo<?> getNodeInfo(T value) {
-		
-		
+				
 		user = ClientsideSettings.getUser();
-		
+				
+		/*
+		 * Beim Laden des CellBrowsers wird ein neuer ListDataProvider erzeugt und mit den 
+		 * Kontaktlisten des Nutzers befüllt. 
+		 */
 		if(value.equals("Root")) {
-			//evtl. hier Abfrage, ob der Provider = null ist?
 			contactListDataProvider = new ListDataProvider<ContactList>();
-			
 			contactListDataProvider.getList().add(myContactsContactList);
-		
-			
-			// User-Parameter muss den aktuell angemeldeten User zurückgeben
+				
 			editorAdministration.getAllContactListsOfUser(user.getEmail(), new AsyncCallback<Vector<ContactList>>(){
 				public void onFailure(Throwable t) {
 					
@@ -360,28 +378,37 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 				public void onSuccess(Vector<ContactList> contactLists) {
 					for (ContactList cl : contactLists) {
 						contactListDataProvider.getList().add(cl);
-						
+				
 					}
 				}
 			});
 			
 			return new DefaultNodeInfo<ContactList>(contactListDataProvider,
 				new ContactListCell(), selectionModel, null);
-			
+			}
 		
-		}else if(value instanceof ContactList) {
+		
+		
+		/*
+		 * Wenn der Nutzer eine Kontaktliste auswählt, wird die Methode 'getNodeInfo' 
+		 * aufgerufen und folgende Abfragen werden geprüft. 
+		 */
+				
+		if(value instanceof ContactList) {
 			final ListDataProvider<Contact> contactsProvider = new ListDataProvider<Contact>();
 			contactDataProviders.put((ContactList) value, contactsProvider);
 			
 			
 			/*
-			 * Bei der angeklickten Kontaktliste handelt es sich um die default myContactsContactList 
+			 * Bei der angeklickten Kontaktliste handelt es sich um die "Meine Kontakte" Liste.
 			 */
-	
 			
 			if((ContactList) value == myContactsContactList) {
+				
+				//Löschen der virtuellen Kontaktlisten.  
 				deleteNameResults();
 				deleteValueResults();
+				
 				editorAdministration.getAllContactsOfActiveUser(user, new AsyncCallback<Vector<Contact>>() {
 					public void onFailure (Throwable t) {
 						
@@ -399,12 +426,15 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 						
 				
 			/* 
-			 * Der Nutzer ist Eigentümer der Kontakliste 
+			 * Bei der angeklickten Kontaktliste handelt es sich um eine vom Nutzer erstellte Kontaktliste. 
 			 */	
 				
 			}else if(user.getId() == ((ContactList) value).getOwner())  {
+				
+				//Löschen der virtuellen Kontaktlisten.
 				deleteNameResults();
 				deleteValueResults();
+				
 				editorAdministration.getAllContactsOfContactlistForUser((ContactList) value, user, new AsyncCallback<Vector<Contact>>() {
 					public void onFailure(Throwable t) {
 							Window.alert("Kontakte der Kontaktliste auslesen fehlgeschlagen");
@@ -419,13 +449,36 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 				});
 					return new DefaultNodeInfo<Contact>(contactsProvider,
 							new ContactCell(), selectionModel, null);
+				
+			
+			/* 
+			 * Bei der angeklickten Kontaktliste handelt es sich um eine mit dem Nutzer geteilte Kontaktliste. 
+			 */
 					
+			}else if(user.getId() != ((ContactList) value).getOwner() && (ContactList) value != nameResultsCL && (ContactList) value != valueResultsCL) {
+				
+				    //Löschen der virtuellen Kontaktlisten.
+					deleteNameResults();
+					deleteValueResults();
+					
+					editorAdministration.getAllSharedContactsOfContactList((ContactList) value, user, new AsyncCallback<Vector<Contact>>() {
+						public void onFailure(Throwable t) {
+								}
+						public void onSuccess(Vector<Contact> contacts) {
+							for (Contact c : contacts) {
+								contactsProvider.getList().add(c);
+							}
+						}
+					});
+					
+						return new DefaultNodeInfo<Contact>(contactsProvider,
+								new ContactCell(), selectionModel, null);
+				
 					
 			/*
-			 * Ergebnis der Kontaktsuche
+			 * Bei der angeklickten Kontaktliste handelt es sich um die virtuelle Kontaktliste "Suchergebnis im Namen".
 			 */
-		
-		    
+				    
 			}else if((ContactList) value == nameResultsCL){
 					
 					for (Contact c : nameResults){
@@ -433,8 +486,11 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 					}
 					return new DefaultNodeInfo<Contact>(contactsProvider,
 							new ContactCell(), selectionModel, null);
+			
 					
-				
+			/*
+			 * Bei der angeklickten Kontaktliste handelt es sich um die virtuelle Kontaktliste "Suchergebnis im Namen".
+			 */				
 			
 			}else if((ContactList) value == valueResultsCL){
 			
@@ -443,31 +499,9 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 					}
 					return new DefaultNodeInfo<Contact>(contactsProvider,
 							new ContactCell(), selectionModel, null);
-				
-			  /*
-		       * Der Nutzer ist nur Teilhaber der Kontaktliste 
-			   */
-								
-			}else {
-					deleteNameResults();
-					deleteValueResults();
-					editorAdministration.getAllSharedContactsOfContactList((ContactList) value, user, new AsyncCallback<Vector<Contact>>() {
-						public void onFailure(Throwable t) {
-							
-						}
-						public void onSuccess(Vector<Contact> contacts) {
-							for (Contact c : contacts) {
-								contactsProvider.getList().add(c);
-							}
-						}
-					});
-				
-					return new DefaultNodeInfo<Contact>(contactsProvider,
-							new ContactCell(), selectionModel, null);
-			}									
-								
+			}				
 		}
-		return null;
+	return null;	
 	}
 	
 
