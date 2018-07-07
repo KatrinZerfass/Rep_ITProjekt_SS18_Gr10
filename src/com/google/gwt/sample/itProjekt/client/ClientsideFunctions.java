@@ -20,6 +20,8 @@ import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.sample.itProjekt.client.ContactForm.CloseButton;
+import com.google.gwt.sample.itProjekt.client.ContactForm.ValueTable;
 import com.google.gwt.sample.itProjekt.client.ContactForm.ValueTextBox;
 
 public abstract class ClientsideFunctions {
@@ -297,7 +299,7 @@ public abstract class ClientsideFunctions {
 	        ok.addStyleName("okbutton");
 	        close.addStyleName("closebutton");
 			
-			setText("Eingabe");
+			setText("Neue Eigenschaftsart hinzufügen");
 			setAnimationEnabled(true);
 			setGlassEnabled(true);
 			
@@ -320,6 +322,74 @@ public abstract class ClientsideFunctions {
 	        center();
 	    }
 		
+		public InputDialogBox(int pid, int row, ValueTextBox vtb) {
+			
+			setText("Neue Ausprägung hinzufügen");
+			setAnimationEnabled(true);
+			setGlassEnabled(true);
+			
+			/*Das innere Panel der DialogBox */
+			VerticalPanel addValueDBPanel = new VerticalPanel();
+			addValueDBPanel.setHeight("100px");
+			addValueDBPanel.setWidth("230px");
+		    addValueDBPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+		    this.add(addValueDBPanel);
+		    			
+			Label addValueLabel = new Label();
+			addValueDBPanel.add(addValueLabel);
+					
+		
+			/*
+			 * Je nachdem, um welche Art von Eigenschaft es sich handelt, wird der Identifier gesetzt, mit dem nach der switch-case
+			 * die ValueTextBox erstellt wird. Der Identifier dient der Methode checkValue aus den ClientsideFunctions, welche auf korrekte 
+			 * Eingabe überprüft.
+			 */
+			String identifier = null;
+			
+			switch(pid) {
+			
+				case 1: identifier = "Telefonnummer";
+						addValueLabel.setText("Neue geschäftliche Telefonnummer: ");
+						break;
+						
+				case 2: identifier = "Telefonnummer";
+						addValueLabel.setText("Neue private Telefonnummer: ");
+						break;
+						
+				case 3: identifier = "Email";
+						addValueLabel.setText("Neue e-Mail-Adresse: ");
+						break;
+						
+				case 5: identifier = "Arbeitsplatz";
+						addValueLabel.setText("Neue Arbeitsstelle: ");
+						break;
+						
+				case 10: identifier = "Homepage";
+						addValueLabel.setText("Neue Homepage: ");
+						break;
+				default: 
+						identifier = "Sonstiges";
+						addValueLabel.setText("Neue Ausprägung: ");
+						break;
+			}
+			
+			setVTextBox(vtb);
+			vtb.setIdentifier(identifier);
+			addValueDBPanel.add(vTextBox);
+			
+			HorizontalPanel dbButtonsPanel=new HorizontalPanel();
+			addValueDBPanel.add(dbButtonsPanel);
+			
+			close = new CloseButton(this);
+			dbButtonsPanel.add(close);
+			
+			setOKButton(new OkButton("Hinzufügen"));
+			dbButtonsPanel.add(ok);
+
+	        show();
+	        center();
+	    }
+		
 		public InputDialogBox(MultiWordSuggestOracle inputOracle, String labelString) {
 			
 			setOracle(inputOracle);
@@ -330,12 +400,10 @@ public abstract class ClientsideFunctions {
 			setdialogBoxLabel(labelString);
 					
 			editorAdministration.getAllUserSuggestions(user, new AsyncCallback<Vector<String>>() {
-				@Override
 				public void onFailure(Throwable arg0) {
 					// TODO Auto-generated method stub
 					
 				}
-				@Override
 				public void onSuccess(Vector<String> arg0) {
 					
 					for(String s : arg0) {

@@ -311,3 +311,164 @@ h1 {
 .searchlabel {
 	margin: 9px 13px;
 }
+
+/*gwt-Styling*/
+.gwt-DialogBox .Caption {
+  background: #F1F1F1;
+  padding: 4px 8px 4px 4px;
+  cursor: default;
+  font-family: Arial Unicode MS, Arial, sans-serif;
+  font-weight: bold;
+  border-bottom: 1px solid #bbbbbb;
+  border-top: 1px solid #D2D2D2;
+}
+.gwt-DialogBox .dialogContent {
+}
+.gwt-DialogBox .dialogMiddleCenter {
+  padding: 3px;
+  background: white;
+}
+.gwt-DialogBox .dialogBottomCenter {
+  background: url(images/hborder.png) repeat-x 0px -2945px;
+}
+.gwt-DialogBox .dialogMiddleLeft {
+  background: url(images/vborder.png) repeat-y -31px 0px;
+}
+.gwt-DialogBox .dialogMiddleRight {
+  background: url(images/vborder.png) repeat-y -32px 0px;
+}
+.gwt-DialogBox .dialogTopLeftInner {
+  width: 10px;
+  height: 8px;
+  zoom: 1;
+}
+.gwt-DialogBox .dialogTopRightInner {
+  width: 12px;
+  zoom: 1;
+}
+.gwt-DialogBox .dialogBottomLeftInner {
+  width: 10px;
+  height: 12px;
+  zoom: 1;
+}
+.gwt-DialogBox .dialogBottomRightInner {
+  width: 12px;
+  height: 12px;
+  zoom: 1;
+}
+.gwt-DialogBox .dialogTopLeft {
+  background: url(images/circles.png) no-repeat -20px 0px;
+}
+.gwt-DialogBox .dialogTopRight {
+  background: url(images/circles.png) no-repeat -28px 0px;
+}
+.gwt-DialogBox .dialogBottomLeft {
+  background: url(images/circles.png) no-repeat 0px -36px;
+}
+.gwt-DialogBox .dialogBottomRight {
+  background: url(images/circles.png) no-repeat -8px -36px;
+}
+.okbutton{
+	background-color: #18878b;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    border: none;
+    display: inline-block;
+    cursor: pointer;
+    color: #fff;
+    font-family: 'Lato', sans-serif;
+    font-size: 15px;
+    padding: 4px 8px;
+    text-decoration: none;
+    float: right;
+}
+.anlegenbutton{
+   padding: 7px 4px;
+	text-decoration: none;
+	margin: 7px 0px;
+	width: 70px;
+}
+
+.okbutton:hover{
+	background-color:#10585a;
+}
+
+.closebutton{
+	background-color: #8c8c8c;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    border: none;
+    display: inline-block;
+    cursor: pointer;
+    color: #fff;
+    font-family: 'Lato', sans-serif;
+    font-size: 15px;
+    padding: 4px 8px;
+    text-decoration: none;
+    float: right;
+    margin-right: 10px;
+}
+
+.closebutton:hover{
+	background-color: #636363;
+}
+
+.gwt-DialogBox.gwt-Button{
+    background-color: #18878b;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    border: none;
+    display: inline-block;
+    cursor: pointer;
+    color: #ffffff;
+    font-family: 'Lato', sans-serif;
+    font-size: 15px;
+    padding: 9px 9px;
+    text-decoration: none;
+	}
+	
+.gwt-DialogBox{
+	 left: 500px;
+    top: 200px;
+    position: absolute;
+    background: rgba( 192, 192, 192, 0.8 );
+    overflow: visible;
+    background-color: #fff;
+    background-color: #fff;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    border: 3px solid #18878B;
+    display: inline-block;
+    cursor: pointer;
+    color: #000;
+    font-family: 'Lato', sans-serif;
+    font-size: 16px;
+    padding: 9px 4px;
+    text-decoration: none;
+    margin: 91px 10px;
+    width: 260px;
+}   
+
+.dialog-button{
+	background-color: #7dd286;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    border: none;
+    display: inline-block;
+    cursor: pointer;
+    color: #ffffff;
+    font-family: 'Lato', sans-serif;
+    font-size: 15px;
+    padding: 9px 16px;
+    text-decoration: none;
+    margin: 3px 10px;
+}
+
+.dialog-button:hover{
+	background-color: #49ba8f;
+}
