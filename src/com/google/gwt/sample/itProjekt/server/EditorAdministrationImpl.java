@@ -805,22 +805,15 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	   * ABSCHNITT, Beginn: Methoden, welche sonstige Funktionen erfüllen.
 	   * ***************************************************************************
 	   */
-
-	public Vector<String> getAllUserSuggestions(User activeUser) throws IllegalArgumentException {
+	
+	public String getFullNameOfUser(User user) throws IllegalArgumentException {
 		
-		Vector<User> allUsers = uMapper.findAll();
-		Vector<Contact> allContacts = cMapper.findAllUserContacts();
-
-		Vector<String> result = new Vector<String>();
-
-		
-		allUsers.removeElement(activeUser);
-		
-		for(Contact c : allContacts) {
-			for(User u : allUsers) {
-				if (c.getOwner() == u.getId()) {
-					result.add(c.getFirstname() + " " + c.getLastname() + " - " + u.getEmail());
-				}
+		String result = null;
+		Vector<Contact> contacts = getAllOwnedContactsOfUser(user.getEmail());
+		for(Contact c : contacts) {
+			if (c.getIsUser()) {
+				result = c.getFirstname() + " " + c.getLastname();
+				return result;
 			}
 		}
 		return result;
@@ -835,6 +828,26 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 			for(Contact c : contacts) {
 				if (c.getIsUser()) {
 					result.addElement(c.getFirstname() + " " + c.getLastname());
+				}
+			}
+		}
+		return result;
+	}
+	
+	public Vector<String> getAllUserSuggestions(User activeUser) throws IllegalArgumentException {
+		
+		Vector<User> allUsers = uMapper.findAll();
+		Vector<Contact> allContacts = cMapper.findAllUserContacts();
+
+		Vector<String> result = new Vector<String>();
+
+		
+		allUsers.removeElement(activeUser);
+		
+		for(Contact c : allContacts) {
+			for(User u : allUsers) {
+				if (c.getOwner() == u.getId()) {
+					result.add(c.getFirstname() + " " + c.getLastname() + " - " + u.getEmail());
 				}
 			}
 		}
