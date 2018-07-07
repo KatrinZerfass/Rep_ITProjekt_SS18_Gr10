@@ -1200,7 +1200,7 @@ public class ContactForm extends VerticalPanel {
 				failed.getOkButton().addCloseDBClickHandler(failed);
 			}
 			else{
-				final ClientsideFunctions.popUpBox safety = new ClientsideFunctions.popUpBox("Sind Sie sicher dass Sie den Kontakt löschen möchten?", new ClientsideFunctions.OkButton(), new ClientsideFunctions.CloseButton());
+				final ClientsideFunctions.popUpBox safety = new ClientsideFunctions.popUpBox("Sind Sie sicher, dass Sie den Kontakt löschen möchten?", new ClientsideFunctions.OkButton(), new ClientsideFunctions.CloseButton());
 				safety.getCloseButton().addCloseDBClickHandler(safety);
 				safety.getOkButton().addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {

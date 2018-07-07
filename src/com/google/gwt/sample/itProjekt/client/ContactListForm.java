@@ -366,7 +366,7 @@ public class ContactListForm extends VerticalPanel{
 				}
 				else {
 				
-					final ClientsideFunctions.popUpBox safety = new ClientsideFunctions.popUpBox("Sind Sie sicher dass Sie die Kontaktliste löschen möchten?", new ClientsideFunctions.OkButton(), new ClientsideFunctions.CloseButton());
+					final ClientsideFunctions.popUpBox safety = new ClientsideFunctions.popUpBox("Sind Sie sicher, dass Sie die Kontaktliste löschen möchten?", new ClientsideFunctions.OkButton(), new ClientsideFunctions.CloseButton());
 					safety.getCloseButton().addCloseDBClickHandler(safety);
 					safety.getOkButton().addClickHandler(new ClickHandler() {
 						public void onClick(ClickEvent arg0) {
