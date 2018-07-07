@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 public abstract class BusinessObject implements Serializable {
 	
+	
 	private static final long serialVersionUID = 1L;
 	
 	
@@ -40,7 +41,7 @@ public abstract class BusinessObject implements Serializable {
 	}
 	
 	/**
-	 * Überprüft die inhaltliche Gleicheit zweier BusinessObject Objekte (die ID).
+	 * Überprüft die inhaltliche Gleichheit zweier BusinessObject Objekte (die ID).
 	 *
 	 * @param Das zu vergleichende Objekt
 	 * @return true, wenn inhaltlich gleich
