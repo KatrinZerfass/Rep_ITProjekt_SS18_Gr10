@@ -126,7 +126,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 						
 						public void onClick(ClickEvent arg0) {
 							if(ClientsideFunctions.checkName(createAccountBox.getMultiUseTextBox().getText()) && ClientsideFunctions.checkName(createAccountBox.getNameTextBox().getText())) {
-								editorAdministration.createUserContact(createAccountBox.getMultiUseTextBox().getText(), createAccountBox.getNameTextBox().getText(), createAccountBox.getSexListBox().getSelectedItemText(), loginInfo.getEmailAddress(), new AsyncCallback<User>() {
+								editorAdministration.createUserContact(createAccountBox.getMultiUseTextBox().getText(), createAccountBox.getNameTextBox().getText(), createAccountBox.getListBox().getSelectedItemText(), loginInfo.getEmailAddress(), new AsyncCallback<User>() {
 									public void onFailure(Throwable arg0) {
 										Window.alert("AsyncCallback fehlgeschlagen: createContact");
 										createAccountBox.hide();
