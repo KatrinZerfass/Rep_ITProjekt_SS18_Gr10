@@ -42,7 +42,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	      "Bitte loggen Sie sich mit ihrem Google-Account ein, um die Anwendung zu nutzen.");
 	private Anchor signInLink = new Anchor("Sign In");
 	private Anchor signOutLink = new Anchor("Sign Out");
-	private Label signedInUserName = null;
+	private Label signedInUser = null;
 	
 	
 	User user = null;
@@ -163,32 +163,29 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		 * Im Folgenden wird das GUI aufgebaut
 		 */
 	    VerticalPanel loginPanel = new VerticalPanel();
-	    HorizontalPanel signedInUserPanel = new HorizontalPanel();
-	    Label signedInUserLabel = new Label("Angemeldet als:      ");
-	    signedInUserPanel.add(signedInUserLabel);
-	    signedInUserName = new Label();
-	    
+	    signedInUser = new Label();
+	    	    
 	    editorAdministration.getFullNameOfUser(user, new AsyncCallback<String>(){
 	    	public void onFailure(Throwable t) {
 	    		
 	    	}
 	    	public void onSuccess(String result) {
-	    		signedInUserName.setText("  " + result);
+	    		
+	    		signedInUser.setText("Angemeldet als: " +result);
 	    	
 	    		
 	    	}
 	    });
 	    
-	    signedInUserPanel.add(signedInUserName);
 	    
 	    
 	    signOutLink.setHref(loginInfo.getLogoutUrl());
 	    signOutLink.addStyleName("signout");
 		signInLink.addStyleName("reportbutton");
-		signedInUserPanel.addStyleName("signedInUser");
+		signedInUser.addStyleName("signedInUser");
 		
 		loginPanel.add(signOutLink);
-		loginPanel.add(signedInUserPanel);
+		loginPanel.add(signedInUser);
 		
 		
 		RootPanel.get("Login").add(loginPanel);

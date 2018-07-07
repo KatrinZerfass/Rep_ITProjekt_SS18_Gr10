@@ -313,7 +313,6 @@ public class ContactListForm extends VerticalPanel{
 				
 				inputDB.getOKButton().addClickHandler(new ClickHandler() {
 					
-					@Override
 					public void onClick(ClickEvent arg0) {
 
 						editorAdministration.createContactList(inputDB.getMultiUseTextBox().getText(), user, new AsyncCallback<ContactList>() {
@@ -328,7 +327,6 @@ public class ContactListForm extends VerticalPanel{
 								final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Kontaktliste erfolgreich erstellt!", new ClientsideFunctions.OkButton());
 								success.getOkButton().addClickHandler(new ClickHandler() {
 									
-									@Override
 									public void onClick(ClickEvent click) {
 										clctvm.deleteNameResults();
 										clctvm.deleteValueResults();

@@ -419,7 +419,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 			
 			return new DefaultNodeInfo<ContactList>(contactListDataProvider,
 				new ContactListCell(), selectionModel, null);
-			}
+			
 		
 		
 		
@@ -428,7 +428,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		 * aufgerufen und folgende Abfragen werden geprüft. 
 		 */
 				
-		if(value instanceof ContactList) {
+		}else if(value instanceof ContactList) {
 			final ListDataProvider<Contact> contactsProvider = new ListDataProvider<Contact>();
 			contactDataProviders.put((ContactList) value, contactsProvider);
 			
@@ -489,7 +489,8 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 			 * Bei der angeklickten Kontaktliste handelt es sich um eine mit dem Nutzer geteilte Kontaktliste. 
 			 */
 					
-			}else if(user.getId() != ((ContactList) value).getOwner() && (ContactList) value != nameResultsCL && (ContactList) value != valueResultsCL) {
+			}else if(user.getId() != ((ContactList) value).getOwner() && 
+					(ContactList) value != nameResultsCL && (ContactList) value != valueResultsCL) {
 				
 				    //Löschen der virtuellen Kontaktlisten.
 					deleteNameResults();
