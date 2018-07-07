@@ -1305,13 +1305,11 @@ public class ContactForm extends VerticalPanel {
 	 */
 	private class AddContactToContactListClickHandler implements ClickHandler {
 		
-		DialogBox db = new DialogBox();
-		VerticalPanel dbPanel= new VerticalPanel();
-		HorizontalPanel dbButtonsPanel= new HorizontalPanel();
-		ListBox clListbox = new ListBox();
+//		DialogBox db = new DialogBox();
+//		VerticalPanel dbPanel= new VerticalPanel();
+//		HorizontalPanel dbButtonsPanel= new HorizontalPanel();
+//		ListBox clListbox = new ListBox();
 		ContactList chosenCL;
-		
-        Vector<ContactList> contactLists = new Vector<ContactList>();
 		
 		public void onClick(ClickEvent event) {
 			
@@ -1322,83 +1320,114 @@ public class ContactForm extends VerticalPanel {
 				/*
 				 * Im Folgenden wird die DialogBox aufgebaut.
 				 */
-				db.setText("Kontaktliste auswählen");
 				
-				dbPanel.setHeight("100");
-		        dbPanel.setWidth("300");
-		        dbPanel.setSpacing(10);
-		        dbPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
-		    	db.add(dbPanel);
-		        
-		        Label label = new Label("Bitte wählen Sie eine Kontaktliste aus.");
-		        dbPanel.add(label);
-		        
-		        /*
-		         * In der Dialogbox soll eine ListBox angezeigt werden, die alle Kontaktlisten des Nutzers beinhaltet.
-		         */
-		        dbPanel.add(clListbox);
-		        
-		      
-		        CloseButton closeButton = new CloseButton(db);
-				dbButtonsPanel.add(closeButton);
-				
-				//TODO: why final?
-		        final Button okButton = new Button("OK");
-		        okButton.addStyleName("okbutton");
-		        dbButtonsPanel.add(okButton);
-		        
-		       
-				
-		        dbPanel.add(dbButtonsPanel);
-		       	     
-		    	db.show();
-	
-		        editorAdministration.getAllOwnedContactListsOfActiveUser(currentUser, new AsyncCallback<Vector<ContactList>>() {
-		        	
-		        	public void onFailure(Throwable t) {
-		        		Window.alert("Fehler beim Abruf der Kontaklisten des Nutzers");
-		        	}
-		        	
-		        	public void onSuccess(Vector<ContactList> result) {
+				final InputDialogBox input = new InputDialogBox(new ListBox(), currentUser);
+				input.getOKButton().addClickHandler(new ClickHandler() {
+
+					public void onClick(ClickEvent arg0) {
+						
+						for (ContactList cl : input.getContactLists()) {
+		        			if (input.getListBox().getSelectedItemText() == cl.getName()) {
+		        				chosenCL = cl;
+		        			}
+		        		}
 		        		
-		        		contactLists = result;
+		        		input.hide();
 		        		
 		        		/*
-		        		 * Alle Kontaktlisten, von denen der Nutzer Eigentümer ist, werden der ListBox hinzugefügt.
-		        		 */
-		        		for (ContactList cl : contactLists) {
-				        	clListbox.addItem(cl.getName());
-				        }
-		        		
-		        		okButton.addClickHandler(new ClickHandler() {
-				        	
-				        	public void onClick(ClickEvent event) {
-				        		for (ContactList cl : contactLists) {
-				        			if (clListbox.getSelectedItemText() == cl.getName()) {
-				        				chosenCL = cl;
-				        			}
-				        		}
-				        		
-				        		db.hide();
-				        		
-				        		/*
-				 		        * Hat der Nutzer eine Kontaktliste ausgewählt und klickt "OK", so wird der Kontakt dieser Kontaktliste hinzugefügt.
-				 		        */
-				        		editorAdministration.addContactToContactList(chosenCL, contactToDisplay, new AsyncCallback<ContactList>() {
-				        			
-				        			public void onFailure(Throwable z) {
-				        				Window.alert("Fehler beim Hinzufügen des Kontakts zur Kontaktliste.");
-				        			}
-				        			
-				        			public void onSuccess(ContactList result) {
-				        				final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Kontakt zur Kontaktliste hinzugefügt.", new ClientsideFunctions.OkButton());
-										success.getOkButton().addCloseDBClickHandler(success);
-				        			}
-								});
-				        	}
-				        });
-		        	}
-				});   
+		 		        * Hat der Nutzer eine Kontaktliste ausgewählt und klickt "OK", so wird der Kontakt dieser Kontaktliste hinzugefügt.
+		 		        */
+		        		editorAdministration.addContactToContactList(chosenCL, contactToDisplay, new AsyncCallback<ContactList>() {
+		        			
+		        			public void onFailure(Throwable z) {
+		        				Window.alert("Fehler beim Hinzufügen des Kontakts zur Kontaktliste.");
+		        			}
+		        			
+		        			public void onSuccess(ContactList result) {
+		        				final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Kontakt zur Kontaktliste hinzugefügt.", new ClientsideFunctions.OkButton());
+								success.getOkButton().addCloseDBClickHandler(success);
+		        			}
+						});				
+					}
+				});
+//				
+//				db.setText("Kontaktliste auswählen");
+//				
+//				dbPanel.setHeight("100");
+//		        dbPanel.setWidth("300");
+//		        dbPanel.setSpacing(10);
+//		        dbPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+//		    	db.add(dbPanel);
+//		        
+//		        Label label = new Label("Bitte wählen Sie eine Kontaktliste aus.");
+//		        dbPanel.add(label);
+//		        
+//		        /*
+//		         * In der Dialogbox soll eine ListBox angezeigt werden, die alle Kontaktlisten des Nutzers beinhaltet.
+//		         */
+//		        dbPanel.add(clListbox);
+//		        
+//		      
+//		        CloseButton closeButton = new CloseButton(db);
+//				dbButtonsPanel.add(closeButton);
+//				
+//				//TODO: why final?
+//		        final Button okButton = new Button("OK");
+//		        okButton.addStyleName("okbutton");
+//		        dbButtonsPanel.add(okButton);
+//		        
+//		       
+//				
+//		        dbPanel.add(dbButtonsPanel);
+//		       	     
+//		    	db.show();
+//	
+//		        editorAdministration.getAllOwnedContactListsOfActiveUser(currentUser, new AsyncCallback<Vector<ContactList>>() {
+//		        	
+//		        	public void onFailure(Throwable t) {
+//		        		Window.alert("Fehler beim Abruf der Kontaklisten des Nutzers");
+//		        	}
+//		        	
+//		        	public void onSuccess(Vector<ContactList> result) {
+//		        		
+//		        		contactLists = result;
+//		        		
+//		        		/*
+//		        		 * Alle Kontaktlisten, von denen der Nutzer Eigentümer ist, werden der ListBox hinzugefügt.
+//		        		 */
+//		        		for (ContactList cl : contactLists) {
+//				        	clListbox.addItem(cl.getName());
+//				        }
+//		        		
+//		        		okButton.addClickHandler(new ClickHandler() {
+//				        	
+//				        	public void onClick(ClickEvent event) {
+//				        		for (ContactList cl : contactLists) {
+//				        			if (clListbox.getSelectedItemText() == cl.getName()) {
+//				        				chosenCL = cl;
+//				        			}
+//				        		}
+//				        		
+//				        		db.hide();
+//				        		
+//				        		/*
+//				 		        * Hat der Nutzer eine Kontaktliste ausgewählt und klickt "OK", so wird der Kontakt dieser Kontaktliste hinzugefügt.
+//				 		        */
+//				        		editorAdministration.addContactToContactList(chosenCL, contactToDisplay, new AsyncCallback<ContactList>() {
+//				        			
+//				        			public void onFailure(Throwable z) {
+//				        				Window.alert("Fehler beim Hinzufügen des Kontakts zur Kontaktliste.");
+//				        			}
+//				        			
+//				        			public void onSuccess(ContactList result) {
+//				        				final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Kontakt zur Kontaktliste hinzugefügt.", new ClientsideFunctions.OkButton());
+//										success.getOkButton().addCloseDBClickHandler(success);
+//				        			}
+//								});
+//				        	}
+//				        });
+//		        	}
+//				});   
 			}   
 		}
 	}
