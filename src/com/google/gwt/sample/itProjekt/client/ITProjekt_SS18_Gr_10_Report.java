@@ -226,9 +226,9 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			}
 
 			public void onSuccess(User result) {
-				sb=new TextSuggest(new MultiWordSuggestOracle());
 				ClientsideSettings.setUser(result);
-				user = result;				
+				user = result;
+				sb=new TextSuggest(new MultiWordSuggestOracle());
 			}
 			   		
 	    });
