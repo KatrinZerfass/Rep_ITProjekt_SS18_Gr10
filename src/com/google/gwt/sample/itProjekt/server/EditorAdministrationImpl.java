@@ -1194,6 +1194,11 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 			newCLpermission.setParticipantID(uMapper.findByEMail(shareUserEmail).getId());
 			newCLpermission.setShareableObjectID(shareContactList.getId());
 			
+			Vector<Contact> allContacts = getAllContactsOfContactList(shareContactList);
+			for(Contact c : allContacts) {
+				shareContact(sourceUser, shareUserEmail, c);
+			}
+			
 			return pmMapper.shareContactList(newCLpermission);
 		}
 		else {
