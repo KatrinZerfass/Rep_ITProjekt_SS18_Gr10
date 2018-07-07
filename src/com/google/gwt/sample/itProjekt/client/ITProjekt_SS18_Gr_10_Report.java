@@ -105,7 +105,8 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 					for(String s : arg0) {
 						getOracle().add(s);
 					}
-    				setSuggestBox(new SuggestBox(getOracle()));		
+    				setSuggestBox(new SuggestBox(getOracle()));
+    				loadApplication();
     			}
     		});
     	}		
@@ -137,7 +138,6 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 		/**
 		 * Instanziierung der SuggestBox für die Eingabe der Email.
 		**/
-		sb=new TextSuggest(new MultiWordSuggestOracle());
 
 		/**Layout**/		
 		searchheading.addStyleName("searchheading");
@@ -226,10 +226,9 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			}
 
 			public void onSuccess(User result) {
+				sb=new TextSuggest(new MultiWordSuggestOracle());
 				ClientsideSettings.setUser(result);
-				user = result;
-				loadApplication();
-				
+				user = result;				
 			}
 			   		
 	    });
