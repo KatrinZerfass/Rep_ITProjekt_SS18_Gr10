@@ -210,6 +210,9 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	    });
 	  }
 		
+	/**
+	 * Auslesen der Nutzerinformationen und abspeichern der Informationen in die Variable user.
+	**/
 	public void loadUserInformation() {
     	
 		if(reportGenerator == null){
@@ -232,10 +235,17 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	    });
   	}
 	
+	/**
+	 * Laden der Applikation.
+	**/
 	 public void loadApplication() { 
 	  		 
 			signOutLink.setHref(loginInfo.getLogoutUrl());
 	        
+			
+			/**
+			 * Hinzufügen eines Clickhandlers um den passenden Report auszuwählen.
+			**/
 			getReportButton.addClickHandler(new ClickHandler() {
 		         public void onClick(ClickEvent event){
 		        	 	RootPanel.get("reporttext").setVisible(false);
@@ -277,7 +287,9 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 		        			}
 		        		 }
 		              });		
-			
+			/**
+			 * Hinzufügen eines Clickhandlers um den Report für alle Kontakte des Nutzers zu generieren.
+			**/
 			allContactsOfUserButton.addClickHandler(new ClickHandler() {
 		         @Override
 		         public void onClick(ClickEvent event){
@@ -299,7 +311,9 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	    					 });
 	        			}
 		        	 });
-		        	 
+			/**
+			 * Hinzufügen eines Clickhandlers um den Report für "alle geteilten Kontakte mit einem Nutzers" zu generieren.
+			**/    	 
 		    allSharedContactsOfUserButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
@@ -330,7 +344,9 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 							}
 	   				 	}
 					});
-			
+		    /**
+			 * Hinzufügen eines Clickhandlers um den Report für "alle Kontakte mit einer bestimmten Ausprägung" zu generieren.
+			**/  
 			allContactsWithValueButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
@@ -356,6 +372,10 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 				else{
 					Window.alert("Suchleiste ist leer. Bitte füllen Sie einen Suchbegriff in das Suchfeld ein.");
 				}}});
+			
+			/**
+			 * Hinzufügen eines Clickhandlers um den Report für "alle Kontakte mit einer bestimmten Eigenschaft" zu generieren.
+			**/  
 			
 			allContactsWithPropertyButton.addClickHandler(new ClickHandler() {
 				@Override
@@ -403,7 +423,11 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	   				}
 				}}
 			});
-				
+			
+			/**
+			 * Befüllen des Hauptpanels  
+			**/  
+			
 			descriptionPanel.add(searchheading);
 			sb.getSuggestBox().addStyleName("reportSuggestBox");
 			reportbuttonPanel.add(allContactsOfUserButton);
@@ -423,15 +447,13 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			selectionPanel.add(descriptionPanel);
 			selectionPanel.add(selectionHPanel);
 			mainPanel.add(selectionPanel);
-//			RootPanel.get("report").add(reportbuttonPanel);
-//			mainPanel.add(searchPanel);
-//			mainPanel.add(descriptionPanel);
-//			mainPanel.add(addPanel);
-//			mainPanel.add(propertyPanel);
 			RootPanel.get("report").add(mainPanel);
 	   			
 			}  
-		  
+	 	/**
+		 * Laden des Logins und befüllen des LoginPanels.
+		**/  
+		
 	private void loadLogin() {
 		    signInLink.setHref(loginInfo.getLoginUrl());
 		    loginPanel.add(loginLabel);

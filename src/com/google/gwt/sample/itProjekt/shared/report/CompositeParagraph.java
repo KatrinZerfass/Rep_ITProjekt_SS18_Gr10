@@ -5,11 +5,13 @@ import java.util.Vector;
 
 // 
 /**
- * Die Klasse CompositeParagraph wird dazu benötigt, um mehrere SimpleParagraphs in einem Vector zu speichern. 
- * Dadurch   
- * 
+ * Diese Klasse stellt eine Menge einzelner Absätze (
+ * <code>SimpleParagraph</code>-Objekte) dar. Diese werden als Unterabschnitte
+ * in einem <code>Vector</code> abgelegt verwaltet.
  * @see SimpleParagraph
- */
+ * @author Thies
+ */   
+
 public class CompositeParagraph extends Paragraph implements Serializable {
 	
 	/** Die Konstante serialVersionUID, welche als Versionsnummer bei der Serialisierung dient. */

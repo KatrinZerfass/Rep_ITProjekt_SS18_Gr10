@@ -80,8 +80,24 @@ public interface ReportGenerator extends RemoteService{
 	
 	public abstract AllContactsWithValueReport generateAllContactsWithValueReport(User user, Value value) throws IllegalArgumentException;
 
+	/**
+	 * Generiert den SubReport mit den Eigenschaften und den Ausprägungen eines Kontaktes.
+	 *
+	 * @param contact the contact
+	 * @param user the user
+	 * @return the all values of contact report
+	 * @throws IllegalArgumentException the illegal argument exception
+	 */
 	public abstract AllValuesOfContactReport generateAllValuesOfContactReport(Contact contact, User user) throws IllegalArgumentException;
 	
+	/**
+	 * Generiert den SubReport mit den allgemeinen Kontaktinformationen. 
+	 *
+	 * @param contact the contact
+	 * @param user the user
+	 * @return the all contact information of contact report
+	 * @throws IllegalArgumentException the illegal argument exception
+	 */
 	public abstract AllContactInformationOfContactReport generateAllContactInformationOfContactReport(Contact contact, User user) throws IllegalArgumentException;
 		
 	/**
