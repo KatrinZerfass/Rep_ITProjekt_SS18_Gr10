@@ -185,9 +185,11 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	    signOutLink.setHref(loginInfo.getLogoutUrl());
 	    signOutLink.addStyleName("signout");
 		signInLink.addStyleName("reportbutton");
+		signedInUserPanel.addStyleName("signedInUser");
 		
 		loginPanel.add(signOutLink);
 		loginPanel.add(signedInUserPanel);
+		
 		
 		RootPanel.get("Login").add(loginPanel);
 		

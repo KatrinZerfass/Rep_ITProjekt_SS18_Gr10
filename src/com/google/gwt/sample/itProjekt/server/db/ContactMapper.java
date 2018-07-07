@@ -40,6 +40,78 @@ public class ContactMapper {
 		}
 	
 	/**
+		 * Gibt alle Contact Objekte zurück welche mit C_ID, firstName, lastName, gender und U_ID befüllt sind
+		 * Hierfür holen wir C_ID, firstName, lastName, geder und U_ID aus der T_Contact Tabelle und speichern diese in einem Contact Objekt ab und fügen diese dem Vector hinzu
+		 * Diesen Vector befüllt mit Contacts geben wir zurück
+		 * 
+		 * @return Ein Vector voller Contact Objekte welche befüllt sind
+		 * 
+		 * @author Egor Krämer
+		 * @author Robert Mattheis
+		 */
+		public Vector<Contact> findAll(){
+	Connection con = DBConnection.connection();
+	Vector<Contact> result = new Vector<Contact>();
+			
+			try{
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID, create_date, mod_date, isUser FROM T_Contact ORDER BY firstName");
+				
+				while (rs.next()){
+					Contact c = new Contact();
+					c.setId(rs.getInt("C_ID"));
+					c.setFirstname(rs.getString("firstName"));
+					c.setLastname(rs.getString("lastName"));
+					c.setSex(rs.getString("gender"));
+					c.setOwner(rs.getInt("U_ID"));
+					c.setCreationDate(rs.getTimestamp("create_date"));
+					c.setModificationDate(rs.getTimestamp("mod_date"));
+					c.setIsUser(rs.getBoolean("isUser"));
+					result.addElement(c);
+				}		
+			}catch(SQLException e2){
+				e2.printStackTrace();
+			}
+			return result;
+		}
+
+	/**
+		 * Gibt alle Contact Objekte zurück welche mit C_ID, firstName, lastName, gender und U_ID befüllt sind und den IsUser flag auf true haben.
+		 * Hierfür holen wir C_ID, firstName, lastName, geder und U_ID aus der T_Contact Tabelle und speichern diese in einem Contact Objekt ab und fügen diese dem Vector hinzu
+		 * Diesen Vector befüllt mit Contacts geben wir zurück.
+		 * 
+		 * @return Ein Vector voller Contact Objekte welche befüllt sind
+		 * 
+		 * @author Egor Krämer
+		 * @author Robert Mattheis
+		 */
+		public Vector<Contact> findAllUserContacts(){
+	Connection con = DBConnection.connection();
+	Vector<Contact> result = new Vector<Contact>();
+			
+			try{
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID, create_date, mod_date, isUser FROM T_Contact WHERE isUser = 1 ORDER BY firstName");
+				
+				while (rs.next()){
+					Contact c = new Contact();
+					c.setId(rs.getInt("C_ID"));
+					c.setFirstname(rs.getString("firstName"));
+					c.setLastname(rs.getString("lastName"));
+					c.setSex(rs.getString("gender"));
+					c.setOwner(rs.getInt("U_ID"));
+					c.setCreationDate(rs.getTimestamp("create_date"));
+					c.setModificationDate(rs.getTimestamp("mod_date"));
+					c.setIsUser(rs.getBoolean("isUser"));
+					result.addElement(c);
+				}		
+			}catch(SQLException e2){
+				e2.printStackTrace();
+			}
+			return result;
+		}
+
+	/**
 	 * Findet Contacts durch eine C_ID und speichert die dazugehörigen Werte (C_ID, firstName, lastName, gender und U_ID) in einem COntact Objekt ab und gibt dieses wieder
 	 * 
 	 * @param contact übergebenes Contact Objekt mit Attribut C_ID
@@ -74,80 +146,6 @@ public class ContactMapper {
 		}
 		return c;
 	}
-	
-	
-	/**
-	 * Gibt alle Contact Objekte zurück welche mit C_ID, firstName, lastName, gender und U_ID befüllt sind
-	 * Hierfür holen wir C_ID, firstName, lastName, geder und U_ID aus der T_Contact Tabelle und speichern diese in einem Contact Objekt ab und fügen diese dem Vector hinzu
-	 * Diesen Vector befüllt mit Contacts geben wir zurück
-	 * 
-	 * @return Ein Vector voller Contact Objekte welche befüllt sind
-	 * 
-	 * @author Egor Krämer
-	 * @author Robert Mattheis
-	 */
-	public Vector<Contact> findAll(){
-Connection con = DBConnection.connection();
-Vector<Contact> result = new Vector<Contact>();
-		
-		try{
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID, create_date, mod_date, isUser FROM T_Contact ORDER BY firstName");
-			
-			while (rs.next()){
-				Contact c = new Contact();
-				c.setId(rs.getInt("C_ID"));
-				c.setFirstname(rs.getString("firstName"));
-				c.setLastname(rs.getString("lastName"));
-				c.setSex(rs.getString("gender"));
-				c.setOwner(rs.getInt("U_ID"));
-				c.setCreationDate(rs.getTimestamp("create_date"));
-				c.setModificationDate(rs.getTimestamp("mod_date"));
-				c.setIsUser(rs.getBoolean("isUser"));
-				result.addElement(c);
-			}		
-		}catch(SQLException e2){
-			e2.printStackTrace();
-		}
-		return result;
-	}
-	
-	/**
-	 * Gibt alle Contact Objekte zurück welche mit C_ID, firstName, lastName, gender und U_ID befüllt sind und den IsUser flag auf true haben.
-	 * Hierfür holen wir C_ID, firstName, lastName, geder und U_ID aus der T_Contact Tabelle und speichern diese in einem Contact Objekt ab und fügen diese dem Vector hinzu
-	 * Diesen Vector befüllt mit Contacts geben wir zurück.
-	 * 
-	 * @return Ein Vector voller Contact Objekte welche befüllt sind
-	 * 
-	 * @author Egor Krämer
-	 * @author Robert Mattheis
-	 */
-	public Vector<Contact> findAllUserContacts(){
-Connection con = DBConnection.connection();
-Vector<Contact> result = new Vector<Contact>();
-		
-		try{
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID, create_date, mod_date, isUser FROM T_Contact WHERE isUser = 1 ORDER BY firstName");
-			
-			while (rs.next()){
-				Contact c = new Contact();
-				c.setId(rs.getInt("C_ID"));
-				c.setFirstname(rs.getString("firstName"));
-				c.setLastname(rs.getString("lastName"));
-				c.setSex(rs.getString("gender"));
-				c.setOwner(rs.getInt("U_ID"));
-				c.setCreationDate(rs.getTimestamp("create_date"));
-				c.setModificationDate(rs.getTimestamp("mod_date"));
-				c.setIsUser(rs.getBoolean("isUser"));
-				result.addElement(c);
-			}		
-		}catch(SQLException e2){
-			e2.printStackTrace();
-		}
-		return result;
-	}
-	
 	/**
 	 * Findet Contacts durch einen Namen und speichert die dazugehörigen Werte (C_ID, firstName, lastName, gender und U_ID) in einem Contact Objekt ab
 	 * und Speichert dieses Objekt im Vector ab und gibt diesen wieder
@@ -184,6 +182,7 @@ Vector<Contact> result = new Vector<Contact>();
 		}
 		return result;
 	}
+	
 	
 	/**
 	 * Findet alle Contacts die ein User erstellt hat durch seine U_ID
@@ -222,7 +221,46 @@ Vector<Contact> result = new Vector<Contact>();
 				}
 				return result;
 			}
+
+	/**
+	 * Findet alle C_ID, firstName, lastName, gender, U_ID, create_date und mod_date wo der firstName oder lastName so ähnlich ist wie der eingegebene String ist (name)
+	 * Befüllt das Contact Objekt mit den Attributen und fügt dieses Objekt dem Vector hinzu
+	 * Gibt ein Vector voller Contact Objekte zurück
+	 * 
+	 * @param name übergebener String name
+	 * @return Ein Vector voller Contact Objekte welche befüllt sind
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
+	 */
 	
+	public Vector<Contact> findAllByName(String name){
+		Connection con = DBConnection.connection();
+		Vector<Contact> result = new Vector<Contact>();
+		
+		try{
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID, create_date, mod_date, isUser FROM T_Contact WHERE firstName LIKE'%" +name+ "%' OR lastName LIKE'%" + name+ "%' ORDER BY firstName");
+			while (rs.next()){
+				Contact c = new Contact();
+				c.setId(rs.getInt("C_ID"));
+				c.setFirstname(rs.getString("firstName"));
+				c.setLastname(rs.getString("lastName"));
+				c.setSex(rs.getString("gender"));
+				c.setOwner(rs.getInt("U_ID"));
+				c.setCreationDate(rs.getTimestamp("create_date"));
+				c.setModificationDate(rs.getTimestamp("mod_date"));
+				c.setIsUser(rs.getBoolean("isUser"));
+				result.addElement(c);	
+			}
+		}
+		catch (SQLException e2){
+			e2.printStackTrace();
+			return result;
+		}
+		return result;
+	}
+
 	/**
 	 * Sucht nach der höchsten C_ID um diese um eins zu erhöhen und als neue C_ID zu nutzen
 	 * Befüllt T_Contact mit C_ID, firstName, lastName, gender, create_date, mod_date, U_ID
@@ -280,11 +318,8 @@ Vector<Contact> result = new Vector<Contact>();
 			return contact;
 		}
 		return contact;}
-	
-	
-	
-	
-		/**
+
+	/**
 		 * Update von Veränderungen falls sich die firstName, lastName und/oder gender ändert
 		 * Falls Updates vorgenommen werden wird ein neuer mod_date gesetzt
 		 * Gibt ein Contact zurück
@@ -330,13 +365,7 @@ Vector<Contact> result = new Vector<Contact>();
 		return contact;}
 		
 		/**
-		 * Entfernt alles aus T_Permission_Contact wo die C_ID der ID des übergebenen Objekts entspricht
-		 * Entfernt alles aus T_Value wo die C_ID der ID des übergebenen Objekts entspricht
-		 * Entfernt alles aus T_Property wo die C_ID der ID des übergebenen Objekts entspricht
-		 * Entfernt alles aus T_Property wo die C_ID der ID des übergebenen Objekts entspricht
-		 * Entfernt alles aus T_Contact_Contactlist wo die C_ID der ID des übergebenen Objekts entspricht
-		 * Damit lösen wir die Teilhaberschaft an einem Contact auf
-		 * der nächste Schritt entfernt alles aus T_Contact wo die C_ID der ID des übergebenen Objekts entspricht
+		 * Entfernt alles aus T_Contact wo die C_ID der ID des übergebenen Objekts entspricht
 		 * 
 		 * @param contact übergebenes Contact Objekt mit Attribut C_ID
 		 * 
@@ -358,45 +387,6 @@ Connection con = DBConnection.connection();
 			
 		}
 			
-		}
-		
-		/**
-		 * Findet alle C_ID, firstName, lastName, gender, U_ID, create_date und mod_date wo der firstName oder lastName so ähnlich ist wie der eingegebene String ist (name)
-		 * Befüllt das Contact Objekt mit den Attributen und fügt dieses Objekt dem Vector hinzu
-		 * Gibt ein Vector voller Contact Objekte zurück
-		 * 
-		 * @param name übergebener String name
-		 * @return Ein Vector voller Contact Objekte welche befüllt sind
-		 * 
-		 * @author Egor Krämer
-		 * @author Robert Mattheis
-		 */
-		
-		public Vector<Contact> findAllByName(String name){
-			Connection con = DBConnection.connection();
-			Vector<Contact> result = new Vector<Contact>();
-			
-			try{
-				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT C_ID, firstName, lastName, gender, U_ID, create_date, mod_date, isUser FROM T_Contact WHERE firstName LIKE'%" +name+ "%' OR lastName LIKE'%" + name+ "%' ORDER BY firstName");
-				while (rs.next()){
-					Contact c = new Contact();
-					c.setId(rs.getInt("C_ID"));
-					c.setFirstname(rs.getString("firstName"));
-					c.setLastname(rs.getString("lastName"));
-					c.setSex(rs.getString("gender"));
-					c.setOwner(rs.getInt("U_ID"));
-					c.setCreationDate(rs.getTimestamp("create_date"));
-					c.setModificationDate(rs.getTimestamp("mod_date"));
-					c.setIsUser(rs.getBoolean("isUser"));
-					result.addElement(c);	
-				}
-			}
-			catch (SQLException e2){
-				e2.printStackTrace();
-				return result;
-			}
-			return result;
 		}
 		
 	

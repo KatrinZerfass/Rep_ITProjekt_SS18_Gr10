@@ -37,6 +37,110 @@ public class ValueMapper {
 		}
 	
 	/**
+	 * Gibt alle Value Objekte zurück welche mit V_ID und value befüllt sind
+	 * Hierfür holen wir V_ID und value aus der T_Value Tabelle und speichern diese in einem Value Objekt ab und fügen diese dem Vector hinzu
+	 * Am Ende geben wir diesen Vector zurück
+	 * 
+	 * @return Ein Vector voller Value Objekte welche befüllt sind
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
+	 */
+	public Vector<Value> findAll(){
+		Connection con = DBConnection.connection();
+		Vector<Value> result = new Vector<Value>();
+				
+				try{
+					Statement stmt = con.createStatement();
+					ResultSet rs = stmt.executeQuery("SELECT V_ID, value, P_ID, isShared FROM T_Value ORDER BY V_ID");
+					
+					while (rs.next()){
+						Value v = new Value();
+						v.setId(rs.getInt("V_ID"));
+						v.setContent(rs.getString("value"));
+						v.setPropertyid(rs.getInt("P_ID"));
+						v.setIsShared(rs.getBoolean("isShared"));
+						
+						result.addElement(v);
+					}		
+				}catch(SQLException e2){
+					e2.printStackTrace();
+				}
+				return result;
+			}
+
+	/**
+	 * Gibt ein Contact welche eine bestimmte V_ID habt zurück
+	 * Hierfür suchen wir nach C_ID in der T_Value Tabelle wo die V_ID der ID des übergebenen Objekts entspricht
+	 * Mit der C_ID befüllen wir ein Contact Objekt mit der Methode findByID und geben ihn zurück
+	 *
+	 * @param value übergebenes Value Objekt mit Attribut V_ID
+	 * @return Ein vollständiges Contact Objekt
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
+	 */
+	
+	public Contact findContactByVID(Value value){
+		
+		Connection con = DBConnection.connection();
+		
+		try{
+			Statement stmt = con.createStatement();
+			ResultSet rs= stmt.executeQuery("SELECT C_ID FROM T_Value WHERE V_ID=" + value.getId() + " ORDER BY V_ID");
+			
+			if(rs.next()){
+				Contact c = new Contact();
+				c.setId(rs.getInt("C_ID"));
+				
+				return c;	
+			}
+		}
+		catch (SQLException e2){
+			e2.printStackTrace();
+			return null;
+		}
+		return null;
+	}
+
+	/**
+	 * Findet alle V_ID, value, P_ID und isShared wo die P_ID und die C_ID der ID der beiden übergebenen Objekte entspricht
+	 * Befüllt das Value Objekt mit den Attributen und fügt dieses Objekt dem Vector hinzu
+	 * Gibt ein Vector voller Value Objekte zurück
+	 * 
+	 * @param property übergebenes Property Objekt mit Attribut P_ID
+	 * @param contact übergebenes Contact Objekt mit Attribut C_ID
+	 * @return Ein Vector voller Value Objekte welche befüllt sind
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
+	 */
+	
+	public Vector<Value> findAllByPID(Property property, Contact contact){
+		Connection con = DBConnection.connection();
+		Vector<Value> result = new Vector<Value>();
+				
+				try{
+					Statement stmt = con.createStatement();
+					ResultSet rs = stmt.executeQuery("SELECT DISTINCT V_ID, value, P_ID, isShared FROM T_Value WHERE P_ID=" + property.getId()+ " AND C_ID=" + contact.getId() + " ORDER BY V_ID");
+					
+					while (rs.next()){
+						Value v = new Value();
+						v.setId(rs.getInt("V_ID"));
+						v.setContent(rs.getString("value"));
+						v.setPropertyid(rs.getInt("P_ID"));
+						v.setIsShared(rs.getBoolean("isShared"));
+						
+						
+						result.addElement(v);
+					}		
+				}catch(SQLException e2){
+					e2.printStackTrace();
+				}
+				return result;
+			}
+
+	/**
 	 * Findet alle V_ID durch ein value welches als Filterkriterium dient
 	 * Befüllt ein Value Objekt mit V_ID und value und fügt dieses Objekt dem Vector hinzu
 	 * Gibt ein Vector voller Value Objekte zurück
@@ -101,41 +205,6 @@ public class ValueMapper {
 				}
 				return result;
 			}
-	
-	/**
-	 * Gibt alle Value Objekte zurück welche mit V_ID und value befüllt sind
-	 * Hierfür holen wir V_ID und value aus der T_Value Tabelle und speichern diese in einem Value Objekt ab und fügen diese dem Vector hinzu
-	 * Am Ende geben wir diesen Vector zurück
-	 * 
-	 * @return Ein Vector voller Value Objekte welche befüllt sind
-	 * 
-	 * @author Egor Krämer
-	 * @author Robert Mattheis
-	 */
-	public Vector<Value> findAll(){
-		Connection con = DBConnection.connection();
-		Vector<Value> result = new Vector<Value>();
-				
-				try{
-					Statement stmt = con.createStatement();
-					ResultSet rs = stmt.executeQuery("SELECT V_ID, value, P_ID, isShared FROM T_Value ORDER BY V_ID");
-					
-					while (rs.next()){
-						Value v = new Value();
-						v.setId(rs.getInt("V_ID"));
-						v.setContent(rs.getString("value"));
-						v.setPropertyid(rs.getInt("P_ID"));
-						v.setIsShared(rs.getBoolean("isShared"));
-						
-						result.addElement(v);
-					}		
-				}catch(SQLException e2){
-					e2.printStackTrace();
-				}
-				return result;
-			}
-	
-	
 	
 	/**
 	 * Sucht nach der höchsten V_ID um diese um eins zu erhöhen und als neue V_ID zu nutzen
@@ -242,40 +311,6 @@ public class ValueMapper {
 			
 		}
 }
-		/**
-		 * Gibt ein Contact welche eine bestimmte V_ID habt zurück
-		 * Hierfür suchen wir nach C_ID in der T_Value Tabelle wo die V_ID der ID des übergebenen Objekts entspricht
-		 * Mit der C_ID befüllen wir ein Contact Objekt mit der Methode findByID und geben ihn zurück
-		 *
-		 * @param value übergebenes Value Objekt mit Attribut V_ID
-		 * @return Ein vollständiges Contact Objekt
-		 * 
-		 * @author Egor Krämer
-		 * @author Robert Mattheis
-		 */
-		
-		public Contact findContactByVID(Value value){
-			
-			Connection con = DBConnection.connection();
-			
-			try{
-				Statement stmt = con.createStatement();
-				ResultSet rs= stmt.executeQuery("SELECT C_ID FROM T_Value WHERE V_ID=" + value.getId() + " ORDER BY V_ID");
-				
-				if(rs.next()){
-					Contact c = new Contact();
-					c.setId(rs.getInt("C_ID"));
-					
-					return c;	
-				}
-			}
-			catch (SQLException e2){
-				e2.printStackTrace();
-				return null;
-			}
-			return null;
-		}
-		
 		/**
 		 * Befüllt ein Vector mit Contacts welche eine bestimmte Property haben und gibt diesen Vector zurück
 		 * Hierfür suchen wir nach C_ID in der T_Value Tabelle wo die P_ID der ID des übergebenen Objekts entspricht
@@ -386,43 +421,6 @@ public class ValueMapper {
 			return result;
 			
 		}
-		
-		/**
-		 * Findet alle V_ID, value, P_ID und isShared wo die P_ID und die C_ID der ID der beiden übergebenen Objekte entspricht
-		 * Befüllt das Value Objekt mit den Attributen und fügt dieses Objekt dem Vector hinzu
-		 * Gibt ein Vector voller Value Objekte zurück
-		 * 
-		 * @param property übergebenes Property Objekt mit Attribut P_ID
-		 * @param contact übergebenes Contact Objekt mit Attribut C_ID
-		 * @return Ein Vector voller Value Objekte welche befüllt sind
-		 * 
-		 * @author Egor Krämer
-		 * @author Robert Mattheis
-		 */
-		
-		public Vector<Value> findAllByPID(Property property, Contact contact){
-			Connection con = DBConnection.connection();
-			Vector<Value> result = new Vector<Value>();
-					
-					try{
-						Statement stmt = con.createStatement();
-						ResultSet rs = stmt.executeQuery("SELECT DISTINCT V_ID, value, P_ID, isShared FROM T_Value WHERE P_ID=" + property.getId()+ " AND C_ID=" + contact.getId() + " ORDER BY V_ID");
-						
-						while (rs.next()){
-							Value v = new Value();
-							v.setId(rs.getInt("V_ID"));
-							v.setContent(rs.getString("value"));
-							v.setPropertyid(rs.getInt("P_ID"));
-							v.setIsShared(rs.getBoolean("isShared"));
-							
-							
-							result.addElement(v);
-						}		
-					}catch(SQLException e2){
-						e2.printStackTrace();
-					}
-					return result;
-				}
 		
 	
 }

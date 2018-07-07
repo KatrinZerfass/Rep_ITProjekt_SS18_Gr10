@@ -44,7 +44,7 @@ div#Login {
 	width: 60%;
 	height: 7em;
 	float: right;
-	background-color: red;
+	background-color: white;
 	text-align: right;
 }
 
@@ -263,6 +263,13 @@ div#Trailer {
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
+}
+
+.signedInUser{
+	position: absolute;
+	right: 4px;
+	top: 40px;
+	text-align: right;
 }
 
 .signout{

@@ -40,6 +40,37 @@ public class ContactListMapper {
 		}
 	
 	/**
+	 * Gibt alle ContactList Objekte zurück welche mit CL_ID, listname und U_ID befüllt sind
+	 * Hierfür holen wir CL_ID, listname und U_ID aus der T_ContactList Tabelle und speichern diese in einem ContactList Objekt ab und fügen diese dem Vector hinzu
+	 * Am Ende geben wir diesen Vector zurück
+	 * 
+	 * @return Ein Vector voller ContactList Objekte welche befüllt sind
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
+	 */
+	public Vector<ContactList> findAll(){
+		Connection con = DBConnection.connection();
+		Vector<ContactList> result = new Vector<ContactList>();
+				
+				try{
+					Statement stmt = con.createStatement();
+					ResultSet rs = stmt.executeQuery("SELECT CL_ID, listname, U_ID FROM T_ContactList ORDER BY listname");
+					
+					while (rs.next()){
+						ContactList cl = new ContactList();
+						cl.setId(rs.getInt("CL_ID"));
+						cl.setName(rs.getString("listname"));
+						cl.setOwner(rs.getInt("U_ID"));
+						result.addElement(cl);
+					}		
+				}catch(SQLException e2){
+					e2.printStackTrace();
+				}
+				return result;
+			}
+
+	/**
 	 * Findet ContactList durch eine CL_ID und speichert die dazugehörigen Werte (CL_ID, listname und U_ID) in einem ContactList Objekt ab und gibt dieses wieder
 	 * 
 	 * @param contactlist übergebenes ContactList Objekt mit Attribut CL_ID
@@ -71,38 +102,6 @@ public class ContactListMapper {
 		return null;
 	}
 	
-	
-	
-	/**
-	 * Gibt alle ContactList Objekte zurück welche mit CL_ID, listname und U_ID befüllt sind
-	 * Hierfür holen wir CL_ID, listname und U_ID aus der T_ContactList Tabelle und speichern diese in einem ContactList Objekt ab und fügen diese dem Vector hinzu
-	 * Am Ende geben wir diesen Vector zurück
-	 * 
-	 * @return Ein Vector voller ContactList Objekte welche befüllt sind
-	 * 
-	 * @author Egor Krämer
-	 * @author Robert Mattheis
-	 */
-	public Vector<ContactList> findAll(){
-		Connection con = DBConnection.connection();
-		Vector<ContactList> result = new Vector<ContactList>();
-				
-				try{
-					Statement stmt = con.createStatement();
-					ResultSet rs = stmt.executeQuery("SELECT CL_ID, listname, U_ID FROM T_ContactList ORDER BY listname");
-					
-					while (rs.next()){
-						ContactList cl = new ContactList();
-						cl.setId(rs.getInt("CL_ID"));
-						cl.setName(rs.getString("listname"));
-						cl.setOwner(rs.getInt("U_ID"));
-						result.addElement(cl);
-					}		
-				}catch(SQLException e2){
-					e2.printStackTrace();
-				}
-				return result;
-			}
 	
 	/**
 	 * Findet ContactLists durch einen Namen und speichert die dazugehörigen Werte (CL_ID, listname und U_ID) in einem ContactList Objekt ab
