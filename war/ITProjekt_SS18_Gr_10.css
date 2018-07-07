@@ -42,9 +42,9 @@ div#SystemName {
 
 div#Login {
 	width: 60%;
-	height: 3.6em;
+	height: 7em;
 	float: right;
-	background-color: white;
+	background-color: red;
 	text-align: right;
 }
 
@@ -204,15 +204,6 @@ div#Trailer {
     width: 150px;
 }
 
-.cellBordersBlack {
-	/* 	border-bottom: 1px solid black; */
-	/* 	border-top: 1px solid black; */
-	border-right: 1px solid black;
-}
-
-.cellBordersGreen {
-	border: 1px solid green;
-}
 
 #contactCell{
 	

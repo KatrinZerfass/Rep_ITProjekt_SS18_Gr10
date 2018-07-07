@@ -1707,6 +1707,9 @@ public class ContactForm extends VerticalPanel {
 										newPropertyListBox.removeItem(c);
 									}
 								}
+								
+								final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Anschrift erfolgreich angelegt!", new ClientsideFunctions.OkButton());
+								success.getOkButton().addCloseDBClickHandler(success);
 							}
 						});
 
