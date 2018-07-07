@@ -124,7 +124,9 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		newContact.setSex(sex);
 		newContact.setIsUser(true);
 		
-		cMapper.insert(newContact, newUser);
+		newContact = cMapper.insert(newContact, newUser);
+		
+		createValue(newContact, 3, email);
 		
 		return newUser;
 	}
@@ -566,10 +568,10 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	//	pMapper.findByTypeAndCID(newProperty, contact);
 		
 		if(pMapper.findByTypeAndCID(newProperty, contact).size() == 0) {
-			return null;
+			return pMapper.insert(newProperty, contact);
 		}else {
 			//Hier Abfrage: gibt es schon einen Datensatz in der T_Property zu diesem Contact mit dieser Type? Wenn ja, return null
-			return pMapper.insert(newProperty, contact);
+			return null;
 		}
 	}
 
@@ -679,9 +681,8 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		}
 		else {
 			if (vMapper.findAllByPID(extraProperty, vMapper.findContactByVID(value)).size() == 1) {
-				pMapper.delete(extraProperty);
-
 				vMapper.delete(value);
+				pMapper.delete(extraProperty);
 			}
 		}
 	}
@@ -804,22 +805,15 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	   * ABSCHNITT, Beginn: Methoden, welche sonstige Funktionen erfüllen.
 	   * ***************************************************************************
 	   */
-
-	public Vector<String> getAllUserSuggestions(User activeUser) throws IllegalArgumentException {
+	
+	public String getFullNameOfUser(User user) throws IllegalArgumentException {
 		
-		Vector<User> allUsers = uMapper.findAll();
-		Vector<Contact> allContacts = cMapper.findAllUserContacts();
-
-		Vector<String> result = new Vector<String>();
-
-		
-		allUsers.removeElement(activeUser);
-		
-		for(Contact c : allContacts) {
-			for(User u : allUsers) {
-				if (c.getOwner() == u.getId()) {
-					result.add(c.getFirstname() + " " + c.getLastname() + " - " + u.getEmail());
-				}
+		String result = null;
+		Vector<Contact> contacts = getAllOwnedContactsOfUser(user.getEmail());
+		for(Contact c : contacts) {
+			if (c.getIsUser()) {
+				result = c.getFirstname() + " " + c.getLastname();
+				return result;
 			}
 		}
 		return result;
@@ -834,6 +828,26 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 			for(Contact c : contacts) {
 				if (c.getIsUser()) {
 					result.addElement(c.getFirstname() + " " + c.getLastname());
+				}
+			}
+		}
+		return result;
+	}
+	
+	public Vector<String> getAllUserSuggestions(User activeUser) throws IllegalArgumentException {
+		
+		Vector<User> allUsers = uMapper.findAll();
+		Vector<Contact> allContacts = cMapper.findAllUserContacts();
+
+		Vector<String> result = new Vector<String>();
+
+		
+		allUsers.removeElement(activeUser);
+		
+		for(Contact c : allContacts) {
+			for(User u : allUsers) {
+				if (c.getOwner() == u.getId()) {
+					result.add(c.getFirstname() + " " + c.getLastname() + " - " + u.getEmail());
 				}
 			}
 		}

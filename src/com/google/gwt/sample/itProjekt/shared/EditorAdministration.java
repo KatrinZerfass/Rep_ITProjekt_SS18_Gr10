@@ -529,4 +529,6 @@ public interface EditorAdministration extends RemoteService{
 	public Permission editPermissionContactList(Permission permission) throws IllegalArgumentException;
 	
 	public Vector<String> getFullNamesOfUsers(Vector<User> user) throws IllegalArgumentException;
+	
+	public String getFullNameOfUser(User user) throws IllegalArgumentException;
 }

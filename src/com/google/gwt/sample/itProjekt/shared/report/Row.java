@@ -3,12 +3,17 @@ package com.google.gwt.sample.itProjekt.shared.report;
 import java.io.Serializable;
 import java.util.Vector;
 
-// 
 /**
- *  Die Klasse Row, welche Teil der Datenstruktur für das Report Objekt ist. 
+ * 	Die Klasse Row, welche Teil der Datenstruktur für das Report Objekt ist. 
  *  Diese wird benötigt um die Spalten in einer Zeile zu speichern. 
  *  Anschließend können dann die Zeilen zum Report hinzugefügt werden
- *  @see Column 
+ * 	Zeile einer Tabelle eines <code>SimpleReport</code>-Objekts. <code>Row</code>
+ * 	-Objekte implementieren das <code>Serializable</code>-Interface und können
+ * 	daher als Kopie z.B. vom Server an den Client übertragen werden.
+ * 
+ * @see SimpleReport
+ * @see Column
+ * @author Thies
  */
 public class Row implements Serializable{
 	

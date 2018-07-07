@@ -7,6 +7,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.sample.itProjekt.client.ClientsideFunctions.InputDialogBox;
 import com.google.gwt.sample.itProjekt.shared.EditorAdministrationAsync;
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
@@ -1188,19 +1189,25 @@ public class ContactForm extends VerticalPanel {
 				failed.getOkButton().addCloseDBClickHandler(failed);
 			}
 			else{
-				editorAdministration.deleteContact(contactToDisplay, ClientsideFunctions.isOwner(contactToDisplay, currentUser), currentUser, new AsyncCallback<Void>() {
-					public void onFailure(Throwable arg0) {
-						Window.alert("Fehler beim Löschen des Kontakts!");
-					}
-					public void onSuccess(Void arg0){
-						final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Kontakt erfolgreich gelöscht!", new ClientsideFunctions.OkButton());
-						failed.getOkButton().addClickHandler(new ClickHandler() {
-							
-							@Override
-							public void onClick(ClickEvent arg0) {
+				final ClientsideFunctions.popUpBox safety = new ClientsideFunctions.popUpBox("Sind Sie sicher dass Sie den Kontakt löschen möchten?", new ClientsideFunctions.OkButton(), new ClientsideFunctions.CloseButton());
+				safety.getCloseButton().addCloseDBClickHandler(safety);
+				safety.getOkButton().addClickHandler(new ClickHandler() {
+					public void onClick(ClickEvent event) {
+						editorAdministration.deleteContact(contactToDisplay, ClientsideFunctions.isOwner(contactToDisplay, currentUser), currentUser, new AsyncCallback<Void>() {
+							public void onFailure(Throwable arg0) {
+								Window.alert("Fehler beim Löschen des Kontakts!");
+							}
+							public void onSuccess(Void arg0){
+								final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Kontakt erfolgreich gelöscht!", new ClientsideFunctions.OkButton());
+								failed.getOkButton().addClickHandler(new ClickHandler() {
+									
+									@Override
+									public void onClick(ClickEvent arg0) {
 
-								clctvm.removeContactOfContactList(clctvm.getSelectedContactList(), contactToDisplay);
-								failed.hide();
+										clctvm.removeContactOfContactList(clctvm.getSelectedContactList(), contactToDisplay);
+										failed.hide();
+									}
+								});
 							}
 						});
 					}
@@ -1415,7 +1422,7 @@ public class ContactForm extends VerticalPanel {
 					
 					//clearContactForm();
 					
-					ClientsideFunctions.popUpBox safety = new ClientsideFunctions.popUpBox("Siend Sie sicher dass sie den Kontakt aus der Liste entfernen möchten?", new ClientsideFunctions.OkButton(), new ClientsideFunctions.CloseButton());
+					ClientsideFunctions.popUpBox safety = new ClientsideFunctions.popUpBox("Sind Sie sicher, dass Sie den Kontakt aus der Liste entfernen möchten?", new ClientsideFunctions.OkButton(), new ClientsideFunctions.CloseButton());
 					safety.getCloseButton().addCloseDBClickHandler(safety);
 					safety.getOkButton().addClickHandler(new ClickHandler() {
 						
@@ -1528,34 +1535,13 @@ public class ContactForm extends VerticalPanel {
 				
 			}
 			else if(ptype == "Neue Eigenschaft anlegen") {
-				db = new DialogBox();
-				dbPanel = new VerticalPanel();
-				inputTextBox = new ValueTextBox("Sonstiges");
-				dbButtonsPanel = new HorizontalPanel();
-
-				db.setText("Neue Eigenschaftsart hinzufügen");
 				
-				CloseButton closeButton = new CloseButton(db);
-				dbButtonsPanel.add(closeButton);
-				
-				Button addPropertyButton = new Button("Hinzufügen");
-				dbButtonsPanel.add(addPropertyButton);
-				addPropertyButton.addStyleName("okbutton");
-			
-				dbPanel.add(inputTextBox);
-				dbPanel.add(dbButtonsPanel);
-				
-
-				db.add(dbPanel);
-				db.show();
+				final InputDialogBox input = new InputDialogBox(new ValueTextBox("Sonstiges"));
+				input.getOKButton().addClickHandler(new ClickHandler() {
 					
-				addPropertyButton.addClickHandler(new ClickHandler(){
-					public void onClick(ClickEvent event) {
-
-						db.hide();
-						
-						
-						editorAdministration.createProperty(contactToDisplay, inputTextBox.getText(), new AsyncCallback<Property>() {
+					public void onClick(ClickEvent arg0) {
+						input.hide();
+						editorAdministration.createProperty(contactToDisplay, input.getVTextBox().getText(), new AsyncCallback<Property>() {
 							public void onFailure (Throwable t) {
 								Window.alert("Eigenschaft anlegen gescheitert");
 							}
@@ -1587,6 +1573,66 @@ public class ContactForm extends VerticalPanel {
 						});
 					}
 				});
+				
+//				db = new DialogBox();
+//				dbPanel = new VerticalPanel();
+//				inputTextBox = new ValueTextBox("Sonstiges");
+//				dbButtonsPanel = new HorizontalPanel();
+//
+//				db.setText("Neue Eigenschaftsart hinzufügen");
+//				
+//				CloseButton closeButton = new CloseButton(db);
+//				dbButtonsPanel.add(closeButton);
+//				
+//				Button addPropertyButton = new Button("Hinzufügen");
+//				dbButtonsPanel.add(addPropertyButton);
+//				addPropertyButton.addStyleName("okbutton");
+//			
+//				dbPanel.add(inputTextBox);
+//				dbPanel.add(dbButtonsPanel);
+//				
+//
+//				db.add(dbPanel);
+//				db.show();
+//					
+//				addPropertyButton.addClickHandler(new ClickHandler(){
+//					public void onClick(ClickEvent event) {
+//
+//						db.hide();
+//						
+//						
+//						editorAdministration.createProperty(contactToDisplay, inputTextBox.getText(), new AsyncCallback<Property>() {
+//							public void onFailure (Throwable t) {
+//								Window.alert("Eigenschaft anlegen gescheitert");
+//							}
+//							
+//							public void onSuccess(Property result) {
+//								
+//								if(result == null) {
+//									final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Diese Eigenschaft haben Sie bereits angelegt!", new ClientsideFunctions.OkButton());
+//									failed.getOkButton().addClickHandler(new ClickHandler() {
+//										
+//										@Override
+//										public void onClick(ClickEvent click) {
+//											failed.hide();
+//											return;
+//										}
+//									});
+//								}else {
+//								
+//									ptype = result.getType();
+//									pid = result.getId();
+//									
+//									contactTable.setWidget(row, 0, new ValuePanel(pid, row, ptype + ": "));
+//									contactTable.getFlexCellFormatter().setVerticalAlignment(row, 0, ALIGN_TOP);
+//									
+//									contactTable.getFlexCellFormatter().setColSpan(row, 1, 3);
+//									contactTable.setWidget(row, 1, new ValueTable(pid));
+//								}
+//							}				
+//						});
+//					}
+//				});
 			}
 			
 			else if(ptype == "Anschrift") {
