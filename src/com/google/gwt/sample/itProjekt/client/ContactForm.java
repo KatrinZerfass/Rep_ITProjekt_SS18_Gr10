@@ -8,6 +8,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.sample.itProjekt.client.ClientsideFunctions.InputDialogBox;
+import com.google.gwt.sample.itProjekt.client.ContactForm.ValueTable;
 import com.google.gwt.sample.itProjekt.shared.EditorAdministrationAsync;
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
@@ -390,7 +391,14 @@ public class ContactForm extends VerticalPanel {
 			return identifier;
 		}
 
-		
+		/**
+		 * Setter für identifier.
+		 *
+		 * @param newIndentifier der neue identifier
+		 */
+		public void setIdentifier(String newIndentifier) {
+			this.identifier = newIndentifier;
+		}
 
 	}
 	
@@ -687,7 +695,9 @@ public class ContactForm extends VerticalPanel {
 				
 				public void onClick (ClickEvent event) {
 					
-					addValuePopUp(propertyId, row);	
+					//addValuePopUp(propertyId, row);	
+					final ClientsideFunctions.InputDialogBox input = new ClientsideFunctions.InputDialogBox(propertyId, row, new ValueTextBox(null));
+					input.getOKButton().addClickHandler(new AddValueClickHandler(input, input.getVTextBox(), ((ValueTable) contactTable.getWidget(row, 1)), row));
 					
 				}
 			});
@@ -700,85 +710,85 @@ public class ContactForm extends VerticalPanel {
 		 * @param pid die referenzierte Eigenschaftsart. Wird vom ClickHandler übergeben.
 		 * @param row die Zeile der ContactTable, in der sich die Eigenschaftsart befindet. Wird vom ClickHandler übergeben.
 		 */
-		public void addValuePopUp(int pid, int row) {
-			
-			/* Die DialogBox, welche aufpoppt */
-			DialogBox addValueDB = new DialogBox();
-			addValueDB.setText("Neue Ausprägung hinzufügen");
-			addValueDB.setAnimationEnabled(true);
-			addValueDB.setGlassEnabled(true);
-			
-			/*Das innere Panel der DialogBox */
-			VerticalPanel addValueDBPanel = new VerticalPanel();
-			addValueDBPanel.setHeight("100px");
-			addValueDBPanel.setWidth("230px");
-		    addValueDBPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
-		    addValueDB.add(addValueDBPanel);
-		    			
-			Label addValueLabel = new Label();
-			addValueDBPanel.add(addValueLabel);
-			
-			/*Die ValueTextBox, in die man die neue Ausprägung eintragen kann. Sie wird nach der switch-case gesetzt */
-			ValueTextBox addValueTextBox = null;
-					
-		
-			/*
-			 * Je nachdem, um welche Art von Eigenschaft es sich handelt, wird der Identifier gesetzt, mit dem nach der switch-case
-			 * die ValueTextBox erstellt wird. Der Identifier dient der Methode checkValue aus den ClientsideFunctions, welche auf korrekte 
-			 * Eingabe überprüft.
-			 */
-			String identifier = null;
-			
-			switch(pid) {
-			
-				case 1: identifier = "Telefonnummer";
-						addValueLabel.setText("Neue geschäftliche Telefonnummer: ");
-						break;
-						
-				case 2: identifier = "Telefonnummer";
-						addValueLabel.setText("Neue private Telefonnummer: ");
-						break;
-						
-				case 3: identifier = "Email";
-						addValueLabel.setText("Neue e-Mail-Adresse: ");
-						break;
-						
-				case 5: identifier = "Arbeitsplatz";
-						addValueLabel.setText("Neue Arbeitsstelle: ");
-						break;
-						
-				case 10: identifier = "Homepage";
-						addValueLabel.setText("Neue Homepage: ");
-						break;
-				default: 
-						identifier = "Sonstiges";
-						addValueLabel.setText("Neue Ausprägung: ");
-						break;
-					
-				
-			}
-			
-			addValueTextBox = new ValueTextBox(identifier);
-			addValueDBPanel.add(addValueTextBox);
-			
-			HorizontalPanel dbButtonsPanel=new HorizontalPanel();
-			addValueDBPanel.add(dbButtonsPanel);
-			
-			CloseButton closeButton = new CloseButton(addValueDB);
-			dbButtonsPanel.add(closeButton);
-			
-			Button addValueButton = new Button("Hinzufügen");
-			addValueButton.addStyleName("okbutton");
-			dbButtonsPanel.add(addValueButton);
-			
-			
-			addValueButton.addClickHandler(new AddValueClickHandler(addValueDB, addValueTextBox,
-					((ValueTable) contactTable.getWidget(row, 1)), pid));
-			
-			
-			addValueDB.show();
-
-		}
+//		public void addValuePopUp(int pid, int row) {
+//			
+//			/* Die DialogBox, welche aufpoppt */
+//			DialogBox addValueDB = new DialogBox();
+//			addValueDB.setText("Neue Ausprägung hinzufügen");
+//			addValueDB.setAnimationEnabled(true);
+//			addValueDB.setGlassEnabled(true);
+//			
+//			/*Das innere Panel der DialogBox */
+//			VerticalPanel addValueDBPanel = new VerticalPanel();
+//			addValueDBPanel.setHeight("100px");
+//			addValueDBPanel.setWidth("230px");
+//		    addValueDBPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+//		    addValueDB.add(addValueDBPanel);
+//		    			
+//			Label addValueLabel = new Label();
+//			addValueDBPanel.add(addValueLabel);
+//			
+//			/*Die ValueTextBox, in die man die neue Ausprägung eintragen kann. Sie wird nach der switch-case gesetzt */
+//			ValueTextBox addValueTextBox = null;
+//					
+//		
+//			/*
+//			 * Je nachdem, um welche Art von Eigenschaft es sich handelt, wird der Identifier gesetzt, mit dem nach der switch-case
+//			 * die ValueTextBox erstellt wird. Der Identifier dient der Methode checkValue aus den ClientsideFunctions, welche auf korrekte 
+//			 * Eingabe überprüft.
+//			 */
+//			String identifier = null;
+//			
+//			switch(pid) {
+//			
+//				case 1: identifier = "Telefonnummer";
+//						addValueLabel.setText("Neue geschäftliche Telefonnummer: ");
+//						break;
+//						
+//				case 2: identifier = "Telefonnummer";
+//						addValueLabel.setText("Neue private Telefonnummer: ");
+//						break;
+//						
+//				case 3: identifier = "Email";
+//						addValueLabel.setText("Neue e-Mail-Adresse: ");
+//						break;
+//						
+//				case 5: identifier = "Arbeitsplatz";
+//						addValueLabel.setText("Neue Arbeitsstelle: ");
+//						break;
+//						
+//				case 10: identifier = "Homepage";
+//						addValueLabel.setText("Neue Homepage: ");
+//						break;
+//				default: 
+//						identifier = "Sonstiges";
+//						addValueLabel.setText("Neue Ausprägung: ");
+//						break;
+//					
+//				
+//			}
+//			
+//			addValueTextBox = new ValueTextBox(identifier);
+//			addValueDBPanel.add(addValueTextBox);
+//			
+//			HorizontalPanel dbButtonsPanel=new HorizontalPanel();
+//			addValueDBPanel.add(dbButtonsPanel);
+//			
+//			CloseButton closeButton = new CloseButton(addValueDB);
+//			dbButtonsPanel.add(closeButton);
+//			
+//			Button addValueButton = new Button("Hinzufügen");
+//			addValueButton.addStyleName("okbutton");
+//			dbButtonsPanel.add(addValueButton);
+//			
+//			
+//			addValueButton.addClickHandler(new AddValueClickHandler(addValueDB, addValueTextBox,
+//					((ValueTable) contactTable.getWidget(row, 1)), pid));
+//			
+//			
+//			addValueDB.show();
+//
+//		}
 		
 		/**
 		 * Der innere Klasse AddValueClickHandler innerhalb der inneren Klasse AddValueButton.
