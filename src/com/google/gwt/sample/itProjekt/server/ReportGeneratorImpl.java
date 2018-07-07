@@ -53,7 +53,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	}
 
 	/**
-	 * Getter für das EditorAdministrationsobjekt.
+	 * Auslesen des EditorAdministrationsobjekts.
 	 *
 	 * @return das editor administrations objekt
 	 */
@@ -78,6 +78,19 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 /* (non-Javadoc)
  * @see com.google.gwt.sample.itProjekt.shared.ReportGenerator#generateAllContactsOfUserReport(com.google.gwt.sample.itProjekt.shared.bo.User)
  */
+	
+	/*
+	   * ***************************************************************************
+	   * Abschnitt: Erstellen der Reports
+	   * ***************************************************************************
+	   */
+	
+	/**
+	*  Erstellen des Reports aller Kontakte, die der angemeldete Nutzer besitzt 
+	*  und mit diesem geteilt wurden.
+	*
+	* @return the all contacts of user report
+	*/
 @Override	
 	public AllContactsOfUserReport generateAllContactsOfUserReport(User user) {
 		if(this.getEditorAdministration()==null) {
@@ -121,6 +134,12 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 /* (non-Javadoc)
  * @see com.google.gwt.sample.itProjekt.shared.ReportGenerator#generateAllSharedContactsOfUserReport(com.google.gwt.sample.itProjekt.shared.bo.User)
  */
+
+/**
+*  Erstellen des Reports aller Kontakte, die mit einem bestimmten Nutzer geteilt wurden.
+*
+* @return the all shared contacts of user report
+*/
 @Override	
 	public AllSharedContactsOfUserReport generateAllSharedContactsOfUserReport(User owner, User receiver) {
 	if(this.getEditorAdministration()==null) {
@@ -173,6 +192,11 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 /* (non-Javadoc)
  * @see com.google.gwt.sample.itProjekt.shared.ReportGenerator#generateAllContactsWithValueReport(com.google.gwt.sample.itProjekt.shared.bo.Value)
  */
+/**
+*  Erstellen des Reports aller Kontakte, die eine bestimmte Ausprägung besitzen.
+*
+* @return the all contacts with value report
+*/
 @Override	
 	public AllContactsWithValueReport generateAllContactsWithValueReport(User user, Value value) {
 	if(this.getEditorAdministration()==null) {
@@ -217,6 +241,13 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 /* (non-Javadoc)
  * @see com.google.gwt.sample.itProjekt.shared.ReportGenerator#generateAllContactsWithPropertyReport(com.google.gwt.sample.itProjekt.shared.bo.User, com.google.gwt.sample.itProjekt.shared.bo.Property)
  */
+
+/**
+*  Erstellen des Reports aller Kontakte, die eine bestimmte Eigenschaft besitzen.
+*
+* @return the all contacts with property report
+*/
+
 @Override
 	public AllContactsWithPropertyReport generateAllContactsWithPropertyReport(User user, Property property){
 	
@@ -277,6 +308,17 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 	}
 }
 
+/*
+ * ***************************************************************************
+ * Abschnitt: Erstellen der Subreports
+ * ***************************************************************************
+ */
+/**
+*  Erstellen des Subreports mit den  Eigenschaften und den zugehörigen Ausprägungen.
+*
+* @return the all values of contact report
+*/
+
 @Override
 	public AllValuesOfContactReport generateAllValuesOfContactReport(Contact contact, User user)
 			throws IllegalArgumentException {
@@ -310,6 +352,11 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 			return report;
 		}
 		}
+/**
+*  Erstellen des Subreports mit den  allgemeinen Kontaktinformationen.
+*
+* @return the all contact infomation report
+*/
 
 @Override
 public AllContactInformationOfContactReport generateAllContactInformationOfContactReport(Contact contact, User user)
@@ -399,23 +446,52 @@ public AllContactInformationOfContactReport generateAllContactInformationOfConta
 		}			
 }
 
-	/* (non-Javadoc)
+/*
+ * ***************************************************************************
+ * Abschnitt: Aufrufen von Methoden der EditorAdministrationImpl zum Befüllen der 
+ * ListBox, SuggestBox und dem Erstellen des Reports
+ * ***************************************************************************
+ */
+
+	/**
+ * Auslesen aller User.
+ *
+ * @return the all users
+ */
+/* (non-Javadoc)
 	 * @see com.google.gwt.sample.itProjekt.shared.ReportGenerator#getAllUsers()
 	 */
 	public Vector<User> getAllUsers(){
 		return admin.getAllUsers();
 	}
-	
+
+	/**
+	 * Auslesen aller Klarnamen der User.
+	 *
+	 * @param user the user
+	 */	
 	public Vector<String> getAllUserSuggestions(User user){
 		return admin.getAllUserSuggestions(user);
 	}
-	
+
+	/**
+ * Auslesen aller Teilhaber.
+ *
+ * @return the user the user
+ */
 	public Vector<User> getAllParticipants(Contact c){
 		return this.admin.getAllParticipantsOfContact(c);
 	}
 	/* (non-Javadoc)
 	 * @see com.google.gwt.sample.itProjekt.shared.ReportGenerator#getAllPredefinedPropertiesOfReport()
 	 */
+
+		/**
+	 * Auslesen aller vordefinierten Eigenschaften.
+	 *
+	 * @return the properties
+	 */
+
 	@Override
 	public Vector<Property> getAllPredefinedPropertiesOfReport() throws IllegalArgumentException {
 		

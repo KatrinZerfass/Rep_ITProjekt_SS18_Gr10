@@ -1,14 +1,21 @@
 package com.google.gwt.sample.itProjekt.shared.report;
 
+import java.io.Serializable;
 /**
  * Die Klasse Column, welche Teil der Datenstruktur für den Report ist. 
  * @see Row
  *
  */
 
-import java.io.Serializable;
 
-
+/**
+ * Spalte eines <code>Row</code>-Objekts. <code>Column</code>-Objekte
+ * implementieren das <code>Serializable</code>-Interface und können daher als
+ * Kopie z.B. vom Server an den Client übertragen werden.
+ * 
+ * @see Row
+ * @author Thies
+ */
 
 public class Column implements Serializable {
 	
