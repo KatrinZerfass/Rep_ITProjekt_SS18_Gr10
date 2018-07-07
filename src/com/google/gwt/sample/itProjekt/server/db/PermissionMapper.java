@@ -233,24 +233,6 @@ public Vector <User> findAllParticipantsByCLID(ContactList contactlist){
 			e2.printStackTrace();
 			return permission;
 			}
-		finally {
-			ContactList cl= new ContactList();
-			cl.setId(permission.getShareableObjectID());
-						
-				Vector <Contact> c = ContactListMapper.contactListMapper().getAllContacts(cl);
-				
-				Permission p = new Permission();
-				if(c.size()>0){
-				for(Contact c1: c){
-					
-					p.setParticipantID(permission.getParticipantID());
-					p.setSourceUserID(permission.getSourceUserID());
-					p.setShareableObjectID(c1.getId());
-					if(c1.getOwner()!= permission.getParticipantID()){
-					shareContact(p);
-					}
-				}}
-		}
 		}
 	
 
@@ -358,7 +340,7 @@ public void deleteContactList (Permission permission){
 				ContactList cl = new ContactList();
 				cl.setId(permission.getShareableObjectID());
 				
-				Vector <Contact> c1 = ContactListMapper.contactListMapper().getAllContacts(cl);
+				
 				
 				}
 			
