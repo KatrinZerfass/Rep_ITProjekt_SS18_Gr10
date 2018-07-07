@@ -40,6 +40,40 @@ public class PropertyMapper {
 
 
 /**
+	 * Gibt alle Property Objekte zurück welche mit P_ID, type und C_ID befüllt sind
+	 * Hierfür holen wir die Attribute aus der T_Property Tabelle und speichern diese in einem Property Objekt ab und fügen diese dem Vector hinzu
+	 * Am Ende geben wir diesen Vector zurück
+	 * 
+	 * @return Ein Vector voller Property Objekte welche befüllt sind
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
+	 */
+	
+	public Vector<Property> findAll(){
+	Connection con = DBConnection.connection();
+	Vector<Property> result = new Vector<Property>();
+			
+			try{
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT P_ID, type, C_ID FROM T_Property ORDER BY P_ID");
+				
+				while (rs.next()){
+					Property p = new Property();
+					p.setId(rs.getInt("P_ID"));
+					p.setType(rs.getString("type"));
+					p.setContactID(rs.getInt("C_ID"));
+					
+					result.addElement(p);
+				}		
+			}catch(SQLException e2){
+				e2.printStackTrace();
+			}
+			return result;
+		}
+
+
+/**
  * Findet Property durch eine P_ID und speichert die dazugehörigen Werte (P_ID und type) in einem Property Objekt ab und gibt dieses wieder
  * 
  * @param property übergebenes Property Objekt mit Attribut P_ID
@@ -70,8 +104,82 @@ public Property findByID(Property property){
 }
 
 /**
- * Gibt alle Property Objekte zurück welche mit P_ID, type und C_ID befüllt sind
- * Hierfür holen wir die Attribute aus der T_Property Tabelle und speichern diese in einem Property Objekt ab und fügen diese dem Vector hinzu
+ * Findet alle P_ID, type und C_ID in welcher der type dem type des übergebenen Objektes entspricht
+ * Befüllt Property Objekte mit den Attributen und gibt einen damit gefüllten Vektor wieder
+ * 
+ * @param property übergebenes Property Objekt mit Attribut type
+ * @return Ein Vektor voller vollständiger Property Objekt
+ * 
+ * @author Egor Krämer
+ * @author Robert Mattheis
+ */
+public Vector<Property> findByType(Property property){
+	Connection con = DBConnection.connection();
+	Vector <Property> result = new Vector <Property>();
+	Property p = new Property();
+	
+	try{
+		
+		Statement stmt = con.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT P_ID, type, C_ID FROM T_Property WHERE type ='"+ property.getType() + "' ORDER BY P_ID");
+		while (rs.next()){
+			
+			p.setId(rs.getInt("P_ID"));
+			p.setType(rs.getString("type"));
+			p.setContactID(rs.getInt("C_ID"));
+			result.addElement(p);	
+		}
+		
+	}
+	catch (SQLException e2){
+		e2.printStackTrace();
+		return result;
+	}
+	return result;
+}
+
+
+/**
+ * Findet alle P_ID, type und C_ID in welcher der type dem type des übergebenen Objektes entspricht
+ * Befüllt Property Objekte mit den Attributen und gibt einen damit gefüllten Vektor wieder
+ * 
+ * @param property übergebenes Property Objekt mit Attribut type
+ * @return Ein Vektor voller vollständiger Property Objekt
+ * 
+ * @author Egor Krämer
+ * @author Robert Mattheis
+ */
+public Vector<Property> findByTypeAndCID(Property property, Contact contact){
+	Connection con = DBConnection.connection();
+	Vector <Property> result = new Vector <Property>();
+	Property p = new Property();
+	
+	try{
+		
+		Statement stmt = con.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT P_ID, type, C_ID FROM T_Property WHERE type ='"+ property.getType() + "' AND C_ID="+contact.getId());
+		while (rs.next()){
+			
+			p.setId(rs.getInt("P_ID"));
+			p.setType(rs.getString("type"));
+			p.setContactID(rs.getInt("C_ID"));
+			result.addElement(p);	
+		}
+		
+	}
+	catch (SQLException e2){
+		e2.printStackTrace();
+		return result;
+	}
+	return result;
+}
+
+
+/**
+ * Gibt alle Proeprty Objekte zurück die mit den Default Werten befüllt sind
+ * Hierfür sind alle Default Property Werte mit der C_ID von 20000000 verknüpft
+ * Alle Attribute die zu dieser C_ID von 20000000 gehören holen wir aus der T_Property Tabelle (P_ID, type und C_ID)
+ * und speichern diese in einem Property Objekt ab und fügen diese dem Vector hinzu
  * Am Ende geben wir diesen Vector zurück
  * 
  * @return Ein Vector voller Property Objekte welche befüllt sind
@@ -80,13 +188,13 @@ public Property findByID(Property property){
  * @author Robert Mattheis
  */
 
-public Vector<Property> findAll(){
+public Vector<Property> findAllDefault(){
 Connection con = DBConnection.connection();
 Vector<Property> result = new Vector<Property>();
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT P_ID, type, C_ID FROM T_Property ORDER BY P_ID");
+			ResultSet rs = stmt.executeQuery("SELECT P_ID, type, C_ID FROM T_Property WHERE C_ID=20000000 ORDER BY P_ID");
 			
 			while (rs.next()){
 				Property p = new Property();
@@ -101,6 +209,7 @@ Vector<Property> result = new Vector<Property>();
 		}
 		return result;
 	}
+
 
 /**
  * Findet alle P_ID, type und C_ID wo die C_ID der ID des übergebenen Objekte entspricht
@@ -123,41 +232,6 @@ Vector<Property> result = new Vector<Property>();
 			ResultSet rs = stmt.executeQuery("SELECT P_ID, type, C_ID FROM T_Property WHERE C_ID=" 
 			+ contact.getId()
 			+" ORDER BY P_ID");
-			
-			while (rs.next()){
-				Property p = new Property();
-				p.setId(rs.getInt("P_ID"));
-				p.setType(rs.getString("type"));
-				p.setContactID(rs.getInt("C_ID"));
-				
-				result.addElement(p);
-			}		
-		}catch(SQLException e2){
-			e2.printStackTrace();
-		}
-		return result;
-	}
-
-/**
- * Gibt alle Proeprty Objekte zurück die mit den Default Werten befüllt sind
- * Hierfür sind alle Default Property Werte mit der C_ID von 20000000 verknüpft
- * Alle Attribute die zu dieser C_ID von 20000000 gehören holen wir aus der T_Property Tabelle (P_ID, type und C_ID)
- * und speichern diese in einem Property Objekt ab und fügen diese dem Vector hinzu
- * Am Ende geben wir diesen Vector zurück
- * 
- * @return Ein Vector voller Property Objekte welche befüllt sind
- * 
- * @author Egor Krämer
- * @author Robert Mattheis
- */
-
-public Vector<Property> findAllDefault(){
-Connection con = DBConnection.connection();
-Vector<Property> result = new Vector<Property>();
-		
-		try{
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT P_ID, type, C_ID FROM T_Property WHERE C_ID=20000000 ORDER BY P_ID");
 			
 			while (rs.next()){
 				Property p = new Property();
@@ -267,73 +341,4 @@ public void delete (Property property){
 				e2.printStackTrace();
 				}
 			}
-
-/**
- * Findet alle P_ID, type und C_ID in welcher der type dem type des übergebenen Objektes entspricht
- * Befüllt Property Objekte mit den Attributen und gibt einen damit gefüllten Vektor wieder
- * 
- * @param property übergebenes Property Objekt mit Attribut type
- * @return Ein Vektor voller vollständiger Property Objekt
- * 
- * @author Egor Krämer
- * @author Robert Mattheis
- */
-public Vector<Property> findByTypeAndCID(Property property, Contact contact){
-	Connection con = DBConnection.connection();
-	Vector <Property> result = new Vector <Property>();
-	Property p = new Property();
-	
-	try{
-		
-		Statement stmt = con.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT P_ID, type, C_ID FROM T_Property WHERE type ='"+ property.getType() + "' AND C_ID="+contact.getId());
-		while (rs.next()){
-			
-			p.setId(rs.getInt("P_ID"));
-			p.setType(rs.getString("type"));
-			p.setContactID(rs.getInt("C_ID"));
-			result.addElement(p);	
-		}
-		
-	}
-	catch (SQLException e2){
-		e2.printStackTrace();
-		return result;
-	}
-	return result;
-}
-/**
- * Findet alle P_ID, type und C_ID in welcher der type dem type des übergebenen Objektes entspricht
- * Befüllt Property Objekte mit den Attributen und gibt einen damit gefüllten Vektor wieder
- * 
- * @param property übergebenes Property Objekt mit Attribut type
- * @return Ein Vektor voller vollständiger Property Objekt
- * 
- * @author Egor Krämer
- * @author Robert Mattheis
- */
-public Vector<Property> findByType(Property property){
-	Connection con = DBConnection.connection();
-	Vector <Property> result = new Vector <Property>();
-	Property p = new Property();
-	
-	try{
-		
-		Statement stmt = con.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT P_ID, type, C_ID FROM T_Property WHERE type ='"+ property.getType() + "' ORDER BY P_ID");
-		while (rs.next()){
-			
-			p.setId(rs.getInt("P_ID"));
-			p.setType(rs.getString("type"));
-			p.setContactID(rs.getInt("C_ID"));
-			result.addElement(p);	
-		}
-		
-	}
-	catch (SQLException e2){
-		e2.printStackTrace();
-		return result;
-	}
-	return result;
-}
 }

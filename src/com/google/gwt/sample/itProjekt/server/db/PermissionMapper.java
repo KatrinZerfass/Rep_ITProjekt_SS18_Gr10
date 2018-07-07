@@ -91,148 +91,68 @@ public class PermissionMapper {
 			}
 	
 /**
- * Update von Veränderungen falls sich eine KontaktPermission ändert 
- * 
- * @param permission übergebenes Permission Objekt mit Attributen C_ID  und U_ID
- * @return Ein vollständiges Permission Objekt
- * 
- * @author Egor Krämer
- * @author Robert Mattheis
- */
-public Permission updateContact(Permission permission){
+	 * Sucht nach den Usern welchen ein Contact geteilt wurde
+	 * Hierfür suchen wir nach allen U_ID die der C_ID der ID des contact Objekts in der T_Permission_Contact
+	 * und speichern die gefundene U_ID in ein User Objekt
+	 * Durch den Aufruf der findByID im UserMapper wird das User Objekt vollständig befüllt
+	 * Die User schreiben wir in ein Vektor. Zum Schluss geben wir den Vektor zurück
+	 * 
+	 * @param contact übergebenes Contact Objekt mit Attribut C_ID
+	 * @return Ein Vector voller User Objekte welche befüllt sind
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
+	 */
+	public Vector <User> findAllParticipantsByCID(Contact contact){
 		
 		Connection con = DBConnection.connection();
-				
-		
-		try{
-			Statement stmt1 = con.createStatement();
-			stmt1.executeUpdate("UPDATE T_Permission_Contact SET C_ID=" + permission.getShareableObjectID() + " WHERE U_ID =" + permission.getParticipantID());
-						}
-		
-		catch (SQLException e2){
-			e2.printStackTrace();
-			return permission;
+		Vector <User> result = new Vector <User>();		
+				try{
+					Statement stmt = con.createStatement();
+					ResultSet rs = stmt.executeQuery("SELECT U_ID FROM T_Permission_Contact WHERE C_ID=" + contact.getId());
+					
+					while (rs.next()){									
+						result.addElement(UserMapper.userMapper().findByID(rs.getInt("U_ID")));
+					}				
+				}catch(SQLException e2){
+					e2.printStackTrace();
+					return result;
 				}
-		
-		return permission;
-			
+				return result;
 			}
-		
 
 /**
- * Update von Veränderungen falls sich eine KontaktListenPermission ändert
- *  
- * @param permission übergebenes Permission Objekt mit Attributen  CL_ID und U_ID
- * @return Ein vollständiges Permission Objekt
+ * Sucht nach den Usern welchen eine ContactListe geteilt wurde
+ * Hierfür suchen wir nach allen U_ID die der CL_ID der ID des contact Objekts in der T_Permission_Contactlist
+ * und speichern die gefundene U_ID in ein User Objekt
+ * Durch den Aufruf der findByID im UserMapper wird das User Objekt vollständig befüllt
+ * Die User schreiben wir in ein Vektor. Zum Schluss geben wir den Vektor zurück
+ * 
+ * @param contact übergebenes Contact Objekt mit Attribut CL_ID
+ * @return Ein Vector voller User Objekte welche befüllt sind
  * 
  * @author Egor Krämer
  * @author Robert Mattheis
  */
-public Permission updateContactList(Permission permission){
-		
-		Connection con = DBConnection.connection();
-		
-			
+public Vector <User> findAllParticipantsByCLID(ContactList contactlist){
+	
+	Connection con = DBConnection.connection();
+	Vector <User> result = new Vector <User>();		
 			try{
-			Statement stmt2 = con.createStatement();
-			stmt2.executeUpdate("UPDATE T_Permission_Contactlist SET CL_ID=" + permission.getShareableObjectID()+ " WHERE U_ID =" + permission.getParticipantID());
-					}
-	
-			catch (SQLException e2){
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT U_ID FROM T_Permission_Contactlist WHERE CL_ID=" + contactlist.getId());
+				
+				while (rs.next()){									
+					result.addElement(UserMapper.userMapper().findByID(rs.getInt("U_ID")));
+				}				
+			}catch(SQLException e2){
 				e2.printStackTrace();
-				return permission;
-				}
-			return permission;
+				return result;
 			}
-		
-	
-	/**
-	 * aus der T_Permission_Contact wird alles entfernt
-	 * wo die U_ID und C_ID der ID des Participants und des Shareableobjects entspricht
-	 * 
-	 * @param permission übergebenes Permission Objekt mit Attributen C_ID und U_ID
-	 * 
-	 * @author Egor Krämer
-	 * @author Robert Mattheis
-	 */
-	public void deleteContact (Permission permission){
-		
-		Connection con = DBConnection.connection();
-					
-					try{
-						Statement stmt1 = con.createStatement();
-						stmt1.executeUpdate("DELETE FROM T_Permission_Contact WHERE C_ID =" + permission.getShareableObjectID()+ " AND U_ID=" + permission.getParticipantID());
-					}
-				
-				catch (SQLException e2){
-					e2.printStackTrace();
-				}
-		
-		
-	}
-	
-	/**
-	 * Aus der T_Permission_Contact wird alles entfernt
-	 * wenn die U_ID und CL_ID der ID des Participants und des Shareableobjects entspricht
-	 * 
-	 * 
-	 * @param permission übergebenes Permission Objekt mit Attributen CL_ID und U_ID
-	 * 
-	 * @author Egor Krämer
-	 * @author Robert Mattheis
-	 */
-	public void deleteContactList (Permission permission){
-		
-		Connection con = DBConnection.connection();
-					
-		
-			
-					try{
-				
-					Statement stmt2 = con.createStatement();
-					stmt2.executeUpdate("DELETE FROM T_Permission_Contactlist WHERE CL_ID =" + permission.getShareableObjectID()+ " AND U_ID ="+ permission.getParticipantID());
-				
-			
-					ContactList cl = new ContactList();
-					cl.setId(permission.getShareableObjectID());
-					
-					Vector <Contact> c1 = ContactListMapper.contactListMapper().getAllContacts(cl);
-					
-					}
-				
-				catch (SQLException e2){
-					e2.printStackTrace();
-				}
+			return result;
 		}
-	
-	
-	/**
-	 * Entfernt alle Einträge aus T_Permission_Contactlist falls eine ContactList gelöscht wird
-	 * Hierfür wird die T_Permission_Contactlist nach der CL_ID durchsucht wo sie der ID der ContactList entspricht welches wir übergeben bekommen haben
-	 * 
-	 * @param contactlist übergebenes ContactList Objekt mit Attribut CL_ID
-	 * 
-	 * @author Egor Krämer
-	 * @author Robert Mattheis
-	 */
-	public void deleteAllByCLID (ContactList contactlist){
-		
-		Connection con = DBConnection.connection();
-		
-		try{
-			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM T_Permission_Contactlist WHERE CL_ID =" + contactlist.getId());
-		}
-	
-	catch (SQLException e2){
-		e2.printStackTrace();
-	}
-}
-	
-	
-	
-	
-	/**
+
+/**
 	 * Befüllt die T_Permission_Contact mit einer zusammengesetzten ID aus C_ID und U_ID 
 	 * und befüllt die Tabelle mit der C_ID aus dem Shareableobject und der U_ID aus Participant
 	 * und gibt die permission zurück
@@ -335,6 +255,142 @@ public Permission updateContactList(Permission permission){
 	
 
 /**
+	 * Update von Veränderungen falls sich eine KontaktPermission ändert 
+	 * 
+	 * @param permission übergebenes Permission Objekt mit Attributen C_ID  und U_ID
+	 * @return Ein vollständiges Permission Objekt
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
+	 */
+	public Permission updateContact(Permission permission){
+			
+			Connection con = DBConnection.connection();
+					
+			
+			try{
+				Statement stmt1 = con.createStatement();
+				stmt1.executeUpdate("UPDATE T_Permission_Contact SET C_ID=" + permission.getShareableObjectID() + " WHERE U_ID =" + permission.getParticipantID());
+							}
+			
+			catch (SQLException e2){
+				e2.printStackTrace();
+				return permission;
+					}
+			
+			return permission;
+				
+				}
+
+/**
+ * Update von Veränderungen falls sich eine KontaktListenPermission ändert
+ *  
+ * @param permission übergebenes Permission Objekt mit Attributen  CL_ID und U_ID
+ * @return Ein vollständiges Permission Objekt
+ * 
+ * @author Egor Krämer
+ * @author Robert Mattheis
+ */
+public Permission updateContactList(Permission permission){
+		
+		Connection con = DBConnection.connection();
+		
+			
+			try{
+			Statement stmt2 = con.createStatement();
+			stmt2.executeUpdate("UPDATE T_Permission_Contactlist SET CL_ID=" + permission.getShareableObjectID()+ " WHERE U_ID =" + permission.getParticipantID());
+					}
+	
+			catch (SQLException e2){
+				e2.printStackTrace();
+				return permission;
+				}
+			return permission;
+			}
+
+/**
+ * aus der T_Permission_Contact wird alles entfernt
+ * wo die U_ID und C_ID der ID des Participants und des Shareableobjects entspricht
+ * 
+ * @param permission übergebenes Permission Objekt mit Attributen C_ID und U_ID
+ * 
+ * @author Egor Krämer
+ * @author Robert Mattheis
+ */
+public void deleteContact (Permission permission){
+	
+	Connection con = DBConnection.connection();
+				
+				try{
+					Statement stmt1 = con.createStatement();
+					stmt1.executeUpdate("DELETE FROM T_Permission_Contact WHERE C_ID =" + permission.getShareableObjectID()+ " AND U_ID=" + permission.getParticipantID());
+				}
+			
+			catch (SQLException e2){
+				e2.printStackTrace();
+			}
+	
+	
+}
+
+/**
+ * Aus der T_Permission_Contact wird alles entfernt
+ * wenn die U_ID und CL_ID der ID des Participants und des Shareableobjects entspricht
+ * 
+ * 
+ * @param permission übergebenes Permission Objekt mit Attributen CL_ID und U_ID
+ * 
+ * @author Egor Krämer
+ * @author Robert Mattheis
+ */
+public void deleteContactList (Permission permission){
+	
+	Connection con = DBConnection.connection();
+				
+	
+		
+				try{
+			
+				Statement stmt2 = con.createStatement();
+				stmt2.executeUpdate("DELETE FROM T_Permission_Contactlist WHERE CL_ID =" + permission.getShareableObjectID()+ " AND U_ID ="+ permission.getParticipantID());
+			
+		
+				ContactList cl = new ContactList();
+				cl.setId(permission.getShareableObjectID());
+				
+				Vector <Contact> c1 = ContactListMapper.contactListMapper().getAllContacts(cl);
+				
+				}
+			
+			catch (SQLException e2){
+				e2.printStackTrace();
+			}
+	}
+
+/**
+	 * Entfernt alle Einträge aus T_Permission_Contactlist falls eine ContactList gelöscht wird
+	 * Hierfür wird die T_Permission_Contactlist nach der CL_ID durchsucht wo sie der ID der ContactList entspricht welches wir übergeben bekommen haben
+	 * 
+	 * @param contactlist übergebenes ContactList Objekt mit Attribut CL_ID
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
+	 */
+	public void deleteAllByCLID (ContactList contactlist){
+		
+		Connection con = DBConnection.connection();
+		
+		try{
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("DELETE FROM T_Permission_Contactlist WHERE CL_ID =" + contactlist.getId());
+		}
+	
+	catch (SQLException e2){
+		e2.printStackTrace();
+	}
+}
+
+/**
  * Sucht nach allen Contacts die einem User zur Verfügung stehen
  * Hierfür suchen wir nach allen U_ID die der ID des User Objektes entsprechen in der T_Permission_Contact
  * Die gefundenen C_ID werden in einem Contact Objekt abgespeichert 
@@ -370,6 +426,40 @@ public Vector<Contact> getAllContactsByUID(User user){
 		}
 
 /**
+ * Sucht nach allen ContactLists die einem User zur Verfügung stehen
+ * Hierfür suchen wir nach allen U_ID die der ID des User Objektes entsprechen in der T_Permission_Contactlist
+ * Die gefundenen CL_ID werden in einem ContactList Objekt abgespeichert 
+ * und durch den Aufruf der findByID im ContactListMapper vollständig befüllt und dem Vector hinzugefügt
+ * Zum Schluss geben wir den Vector zurück
+ * 
+ * @param user übergebenes User Objekt mit Attribut U_ID
+ * @return Ein Vector voller ContactList Objekte welche befüllt sind
+ * 
+ * @author Egor Krämer
+ * @author Robert Mattheis
+ */
+public Vector<ContactList> getAllContactListsByUID(User user){
+	
+	Connection con = DBConnection.connection();
+	Vector<ContactList> result = new Vector<ContactList>();
+			
+			try{
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT CL_ID FROM T_Permission_Contactlist WHERE U_ID=" + user.getId()+ " ORDER BY CL_ID");
+				
+				while (rs.next()){
+					ContactList cl = new ContactList();
+					cl.setId(rs.getInt("CL_ID"));
+									
+					result.addElement(ContactListMapper.contactListMapper().findByID(cl));
+				}		
+			}catch(SQLException e2){
+				e2.printStackTrace();
+			}
+			return result;
+		}
+
+/**
  * Sucht nach allen Contacts die einem User zur Verfügung stehen
  * Hierfür suchen wir nach allen srcU_ID die der ID des User Objektes entsprechen in der T_Permission_Contact
  * Die gefundenen C_ID werden in einem Contact Objekt abgespeichert 
@@ -400,42 +490,6 @@ public Vector<Contact> getAllContactsBySrcUID(User user){
 			}catch(SQLException e2){
 				e2.printStackTrace();
 				return result;
-			}
-			return result;
-		}
-
-
-
-/**
- * Sucht nach allen ContactLists die einem User zur Verfügung stehen
- * Hierfür suchen wir nach allen U_ID die der ID des User Objektes entsprechen in der T_Permission_Contactlist
- * Die gefundenen CL_ID werden in einem ContactList Objekt abgespeichert 
- * und durch den Aufruf der findByID im ContactListMapper vollständig befüllt und dem Vector hinzugefügt
- * Zum Schluss geben wir den Vector zurück
- * 
- * @param user übergebenes User Objekt mit Attribut U_ID
- * @return Ein Vector voller ContactList Objekte welche befüllt sind
- * 
- * @author Egor Krämer
- * @author Robert Mattheis
- */
-public Vector<ContactList> getAllContactListsByUID(User user){
-	
-	Connection con = DBConnection.connection();
-	Vector<ContactList> result = new Vector<ContactList>();
-			
-			try{
-				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT CL_ID FROM T_Permission_Contactlist WHERE U_ID=" + user.getId()+ " ORDER BY CL_ID");
-				
-				while (rs.next()){
-					ContactList cl = new ContactList();
-					cl.setId(rs.getInt("CL_ID"));
-									
-					result.addElement(ContactListMapper.contactListMapper().findByID(cl));
-				}		
-			}catch(SQLException e2){
-				e2.printStackTrace();
 			}
 			return result;
 		}
@@ -509,66 +563,6 @@ public User getSourceUserByUIDAndCID(User user, Contact contact){
 				e2.printStackTrace();
 			}
 			return user;
-		}
-/**
- * Sucht nach den Usern welchen ein Contact geteilt wurde
- * Hierfür suchen wir nach allen U_ID die der C_ID der ID des contact Objekts in der T_Permission_Contact
- * und speichern die gefundene U_ID in ein User Objekt
- * Durch den Aufruf der findByID im UserMapper wird das User Objekt vollständig befüllt
- * Die User schreiben wir in ein Vektor. Zum Schluss geben wir den Vektor zurück
- * 
- * @param contact übergebenes Contact Objekt mit Attribut C_ID
- * @return Ein Vector voller User Objekte welche befüllt sind
- * 
- * @author Egor Krämer
- * @author Robert Mattheis
- */
-public Vector <User> findAllParticipantsByCID(Contact contact){
-	
-	Connection con = DBConnection.connection();
-	Vector <User> result = new Vector <User>();		
-			try{
-				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT U_ID FROM T_Permission_Contact WHERE C_ID=" + contact.getId());
-				
-				while (rs.next()){									
-					result.addElement(UserMapper.userMapper().findByID(rs.getInt("U_ID")));
-				}				
-			}catch(SQLException e2){
-				e2.printStackTrace();
-				return result;
-			}
-			return result;
-		}
-/**
- * Sucht nach den Usern welchen eine ContactListe geteilt wurde
- * Hierfür suchen wir nach allen U_ID die der CL_ID der ID des contact Objekts in der T_Permission_Contactlist
- * und speichern die gefundene U_ID in ein User Objekt
- * Durch den Aufruf der findByID im UserMapper wird das User Objekt vollständig befüllt
- * Die User schreiben wir in ein Vektor. Zum Schluss geben wir den Vektor zurück
- * 
- * @param contact übergebenes Contact Objekt mit Attribut CL_ID
- * @return Ein Vector voller User Objekte welche befüllt sind
- * 
- * @author Egor Krämer
- * @author Robert Mattheis
- */
-public Vector <User> findAllParticipantsByCLID(ContactList contactlist){
-	
-	Connection con = DBConnection.connection();
-	Vector <User> result = new Vector <User>();		
-			try{
-				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT U_ID FROM T_Permission_Contactlist WHERE CL_ID=" + contactlist.getId());
-				
-				while (rs.next()){									
-					result.addElement(UserMapper.userMapper().findByID(rs.getInt("U_ID")));
-				}				
-			}catch(SQLException e2){
-				e2.printStackTrace();
-				return result;
-			}
-			return result;
 		}
 
 }

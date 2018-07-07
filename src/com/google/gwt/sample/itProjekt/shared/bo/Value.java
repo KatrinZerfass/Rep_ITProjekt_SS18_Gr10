@@ -10,13 +10,13 @@ public class Value extends BusinessObject {
 	/** Der Inhalt einer Ausprägung. */
 	private String content;
 	
+	/**Die zugehörige Eigenschaft der Ausprägung */
+	private int propertyid;
+	
 	/** Bei isShared = true wird die Ausprägung des Kontakts mitgeteilt.
 	 * 	Bei isShared = false wird die Ausprägung nicht mitgeteilt. 
 	 * */
 	private boolean isShared = true;
-	
-	/**Die zugehörige Eigenschaft der Ausprägung */
-	private int propertyid;
 
 	/**
 	 * Auslesen der Ausprägung.

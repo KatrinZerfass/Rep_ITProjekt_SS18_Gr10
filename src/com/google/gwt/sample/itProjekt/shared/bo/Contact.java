@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 
 public class Contact extends BusinessObject {
 
+	
 	private static final long serialVersionUID = 1L;
 
 	/** Der Vorname des Kontakts. */
@@ -22,6 +23,7 @@ public class Contact extends BusinessObject {
 	/** Der Besitzer des Kontakts. */
 	private int owner;
 	
+	/** Der Kontakt ist ein Nutzer. */
 	private boolean isUser = false;
 	
 	/** Erstellungsdatum des Kontakts. */
@@ -105,53 +107,12 @@ public class Contact extends BusinessObject {
 	}
 	
 	/**
-	 *Setzen des Erstellungsdatums. 
-	 *
-	 *@param Timestamp der das Erstellungsdatum des Kontakts repräsentiert. 
-	 */
-	
-	public void setCreationDate(Timestamp creationdate){
-		this.creationdate = creationdate;
-		
-	}
-	
-	/**
-	 *Auslesen des Erstellungsdatums. 
-	 *
-	 *@return Timestamp der das Erstellungsdatum des Kontakts repräsentiert.
-	 */
-	
-	public Timestamp getCreationDate(){
-		return creationdate;
-	}
-	
-	/**
-	 *Setzen des Modifikationsdatums. 
-	 *
-	 *@param Timestamp der das Modifiktaionsdatum des Kontakts respräsentiert. 
-	 */
-	
-	public void setModificationDate(Timestamp modificationdate){
-		this.modificationdate = modificationdate;
-	}
-	
-	/**
-	 *Auslesen des Modifikationsdatums. 
-	 *
-	 *@return Timestamp der das Modifiktaionsdatum des Kontakts respräsentiert.
-	 */
-		
-	public Timestamp getModificationDate(){
-		return modificationdate;
-	}
-	
-	/**
 	 * Handelt es sich um den User Kontakt (Kontakt der den User repräsentiert), wird true zurückgegeben.
 	 * Auslesen des IsUser Zustands. 
 	 * 
 	 * @return Boolean der den IsUser Zustand repräsentiert. 
 	 */
-
+	
 	public boolean getIsUser() {
 		return isUser;
 	}
@@ -165,4 +126,47 @@ public class Contact extends BusinessObject {
 	public void setIsUser(boolean isUser) {
 		this.isUser = isUser;
 	}
+	
+	/**
+	 *Auslesen des Erstellungsdatums. 
+	 *
+	 *@return Timestamp der das Erstellungsdatum des Kontakts repräsentiert.
+	 */
+	
+	public Timestamp getCreationDate(){
+		return creationdate;
+	}
+	
+	/**
+	 *Setzen des Erstellungsdatums. 
+	 *
+	 *@param Timestamp der das Erstellungsdatum des Kontakts repräsentiert. 
+	 */
+	
+	public void setCreationDate(Timestamp creationdate){
+		this.creationdate = creationdate;
+		
+	}
+	
+	/**
+	 *Auslesen des Modifikationsdatums. 
+	 *
+	 *@return Timestamp der das Modifiktaionsdatum des Kontakts respräsentiert.
+	 */
+		
+	public Timestamp getModificationDate(){
+		return modificationdate;
+	}
+	
+	/**
+	 *Setzen des Modifikationsdatums. 
+	 *
+	 *@param Timestamp der das Modifiktaionsdatum des Kontakts respräsentiert. 
+	 */
+	
+	public void setModificationDate(Timestamp modificationdate){
+		this.modificationdate = modificationdate;
+	}
+
+	
 }

@@ -20,8 +20,6 @@ import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.sample.itProjekt.client.ContactForm.CloseButton;
-import com.google.gwt.sample.itProjekt.client.ContactForm.ValueTable;
 import com.google.gwt.sample.itProjekt.client.ContactForm.ValueTextBox;
 
 public abstract class ClientsideFunctions {
@@ -208,10 +206,11 @@ public abstract class ClientsideFunctions {
 		
         private TextBox multiUseTextBox;
         private TextBox nameTextBox;
-        private ListBox sexListBox;
+        private ListBox listBox;
         private ValueTextBox vTextBox;
         private SuggestBox sb;
         private MultiWordSuggestOracle oracle;
+        private Vector<ContactList> contactLists;
 		CloseButton close=new CloseButton(this);
 
         Button ok = new Button("OK");
@@ -228,10 +227,10 @@ public abstract class ClientsideFunctions {
 			getNameTextBox().getElement().setPropertyString("placeholder", "Nachname...");
 			getNameTextBox().setText("");
 			
-			sexListBox = new ListBox();
-			sexListBox.addItem("männlich");
-			sexListBox.addItem("weiblich");
-			sexListBox.addItem("Sonstiges");
+			listBox = new ListBox();
+			listBox.addItem("männlich");
+			listBox.addItem("weiblich");
+			listBox.addItem("Sonstiges");
 			
 			ok.addStyleName("okbutton");
 	        close.addStyleName("closebutton");
@@ -254,7 +253,7 @@ public abstract class ClientsideFunctions {
 	        hpanel.add(ok);
 	        panel.add(multiUseTextBox);
 	        panel.add(nameTextBox);
-	        panel.add(sexListBox);
+	        panel.add(listBox);
 	        panel.add(hpanel);
 
 	        setWidget(panel);
@@ -268,7 +267,6 @@ public abstract class ClientsideFunctions {
 			setMultiUseTextBox(inputtb);
 	        ok.addStyleName("okbutton");
 	        close.addStyleName("closebutton");
-	        //this.setPopupPosition(500, 200);
 			
 			setText("Eingabe");
 			setAnimationEnabled(true);
@@ -285,6 +283,56 @@ public abstract class ClientsideFunctions {
 			hpanel.add(close);
 	        hpanel.add(ok);
 	        panel.add(multiUseTextBox);
+	        panel.add(hpanel);
+
+	        setWidget(panel);
+	        
+	        show();
+	        center();
+	    }
+		
+		public InputDialogBox(ListBox list, User currentUser) {
+			
+			setListBox(list);
+	        ok.addStyleName("okbutton");
+	        close.addStyleName("closebutton");
+	        close.addCloseDBClickHandler(this);
+			
+			setText("Bitte wählen Sie eine Kontaktliste aus");
+			setAnimationEnabled(true);
+			setGlassEnabled(true);
+			
+			 editorAdministration.getAllOwnedContactListsOfActiveUser(currentUser, new AsyncCallback<Vector<ContactList>>() {
+		        	
+	        	public void onFailure(Throwable t) {
+	        		Window.alert("Fehler beim Abruf der Kontaklisten des Nutzers");
+	        	}
+	        	
+	        	public void onSuccess(Vector<ContactList> result) {
+	        		
+	        		setContactLists(contactLists);
+	        		
+	        		setContactLists(result);
+	        		
+	        		/*
+	        		 * Alle Kontaktlisten, von denen der Nutzer Eigentümer ist, werden der ListBox hinzugefügt.
+	        		 */
+	        		for (ContactList cl : result) {
+			        	getListBox().addItem(cl.getName());
+	        		}
+	        	}
+			});
+			
+			VerticalPanel panel = new VerticalPanel();
+	        panel.setHeight("100");
+	        panel.setWidth("300");
+	        panel.setSpacing(10);
+	        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+	        panel.add(dialogBoxLabel);
+			HorizontalPanel hpanel=new HorizontalPanel();
+			hpanel.add(close);
+	        hpanel.add(ok);
+	        panel.add(listBox);
 	        panel.add(hpanel);
 
 	        setWidget(panel);
@@ -513,12 +561,12 @@ public abstract class ClientsideFunctions {
 			this.nameTextBox = nameTextBox;
 		}
 
-		public ListBox getSexListBox() {
-			return sexListBox;
+		public ListBox getListBox() {
+			return listBox;
 		}
 
-		public void setSexListBox(ListBox sexListBox) {
-			this.sexListBox = sexListBox;
+		public void setListBox(ListBox listBox) {
+			this.listBox = listBox;
 		}
 
 		public ValueTextBox getVTextBox() {
@@ -527,6 +575,14 @@ public abstract class ClientsideFunctions {
 
 		public void setVTextBox(ValueTextBox vTextBox) {
 			this.vTextBox = vTextBox;
+		}
+
+		public Vector<ContactList> getContactLists() {
+			return contactLists;
+		}
+
+		public void setContactLists(Vector<ContactList> contactLists) {
+			this.contactLists = contactLists;
 		}
 	}
 	

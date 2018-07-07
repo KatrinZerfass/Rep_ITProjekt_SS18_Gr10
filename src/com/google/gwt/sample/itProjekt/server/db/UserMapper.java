@@ -37,6 +37,36 @@ public class UserMapper {
 		}
 	
 	/**
+	 * Gibt alle User Objekte zurück welche mit U_ID und eMail befüllt sind
+	 * Hierfür holen wir U_ID und eMail aus der T_User Tabelle und speichern diese in einem User Objekt ab und fügen diese dem Vector hinzu
+	 * Diesen Vector befüllt mit User geben wir zurück
+	 * 
+	 * @return Ein Vector voller User Objekte welche befüllt sind
+	 * 
+	 * @author Egor Krämer
+	 * @author Robert Mattheis
+	 */
+	public Vector<User> findAll(){
+		Connection con = DBConnection.connection();
+		Vector<User> result = new Vector<User>();
+				
+				try{
+					Statement stmt = con.createStatement();
+					ResultSet rs = stmt.executeQuery("SELECT U_ID, eMail FROM T_User ORDER BY U_ID");
+					
+					while (rs.next()){
+						User u = new User();
+						u.setId(rs.getInt("U_ID"));
+						u.setEmail(rs.getString("eMail"));
+						result.addElement(u);
+					}		
+				}catch(SQLException e2){
+					e2.printStackTrace();
+				}
+				return result;
+			}
+
+	/**
 	 * Findet User durch eine U_ID und speichert die dazugehörigen Werte (U_ID und email) in einem User Objekt ab und gibt dieses wieder
 	 * 
 	 * @param uid übergebener Integer der U_ID
@@ -101,36 +131,6 @@ public class UserMapper {
 		
 		return u;
 	}
-	
-	/**
-	 * Gibt alle User Objekte zurück welche mit U_ID und eMail befüllt sind
-	 * Hierfür holen wir U_ID und eMail aus der T_User Tabelle und speichern diese in einem User Objekt ab und fügen diese dem Vector hinzu
-	 * Diesen Vector befüllt mit User geben wir zurück
-	 * 
-	 * @return Ein Vector voller User Objekte welche befüllt sind
-	 * 
-	 * @author Egor Krämer
-	 * @author Robert Mattheis
-	 */
-	public Vector<User> findAll(){
-		Connection con = DBConnection.connection();
-		Vector<User> result = new Vector<User>();
-				
-				try{
-					Statement stmt = con.createStatement();
-					ResultSet rs = stmt.executeQuery("SELECT U_ID, eMail FROM T_User ORDER BY U_ID");
-					
-					while (rs.next()){
-						User u = new User();
-						u.setId(rs.getInt("U_ID"));
-						u.setEmail(rs.getString("eMail"));
-						result.addElement(u);
-					}		
-				}catch(SQLException e2){
-					e2.printStackTrace();
-				}
-				return result;
-			}	
 	
 	/**
 	 * Sucht nach der höchsten U_ID um diese um eins zu erhöhen und als neue U_ID zu nutzen
