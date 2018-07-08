@@ -39,12 +39,9 @@ public class PermissionMapper {
 		}
 	
 	/**
-	 * Gibt alle Permission Objekte zurück welche mit U_ID und C_ID befüllt sind
-	 * Hierfür holen wir U_ID und C_ID aus der T_Permission_Contact Tabelle und setzten als permissionID ein zusammengesetzten Key aus U_ID und C_ID
-	 * Für das setzten des Participant holen wir, durch das aufrufen der findByID im UserMapper, die U_ID
-	 * und speichern diese in einem Permission Objekt ab
-	 * zudem setzen wir die C_ID in einem neuen Contact Objekt und ein Shareableobject durch das aufrufen der findByID Methode im ContactMapper 
-	 * Das selbe führen wir für ContactList durch und fügen das Permission Objekt dem Vector hinzu
+	 * Hierfür holen wir U_ID, C_ID und srcU_ID aus der T_Permission_Contact Tabelle und speichern diese in einem Permision Objekt ab und fügen diese dem Vector hinzu
+	 * Zudem holen wir alle U_ID, CL_ID und srcU_I aus der T_Permission_Contactlist Tabelle und speichern diese in einem Permision Objekt ab und fügen diese dem Vector hinzu
+	 * Diesen Vector befüllt mit Contacts geben wir zurück
 	 * 
 	 * @return Ein Vector voller Permission Objekte welche befüllt sind
 	 * 
@@ -193,9 +190,9 @@ public Vector <User> findAllParticipantsByCLID(ContactList contactlist){
 	
 	
 	/**
-	 * Befüllt die T_Permission_Contactlist mit einer zusammengesetzten ID aus CL_ID und U_ID 
-	 * und befüllt die Tabelle mit der CL_ID aus dem Shareableobject und der U_ID aus Participant
-	 * und gibt die permission zurück
+	 * Befüllt die T_Permission_Contactlist mit einem zusammengesetzten PrimaryKey aus CL_ID und U_ID 
+	 * und befüllt die Tabelle zusätzlich mit der srcU_ID. 
+	 * Anschließend wird die übergebene permission zurück gegeben.
 	 * 
 	 * @param permission übergebenes Permission Objekt mit Attributen CL_ID, U_ID und srcU_ID
 	 * @return Ein vollständiges Permission Objekt
@@ -316,7 +313,7 @@ public void deleteContact (Permission permission){
 }
 
 /**
- * Aus der T_Permission_Contact wird alles entfernt
+ * Aus der T_Permission_ContactList wird alles entfernt
  * wenn die U_ID und CL_ID der ID des Participants und des Shareableobjects entspricht
  * 
  * 
