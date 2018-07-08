@@ -39,12 +39,9 @@ public class PermissionMapper {
 		}
 	
 	/**
-	 * Gibt alle Permission Objekte zurück welche mit U_ID und C_ID befüllt sind
-	 * Hierfür holen wir U_ID und C_ID aus der T_Permission_Contact Tabelle und setzten als permissionID ein zusammengesetzten Key aus U_ID und C_ID
-	 * Für das setzten des Participant holen wir, durch das aufrufen der findByID im UserMapper, die U_ID
-	 * und speichern diese in einem Permission Objekt ab
-	 * zudem setzen wir die C_ID in einem neuen Contact Objekt und ein Shareableobject durch das aufrufen der findByID Methode im ContactMapper 
-	 * Das selbe führen wir für ContactList durch und fügen das Permission Objekt dem Vector hinzu
+	 * Hierfür holen wir U_ID, C_ID und srcU_ID aus der T_Permission_Contact Tabelle und speichern diese in einem Permision Objekt ab und fügen diese dem Vector hinzu
+	 * Zudem holen wir alle U_ID, CL_ID und srcU_I aus der T_Permission_Contactlist Tabelle und speichern diese in einem Permision Objekt ab und fügen diese dem Vector hinzu
+	 * Diesen Vector befüllt mit Contacts geben wir zurück
 	 * 
 	 * @return Ein Vector voller Permission Objekte welche befüllt sind
 	 * 

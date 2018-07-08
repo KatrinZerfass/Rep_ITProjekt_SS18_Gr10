@@ -286,8 +286,6 @@ public class ValueMapper {
 		
 		/**
 		 * Entfernt alles aus T_Value wo die V_ID der ID des übergebenen Objekts entspricht
-		 * Falls das Value Objekt das letzte Objekt war welches der P_ID zugewiesen war,
-		 * wird auch die dazugehörige Property gelöscht mit dem aufruf der delete Methode im PropertyMapper
 		 * 
 		 * @param value übergebenes Value Objekt mit Attribut V_ID
 		 * 
