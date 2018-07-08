@@ -521,25 +521,33 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	    	}		
 	        /**
 			 *  Auslesen der SuggestBox.
+			 *  
+			 *  @return die SuggestBox
 			**/ 	
 			public SuggestBox getSuggestBox() {
 				return sb;
 			}
 			/**
 			 *  Setzen der SuggestBox.
+			 *  
+			 *  @param sb die SuggestBox
 			**/ 	
 			public void setSuggestBox(SuggestBox sb) {
 				this.sb = sb;
 			}
 			/**
 			 *  Auslesen des Oracles.
+			 *  
+			 *  @return das Oracle
 			**/ 	
 			public MultiWordSuggestOracle getOracle() {
 				return oracle;
 			}
 			/**
 			 *  Setzen des Oracles.
-			**/ 	
+			 *  
+			 *  @param oracle Oracle
+			 **/ 	
 			public void setOracle(MultiWordSuggestOracle oracle) {
 				this.oracle = oracle;
 			}

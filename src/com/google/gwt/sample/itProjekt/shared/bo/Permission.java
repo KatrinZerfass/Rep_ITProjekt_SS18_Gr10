@@ -29,6 +29,8 @@ public class Permission extends BusinessObject {
 	
 	/** 
 	 * Setzen der NutzerID des teilenden Nutzers. 
+	 * 
+	 * @param sourceUserID die ID des teilenden Nutzers
 	 */
 
 	public void setSourceUserID(int sourceUserID) {

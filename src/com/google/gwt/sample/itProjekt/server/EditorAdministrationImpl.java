@@ -145,7 +145,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	 *
 	 * @param firstname Vorname
 	 * @param lastname Nachname
-	 * @param sex Geschlecht
+	 * @param sexList Geschlecht
 	 * @param email Email-Adresse
 	 * @return vollständiges Nutzer-Objekt
 	 * @throws IllegalArgumentException
@@ -184,7 +184,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	/**
 	 * Holt den Urheber eines Kontakts aus der Datenbank.
 	 *
-	 * @param contact Kontakt
+	 * @param c Kontakt
 	 * @return vollständiges Nutzer-Objekt des Urhebers
 	 * @throws IllegalArgumentException
 	 */
@@ -569,7 +569,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	 * Holt alle Kontakte mit einer bestimmten Eigenschaft eines bestimmten Nutzers aus der Datenbank.
 	 *
 	 * @param user Nutzer
-	 * @param Property Eigenschaft
+	 * @param property Eigenschaft
 	 * @return Vector der betroffenen Kontakte
 	 * @throws IllegalArgumentException
 	 */

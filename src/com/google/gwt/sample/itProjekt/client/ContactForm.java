@@ -236,7 +236,7 @@ public class ContactForm extends VerticalPanel {
 		 * Methode, die beim Auslesen aller Ausprägungen eines Kontakts in jedem ValueDisplay den richtigen Stand des LockButtons setzt.
 		 * Der Wert "false" zeigt an, dass nichts an die Datenbank kommuniziert werden muss. Lediglich das richtige Bild soll angezeigt werden. 
 		 * 
-		 * @param isShared 
+		 * @param isShared boolscher Wert, welcher den Status des LockButtons bestimmt
 		 */
 		public void setLockButtonTo(boolean isShared) {
 			if(isShared) {	

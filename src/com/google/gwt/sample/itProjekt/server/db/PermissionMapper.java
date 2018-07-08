@@ -125,7 +125,7 @@ public class PermissionMapper {
  * Durch den Aufruf der findByID im UserMapper wird das User Objekt vollständig befüllt
  * Die User schreiben wir in ein Vektor. Zum Schluss geben wir den Vektor zurück
  * 
- * @param contact übergebenes Contact Objekt mit Attribut CL_ID
+ * @param contactlist übergebenes Kontaktlisten-Objekt mit Attribut CL_ID
  * @return Ein Vector voller User Objekte welche befüllt sind
  * 
  * @author Egor Krämer

@@ -144,6 +144,7 @@ public Vector<Property> findByType(Property property){
  * Befüllt Property Objekte mit den Attributen und gibt einen damit gefüllten Vektor wieder
  * 
  * @param property übergebenes Property Objekt mit Attribut type
+ * @param contact übergebenes Kontakt Objekt 
  * @return Ein Vektor voller vollständiger Property Objekt
  * 
  * @author Egor Krämer

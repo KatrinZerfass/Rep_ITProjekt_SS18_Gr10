@@ -58,6 +58,8 @@ public class Value extends BusinessObject {
 	
 	/**
 	 *Auslesen des IsShared Werts. 
+	 *
+	 *@return boolscher Wert
 	 */
 
 	public boolean getIsShared() {
@@ -66,6 +68,8 @@ public class Value extends BusinessObject {
 
 	/**
 	 * Setzen des IsSharedWerts.
+	 * 
+	 * @param isShared boolscher Wert
 	 */
 	public void setIsShared(boolean isShared) {
 		this.isShared = isShared;

@@ -27,7 +27,7 @@ public interface EditorAdministration extends RemoteService{
 	/**
 	 * Initialisierung des Objekts. Diese Methode ist vor dem Hintergrund von GWT
      * RPC zusätzlich zum No Argument Constructor der implementierenden Klasse
-     * {@link EditorAdministrationImpl} notwendig.
+     * EditorAdministrationImpl notwendig.
      * 
      * @throws IllegalArgumentException
 	 */
