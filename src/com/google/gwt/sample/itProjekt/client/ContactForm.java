@@ -968,7 +968,7 @@ public class ContactForm extends VerticalPanel {
 	 */
 	private class ShareContactClickHandler implements ClickHandler{
 		
-		//DialogBox, in der der Nutzer, mit dem man teilen möchte, ausgewählt werden kann 
+		
 		ClientsideFunctions.InputDialogBox inputDB = null;
 		
 		public void onClick(ClickEvent event) {
@@ -978,7 +978,7 @@ public class ContactForm extends VerticalPanel {
 				failed.getOkButton().addCloseDBClickHandler(failed);
 			
 			}else {
-		
+				//DialogBox, in der der Nutzer, mit dem man teilen möchte, ausgewählt werden kann 
 				inputDB = new ClientsideFunctions.InputDialogBox(new MultiWordSuggestOracle(), "Bitte geben Sie den Nutzer ein, mit dem Sie den Kontakt teilen möchten.");
 				
 				inputDB.getOKButton().addClickHandler(new ClickHandler() {
@@ -991,7 +991,7 @@ public class ContactForm extends VerticalPanel {
 							
 						}else {	
 							/*
-							 * Einträge der Suggestbox bestehen aus Klarnamen und e-mail-Adressen der Nutzer
+							 * Einträge der Suggestbox bestehen aus Klarnamen und e-mail-Adressen der Nutzer.
 							 * Im folgenden wird die e-Mail-Adresse vom restlichen String getrennt, um diese im Serveraufruf
 							 * shareContact() als Argument zu übergeben.
 							 */
