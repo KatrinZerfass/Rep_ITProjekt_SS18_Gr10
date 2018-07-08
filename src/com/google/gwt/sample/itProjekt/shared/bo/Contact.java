@@ -35,7 +35,7 @@ public class Contact extends BusinessObject {
 	/**
 	 * Auslesen des Vornamens. 
 	 * 
-	 * @return String der den Vornamen des Kontakts repräsentiert. 
+	 * @return String, welcher den Vornamen des Kontakts repräsentiert. 
 	 */
 	public String getFirstname() {
 		return firstname;
@@ -53,7 +53,7 @@ public class Contact extends BusinessObject {
 	/**
 	 * Auslesen des Nachnamens. 
 	 * 
-	 * @return String der den Nachnamen des Kontakts repräsentiert.  
+	 * @return String, welcher den Nachnamen des Kontakts repräsentiert.  
 	 */
 	public String getLastname() {
 		return lastname;
@@ -71,7 +71,7 @@ public class Contact extends BusinessObject {
 	/**
 	 * Auslesen des Geschlechts.
 	 * 
-	 * @return String der das Geschlecht des Kontatkts repräsentiert.  
+	 * @return String, welcher das Geschlecht des Kontatkts repräsentiert.  
 	 */
 	public String getSex() {
 		return sex;
@@ -89,7 +89,7 @@ public class Contact extends BusinessObject {
 	/**
 	 *Auslesen des Owners. 
 	 *
-	 * @return Int der den Eigentümer des Kontakts repräsentiert. 
+	 * @return Integer, welcher den Eigentümer des Kontakts repräsentiert. 
 	 */
 
 	public int getOwner() {
@@ -110,7 +110,7 @@ public class Contact extends BusinessObject {
 	 * Handelt es sich um den User Kontakt (Kontakt der den User repräsentiert), wird true zurückgegeben.
 	 * Auslesen des IsUser Zustands. 
 	 * 
-	 * @return Boolean der den IsUser Zustand repräsentiert. 
+	 * @return Boolean, welcher den IsUser Zustand repräsentiert. 
 	 */
 	
 	public boolean getIsUser() {
@@ -130,7 +130,7 @@ public class Contact extends BusinessObject {
 	/**
 	 *Auslesen des Erstellungsdatums. 
 	 *
-	 *@return Timestamp der das Erstellungsdatum des Kontakts repräsentiert.
+	 *@return Timestamp, welcher das Erstellungsdatum des Kontakts repräsentiert.
 	 */
 	
 	public Timestamp getCreationDate(){
@@ -151,7 +151,7 @@ public class Contact extends BusinessObject {
 	/**
 	 *Auslesen des Modifikationsdatums. 
 	 *
-	 *@return Timestamp der das Modifiktaionsdatum des Kontakts respräsentiert.
+	 *@return Timestamp, welcher das Modifiktaionsdatum des Kontakts respräsentiert.
 	 */
 		
 	public Timestamp getModificationDate(){
