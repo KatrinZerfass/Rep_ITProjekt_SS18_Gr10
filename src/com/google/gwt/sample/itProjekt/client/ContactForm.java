@@ -525,19 +525,22 @@ public class ContactForm extends VerticalPanel {
 					else{
 						//es handelt sich um eine "ganz normale" andere Ausprägung
 						editorAdministration.deleteValue(value, new AsyncCallback<Void>() {
-							public void onFailure(Throwable t) {};{};
-							public void onSuccess(Void result) {}; 
-							{
+							public void onFailure(Throwable t) {
+								Window.alert("onFailure");
+								
+							}
+							public void onSuccess(Void result) { 
+								Window.alert("onSuccess");
+
 								final ClientsideFunctions.popUpBox deleted = new ClientsideFunctions.popUpBox("Value gelöscht.", new ClientsideFunctions.OkButton());
 								deleted.getOkButton().addClickHandler(new ClickHandler() {
-									
-									@Override
+								
 									public void onClick(ClickEvent arg0) {
 										setSelected(contactToDisplay);
 										deleted.hide();
 									}
 								});
-							};
+							}
 						});
 					}
 				}
@@ -734,7 +737,7 @@ public class ContactForm extends VerticalPanel {
 		
 		this.add(contactTable);
 		contactTable.setStyleName("contactTable");
-		contactTable.getColumnFormatter().setWidth(0, "30px");
+		contactTable.getColumnFormatter().setWidth(0, "50px");
 		
 		
 		/* 
