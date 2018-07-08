@@ -535,7 +535,7 @@ public class ContactForm extends VerticalPanel {
 							}
 							public void onSuccess(Void result) { 
 
-								final ClientsideFunctions.popUpBox deleted = new ClientsideFunctions.popUpBox("Value gelöscht.", new ClientsideFunctions.OkButton());
+								final ClientsideFunctions.popUpBox deleted = new ClientsideFunctions.popUpBox("Ausprägung gelöscht.", new ClientsideFunctions.OkButton());
 								deleted.getOkButton().addClickHandler(new ClickHandler() {
 								
 									public void onClick(ClickEvent arg0) {
