@@ -1000,8 +1000,9 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	 * @throws IllegalArgumentException
 	 */
 	public Value createValue(Contact contact, int propertyid, String content) throws IllegalArgumentException {
-		
+				
 		Value newvalue = new Value();
+		newvalue.setPropertyid(propertyid);
 		newvalue.setContent(content);
 		Property property = new Property();
 		property.setId(propertyid);
