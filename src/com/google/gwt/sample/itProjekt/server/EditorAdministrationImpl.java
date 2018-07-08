@@ -471,7 +471,12 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 		Vector<Contact> result = new Vector<Contact>();
 		
 		for(Contact c : allContactsOfContactList){
-			if(allContactsOfActiveUser.contains(c)){
+			if(allContactsOfActiveUser.contains(c) && c.getOwner() == user.getId()){
+				result.add(c);
+			}
+		}
+		for(Contact c : allContactsOfContactList){
+			if(allContactsOfActiveUser.contains(c) && c.getOwner() != user.getId()){
 				result.add(c);
 			}
 		}
