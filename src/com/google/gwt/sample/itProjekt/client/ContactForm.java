@@ -1094,8 +1094,6 @@ public class ContactForm extends VerticalPanel {
 	 */
 	private class SaveChangesClickHandler implements ClickHandler{
 		
-		boolean changes = false;
-
 		public void onClick(ClickEvent event) {
 			
 			if (contactToDisplay == null) {
@@ -1124,7 +1122,9 @@ public class ContactForm extends VerticalPanel {
 									System.out.println(t.getMessage());
 								}
 								public void onSuccess(Value arg0) {
-									changes = true;
+									//Besätigungsmeldung, dass Änderungen übernommen worden sind 
+									final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Änderungen in den Ausprägungen wurden übernommen.", new ClientsideFunctions.OkButton());
+									success.getOkButton().addCloseDBClickHandler(success);			
 								}
 							});
 						}
@@ -1147,7 +1147,9 @@ public class ContactForm extends VerticalPanel {
 										System.out.println(t.getMessage());
 									}
 									public void onSuccess(Contact arg0) {
-										changes = true;
+										//Besätigungsmeldung, dass Änderungen übernommen worden sind 
+										final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Änderungen im Kontaktnamen wurden übernommen.", new ClientsideFunctions.OkButton());
+										success.getOkButton().addCloseDBClickHandler(success);			
 										//der neue Kontaktname wird auch im TreeViewModel upgedatet
 										clctvm.updateContact(arg0);
 										
@@ -1157,11 +1159,7 @@ public class ContactForm extends VerticalPanel {
 					}
 				}
 			}
-			if(changes) {
-				//Besätigungsmeldung, dass Änderungen übernommen worden sind 
-				final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Die Änderungen wurden übernommen.", new ClientsideFunctions.OkButton());
-				success.getOkButton().addCloseDBClickHandler(success);			
-			}
+			
 		}
 	}
 	
