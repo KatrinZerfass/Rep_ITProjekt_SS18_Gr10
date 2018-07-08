@@ -266,10 +266,7 @@ public class ContactListMapper {
 		return contactlist;}
 		
 		/**
-		 * Entfernt alles aus T_Permission_Contactlist wo die CL_ID der ID des übergebenen Objekts entspricht
-		 * Entfernt alles aus T_Permission_Contact wo die C_ID der ID des übergebenen Objekts entspricht
-		 * Damit lösen wir die Teilhaberschaft an einem ContactList auf
-		 * der nächste Schritt entfernt alles aus T_ContactList wo die CL_ID der ID des übergebenen Objekts entspricht
+		 * Entfernt alles aus T_ContactList wo die CL_ID der ID des übergebenen Objekts entspricht
 		 * 
 		 * @param contactlist übergebenes ContactList Objekt mit Attribut CL_ID
 		 * 
@@ -328,7 +325,7 @@ Connection con = DBConnection.connection();
 		
 		/**
 		 * Fügt der ContactList einen Contact hinzu
-		 * Hierfür fügen wir der T_Contact_ContactList die CL_ID und C_ID hinzu und geben die ContactList zurück
+		 * Hierfür fügen wir der T_Contact_ContactList die CL_ID und C_ID hinzu und geben die nun befüllte ContactList zurück
 		 * 
 		 * @param contactlist übergebenes ContactList Objekt mit Attribut CL_ID
 		 * @param contact übergebenes Contact Objekt mit Attributen C_ID

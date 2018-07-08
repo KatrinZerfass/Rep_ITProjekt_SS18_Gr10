@@ -217,10 +217,7 @@ div#Trailer {
 	height: 15px;
 }
 
-/*TEST*/
-/*TEST CSS*/
-
-
+/*Styling der Buttons*/
 #ButtonsPanel{
 	width: 11%;
 }
@@ -271,7 +268,7 @@ div#Trailer {
 	top: 80px;
 	text-align: right;
 }
-
+/*Signout Button*/
 .signout{
 	position: absolute;
     right: 4px;
@@ -299,7 +296,7 @@ body{
 	position: relative;
     width: 98%;
 }
-
+/*Farbliche Hinterlegung der ausgewählten Kontakte und Kontaktlisten*/
 .GPBYFDEJ.GPBYFDEN{
 	background-color: #18878B !important;
 	background-image:none !important;
@@ -355,7 +352,7 @@ body{
 .newPropertyLabel{
 	    margin: 14px;
 }
-
+/*Überschreiben von GWT Styles der DialogBox*/
 .gwt-DialogBox.gwt-Button{
     background-color: #18878b;
     -moz-border-radius: 4px;
@@ -431,7 +428,7 @@ body{
     font-weight: 700;
     font-size: 20px;
 }
-
+/*Styling der SuggestBoxen*/
 .gwt-SuggestBoxPopup{
 	visibility: visible;
     background-color: rgb(215, 230, 224);
@@ -453,7 +450,7 @@ body{
     box-sizing: border-box;
 }
 
-/*gwt-Styling*/
+/*GWT-Styling*/
 .gwt-DialogBox .Caption {
   background: #F1F1F1;
   padding: 4px 8px 4px 4px;
@@ -557,7 +554,7 @@ body{
   zoom: 1;
 }
 
-
+/*Styling der Buttons*/
 .okbutton{
 	background-color: #18878b;
     -moz-border-radius: 4px;
@@ -604,7 +601,7 @@ body{
 .closebutton:hover{
 	background-color: #636363;
 }
-
+/*SignIn Button*/
 .signin{
 	background-color: #7dd286;
     -moz-border-radius: 4px;
