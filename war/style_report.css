@@ -16,7 +16,7 @@ h1 {
 }
 
 
-/*ReportGenerator*/
+/*Styling der Report Buttons*/
 .reportbutton {
 	background-color: #7dd286;
 	-moz-border-radius: 4px;
@@ -36,7 +36,7 @@ h1 {
 .reportbutton:hover {
 	background-color: #49ba8f;
 }
-
+/*Styling und Position der DIV Container*/
 #loginRepo {
 	position: absolute;
 	top: 36%;
@@ -61,7 +61,7 @@ h1 {
 	width: 100%;
 	height: auto;
 }
-
+/* Positionierung des Logos*/
 #logo {
 	float: left;
 	width: 180px;
@@ -82,7 +82,7 @@ h1 {
 	height: auto;
 	top: 180px;
 }
-
+/* Styling der Tabelle*/
 .infotable {
 	margin-bottom: 16px;
 }
@@ -98,7 +98,8 @@ h1 {
     padding: 8px;
 	color: white;
 }
-	
+
+/*Styling Überschrift der Suche*/
 .searchheading{
 	line-height: 1.5;
     margin: 1px 21px 12px 13px;
@@ -108,17 +109,6 @@ h1 {
 .gwt-TextBox {
 	margin: 0px 25px 14px 0px;
 	padding: 12px 65px;
-}
-
-.inputReport {
-	background-color: white;
-	background-image: url('searchicon.png');
-	background-position: 10px 10px;
-	background-repeat: no-repeat;
-	padding-left: 40px;
-	-moz-border-radius: 4px;
-	-webkit-border-radius: 4px;
-	border-radius: 4px;
 }
 
 /*SignOut Panel*/
@@ -172,6 +162,17 @@ h1 {
 	top: 120px;
     position: absolute;
 }
+/*Styling der SuggestBox und der ListBox und der input Boxen*/
+.inputReport {
+	background-color: white;
+	background-image: url('searchicon.png');
+	background-position: 10px 10px;
+	background-repeat: no-repeat;
+	padding-left: 40px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+}
 
 .reportSuggestBox{
 	background-color: white;
@@ -205,7 +206,7 @@ h1 {
     margin: 0px 40px 26px 9px;
     padding: 12px 72px 12px 40px;
 }
-
+/*GWT- SuggestBox Styling*/
 .gwt-SuggestBoxPopup{
     visibility: visible;
     overflow: visible;
@@ -276,7 +277,7 @@ h1 {
   height: 0px;
   zoom: 1;
 }
-
+/*Hinzufügen des Gitternetzes der Tabelle*/
 .reporttable, .reporttd{
   border-collapse: collapse;
   border: 1px solid #80808047;
@@ -330,7 +331,7 @@ h1 {
   height: 12px;
   zoom: 1;
 }
-
+/*Styling der Buttons und der DialogBox*/
 .okbutton{
 	background-color: #18878b;
     -moz-border-radius: 4px;
