@@ -193,9 +193,9 @@ public Vector <User> findAllParticipantsByCLID(ContactList contactlist){
 	
 	
 	/**
-	 * Befüllt die T_Permission_Contactlist mit einer zusammengesetzten ID aus CL_ID und U_ID 
-	 * und befüllt die Tabelle mit der CL_ID aus dem Shareableobject und der U_ID aus Participant
-	 * und gibt die permission zurück
+	 * Befüllt die T_Permission_Contactlist mit einem zusammengesetzten PrimaryKey aus CL_ID und U_ID 
+	 * und befüllt die Tabelle zusätzlich mit der srcU_ID. 
+	 * Anschließend wird die übergebene permission zurück gegeben.
 	 * 
 	 * @param permission übergebenes Permission Objekt mit Attributen CL_ID, U_ID und srcU_ID
 	 * @return Ein vollständiges Permission Objekt
@@ -316,7 +316,7 @@ public void deleteContact (Permission permission){
 }
 
 /**
- * Aus der T_Permission_Contact wird alles entfernt
+ * Aus der T_Permission_ContactList wird alles entfernt
  * wenn die U_ID und CL_ID der ID des Participants und des Shareableobjects entspricht
  * 
  * 
