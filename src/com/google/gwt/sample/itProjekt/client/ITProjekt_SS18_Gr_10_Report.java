@@ -51,7 +51,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	private Anchor signInLink = new Anchor("Sign In");
 	private Anchor signOutLink = new Anchor("Sign Out");
 		
-	//
+	
 	VerticalPanel mainPanel = new VerticalPanel ();
 	VerticalPanel selectionPanel = new VerticalPanel ();
 	HorizontalPanel selectionHPanel= new HorizontalPanel();
@@ -94,9 +94,11 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	 * Die Methode onModuelLoad() wird beim Starten der Anwendung aufgerufen.
 	 */
 	public void onModuleLoad() {
-				
+		
+		/*
+		 * Login Status des Benutzers wird geprüft. 
+		 */
 		signInLink.addStyleName("reportbutton");
-
 		LoginServiceAsync loginService = GWT.create(LoginService.class);
 	    loginService.login("https://it-projekt-gruppe-10-203610.appspot.com/ITProjekt_SS18_Gr_10_Report.html", new AsyncCallback<LoginInfo>() {
 	    	public void onFailure(Throwable error) {
@@ -104,8 +106,10 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	    	public void onSuccess(LoginInfo result) {
 	    		loginInfo = result;
 	    		if(loginInfo.isLoggedIn()) {
+	    			//ist der Benutzer mit seinem Google Account im Browser eingeloggt, wird die Methode loadUserInformatino() aufgerufen
 	    			loadUserInformation();
 	    		} else {
+	    			//ist der Benutzer nicht eingeloggt, so wird er auf die LoginSeite weitergeleitet 
 	    			loadLogin();
 	    		}
 	    	}
@@ -114,8 +118,9 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	
 		
 	/**
-	 * Auslesen der Nutzerinformationen und abspeichern der Informationen in die Variable user.
-	**/
+	 * Die Methode loadUserInformation wird aufgerufen, wenn der Nutzer mit seinem Google Account bereits im Browser eingeloggt ist.
+	 * 
+	 */ 
 	public void loadUserInformation() {
     	
 		if(reportGenerator == null){
@@ -129,8 +134,11 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			}
 
 			public void onSuccess(User result) {
+				//das zurückkommende Nutzer-Objekt wird in den ClientsideSettings hinterlegt und in einer Instanzenvariable gespeichert.
 				ClientsideSettings.setUser(result);
 				user = result;
+				
+				//eine Instanz der inneren Klasse TextSuggest (s.u.) wird erstellt 
 				sb=new TextSuggest(new MultiWordSuggestOracle());
 			}
 			   		
@@ -139,14 +147,14 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	
 	
 	/**
-	 * Laden der Applikation.
+	 * Die Methode loadApplication beinhaltet das Laden der Applikation.
 	**/
 	 public void loadApplication() { 
 
 			signOutLink.setHref(loginInfo.getLogoutUrl());
 								
 
-			/**Layout**/		
+			//Hinzufügen von StyleNames		
 			searchheading.addStyleName("searchheading");
 			signOutLink.addStyleName("signout");					
 			propertyLabel.addStyleName("searchlabel");
@@ -168,7 +176,6 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			/**
 			 * Auslesen der vordefinierten Eigenschaften aus der Datenbank, um diese zur ListBox hinzuzufügen.
 			**/
-			
 			reportGenerator.getAllPredefinedPropertiesOfReport(new AsyncCallback<Vector<Property>>(){
 				public void onFailure(Throwable t) {
 					Window.alert("Auslesen aller vordefinierten Eigenschaften fehlgeschlagen");
@@ -181,7 +188,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 				}
 			});
 			
-			
+			//Hinzufügen eines ChangeHandlers zur propertylistbox
 			propertylistbox.addChangeHandler(new ChangeHandler() {
 	            @Override
 	            public void onChange(ChangeEvent event) {
@@ -197,7 +204,8 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	            		propertyPanel.remove(propertyInput);
 	            	}
 	            	}});
-	            	           	
+	           
+			//Hinzufügen der verschiedenen Report-Möglichkeiten zur reportlistbox
 	        reportlistbox.addItem("Alle meine Kontakte");
 	        reportlistbox.addItem("Alle mit einem Nutzer geteilten Kontakte");
 	        reportlistbox.addItem("Kontakte mit bestimmter Ausprägung");
@@ -206,10 +214,9 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			
 			
 			
-			/**
+	        /*
 			 * Befüllen des Hauptpanels  
-			**/  
-			
+			 */ 
 			descriptionPanel.add(searchheading);
 			sb.getSuggestBox().addStyleName("reportSuggestBox");
 			reportbuttonPanel.add(allContactsOfUserButton);
@@ -241,7 +248,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			
 			
 			/**
-			 * Hinzufügen eines Clickhandlers um den passenden Report auszuwählen.
+			 * Hinzufügen eines Clickhandlers, um den passenden Report auszuwählen.
 			**/
 			getReportButton.addClickHandler(new ClickHandler() {
 		         public void onClick(ClickEvent event){
