@@ -33,15 +33,16 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 /**
  * Die Klasse ContactForm dient der Darstellung von Kontakten mit all ihren Eigenschaften und deren Ausprägungen.
  * 
- * #####  Struktur der Klasse:  ######
+ * @author KatrinZerfass, JanNoller, Anna-MariaGmeiner 
+ */
+
+/* #####  Struktur der Klasse:  ######
  * -Instanzenvariablen
  * -innere Klassen, welche GUI-Elemente verkörpern
  * -Methode onLoad()
  * -alle ClickHandler als eigene innere Klassen
  * -weitere Methoden, die für den Aufbau des Kontaktformulars notwendig sind
- * 
- * @author KatrinZerfass, JanNoller, Anna-MariaGmeiner 
- */
+ */ 
 
 public class ContactForm extends VerticalPanel {
 	
@@ -424,7 +425,7 @@ public class ContactForm extends VerticalPanel {
 					editorAdministration.editValue(contactToDisplay, value.getPropertyid(), this.value, value.getContent(), false, new AsyncCallback<Value>() {
 				
 						public void onFailure(Throwable t) {
-							Window.alert("Das Setzen dieser Ausprägung zu \"Nicht geteilt\" ist fehlgeschlagen.");
+							System.out.println(t.getMessage());
 							
 						}
 						public void onSuccess(Value v) {
@@ -449,7 +450,7 @@ public class ContactForm extends VerticalPanel {
 				editorAdministration.editValue(contactToDisplay, value.getPropertyid(), this.value, value.getContent(), true, new AsyncCallback<Value>() {
 			
 					public void onFailure(Throwable t) {
-						Window.alert("Das Setzen dieser Ausprägung zu \"Geteilt\" ist fehlgeschlagen.");
+						System.out.println(t.getMessage());
 						
 					}
 					public void onSuccess(Value v) {
@@ -504,7 +505,8 @@ public class ContactForm extends VerticalPanel {
 							
 							if(pid == 6 || pid == 7 || pid == 8 || pid ==9) {
 								editorAdministration.deleteValue(allValuesOfContact.get(i), new AsyncCallback<Void>() {
-									public void onFailure(Throwable arg0) {
+									public void onFailure(Throwable t) {
+										System.out.println(t.getMessage());
 													
 									}
 									public void onSuccess(Void arg0) {
@@ -517,7 +519,6 @@ public class ContactForm extends VerticalPanel {
 						final ClientsideFunctions.popUpBox deleted = new ClientsideFunctions.popUpBox("Adresse gelöscht.", new ClientsideFunctions.OkButton());
 						deleted.getOkButton().addClickHandler(new ClickHandler() {
 							
-							@Override
 							public void onClick(ClickEvent arg0) {
 								setSelected(contactToDisplay);
 								deleted.hide();
@@ -529,11 +530,10 @@ public class ContactForm extends VerticalPanel {
 						//es handelt sich um eine "ganz normale" andere Ausprägung
 						editorAdministration.deleteValue(value, new AsyncCallback<Void>() {
 							public void onFailure(Throwable t) {
-								Window.alert("onFailure");
+								System.out.println(t.getMessage());
 								
 							}
 							public void onSuccess(Void result) { 
-								Window.alert("onSuccess");
 
 								final ClientsideFunctions.popUpBox deleted = new ClientsideFunctions.popUpBox("Value gelöscht.", new ClientsideFunctions.OkButton());
 								deleted.getOkButton().addClickHandler(new ClickHandler() {
@@ -707,7 +707,7 @@ public class ContactForm extends VerticalPanel {
 							
 					editorAdministration.createValue(contactToDisplay, pid, vtb.getText(), new AsyncCallback<Value>() {
 						public void onFailure(Throwable t) {
-							Window.alert("Ausprägung konnte nicht hinzugefügt werden. Versuchen Sie es erneut.");
+							System.out.println(t.getMessage());
 						}
 						public void onSuccess(Value v) {
 							/*
@@ -755,7 +755,7 @@ public class ContactForm extends VerticalPanel {
 		 */
 		editorAdministration.getAllPredefinedPropertiesOf(new AsyncCallback<Vector<Property>>(){
 			public void onFailure(Throwable t) {
-				Window.alert("Auslesen aller vordefinierten Eigenschaften fehlgeschlagen");
+				System.out.println(t.getMessage());
 				
 			}
 			
@@ -938,7 +938,7 @@ public class ContactForm extends VerticalPanel {
 	
 					editorAdministration.createContact(firstnameTextBox.getText(), lastnameTextBox.getText(), sex, currentUser, new AsyncCallback<Contact>(){
 						public void onFailure(Throwable t) {
-							Window.alert("Fehler beim Kontakt Anlegen.");
+							System.out.println(t.getMessage());
 							
 						}
 						public void onSuccess(final Contact result) {
@@ -1063,8 +1063,8 @@ public class ContactForm extends VerticalPanel {
 						safety.hide();
 						//Bestätigt der Nutzer, wird der Kontakt gelöscht
 						editorAdministration.deleteContact(contactToDisplay, ClientsideFunctions.isOwner(contactToDisplay, currentUser), currentUser, new AsyncCallback<Void>() {
-							public void onFailure(Throwable arg0) {
-								Window.alert("Fehler beim Löschen des Kontakts!");
+							public void onFailure(Throwable t) {
+								System.out.println(t.getMessage());
 							}
 							public void onSuccess(Void arg0){
 								//Bestätigungsmeldung
@@ -1120,8 +1120,8 @@ public class ContactForm extends VerticalPanel {
 							editorAdministration.editValue(contactToDisplay, vtb.getTextBoxValue().getPropertyid(), vtb.getTextBoxValue(), vtb.getText(), 
 								vtb.getTextBoxValue().getIsShared(), new AsyncCallback<Value>() {
 								
-								public void onFailure(Throwable arg0) {	
-									Window.alert("Fehler beim Änderungen speichern. \n (Ausprägungen)");
+								public void onFailure(Throwable t) {	
+									System.out.println(t.getMessage());
 								}
 								public void onSuccess(Value arg0) {
 									changes = true;
@@ -1143,8 +1143,8 @@ public class ContactForm extends VerticalPanel {
 							editorAdministration.editContact(contactToDisplay.getId(), firstnameTextBox.getText(), lastnameTextBox.getText(), 
 								contactToDisplay.getSex(), new AsyncCallback<Contact>() {
 								
-									public void onFailure(Throwable arg0) {
-										Window.alert("Fehler beim Änderungen speichern. \n (Kontaktstamm)");
+									public void onFailure(Throwable t) {
+										System.out.println(t.getMessage());
 									}
 									public void onSuccess(Contact arg0) {
 										changes = true;
@@ -1202,8 +1202,8 @@ public class ContactForm extends VerticalPanel {
 		 		        //Hat der Nutzer eine Kontaktliste ausgewählt und klickt "OK", so wird der Kontakt dieser Kontaktliste hinzugefügt
 		        		editorAdministration.addContactToContactList(chosenCL, contactToDisplay, new AsyncCallback<ContactList>() {
 		        			
-		        			public void onFailure(Throwable z) {
-		        				Window.alert("Fehler beim Hinzufügen des Kontakts zur Kontaktliste.");
+		        			public void onFailure(Throwable t) {
+		        				System.out.println(t.getMessage());
 		        			}
 		        			
 		        			public void onSuccess(ContactList result) {
@@ -1259,8 +1259,8 @@ public class ContactForm extends VerticalPanel {
 							//hat der Benutzer mit "Ok" bestätigt, wird der Kontakt aus der Liste entfernt
 							editorAdministration.removeContactFromContactList(clctvm.getSelectedContactList(), contactToDisplay, new AsyncCallback<ContactList>() {
 								
-								public void onFailure(Throwable arg0) {	
-									Window.alert("Fehler beim Entfernen des Kontakts aus der Kontaktliste.");
+								public void onFailure(Throwable t) {	
+									System.out.println(t.getMessage());
 								}
 						
 								public void onSuccess(final ContactList arg0) {
@@ -1326,7 +1326,7 @@ public class ContactForm extends VerticalPanel {
 							//andernfalls wird das Geburtsdatum für den Kontakt erstellt
 							editorAdministration.createValue(contactToDisplay, 4, inputTextBox.getText(), new AsyncCallback<Value>() {
 								public void onFailure (Throwable t) {
-									Window.alert("Geburtsdatum anlegen gescheitert.");
+									System.out.println(t.getMessage());
 								}
 								
 								public void onSuccess(Value result) {
@@ -1368,7 +1368,7 @@ public class ContactForm extends VerticalPanel {
 						//die neue Eigenschaft für diesen Kontakt wird erstellt
 						editorAdministration.createProperty(contactToDisplay, input.getVTextBox().getText(), new AsyncCallback<Property>() {
 							public void onFailure (Throwable t) {
-								Window.alert("Eigenschaft anlegen gescheitert.");
+								System.out.println(t.getMessage());
 							}
 							
 							public void onSuccess(Property result) {
@@ -1461,7 +1461,7 @@ public class ContactForm extends VerticalPanel {
 						editorAdministration.createAddress(streetTextBox.getText(), houseNrTextBox.getText(),
 								plzTextBox.getText(), cityTextBox.getText(), contactToDisplay, new AsyncCallback<Value>(){
 							public void onFailure(Throwable t) {
-								Window.alert("Probleme beim Anlegen der Adresse.");
+								System.out.println(t.getMessage());
 							}
 							public void onSuccess(Value street) {
 								streetTextBox.setValue(street);
@@ -1489,6 +1489,7 @@ public class ContactForm extends VerticalPanel {
 				//handelt es sich um eine ganz normale Eigenschaft ohne besondere Behandlung, wird diese angelegt
 				editorAdministration.getPropertyByType(ptype, null, new AsyncCallback<Property>() {
 					public void onFailure (Throwable t) {
+						System.out.println(t.getMessage());
 						
 					}
 					
@@ -1628,7 +1629,7 @@ public class ContactForm extends VerticalPanel {
 			 */
 			editorAdministration.getAllValuesOfContact(contactToDisplay, new AsyncCallback<Vector<Value>>() {
 				public void onFailure(Throwable t) {
-					Window.alert("Fehler beim Auslesen der Ausprägungen des Kontakts.");
+					System.out.println(t.getMessage());
 					
 				}
 				public void onSuccess(Vector<Value> values) {
@@ -1691,7 +1692,7 @@ public class ContactForm extends VerticalPanel {
 		}
 		
 		public void onFailure(Throwable t) {
-			Window.alert("Fehler beim Auslesen der neuen Eigenschaft.");
+			System.out.println(t.getMessage());
 			
 		}
 		

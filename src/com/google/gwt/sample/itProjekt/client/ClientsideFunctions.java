@@ -192,7 +192,8 @@ public abstract class ClientsideFunctions {
 				return true;
 				
 			default: 
-				Window.alert("Switch case hat nicht ausgelöst!");
+				final ClientsideFunctions.popUpBox failed = new ClientsideFunctions.popUpBox("Unbekannter Wert!", new ClientsideFunctions.OkButton());
+				failed.getOkButton().addCloseDBClickHandler(failed);
 				return false;
 		}	
 	}
@@ -379,7 +380,7 @@ public abstract class ClientsideFunctions {
 			 editorAdministration.getAllOwnedContactListsOfActiveUser(currentUser, new AsyncCallback<Vector<ContactList>>() {
 		        	
 	        	public void onFailure(Throwable t) {
-	        		Window.alert("Fehler beim Abruf der Kontaklisten des Nutzers");
+	        		System.out.println(t.getMessage());
 	        	}
 	        	
 	        	public void onSuccess(Vector<ContactList> result) {
@@ -540,8 +541,8 @@ public abstract class ClientsideFunctions {
 			setdialogBoxLabel(labelString);
 					
 			editorAdministration.getAllUserSuggestions(user, new AsyncCallback<Vector<String>>() {
-				public void onFailure(Throwable arg0) {
-					// TODO Auto-generated method stub
+				public void onFailure(Throwable t) {
+					System.out.println(t.getMessage());
 					
 				}
 				public void onSuccess(Vector<String> arg0) {

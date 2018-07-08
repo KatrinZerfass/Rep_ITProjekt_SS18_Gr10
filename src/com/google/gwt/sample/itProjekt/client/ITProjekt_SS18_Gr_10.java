@@ -77,7 +77,8 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	    signInLink.addStyleName("signin");
 		LoginServiceAsync loginService = GWT.create(LoginService.class);
 	    loginService.login("https://it-projekt-gruppe-10-203610.appspot.com/ITProjekt_SS18_Gr_10.html", new AsyncCallback<LoginInfo>() {
-		    public void onFailure(Throwable error) {
+		    public void onFailure(Throwable t) {
+		    	System.out.println(t.getMessage());
 		    }
 	
 		    public void onSuccess(LoginInfo result) {
@@ -112,16 +113,16 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	    
 	    editorAdministration.isUserKnown(loginInfo.getEmailAddress(), new AsyncCallback<Boolean>() {
 			
-	    	public void onFailure(Throwable caught) {
-	    		Window.alert("AsyncCallback fehlgeschlagen: isUserKnown");			
+	    	public void onFailure(Throwable t) {
+	    		System.out.println(t.getMessage());	
 			}
 
 			public void onSuccess(Boolean result) {
 				if (result) {
 					//Der Nutzer konnte in der Datenbank gefunden werden und ist somit bereits bestehender Nutzer der Applikation
 					editorAdministration.getUserByEmail(loginInfo.getEmailAddress(), new AsyncCallback<User>() {
-						public void onFailure(Throwable arg0) {
-							Window.alert("AsyncCallback fehlgeschlagen: getUser");
+						public void onFailure(Throwable t) {
+							System.out.println(t.getMessage());
 						}
 						public void onSuccess(User arg0) {
 							//das zurückkommende Nutzer-Objekt wird in den ClientsideSettings hinterlegt und in einer Instanzenvariable gespeichert.
@@ -144,14 +145,13 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 							if(ClientsideFunctions.checkName(createAccountBox.getMultiUseTextBox().getText()) && ClientsideFunctions.checkName(createAccountBox.getNameTextBox().getText())) {
 								//wenn für Vor- und Nachname gültige Werte eingetragen wurden, wird ein Kontakt-Objekt erstellt, welches den Nutzer verkörpert
 								editorAdministration.createUserContact(createAccountBox.getMultiUseTextBox().getText(), createAccountBox.getNameTextBox().getText(), createAccountBox.getListBox().getSelectedItemText(), loginInfo.getEmailAddress(), new AsyncCallback<User>() {
-									public void onFailure(Throwable arg0) {
-										Window.alert("AsyncCallback fehlgeschlagen: createContact");
+									public void onFailure(Throwable t) {
+										System.out.println(t.getMessage());
 										createAccountBox.hide();
 									}
 									public void onSuccess(User arg0) {
-										if(arg0 == null) {
-											Window.alert("arg0 = null");
-										}
+										if(arg0 != null) {
+										
 										//nach erfolgreichen Anlegen des Nutzer-Kontakts wird der neue Nutzer im System willkommen geheißen
 										final ClientsideFunctions.popUpBox welcome = new ClientsideFunctions.popUpBox("Herzlich Willkommen!", new ClientsideFunctions.OkButton());
 										welcome.getOkButton().addCloseDBClickHandler(welcome);
@@ -161,6 +161,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 										user = arg0;
 										//danach wird für den neu registrierten Nutzer ebenfalls die Applikation geladen
 										loadApplication();
+										}
 									}
 								});
 							}
@@ -207,6 +208,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	    	    
 	    editorAdministration.getFullNameOfUser(user, new AsyncCallback<String>(){
 	    	public void onFailure(Throwable t) {
+	    		System.out.println(t.getMessage());
 	    		
 	    	}
 	    	public void onSuccess(String result) {

@@ -136,8 +136,8 @@ public class ContactListForm extends VerticalPanel{
 					public void onClick(ClickEvent arg0) {
 						//bestätigt der Nutzer seine Eingabe mit "Ok", wir die Kontaktliste erstellt
 						editorAdministration.createContactList(inputDB.getMultiUseTextBox().getText(), user, new AsyncCallback<ContactList>() {
-							public void onFailure(Throwable arg0) {
-								Window.alert("Fehler beim Erstellen der Kontaktliste!");
+							public void onFailure(Throwable t) {
+								System.out.println(t.getMessage());
 								inputDB.hide();
 							}
 							
@@ -197,8 +197,8 @@ public class ContactListForm extends VerticalPanel{
 							//bestätigt der Nutzer mit OK, wird die Kontaktliste gelöscht
 							editorAdministration.deleteContactList(clctvm.getSelectedContactList(), ClientsideFunctions.isOwner(clctvm.getSelectedContactList(), user), user, new AsyncCallback<Void>() {
 								
-								public void onFailure(Throwable arg0) {
-									Window.alert("Fehler beim löschen der Kontaktliste!");
+								public void onFailure(Throwable t) {
+									System.out.println(t.getMessage());
 								}
 							
 								public void onSuccess(Void arg0) {
@@ -272,15 +272,15 @@ public class ContactListForm extends VerticalPanel{
 								
 								editorAdministration.shareContactList(user, userEmail, clctvm.getSelectedContactList(), new AsyncCallback<Permission>() {
 			
-									public void onFailure(Throwable arg0) {
-										Window.alert("Weil onFailure");
+									public void onFailure(Throwable t) {
+										System.out.println(t.getMessage());
 									}
 									public void onSuccess(Permission arg0) {
 										if(arg0 != null) {
 											//Bestätigungsmeldung, dass die Kontaktliste erfolgreich geteilt wurde
 											final ClientsideFunctions.popUpBox success = new ClientsideFunctions.popUpBox("Kontaktliste erfolgreich geteilt!", new ClientsideFunctions.OkButton());
 											success.getOkButton().addClickHandler(new ClickHandler() {
-												@Override
+										
 												public void onClick(ClickEvent arg0) {
 													success.hide();
 												}
@@ -336,8 +336,8 @@ public class ContactListForm extends VerticalPanel{
 						 */
 						editorAdministration.getContactsOfNameSearchResult(user, searchTextBox.getText(), selectedContactList,   new AsyncCallback<Vector<Contact>>() {
 							
-							public void onFailure(Throwable arg0) {
-								Window.alert("Fehler beim Füllen des allContactsOfUser Vectors!");
+							public void onFailure(Throwable t) {
+								System.out.println(t.getMessage());
 							}
 						
 							public void onSuccess(final Vector<Contact> arg0){
@@ -360,8 +360,8 @@ public class ContactListForm extends VerticalPanel{
 								 */
 								editorAdministration.getContactsOfValueSearchResult(user, searchTextBox.getText(), selectedContactList, new AsyncCallback<Vector<Contact>>() {
 									
-									public void onFailure(Throwable arg0) {
-										Window.alert("Fehler beim Füllen des allContactsOfUser Vectors!");
+									public void onFailure(Throwable t) {
+										System.out.println(t.getMessage());
 									}
 									
 									public void onSuccess(final Vector<Contact> arg0){

@@ -101,7 +101,8 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 		signInLink.addStyleName("reportbutton");
 		LoginServiceAsync loginService = GWT.create(LoginService.class);
 	    loginService.login("https://it-projekt-gruppe-10-203610.appspot.com/ITProjekt_SS18_Gr_10_Report.html", new AsyncCallback<LoginInfo>() {
-	    	public void onFailure(Throwable error) {
+	    	public void onFailure(Throwable t) {
+	    		System.out.println(t.getMessage());
 	    	}
 	    	public void onSuccess(LoginInfo result) {
 	    		loginInfo = result;
@@ -131,8 +132,8 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 		
 		reportGenerator.getUserInformation(loginInfo.getEmailAddress(), new AsyncCallback<User>() {
 			
-	    	public void onFailure(Throwable caught) {
-	    		Window.alert("AsyncCallback fehlgeschlagen");			
+	    	public void onFailure(Throwable t) {
+	    		System.out.println(t.getMessage());			
 			}
 
 			public void onSuccess(User result) {
@@ -180,7 +181,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			**/
 			reportGenerator.getAllPredefinedPropertiesOfReport(new AsyncCallback<Vector<Property>>(){
 				public void onFailure(Throwable t) {
-					Window.alert("Auslesen aller vordefinierten Eigenschaften fehlgeschlagen");
+					System.out.println(t.getMessage());
 				}
 				public void onSuccess(Vector<Property> properties) {
 					for (Property p : properties) {
@@ -195,7 +196,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			 * falls nach einer eigen erstellten Eigenschaftsart gesucht werden möchte.
 			***/
 			propertylistbox.addChangeHandler(new ChangeHandler() {
-	            @Override
+	           
 	            public void onChange(ChangeEvent event) {
 	            	int size=propertylistbox.getItemCount();
 	            	int Item = propertylistbox.getSelectedIndex();
@@ -265,9 +266,9 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 		        				mainPanel.remove(propertyPanel);
 		        				mainPanel.remove(participantPanel);
 		        				reportGenerator.generateAllContactsOfUserReport(user, new AsyncCallback<AllContactsOfUserReport>() {
-		    						 public void onFailure(Throwable caught) {
+		    						 public void onFailure(Throwable t) {
 		    							  RootPanel.get("reporttext").setVisible(false);	
-		   				 				  Window.alert("Es ist leider ein Fehler aufgetreten. Der Report konnte nicht erstellt werden.");
+		    							  System.out.println(t.getMessage());
 		    						 }
 		    						 public void onSuccess(AllContactsOfUserReport result) {
 		    							    							 
@@ -303,12 +304,12 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			 * Hinzufügen eines Clickhandlers um den Report für alle Kontakte des Nutzers zu generieren.
 			**/
 			allContactsOfUserButton.addClickHandler(new ClickHandler() {
-		         @Override
+		        
 		         public void onClick(ClickEvent event){
 		        	 reportGenerator.generateAllContactsOfUserReport(user, new AsyncCallback<AllContactsOfUserReport>() {
-	    						 public void onFailure(Throwable caught) {
+	    						 public void onFailure(Throwable t) {
 	    							  RootPanel.get("reporttext").setVisible(false);	
-	   				 				  Window.alert("Es ist leider ein Fehler aufgetreten. Der Report konnte nicht erstellt werden.");
+	    							  System.out.println(t.getMessage());
 	    						 }
 	    						 public void onSuccess(AllContactsOfUserReport result) {
 	    							 	/**
@@ -332,7 +333,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			 * Hinzufügen eines Clickhandlers um den Report für "alle geteilten Kontakte mit einem Nutzers" zu generieren.
 			**/    	 
 		    allSharedContactsOfUserButton.addClickHandler(new ClickHandler() {
-				@Override
+			
 				public void onClick(ClickEvent event) {
 					if(sb.getSuggestBox().getText() != ""){
 						// Auslesen der SuggestBox und Formatierung des Strings, sodass er lediglich die Email beinhaltet.
@@ -342,9 +343,9 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 						User sharedUser=new User();
 						sharedUser.setEmail(userEmail);
 						reportGenerator.generateAllSharedContactsOfUserReport(user, sharedUser, new AsyncCallback<AllSharedContactsOfUserReport>() {
-				 				    	public void onFailure(Throwable caught) {
+				 				    	public void onFailure(Throwable t) {
 		   				 				    RootPanel.get("reporttext").setVisible(false);	
-		   				 				    Window.alert("Es ist leider ein Fehler aufgetreten. Der Report konnte nicht erstellt werden.");
+		   				 				    System.out.println(t.getMessage());
 
 			   						 }
 			   						 public void onSuccess(AllSharedContactsOfUserReport result) {
@@ -379,16 +380,16 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			 * Dabei wird das zugehörige Eingabefeld ausgelesen, um anschließend den Report zu generieren.
 			**/  
 			allContactsWithValueButton.addClickHandler(new ClickHandler() {
-				@Override
+				
 				public void onClick(ClickEvent event) {
 					if(valueInput.getText() != ""){
 					// Erstellen eines Value Objektes und setzen des Inhalts durch die eingegebene Ausprägung.
 					Value v = new Value();
 					v.setContent(valueInput.getText());
 					 reportGenerator.generateAllContactsWithValueReport(user, v, new AsyncCallback<AllContactsWithValueReport>() {
-						 public void onFailure(Throwable caught) {
+						 public void onFailure(Throwable t) {
 							RootPanel.get("reporttext").setVisible(false);	
-				 			Window.alert("Es ist leider ein Fehler aufgetreten. Der Report konnte nicht erstellt werden.");
+							System.out.println(t.getMessage());
 						 }
 						 public void onSuccess(AllContactsWithValueReport result) {
 							 	/**
@@ -420,7 +421,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 			**/  
 			
 			allContactsWithPropertyButton.addClickHandler(new ClickHandler() {
-				@Override
+				
 				public void onClick(ClickEvent event) {
 				 	/**
 					 * Die gewählte Eigenschaftsart wird abgefragt und ist in diesem Fall 
@@ -431,9 +432,9 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 						Property p = new Property();
 					p.setType(propertylistbox.getSelectedItemText());
 					 reportGenerator.generateAllContactsWithPropertyReport(user, p, new AsyncCallback<AllContactsWithPropertyReport>() {
-						 public void onFailure(Throwable caught) {
+						 public void onFailure(Throwable t) {
 							  RootPanel.get("reporttext").setVisible(false);	
-				 			  Window.alert("Es ist leider ein Fehler aufgetreten. Der Report konnte nicht erstellt werden.");
+							  System.out.println(t.getMessage());
 						 }
 						 public void onSuccess(AllContactsWithPropertyReport result) {
 							 	/**
@@ -459,9 +460,9 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	   				Property p = new Property();
 					p.setType(propertyInput.getText());
 					reportGenerator.generateAllContactsWithPropertyReport(user, p, new AsyncCallback<AllContactsWithPropertyReport>() {
-						 public void onFailure(Throwable caught) {
+						 public void onFailure(Throwable t) {
 							 RootPanel.get("reporttext").setVisible(false);
-							 Window.alert("Es ist leider ein Fehler aufgetreten. Der Report konnte nicht erstellt werden.");
+							 System.out.println(t.getMessage());
 						 }
 						 public void onSuccess(AllContactsWithPropertyReport result) {
 							 	/**
@@ -506,10 +507,10 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 				 *  Auslesen der User Suggestions und Hinzufügen zum Oracle Objekt.
 				**/ 				
 	    		reportGenerator.getAllUserSuggestions(user, new AsyncCallback<Vector<String>>() {
-	    			public void onFailure(Throwable arg0) {
-	    				Window.alert("Fehler beim holen aller User in der InputDialogBox");
+	    			public void onFailure(Throwable t) {
+	    				System.out.println(t.getMessage());
 	    			}
-	    			@Override
+	    		
 	    			public void onSuccess(Vector<String> arg0) {
 						for(String s : arg0) {
 							getOracle().add(s);

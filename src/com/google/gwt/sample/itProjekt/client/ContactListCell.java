@@ -14,8 +14,6 @@ import com.google.gwt.user.client.Window;
  */
 public class ContactListCell extends AbstractCell<ContactList> {
 
-	
-	@Override
 	public void render(Context context, ContactList value, SafeHtmlBuilder sb) {
 		if(value == null) {
 			return;

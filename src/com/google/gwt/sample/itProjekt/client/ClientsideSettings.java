@@ -62,10 +62,10 @@ public class ClientsideSettings {
 	    if (reportGenerator == null) {
 	      reportGenerator = GWT.create(ReportGenerator.class);
 	      reportGenerator.init(new AsyncCallback<Void>() {
-	    	  @Override
-	    	  public void onFailure(Throwable caught) {
+	    	  public void onFailure(Throwable t) {
+	    		  System.out.println(t.getMessage());
 	    	  }
-	    	  @Override
+	    	
 	    	  public void onSuccess(Void result) {
 	    	  }
 	      });

@@ -62,7 +62,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	private class BusinessObjectKeyProvider implements
 	ProvidesKey<BusinessObject> {
 	
-	@Override
+	
 	public Integer getKey(BusinessObject bo) {
 		if (bo == null) {
 			return null;
@@ -88,7 +88,6 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	*/
 	private class SelectionChangeEventHandler implements SelectionChangeEvent.Handler {
 	
-	@Override
 		public void onSelectionChange(SelectionChangeEvent event) {
 			BusinessObject selection = selectionModel.getSelectedObject();
 			if (selection instanceof ContactList) {
@@ -308,7 +307,8 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	
 	public void updateContact(Contact contact){							
 		editorAdministration.getContactByID(contact.getId(), new AsyncCallback<Contact>() {			
-			public void onFailure(Throwable caught) {
+			public void onFailure(Throwable t) {
+				System.out.println(t.getMessage());
 			}
 
 			public void onSuccess(Contact result) {
@@ -405,6 +405,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 				
 			editorAdministration.getAllContactListsOfUser(user.getEmail(), new AsyncCallback<Vector<ContactList>>(){
 				public void onFailure(Throwable t) {
+					System.out.println(t.getMessage());
 					
 				}
 				
@@ -444,6 +445,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 				
 				editorAdministration.getAllContactsOfActiveUser(user, new AsyncCallback<Vector<Contact>>() {
 					public void onFailure (Throwable t) {
+						System.out.println(t.getMessage());
 						
 					}
 					
@@ -470,7 +472,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 				
 				editorAdministration.getAllContactsOfContactlistForUser((ContactList) value, user, new AsyncCallback<Vector<Contact>>() {
 					public void onFailure(Throwable t) {
-							System.out.println(t.getMessage());
+						System.out.println(t.getMessage());
 					}
 		
 					public void onSuccess(Vector<Contact> contacts) {
@@ -497,7 +499,8 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 					
 					editorAdministration.getAllContactsOfContactlistForUser((ContactList) value, user, new AsyncCallback<Vector<Contact>>() {
 						public void onFailure(Throwable t) {
-								}
+							System.out.println(t.getMessage());
+						}
 						public void onSuccess(Vector<Contact> contacts) {
 							for (Contact c : contacts) {
 								contactsProvider.getList().add(c);

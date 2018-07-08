@@ -61,7 +61,7 @@ public class Column implements Serializable {
 	 * Umwandeln des Column-Onjekts in einen String.
 	 * @return den Wert als String
 	 */
-@Override 
+ 
 	public String toString() {
 		return this.value;
 	}
