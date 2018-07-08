@@ -19,6 +19,8 @@ public class Permission extends BusinessObject {
 	
 	/** 
 	 * Auslesen der NutzerID des teilenden Nutzers. 
+	 * 
+	 * @return Nutzer ID des teilenden Nutzers
 	 */
 	
 	public int getSourceUserID() {
@@ -34,7 +36,9 @@ public class Permission extends BusinessObject {
 	}
 	
 	/** 
-	 * Auslesen der NutzerID des teilhabenden Nutzers. 
+	 * Auslesen der NutzerID des teilhabenden Nutzers.
+	 * 
+	 * @return Nutzer ID des Teilhabers
 	 */
 
 	public int getParticipantID() {
@@ -43,6 +47,8 @@ public class Permission extends BusinessObject {
 	
 	/** 
 	 * Setzen der NutzerID des teilhabenden Nutzers. 
+	 * 
+	 * @param participantID Nutzer ID des Teilhabers
 	 */
 
 	public void setParticipantID(int participantID) {
@@ -51,6 +57,8 @@ public class Permission extends BusinessObject {
 	
 	/** 
 	 * Auslesen des Business Objekts. 
+	 * 
+	 * @return ID des Business Objekts
 	 */
 
 	public int getShareableObjectID() {
@@ -59,6 +67,8 @@ public class Permission extends BusinessObject {
 	
 	/** 
 	 * Setzen des Business Objekts. 
+	 * 
+	 * @param shareableObjectID ID des Business Objekts
 	 */
 
 	public void setShareableObjectID(int shareableObjectID) {

@@ -44,7 +44,7 @@ public class Contact extends BusinessObject {
 	/**
 	 * Setzen des Vornamens. 
 	 * 
-	 * @param String der den Vornamen des Kontakts repräsentiert. 
+	 * @param firstname String, welcher den Vornamen des Kontakts repräsentiert. 
 	 */
 	public void setFirstname(String firstname) {
 		this.firstname = firstname;
@@ -62,7 +62,7 @@ public class Contact extends BusinessObject {
 	/**
 	 *Setzen des Nachnamens.
 	 *
-	 * @param String der den Nachnamen des Kontakts repräsentiert. 
+	 * @param lastname String, welcher den Nachnamen des Kontakts repräsentiert. 
 	 */
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
@@ -80,7 +80,7 @@ public class Contact extends BusinessObject {
 	/**
 	 * Setzen des Geschlechts. 
 	 * 
-	 * @param String der das Geschlecht des Kontatkts repräsentiert.
+	 * @param sex String, welcher das Geschlecht des Kontatkts repräsentiert.
 	 */
 	public void setSex(String sex) {
 		this.sex = sex;
@@ -99,7 +99,7 @@ public class Contact extends BusinessObject {
 	/**
 	 *Setzen des Owners. 
 	 *
-	 *@param Int der den Eigentümer des Kontakts repräsentiert.
+	 *@param owner Integer, welcher den Eigentümer des Kontakts repräsentiert.
 	 */
 
 	public void setOwner(int owner) {
@@ -120,7 +120,7 @@ public class Contact extends BusinessObject {
 	/**
 	 * Setzen des IsUser Zustands. 
 	 * 
-	 * @param Boolean der den IsUser Zustand repräsentiert. 
+	 * @param isUser Boolean, welcher den IsUser Zustand repräsentiert. 
 	 */
 
 	public void setIsUser(boolean isUser) {
@@ -140,7 +140,7 @@ public class Contact extends BusinessObject {
 	/**
 	 *Setzen des Erstellungsdatums. 
 	 *
-	 *@param Timestamp der das Erstellungsdatum des Kontakts repräsentiert. 
+	 *@param creationdate Timestamp, welcher das Erstellungsdatum des Kontakts repräsentiert. 
 	 */
 	
 	public void setCreationDate(Timestamp creationdate){
@@ -161,7 +161,7 @@ public class Contact extends BusinessObject {
 	/**
 	 *Setzen des Modifikationsdatums. 
 	 *
-	 *@param Timestamp der das Modifiktaionsdatum des Kontakts respräsentiert. 
+	 *@param modificationdate Timestamp, welcher das Modifiktaionsdatum des Kontakts respräsentiert. 
 	 */
 	
 	public void setModificationDate(Timestamp modificationdate){

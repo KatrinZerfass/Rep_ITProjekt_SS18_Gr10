@@ -23,7 +23,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 /**
  * Die Entry-Point-Klasse für den Editor. Sie erbt vom Interface "EntryPoint" und implementiert die Methode "onModuleLoad()"
  * 
- * @author KatrinZerfass & JoshuaHill & JanNoller
+ * @author KatrinZerfass, JoshuaHill, JanNoller
  * 
  */
 public class ITProjekt_SS18_Gr_10 implements EntryPoint {

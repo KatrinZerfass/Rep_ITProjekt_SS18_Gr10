@@ -40,7 +40,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  * -alle ClickHandler als eigene innere Klassen
  * -weitere Methoden, die für den Aufbau des Kontaktformulars notwendig sind
  * 
- * @author KatrinZerfass & JanNoller & Anna-MariaGmeiner 
+ * @author KatrinZerfass, JanNoller, Anna-MariaGmeiner 
  */
 
 public class ContactForm extends VerticalPanel {
@@ -413,6 +413,7 @@ public class ContactForm extends VerticalPanel {
 		 * Die Methode setValueToShared schließt das Schloss und setzt die Variable <code>isShared</code> der Ausprägung auf <code>false</code>.
 		 * Wird die Methode infolge einer Änderung durch den Benutzer aufgerufen, wird diese Änderung auch an den Server weitergegeben.
 		 * 
+		 * @param wasChanged boolscher Wert, welcher anzeigt ob Änderungen vorliegen
 		 */
 		public void setValueToUnshared(boolean wasChanged) {
 			this.getUpFace().setImage(lockLocked);
@@ -437,6 +438,8 @@ public class ContactForm extends VerticalPanel {
 		/**
 		 * Die Methode setValueToShared öffnet das Schloss und setzt die Variable <code>isShared</code> der Ausprägung auf <code>true</code>.
 		 * Wird die Methode infolge einer Änderung durch den Benutzer aufgerufen, wird diese Änderung auch an den Server weitergegeben.
+		 * 
+		 * @param wasChanged boolscher Wert, welcher anzeigt ob Änderungen vorliegen
 		 */
 		public void setValueToShared(boolean wasChanged) {
 			this.getUpFace().setImage(lockUnlocked);
@@ -728,7 +731,7 @@ public class ContactForm extends VerticalPanel {
 	/**
 	 * Die Methode <code>onLoad()</code> wird in der EntryPoint-Klasse aufgerufen, um im GUI eine Instanz von ContactForm zu erzeugen.
 	 * 
-	 * @author KatrinZerfass & Anna-MariaGmeiner
+	 * @author KatrinZerfass, Anna-MariaGmeiner
 	 */
 	
 	public void onLoad() {

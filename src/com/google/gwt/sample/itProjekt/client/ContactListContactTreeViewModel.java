@@ -23,7 +23,7 @@ import com.google.gwt.view.client.TreeViewModel;
  * Die ContactListContactTreeViewModel. 
  * Sie dient der Verwaltung von Kontaktlisten und den dazugehörigen Kontakten und stellt die Basis für den CellBrowser dar.
  * 
- * @author KatrinZerfass & JoshuaHill
+ * @author KatrinZerfass, JoshuaHill
  */
 public class ContactListContactTreeViewModel implements TreeViewModel{
 	
@@ -120,7 +120,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	/**
 	 * Setzen der Kontaktformulars
 	 * 
-	 * @param Kontaktformular
+	 * @param cf Kontaktformular
 	 */
 	
 	public void setContactForm(ContactForm cf) {
@@ -141,7 +141,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	/**
 	 * Kontaktliste als selektierte Kontaktliste setzen. 
 	 * 
-	 * @param die zu selektierende Kontaktliste
+	 * @param cl die zu selektierende Kontaktliste
 	 */
 
 	
@@ -165,7 +165,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	/**
 	 * Kontakt als selektierten Kontakt setzen. 
 	 * 
-	 * @param der zu setzende Kontakt
+	 * @param c der zu setzende Kontakt
 	 */
 
 	public void setSelectedContact(Contact c) {
@@ -187,7 +187,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
     /**
      * Kontaktliste als 'Meine Kontaktliste' setzen. 
      * 
-     * @param die zu setzende Kontaktliste
+     * @param cl die zu setzende Kontaktliste
      */
 
 	public void setMyContactsContactList(ContactList cl) {
@@ -209,7 +209,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 
 	/**
 	 * Setzen der virtuellen Kontaktliste 'Suchergebnis im Namen'
-	 * @param nameResultsCL
+	 * @param nameResultsCL Kontaktliste, welche Suchergebnis entspricht
 	 */
 
 	public void setNameResultsCL(ContactList nameResultsCL) {
@@ -227,7 +227,8 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	
 	/**
 	 * Setzen der virtuellen Kontaktliste 'Suchergebnis in den Eigenschaften'
-	 * @param valueResultsCL
+	 * 
+	 * @param valueResultsCL Kontaktliste, welche Suchergebnis in den Eigenschaften entspricht
 	 */
 	
 	public void setValueResultsCL(ContactList valueResultsCL) {
@@ -243,7 +244,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	/**
 	 * Eine neu erstellte Kontaktliste wird dem contactListDataProvider hinzugefügt und selektiert.
 	 * 
-	 * @param die neu erstellte Kontaktliste
+	 * @param cl die neu erstellte Kontaktliste
 	 */
 	public void addContactList(ContactList cl) {
 		contactListDataProvider.getList().add(cl);
@@ -540,17 +541,11 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	/**
 	 * Es wird geprüft, ob es sich bei dem übergebenen Objekt um ein Kontakt Objekt handelt. 
 	 *  
-	 * @param das zu untersuchende Objekt
-	 * @return boolean 
+	 * @param value das zu untersuchende Objekt
+	 * @return boolscher Wert welcher true ist wenn das übergebene Objekt ein Kontakt Objekt ist
 	 */
 
 	public boolean isLeaf(Object value) {
 		return (value instanceof Contact);
 	}
-
-
-	
-
-
-
 }

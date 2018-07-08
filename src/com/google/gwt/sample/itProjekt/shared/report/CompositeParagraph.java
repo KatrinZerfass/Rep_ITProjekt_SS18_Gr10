@@ -58,7 +58,7 @@ public class CompositeParagraph extends Paragraph implements Serializable {
 	
 	/**
 	 * Auslesen eines SimpleParagraphs an bestimmten Index des Vectors subParagraph. 
-	 * @param i
+	 * @param i Index des Vectors
 	 * @return SimpleParagraph
 	 */
 	public SimpleParagraph getParagraphAt(int i) {

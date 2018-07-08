@@ -54,6 +54,8 @@ war/WEB-INF/classes/
 .svn/
 /.settings
 /.gwt
+/doc
+/javadoc.xml
 
 
 /build/

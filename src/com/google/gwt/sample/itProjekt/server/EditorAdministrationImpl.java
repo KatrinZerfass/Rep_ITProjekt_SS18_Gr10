@@ -227,7 +227,7 @@ public class EditorAdministrationImpl extends RemoteServiceServlet implements Ed
 	/**
 	 * Holt alle Teilhaber eines Kontakts aus der Datenbank.
 	 *
-	 * @param contactlist Kontaktliste
+	 * @param contact Kontaktliste
 	 * @return Vector der betroffenen Nutzer
 	 * @throws IllegalArgumentException
 	 */

@@ -20,13 +20,17 @@ public class Value extends BusinessObject {
 
 	/**
 	 * Auslesen der Ausprägung.
+	 * 
+	 * @return Inhalt der Ausprägung
 	 */
 	public String getContent() {
 		return content;
 	}
 
 	/**
-	 *Setzen der Ausprägung. 
+	 * Setzen der Ausprägung.
+	 * 
+	 * @param content Inhalt der Ausprägung
 	 */
 	public void setContent(String content) {
 		this.content = content;
@@ -34,6 +38,8 @@ public class Value extends BusinessObject {
 	
 	/**
 	 * Auslesen der Eigenschaft. 
+	 * 
+	 * @return ID der Eigenschaft
 	 */
 
 	public int getPropertyid() {
@@ -42,6 +48,8 @@ public class Value extends BusinessObject {
 	
 	/** 
 	 * Setzen der Eigenschaft. 
+	 * 
+	 * @param propertyid ID der Eigenschaft
 	 */
 
 	public void setPropertyid(int propertyid) {

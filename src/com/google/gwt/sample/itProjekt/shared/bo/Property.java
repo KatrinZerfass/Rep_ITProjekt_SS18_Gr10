@@ -14,7 +14,9 @@ public class Property extends BusinessObject {
 	private int contactID;
 
 	/**
-	 *Auslesen der Eigenschaftsart. 
+	 * Auslesen der Eigenschaftsart.
+	 *
+	 * @return Eigenschaftsart
 	 */
 	public String getType() {
 		return type;
@@ -22,6 +24,8 @@ public class Property extends BusinessObject {
 
 	/**
 	 * Setzen der Eigenschaftsart. 
+	 * 
+	 * @param type Eigenschaftsart
 	 */
 	public void setType(String type) {
 		this.type = type;
@@ -29,6 +33,8 @@ public class Property extends BusinessObject {
 	
 	/** 
 	 * Auslesen des Kontakts. 
+	 * 
+	 * @return Kontakt ID
 	 */
 
 	public int getContactID() {
@@ -37,6 +43,8 @@ public class Property extends BusinessObject {
 
 	/** 
 	 * Setzen des Kontakts. 
+	 * 
+	 * @param contactID Kontakt ID
 	 */
 	
 	public void setContactID(int contactID) {

@@ -23,7 +23,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.sample.itProjekt.client.ContactForm.ValueTextBox;
 
 /**
- * Ergänzt die Klasse {@link ClientsideSettingsie} um weitere Funktionen und Dienste,
+ * Ergänzt die Klasse {@link ClientsideSettings} um weitere Funktionen und Dienste,
  * die für alle Client-seitigen Klassen relevant sind.
  * 
  * @author JanNoller
@@ -418,7 +418,7 @@ public abstract class ClientsideFunctions {
 		/**
 		 * Instanziert eine InputDialogBox, welche genutzt wird um eine neue Eigenschaft anzulegen.
 		 *
-		 * @param vtb {@linkValueTextBox}, welche mit Namen der neuen Eigenschaft gefüllt werden soll
+		 * @param vtb {@link ValueTextBox}, welche mit Namen der neuen Eigenschaft gefüllt werden soll
 		 * @param title Text der angezeigt wird
 		 */
 		public InputDialogBox(ValueTextBox vtb, String title) {
@@ -831,7 +831,7 @@ public abstract class ClientsideFunctions {
 		 * Instantiates neue popUpBox, dient als simples Feedback für gerade ausgeführte Aktion.
 		 *
 		 * @param dbLabel angezeigter Text
-		 * @param ok CloseButton
+		 * @param close CloseButton
 		 */
 		public popUpBox(String dbLabel, CloseButton close) {
 			closeButton = close;

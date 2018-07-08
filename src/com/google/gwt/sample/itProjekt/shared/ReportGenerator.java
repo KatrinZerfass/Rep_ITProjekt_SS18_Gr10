@@ -103,6 +103,7 @@ public interface ReportGenerator extends RemoteService{
 	/**
 	 * Auslesen aller im System angemeldeten Nutzer.
 	 *
+	 * @param user Nutzer
 	 * @return Alle angemeldeten Nutzer all users
 	 * @throws IllegalArgumentException the illegal argument exception
 	 */

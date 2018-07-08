@@ -43,7 +43,7 @@ public abstract class BusinessObject implements Serializable {
 	/**
 	 * Überprüft die inhaltliche Gleichheit zweier BusinessObject Objekte (die ID).
 	 *
-	 * @param Das zu vergleichende Objekt
+	 * @param object das zu vergleichende Objekt
 	 * @return true, wenn inhaltlich gleich
 	 */
 	

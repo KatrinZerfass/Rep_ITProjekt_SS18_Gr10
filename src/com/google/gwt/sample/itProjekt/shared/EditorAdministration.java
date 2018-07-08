@@ -69,7 +69,7 @@ public interface EditorAdministration extends RemoteService{
 	/**
 	 * Löscht einen Nutzer aus der Datenbank.
 	 * 
-	 * @param user Nutzer
+	 * @param u Nutzer
 	 * @throws IllegalArgumentException
 	 */
 	public void deleteUser(User u) throws IllegalArgumentException;
@@ -133,13 +133,10 @@ public interface EditorAdministration extends RemoteService{
 	public Vector<User> getAllUsers() throws IllegalArgumentException;
 
 	/**
-	 * Holt alle Kontakte einer Kontaktliste aus der Datenbank, für die ein Nutzer eine Teilhaberschaft besitzt.
-	 * Falls der Nutzer einen Kontakt aus einer ihm geteilten Kontaktliste entfernt wird dieser mit Hilfe dieser Methode
-	 * nicht mehr angezeigt.
+	 * Holt alle Teilhaber eines Kontakts aus der Datenbank.
 	 *
-	 * @param contactlist Kontaktliste
-	 * @param user Nutzer
-	 * @return Vector der betroffenen Kontakte
+	 * @param contact Kontaktliste
+	 * @return Vector der betroffenen Nutzer
 	 * @throws IllegalArgumentException
 	 */
 	public Vector<User> getAllParticipantsOfContact(Contact contact) throws IllegalArgumentException;
@@ -513,6 +510,7 @@ public interface EditorAdministration extends RemoteService{
 	 * Holt eine Eigenschaft anhand ihrer Art aus der Datenbank
 	 *
 	 * @param type die Eigenschaftsart
+	 * @param contact Kontakt
 	 * @return vollständiges Eigenschaft-Objekt
 	 * @throws IllegalArgumentException
 	 */

@@ -12,13 +12,19 @@ public class User extends BusinessObject {
 	/** Eine eindeutige E-Mail, mit der jeder Nutzer des Systems identifiziert werden kann. */ 
 	private String email = null;
 
-	/**Auslesen der E-Mail-Adresse. */ 
+	/**Auslesen der E-Mail-Adresse. 
+	 * 
+	 * @return Emailadresse des Nutzers
+	 * */ 
 	
 	public String getEmail() {
 		return email;
 	}
 	
-	/**Setzen der E-Mail-Adresse */
+	/**Setzen der E-Mail-Adresse 
+	 * 
+	 * @param email Emailadresse des Nutzers
+	 * */
 
 	public void setEmail(String email) {
 		this.email = email;

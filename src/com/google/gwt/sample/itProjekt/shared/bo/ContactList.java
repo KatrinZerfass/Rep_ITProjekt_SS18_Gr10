@@ -38,15 +38,18 @@ public class ContactList extends BusinessObject {
 	}
 	
 	/** 
-	 * Auslesen des Eigentürmers. 
+	 * Auslesen des Eigentürmers.
+	 * 
+	 * @return ID des Eigentümers
 	 */
-
 	public int getOwner() {
 		return owner;
 	}
 	
 	/**
 	 * Setzen des Eigentümers. 
+	 * 
+	 * @param owner ID des Eigentümers
 	 */
 
 	public void setOwner(int owner) {
@@ -64,7 +67,9 @@ public class ContactList extends BusinessObject {
 	}
 
 	/**
-	 * Setzen des Flags. 
+	 * Setzen des Flags.
+	 * 
+	 * @param myContactsFlag boolscher Wert, true wenn Kontaktliste die default Kontaktliste ist
 	 */
 	
 	public void setMyContactsFlag(boolean myContactsFlag) {
