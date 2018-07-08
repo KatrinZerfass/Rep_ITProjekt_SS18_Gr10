@@ -21,7 +21,10 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
- * Die Entry-point-Klasse für den Editor.
+ * Die Entry-Point-Klasse für den Editor. Sie erbt vom Interface "EntryPoint" und implementiert die Methode "onModuleLoad()"
+ * 
+ * @author KatrinZerfass & JoshuaHill & JanNoller
+ * 
  */
 public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	
@@ -46,13 +49,19 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	
 	User user = null;
 	EditorAdministrationAsync editorAdministration = null;
+	
+	/**Instanzen der anderen GUI-Klassen, welche in der Entry-Point-Klasse erstellt und verknüpft werden*/
 	ContactForm cf = null;
 	ContactListForm clf = null;
 	ContactListContactTreeViewModel clctvm = new ContactListContactTreeViewModel();
-	ClientsideFunctions.InputDialogBox createAccountBox = null;
-
+	
 	/** Die Default-Kontaktliste MyContactsContactList mccl. */
 	ContactList mccl = new ContactList();
+	
+	/** Die DialogBox, die bei erstmaliger Registrierung des Nutzers erscheint */
+	ClientsideFunctions.InputDialogBox createAccountBox = null;
+
+
 	
 	
 	  
@@ -68,24 +77,31 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	    signInLink.addStyleName("signin");
 		LoginServiceAsync loginService = GWT.create(LoginService.class);
 	    loginService.login("https://it-projekt-gruppe-10-203610.appspot.com/ITProjekt_SS18_Gr_10.html", new AsyncCallback<LoginInfo>() {
-	    public void onFailure(Throwable error) {
-	    }
-
-	    public void onSuccess(LoginInfo result) {
-	    	loginInfo = result;
-	    	if(loginInfo.isLoggedIn()) {
-	    		loadUserInformation();
-	    		
-	    	}
-	    	else {
-	    		loadLogin();
-	    	}
-	    }
+		    public void onFailure(Throwable error) {
+		    }
+	
+		    public void onSuccess(LoginInfo result) {
+		    	loginInfo = result;
+		    	if(loginInfo.isLoggedIn()) {
+		    		//ist der Benutzer mit seinem Google Account im Browser eingeloggt, wird die Methode loadUserInformatino() aufgerufen
+		    		loadUserInformation();
+		    		
+		    	}
+		    	else {
+		    		//ist der Benutzer nicht eingeloggt, so wird er auf die LoginSeite weitergeleitet 
+		    		loadLogin();
+		    	}
+		    }
 	    });
 	}
 	  
 	  
-	  
+	/**
+	 * Die Methode loadUserInformation wird aufgerufen, wenn der Nutzer mit seinem Google Account bereits im Browser eingeloggt ist.
+	 * Sie prüft, ob der Nutzer bereits dem System bekannt ist.
+	 * Wenn ja, wird die Applikation geladen.
+	 * Wenn nein, erscheint eine Maske, in der sich der Benutzer bei erstmaligem Aufruf der Applikation registrieren kann. 
+	 */  
  
   	public void loadUserInformation() {
 	    	
@@ -93,7 +109,6 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 			editorAdministration = ClientsideSettings.getEditorAdministration();
 	    }
 
-	    // Anlegen des User Objekts & Abspeichern in einer lokalen Variabel.
 	    
 	    editorAdministration.isUserKnown(loginInfo.getEmailAddress(), new AsyncCallback<Boolean>() {
 			
@@ -103,25 +118,31 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 
 			public void onSuccess(Boolean result) {
 				if (result) {
+					//Der Nutzer konnte in der Datenbank gefunden werden und ist somit bereits bestehender Nutzer der Applikation
 					editorAdministration.getUserByEmail(loginInfo.getEmailAddress(), new AsyncCallback<User>() {
 						public void onFailure(Throwable arg0) {
 							Window.alert("AsyncCallback fehlgeschlagen: getUser");
 						}
 						public void onSuccess(User arg0) {
+							//das zurückkommende Nutzer-Objekt wird in den ClientsideSettings hinterlegt und in einer Instanzenvariable gespeichert.
 							ClientsideSettings.setUser(arg0);
 							user = arg0;
+							//da der Nutzer bereits bekannt ist, wird für ihn im Folgenden die Applikation geladen
 							loadApplication();
 						}
 					});
 				}
 				
 				else {
+					/*Wenn kein Nutzer mit dieser e-Mail in der Datenbank gefunden wurde, wird die DialogBox für die erstmalige Registrierung 
+					 * aufgebaut. In diese muss der Nutzer seinen Vor- und Nachnamen eintragen und sein Geschlecht auswählen. */
 					createAccountBox = new ClientsideFunctions.InputDialogBox(loginInfo.getEmailAddress());
 					
 					createAccountBox.getOKButton().addClickHandler(new ClickHandler() {
 						
 						public void onClick(ClickEvent arg0) {
 							if(ClientsideFunctions.checkName(createAccountBox.getMultiUseTextBox().getText()) && ClientsideFunctions.checkName(createAccountBox.getNameTextBox().getText())) {
+								//wenn für Vor- und Nachname gültige Werte eingetragen wurden, wird ein Kontakt-Objekt erstellt, welches den Nutzer verkörpert
 								editorAdministration.createUserContact(createAccountBox.getMultiUseTextBox().getText(), createAccountBox.getNameTextBox().getText(), createAccountBox.getListBox().getSelectedItemText(), loginInfo.getEmailAddress(), new AsyncCallback<User>() {
 									public void onFailure(Throwable arg0) {
 										Window.alert("AsyncCallback fehlgeschlagen: createContact");
@@ -131,11 +152,14 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 										if(arg0 == null) {
 											Window.alert("arg0 = null");
 										}
+										//nach erfolgreichen Anlegen des Nutzer-Kontakts wird der neue Nutzer im System willkommen geheißen
 										final ClientsideFunctions.popUpBox welcome = new ClientsideFunctions.popUpBox("Herzlich Willkommen!", new ClientsideFunctions.OkButton());
 										welcome.getOkButton().addCloseDBClickHandler(welcome);
 										createAccountBox.hide();
+										//das zurückkommende Nutzer-Objekt wird in den ClientsideSettings hinterlegt und in einer Instanzenvariable gespeichert.
 										ClientsideSettings.setUser(arg0);
 										user = arg0;
+										//danach wird für den neu registrierten Nutzer ebenfalls die Applikation geladen
 										loadApplication();
 									}
 								});
@@ -153,18 +177,33 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
   	
 		
   	 /**
-     * Die Methode loadApplication() wird aufgerufen, wenn der Benutzer eingeloggt ist. Sie beinhaltet 
-     * die eigentliche Applikation.  
+     * Die Methode loadApplication() wird aufgerufen, wenn der Benutzer eingeloggt und dem System als Nutzer-Objekt bekannt ist. 
+     * Sie beinhaltet die eigentliche Applikation, welche im Folgenden aufgebaut wird.  
      */
   	
   	public void loadApplication(){
   		 		
 		/*
-		 * Im Folgenden wird das GUI aufgebaut.
+		 * Das loginPanel wird aufgebaut
 		 */
-  		
 	    VerticalPanel loginPanel = new VerticalPanel();
+	    
+	    /*
+	     * Der signOutLink wird dem loginPanel hinzugefügt
+	     */
+	    signOutLink.setHref(loginInfo.getLogoutUrl());
+	    signOutLink.addStyleName("signout");
+		signInLink.addStyleName("reportbutton");
+		
+		
+		loginPanel.add(signOutLink);
+		
+		
+		/*
+		 * Die Information über den aktuell angemeldeten Nutzer wird ebenfalls dem loginPanel hinzugefügt
+		 */
 	    signedInUser = new Label();
+	    signedInUser.addStyleName("signedInUser");
 	    	    
 	    editorAdministration.getFullNameOfUser(user, new AsyncCallback<String>(){
 	    	public void onFailure(Throwable t) {
@@ -173,26 +212,19 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	    	public void onSuccess(String result) {
 	    		
 	    		signedInUser.setText("Angemeldet als: " +result);
-	    	
-	    		
 	    	}
 	    });
 	    
-	    
-	    
-	    signOutLink.setHref(loginInfo.getLogoutUrl());
-	    signOutLink.addStyleName("signout");
-		signInLink.addStyleName("reportbutton");
-		signedInUser.addStyleName("signedInUser");
-		
-		loginPanel.add(signOutLink);
 		loginPanel.add(signedInUser);
 		
 		
+		//das loginPanel wird dem div mit der id "Login" hinzugefügt
 		RootPanel.get("Login").add(loginPanel);
 		
+		
+		
 		/*
-		 * Das Div "ContactForm" beinhaltet eine Instanz von ContactForm
+		 * Instanzen von ContactForm und ContactListForm werden erstellt und je einem eigenen div hinzugefügt
 		 */
 		cf = new ContactForm();
 		RootPanel.get("ContactForm").add(cf);
@@ -201,6 +233,9 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		RootPanel.get("Contactlist").add(clf);
 	
 		
+		/*
+		 * buttonsPanel und newPropertyPanel werden erstellt und je einem eigenen div hinzugefügt
+		 */
 		VerticalPanel buttonsPanel = cf.getButtonsPanel();
 		RootPanel.get("ButtonsPanel").add(buttonsPanel);
 		
@@ -209,26 +244,26 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 			
 		
 		/*
-		 * TreeViewModel und ContactForm werden miteinander verbunden.
+		 * TreeViewModel, ContactForm und ContactListForm werden miteinander verbunden.
 		 */
 		clctvm.setContactForm(cf);
 		cf.setClctvm(clctvm);
 		clf.setClctvm(clctvm);
 		
+		
 		/*
-		 * Die default-Kontaktliste "Meine Kontakte" wird erstellt.
+		 * Die default-Kontaktliste "Meine Kontakte" wird erstellt und dem TreeVieModel hinzugefügt.
 		 */
 		mccl.setName("Meine Kontakte");
 		mccl.setOwner(user.getId());
-		mccl.setId(5);
-		
+		mccl.setId(1000);
 		mccl.setMyContactsFlag(true);
 		
 		clctvm.setMyContactsContactList(mccl);
 	
 
 		/*
-		 * Das div "Navigator" beinhaltet eine Instanz eines CellBrowswers
+		 * Eine Instanz eines CellBrowsers wird erstellt und dem div "Navigator" hinzugefügt
 		 */
 		CellBrowser.Builder<String> builder = new CellBrowser.Builder<>(clctvm, "Root");	
 		CellBrowser cellBrowser = builder.build(); 
@@ -236,7 +271,9 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		cellBrowser.setWidth("100%");
 		cellBrowser.setAnimationEnabled(true);
 		cellBrowser.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);		
+		
 		RootPanel.get("Navigator").add(cellBrowser);
+		//beim Aufruf der Applikation wird die Default-Liste "Meine Kontakte" automatisch geöffnet
 		cellBrowser.getRootTreeNode().setChildOpen(0, true);
 
 	  }

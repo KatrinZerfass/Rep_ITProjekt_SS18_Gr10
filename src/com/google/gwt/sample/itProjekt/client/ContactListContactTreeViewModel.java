@@ -10,17 +10,13 @@ import com.google.gwt.sample.itProjekt.shared.bo.BusinessObject;
 import com.google.gwt.sample.itProjekt.shared.bo.Contact;
 import com.google.gwt.sample.itProjekt.shared.bo.ContactList;
 import com.google.gwt.sample.itProjekt.shared.bo.User;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.gwt.view.client.TreeViewModel;
-import com.google.gwt.view.client.TreeViewModel.DefaultNodeInfo;
 
-
-import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
 /**
@@ -53,6 +49,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	/** nameRestultsCL und valueResultsCL repräsentieren die 'virtuellen' Kontaktlisten der Suchergebnisse. */
 	private ContactList nameResultsCL = new ContactList();
 	private ContactList valueResultsCL = new ContactList();
+	
 	
 	/** Die Ergebnisse der Suchanfrage werden in nameResults und valueResults gespeichert. */
 	private Vector<Contact> nameResults = null;
@@ -113,6 +110,8 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 		selectionModel = new SingleSelectionModel<BusinessObject>(boKeyProvider);
 		selectionModel.addSelectionChangeHandler(new SelectionChangeEventHandler());
 		contactDataProviders = new HashMap<ContactList, ListDataProvider<Contact>>();
+		nameResultsCL.setId(1);
+		valueResultsCL.setId(2);
 			
 	}
 
@@ -275,7 +274,6 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	
 	public void addContactOfContactList(ContactList cl, Contact c) {
 		if (!contactDataProviders.containsKey(cl)) {
-			Window.alert("Fehler beim addContactofcontactlist");
 			return;
 		}
 		ListDataProvider<Contact> contactsProvider = contactDataProviders.get(cl);
@@ -332,7 +330,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	public void addNameResults () {			
 		deleteNameResults();
 		nameResultsCL = new ContactList();
-		nameResultsCL.setId(0);
+		nameResultsCL.setId(1);
 		nameResultsCL.setName("Suchergebnis im Namen");
 		
 	}
@@ -344,7 +342,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 	public void addValueResults () {	
 		deleteValueResults();		
 		valueResultsCL = new ContactList();
-		valueResultsCL.setId(1);
+		valueResultsCL.setId(2);
 		valueResultsCL.setName("Suchergebnis in den Eigenschaften");
 		
 	}
@@ -471,7 +469,7 @@ public class ContactListContactTreeViewModel implements TreeViewModel{
 				
 				editorAdministration.getAllContactsOfContactlistForUser((ContactList) value, user, new AsyncCallback<Vector<Contact>>() {
 					public void onFailure(Throwable t) {
-							Window.alert("Kontakte der Kontaktliste auslesen fehlgeschlagen");
+							System.out.println(t.getMessage());
 					}
 		
 					public void onSuccess(Vector<Contact> contacts) {

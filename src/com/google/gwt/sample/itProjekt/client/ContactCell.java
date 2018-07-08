@@ -8,14 +8,12 @@ import com.google.gwt.user.client.Window;
 
 /**
  * Die Klasse ContactCell erstellt Cells, mit denen Kontakte im CellBrowser angezeigt werden. 
- * Es wird immer der Vor- und der Nachname eines Kontakts angezeigt. 
+ * Es wird immer ein Icon und dahinter der Vor- und der Nachname eines Kontakts angezeigt. 
+ * 
+ * @author KatrinZerfass
  */
 public class ContactCell extends AbstractCell<Contact> {
 
-	/* (non-Javadoc)
-	 * @see com.google.gwt.cell.client.AbstractCell#render(com.google.gwt.cell.client.Cell.Context, java.lang.Object, com.google.gwt.safehtml.shared.SafeHtmlBuilder)
-	 */
-	@Override
 	public void render(Context context, Contact value, SafeHtmlBuilder sb) {
 		if (value == null) {
 			return;
@@ -23,16 +21,20 @@ public class ContactCell extends AbstractCell<Contact> {
 		
 		
 		sb.appendHtmlConstant("<div id =\"contactCell\">");
+		
 		if(ClientsideFunctions.isOwner(value, ClientsideSettings.getUser())) {
-//		if(value.getOwner() == ClientsideSettings.getUser().getId()) {
+			
 			if(value.getIsUser()) {
+				//wenn der Kontakt derjenige ist, welcher den Nutzer selbst verkörpert
 				sb.appendHtmlConstant("<img src=\"userContact_Symbol.png\" id= \"itemSymbol\">");	
 				
 			}
 			else{
+				//wenn der Nutzer Eigentümer dieses Kontakt ist
 				sb.appendHtmlConstant("<img src=\"owner_symbol.png\" id= \"itemSymbol\">");	
 			}
 		}else {
+			//wenn der Nutzer Teilhaber am Kontkat ist
 			sb.appendHtmlConstant("<img src=\"shared_symbol.png\" id= \"itemSymbol\">");
 		}
 		sb.appendEscaped(" ");
