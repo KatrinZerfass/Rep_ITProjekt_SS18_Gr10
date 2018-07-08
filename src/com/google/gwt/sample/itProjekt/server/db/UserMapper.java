@@ -201,7 +201,6 @@ public class UserMapper {
 	 * Entfernt alles aus T_User wo die U_ID der ID des übergebenen Objekts entspricht
 	 * 
 	 * @param user übergebenes User Objekt mit Attribut U_ID
-	 * @return Ein vollständiges User Objekt
 	 * 
 	 * @author Egor Krämer
 	 * @author Robert Mattheis
