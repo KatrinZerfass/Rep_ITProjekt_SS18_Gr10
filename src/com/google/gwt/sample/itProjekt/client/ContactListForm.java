@@ -22,9 +22,8 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
- * Die Klasse ContactListForm dient der Darstellung der Buttons, welche zum Teilen, Löschen 
- * und Anlegen von Kontaktlisten benötigt werden. Außerdem repräsentiert die Klasse ein Suchfeld, 
- * in dem nach Kontakten und Ausprägungen in einer Kontaktliste gesucht werden können.
+ * Die Klasse ContactListForm dient der Darstellung der Buttons, welche zum Teilen, Löschen und Anlegen von Kontaktlisten benötigt werden. 
+ * Außerdem repräsentiert die Klasse ein Suchfeld, in dem nach Kontakten und Ausprägungen in einer Kontaktliste gesucht werden können.
  * 
  * @author KatrinZerfass & JoshuaHill & JanNoller 
  */
@@ -32,11 +31,13 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 public class ContactListForm extends VerticalPanel{
 	
 		EditorAdministrationAsync editorAdministration = ClientsideSettings.getEditorAdministration();
-	
+		
+		/** Das referenzierte TreeViewModel */
 		ContactListContactTreeViewModel clctvm = null;
 		
 		User user = new User();
 	
+		/** Instanzenvariablen, welche zur Darstellung des Suchfeldes benötigt werden */
 		VerticalPanel searchPanel = new VerticalPanel();
 		Label searchLabel = new Label();
 		HorizontalPanel searchBox = new HorizontalPanel();
@@ -44,7 +45,9 @@ public class ContactListForm extends VerticalPanel{
 		PushButton searchButton = new PushButton();
 		Image searchButtonImg = new Image("searchButton.png");
 		
-		
+	/**
+	 * Die Methode <code>onLoad()</code> wird in der EntryPoint-Klasse aufgerufen, um im GUI eine Instanz von ContactListForm zu erzeugen.
+	 */	
 	public void onLoad() {
 			
 			super.onLoad();

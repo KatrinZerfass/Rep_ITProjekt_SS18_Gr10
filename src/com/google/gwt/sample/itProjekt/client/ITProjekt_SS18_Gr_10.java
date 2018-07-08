@@ -77,21 +77,21 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	    signInLink.addStyleName("signin");
 		LoginServiceAsync loginService = GWT.create(LoginService.class);
 	    loginService.login("https://it-projekt-gruppe-10-203610.appspot.com/ITProjekt_SS18_Gr_10.html", new AsyncCallback<LoginInfo>() {
-	    public void onFailure(Throwable error) {
-	    }
-
-	    public void onSuccess(LoginInfo result) {
-	    	loginInfo = result;
-	    	if(loginInfo.isLoggedIn()) {
-	    		//ist der Benutzer mit seinem Google Account im Browser eingeloggt, wird die Methode loadUserInformatino() aufgerufen
-	    		loadUserInformation();
-	    		
-	    	}
-	    	else {
-	    		//ist der Benutzer nicht eingeloggt, so wird er auf die LoginSeite weitergeleitet 
-	    		loadLogin();
-	    	}
-	    }
+		    public void onFailure(Throwable error) {
+		    }
+	
+		    public void onSuccess(LoginInfo result) {
+		    	loginInfo = result;
+		    	if(loginInfo.isLoggedIn()) {
+		    		//ist der Benutzer mit seinem Google Account im Browser eingeloggt, wird die Methode loadUserInformatino() aufgerufen
+		    		loadUserInformation();
+		    		
+		    	}
+		    	else {
+		    		//ist der Benutzer nicht eingeloggt, so wird er auf die LoginSeite weitergeleitet 
+		    		loadLogin();
+		    	}
+		    }
 	    });
 	}
 	  
@@ -194,7 +194,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 	    signOutLink.setHref(loginInfo.getLogoutUrl());
 	    signOutLink.addStyleName("signout");
 		signInLink.addStyleName("reportbutton");
-		signedInUser.addStyleName("signedInUser");
+		
 		
 		loginPanel.add(signOutLink);
 		
@@ -203,6 +203,7 @@ public class ITProjekt_SS18_Gr_10 implements EntryPoint {
 		 * Die Information über den aktuell angemeldeten Nutzer wird ebenfalls dem loginPanel hinzugefügt
 		 */
 	    signedInUser = new Label();
+	    signedInUser.addStyleName("signedInUser");
 	    	    
 	    editorAdministration.getFullNameOfUser(user, new AsyncCallback<String>(){
 	    	public void onFailure(Throwable t) {

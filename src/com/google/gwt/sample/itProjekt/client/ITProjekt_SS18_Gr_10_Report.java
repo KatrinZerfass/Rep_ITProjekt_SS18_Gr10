@@ -33,16 +33,17 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.Window;
 
-/*
+/**
  *  Entry-Point-Klasse des Report Generators.
  *  Der Reportgenerator besteht aus einem Navigationsteil, einer Kontaktliste und
  *  einer Detailansicht  
+ *  
+ *  @author Anna-MariaGmeiner
  */
 
 public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	
 	//Relevante Attribute für LoginService
-	
 	private LoginInfo loginInfo = null;
 	private VerticalPanel loginPanel = new VerticalPanel();
 	private Label loginLabel = new Label(
@@ -50,6 +51,7 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	private Anchor signInLink = new Anchor("Sign In");
 	private Anchor signOutLink = new Anchor("Sign Out");
 		
+	//
 	VerticalPanel mainPanel = new VerticalPanel ();
 	VerticalPanel selectionPanel = new VerticalPanel ();
 	HorizontalPanel selectionHPanel= new HorizontalPanel();
@@ -86,48 +88,11 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	Button allContactsWithValueButton = new Button("Report ausgeben");
 	Button allContactsWithPropertyButton = new Button("Report ausgeben");
 
-	public class TextSuggest{
-
-		private SuggestBox sb;
-        private MultiWordSuggestOracle oracle;
-        public TextSuggest(MultiWordSuggestOracle inputOracle) {
-    		
-    		setOracle(inputOracle);
-    						
-    		reportGenerator.getAllUserSuggestions(user, new AsyncCallback<Vector<String>>() {
-    			public void onFailure(Throwable arg0) {
-    				Window.alert("Fehler beim holen aller User in der InputDialogBox");
-    			}
-    			@Override
-    			public void onSuccess(Vector<String> arg0) {
-					for(String s : arg0) {
-						getOracle().add(s);
-					}
-    				setSuggestBox(new SuggestBox(getOracle()));
-    				loadApplication();
-    			}
-    		});
-    	}		
-
-		public SuggestBox getSuggestBox() {
-			return sb;
-		}
-
-		public void setSuggestBox(SuggestBox sb) {
-			this.sb = sb;
-		}
-
-		public MultiWordSuggestOracle getOracle() {
-			return oracle;
-		}
-
-		public void setOracle(MultiWordSuggestOracle oracle) {
-			this.oracle = oracle;
-		}
-	}
-
-			
 	
+			
+	/**
+	 * Die Methode onModuelLoad() wird beim Starten der Anwendung aufgerufen.
+	 */
 	public void onModuleLoad() {
 				
 		signInLink.addStyleName("reportbutton");
@@ -468,6 +433,47 @@ public class ITProjekt_SS18_Gr_10_Report implements EntryPoint {
 	   			
 		}  
 	 
+	 
+	 public class TextSuggest{
+
+			private SuggestBox sb;
+	        private MultiWordSuggestOracle oracle;
+	        public TextSuggest(MultiWordSuggestOracle inputOracle) {
+	    		
+	    		setOracle(inputOracle);
+	    						
+	    		reportGenerator.getAllUserSuggestions(user, new AsyncCallback<Vector<String>>() {
+	    			public void onFailure(Throwable arg0) {
+	    				Window.alert("Fehler beim holen aller User in der InputDialogBox");
+	    			}
+	    			@Override
+	    			public void onSuccess(Vector<String> arg0) {
+						for(String s : arg0) {
+							getOracle().add(s);
+						}
+	    				setSuggestBox(new SuggestBox(getOracle()));
+	    				loadApplication();
+	    			}
+	    		});
+	    	}		
+
+			public SuggestBox getSuggestBox() {
+				return sb;
+			}
+
+			public void setSuggestBox(SuggestBox sb) {
+				this.sb = sb;
+			}
+
+			public MultiWordSuggestOracle getOracle() {
+				return oracle;
+			}
+
+			public void setOracle(MultiWordSuggestOracle oracle) {
+				this.oracle = oracle;
+			}
+		}
+
 	 
 	 
 	 	/**
